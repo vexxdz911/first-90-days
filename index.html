@@ -5,270 +5,845 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The First 90 Days — Scenario Library v1</title>
 <style>
-  body { font-family: system-ui, sans-serif; margin: 0; background: #101418; color: #e8ecf1; }
-  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 48px; }
-  h1 { font-size: 1.7rem; margin-bottom: 4px; }
-  .sub { color: #9fb0c3; margin-top: 0; }
-  .gate { background: #1b222b; border: 1px solid #2c3745; border-radius: 10px; padding: 12px 14px; font-size: .9rem; color: #c6d2e0; }
-  .stats { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 4px; }
-  .stat { background: #171e26; border: 1px solid #2c3745; border-radius: 10px; padding: 10px 14px; }
-  .stat b { font-size: 1.3rem; display: block; }
-  .stat span { color: #9fb0c3; font-size: .8rem; }
-  h2 { margin-top: 32px; font-size: 1.3rem; }
-  .blurb { color: #b8c6d6; margin-top: 2px; }
-  .card { display: block; background: #171e26; border: 1px solid #2c3745; border-radius: 12px; padding: 14px 16px; margin: 12px 0; color: inherit; text-decoration: none; }
-  .card:hover, .card:active { border-color: #4d6a8a; }
-  .card h3 { margin: 0 0 4px; font-size: 1.05rem; }
-  .card p { margin: 4px 0; color: #b8c6d6; font-size: .93rem; }
-  .card .meta { color: #77879a; font-size: .82rem; }
-  .card .links span { color: #e8b04b; font-weight: 600; }
-  .card .links a { color: #a9c6e8; }
-  footer { color: #77879a; font-size: .85rem; margin-top: 36px; line-height: 1.5; }
-  footer a { color: #a9c6e8; }
+:root{
+  --ink:        #0d1520;
+  --navy:       #16283f;
+  --navy-2:     #1f3a5c;
+  --amber:      #e8b04b;
+  --amber-deep: #c98f2b;
+  --paper:      #f3d9a4;
+  --cream:      #f7ead0;
+  --red:        #b3202a;
+  --tier-foundation: #e8b04b;
+  --tier-hard:       #7e93a8;
+  --tier-complex:    #5b83ad;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 20px;
+  --s6: 24px; --s8: 32px; --s10: 40px; --s12: 48px; --s16: 64px;
+  --border-panel: 3px solid #0d1520;
+  --border-hero:  4px solid #0d1520;
+  --shadow-panel: 6px 6px 0 #0d1520;
+  --shadow-panel-hover: 10px 10px 0 #0d1520;
+  --shadow-hero: 10px 10px 0 #0d1520;
+}
+*{ box-sizing: border-box; border-radius: 0; }
+html{ -webkit-text-size-adjust: 100%; }
+body{
+  margin: 0;
+  background-color: #16283f;
+  background-image:
+    radial-gradient(circle, rgba(232,176,75,.13) 1.2px, transparent 1.3px),
+    radial-gradient(circle, rgba(232,176,75,.07) 1.2px, transparent 1.3px);
+  background-size: 18px 18px, 18px 18px;
+  background-position: 0 0, 9px 9px;
+  color: #f7ead0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.vh{ position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip{
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip:focus{
+  position: absolute; top: 8px; left: 8px; width: auto; height: auto; min-height: 48px; margin: 0;
+  padding: 12px 16px; overflow: visible; clip: auto; white-space: normal;
+  background: #f7ead0; color: #0d1520; outline: 3px solid #0d1520; outline-offset: 3px;
+  font-weight: 700; text-decoration: none; z-index: 10;
+  display: inline-flex; align-items: center;
+}
+.wrap{ width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: 16px; padding-top: 20px; }
+@media (min-width: 640px){ .wrap{ padding-inline: 24px; } }
+@media (min-width: 1024px){ .wrap{ padding-inline: 32px; } }
+@media (min-width: 900px){ .wrap{ padding-top: 32px; } }
+.hero{ display: grid; gap: 28px; }
+.hero-art{
+  position: relative; margin: 0;
+  background: #f7ead0;
+  border: var(--border-hero);
+  box-shadow: var(--shadow-hero);
+  padding: 8px;
+}
+.hero-art img{
+  display: block; width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: var(--border-panel);
+  background: #16283f;
+}
+.hero-art::after{
+  content: ""; position: absolute; inset: 8px;
+  background: linear-gradient(to top, rgba(13,21,32,.88), rgba(13,21,32,0) 38%);
+  pointer-events: none;
+}
+.stamp{
+  position: absolute;
+  top: 28px; right: 20px;
+  transform: rotate(-8deg);
+  background: rgba(247,234,208,.94);
+  color: #b3202a;
+  border: 3px solid #b3202a;
+  outline: 1.5px solid #b3202a; outline-offset: -8px;
+  padding: 10px 18px 11px;
+  font-family: var(--font-sans);
+  font-size: 15px; font-weight: 800;
+  letter-spacing: .18em; text-transform: uppercase;
+  line-height: 1;
+  pointer-events: none;
+}
+@media (min-width: 900px){ .stamp{ font-size: 17px; top: 32px; right: 24px; } }
+.eyebrow{
+  margin: 0 0 16px;
+  font-size: 12px; line-height: 1.3; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .14em;
+  color: #e8b04b;
+}
+.hero-lockup h1{
+  margin: 0;
+  font-size: 40px; line-height: 1.02; font-weight: 800;
+  letter-spacing: -0.02em; color: #f7ead0;
+}
+@media (min-width: 640px){ .hero-lockup h1{ font-size: 56px; line-height: 1.0; } }
+@media (min-width: 1024px){ .hero-lockup h1{ font-size: 72px; line-height: 0.98; } }
+.hero-sub{
+  display: inline-block;
+  background: #e8b04b; color: #0d1520;
+  border: var(--border-panel);
+  box-shadow: 4px 4px 0 #0d1520;
+  padding: 8px 14px;
+  font-weight: 800; font-size: 18px;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin: 16px 0 0; line-height: 1.3;
+}
+@media (min-width: 900px){ .hero-sub{ font-size: 20px; } }
+.standfirst{
+  font-size: 17px; line-height: 1.55; font-weight: 400;
+  color: #f7ead0; max-width: 56ch; margin: 20px 0 0;
+}
+@media (min-width: 900px){
+  .hero{ grid-template-columns: 5fr 7fr; gap: 40px; align-items: center; }
+  .hero-lockup{ padding-block: 16px; }
+  .hero-art img{ aspect-ratio: 3 / 4; object-position: 50% 38%; height: 100%; }
+  .standfirst{ font-size: 19px; }
+}
+@media (min-width: 1200px){ .hero{ gap: 48px; } }
+.gate{
+  position: relative;
+  background: #f7ead0; color: #0d1520;
+  border: var(--border-panel);
+  box-shadow: var(--shadow-panel);
+  padding: 28px 20px 20px;
+  margin-top: 44px;
+}
+@media (min-width: 900px){ .gate{ margin-top: 52px; } }
+.gate-tab{
+  position: absolute; top: -15px; left: 16px;
+  background: #e8b04b; color: #0d1520;
+  border: var(--border-panel);
+  padding: 6px 12px;
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1;
+}
+.gate p{ margin: 0; font-size: 15px; line-height: 1.6; max-width: 72ch; }
+.gate p + p{ margin-top: 10px; }
+.stats{
+  background: #f3d9a4; color: #0d1520;
+  border: var(--border-panel);
+  box-shadow: var(--shadow-panel);
+  margin-top: 28px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+}
+.stat{ padding: 14px 16px; }
+.stat + .stat{ border-left: 2px solid #0d1520; }
+.stat:nth-child(3){ border-left: none; border-top: 2px solid #0d1520; }
+.stat:nth-child(4){ border-top: 2px solid #0d1520; }
+.stat:nth-child(5){ grid-column: 1 / -1; border-left: none; border-top: 2px solid #0d1520; }
+@media (min-width: 640px){
+  .stats{ grid-template-columns: repeat(3, 1fr); }
+  .stat:nth-child(3){ border-left: 2px solid #0d1520; border-top: none; }
+  .stat:nth-child(4){ border-left: none; border-top: 2px solid #0d1520; }
+  .stat:nth-child(5){ grid-column: auto; border-left: 2px solid #0d1520; border-top: 2px solid #0d1520; }
+}
+@media (min-width: 900px){
+  .stats{ grid-template-columns: 1fr 1fr 1fr 1fr 1.6fr; }
+  .stat:nth-child(3){ border-top: none; }
+  .stat:nth-child(4){ border-left: 2px solid #0d1520; border-top: none; }
+  .stat:nth-child(5){ border-top: none; }
+}
+.stat b{ display: block; font-size: 28px; font-weight: 800; line-height: 1.1; }
+@media (min-width: 640px){ .stat b{ font-size: 32px; } }
+.stat span{ display: block; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; line-height: 1.35; }
+.stat--tiers b{ font-family: var(--font-mono); font-size: 24px; letter-spacing: -.01em; }
+@media (min-width: 640px){ .stat--tiers b{ font-size: 24px; } }
+.tier{ margin-top: 56px; }
+@media (min-width: 900px){ .tier{ margin-top: 72px; } }
+.tier-head{ display: flex; align-items: flex-end; gap: 0; }
+.folder-tab{
+  background: #f3d9a4; color: #0d1520;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; line-height: 1;
+  padding: 8px 16px 7px;
+  border: var(--border-panel); border-bottom: none;
+}
+.tier-rule{ flex: 1; border-bottom: var(--border-panel); margin-bottom: 0; height: 0; }
+.tier h2{ margin: 20px 0 0; font-size: 28px; line-height: 1.15; font-weight: 800; color: #f7ead0; }
+@media (min-width: 900px){ .tier h2{ font-size: 36px; line-height: 1.1; } }
+.blurb{ margin: 10px 0 0; font-size: 16px; line-height: 1.6; max-width: 68ch; color: #f7ead0; }
+.tier-bar{ height: 6px; margin-top: 16px; }
+.tier[data-tier="foundation"] .tier-bar{ background: #e8b04b; }
+.tier[data-tier="hard"] .tier-bar{ background: #7e93a8; }
+.tier[data-tier="complex"] .tier-bar{ background: #5b83ad; }
+.cards{ display: grid; gap: 20px; margin-top: 24px; grid-template-columns: 1fr; }
+@media (min-width: 640px){ .cards{ grid-template-columns: repeat(2, 1fr); gap: 22px; } }
+@media (min-width: 1024px){ .cards{ grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+.card{
+  background: #f7ead0; color: #0d1520;
+  border: var(--border-panel);
+  box-shadow: var(--shadow-panel);
+  padding: 18px 18px 16px;
+  display: flex; flex-direction: column;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.card-top{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.card-num{
+  font-family: var(--font-mono); font-weight: 700; font-size: 22px; line-height: 1;
+  background: #16283f; color: #f7ead0;
+  padding: 7px 9px 6px;
+  border: 2px solid #0d1520;
+}
+.chip{
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 9px; border: 2px solid #0d1520; line-height: 1;
+}
+.chip--foundation{ background: #e8b04b; color: #0d1520; }
+.chip--hard{ background: #7e93a8; color: #0d1520; }
+.chip--complex{ background: #5b83ad; color: #0d1520; }
+.card h3{ margin: 0; font-size: 19px; line-height: 1.3; font-weight: 700; color: #0d1520; }
+.card-desc{ margin: 8px 0 0; flex: 1; font-size: 15px; line-height: 1.55; color: #0d1520; }
+.card-meta{ margin: 12px 0 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.4; font-weight: 700; color: #0d1520; }
+@media (hover: hover){
+  .card:hover{ transform: translate(-2px,-2px); box-shadow: var(--shadow-panel-hover); }
+}
+.card:active{ transform: translate(2px,2px); box-shadow: 2px 2px 0 #0d1520; }
+.card-links{
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 16px; padding-top: 14px;
+  border-top: 2px solid #0d1520;
+}
+.card-links a{
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 14px; font-weight: 700; line-height: 1.2;
+  text-decoration: none;
+  border: 2px solid #0d1520;
+}
+.link-primary{
+  background: #16283f; color: #f7ead0;
+  flex: 1 1 100%;
+}
+.link-primary:hover{ background: #1f3a5c; color: #f7ead0; }
+.link-primary:focus-visible{ outline: 3px solid #0d1520; outline-offset: 2px; box-shadow: 0 0 0 5px #e8b04b; }
+.link-secondary{
+  background: transparent; color: #0d1520;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px;
+  flex: 1 1 calc(50% - 4px);
+}
+.link-secondary:hover{ background: #e8b04b; color: #0d1520; }
+.link-secondary:focus-visible{ outline: 3px solid #0d1520; outline-offset: 3px; }
+footer{
+  margin-top: 72px; padding: 28px 0 48px;
+  border-top: 3px solid #f7ead0;
+  font-size: 14px; line-height: 1.6; color: #f7ead0;
+}
+footer p{ margin: 0; }
+footer p + p{ margin-top: 16px; }
+footer a{ color: #f3d9a4; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 48px; padding: 0 6px; margin: 0 -2px; vertical-align: baseline; }
+footer a:hover{ background: #e8b04b; color: #0d1520; text-decoration: none; }
+footer a:focus-visible{ outline: 3px solid #e8b04b; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce){
+  .card{ transition: none; }
+  .card:hover, .card:active{ transform: none; }
+  html{ scroll-behavior: auto; }
+}
 </style>
 </head>
 <body>
-<main>
-  <h1>The First 90 Days — Scenario Library</h1>
-  <p class="sub">Thirty-six role-playing scenarios of what the child welfare system puts a parent through — built from the published court record, composited so no real family is recognizable. Version 1.</p>
-  <div class="gate">Fictional composite stories — no real family's case · Prototype — pending attorney verification · General information, not legal advice. Content warning: these stories involve investigations, court hearings, and children being removed. Every scenario has a Quick Exit, and every comic edition has a <b>Watch Mode</b> — it plays itself with random choices, so a room can watch without anyone playing.</div>
-  <div class="stats">
-    <div class="stat"><b>36</b><span>scenarios</span></div>
-    <div class="stat"><b>1,048</b><span>scenes</span></div>
-    <div class="stat"><b>117</b><span>endings</span></div>
-    <div class="stat"><b>36</b><span>strategy guides</span></div>
-    <div class="stat"><b>7 / 13 / 16</b><span>Foundation / Hard / Complex</span></div>
-  </div>
-
-  <h2>Foundation — learn the moves</h2>
-  <p class="blurb">Start here. One pathway, one clock, one skill at a time — the folder, the letter, the phone call made before the deadline instead of after it.</p>
-  <a class="card" href="comic-5.html">
-    <h3>Scenario 5 — The Missed Appointment</h3>
-    <p>A bus transfer kills a drug-screen appointment — call ahead and document, or be recorded as a no-show.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-5.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-5.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-6.html">
-    <h3>Scenario 6 — The Folder</h3>
-    <p>A referral went to your old address — get your records, correct it in writing, and verify the fix downstream.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-6.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-6.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-7.html">
-    <h3>Scenario 7 — The School Note</h3>
-    <p>A truancy warning after a bus-route change and asthma appointments — answer in writing, with proof, by the date.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-7.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-7.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-8.html">
-    <h3>Scenario 8 — The First Visit</h3>
-    <p>Your child is already placed; visits are the case now — prepare for the hour, and write the day down the day it happens.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-8.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-8.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-9.html">
-    <h3>Scenario 9 — The Neighbor’s Couch</h3>
-    <p>A voluntary safety plan sends your son to a neighbor "for the weekend" — with no end date written. Get dates before the first night.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-9.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-9.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-10.html">
-    <h3>Scenario 10 — The Wrong Form</h3>
-    <p>Your housing referral is stalled because one form transposed two digits of your case ID — find it in your own copy and fix it in writing.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-10.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-10.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-11.html">
-    <h3>Scenario 11 — The Interpreter</h3>
-    <p>Meetings and forms arrive in English; you read Spanish at full speed — ask, in writing, for interpretation and translated papers.</p>
-    <p class="meta">18 scenes · 2 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-11.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-11.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-
-  <h2>Hard — when pressures collide</h2>
-  <p class="blurb">Two pressures at once: a job against a service plan, two counties, two systems, siblings in two homes. The record has to be built while life is happening.</p>
-  <a class="card" href="comic-1.html">
-    <h3>Scenario 1 — The Thursday Gap</h3>
-    <p>A report after a custody argument, a knock at the door, and an assessment that rates what she cannot see — the 72-hour clock scenario.</p>
-    <p class="meta">27 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-1.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-1.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-2.html">
-    <h3>Scenario 2 — The Indicated Letter</h3>
-    <p>An indicated report puts a preschool aide’s job on a 90-day clock — appeal it, prove it, or live with the letter.</p>
-    <p class="meta">24 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-2.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-2.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-4.html">
-    <h3>Scenario 4 — The Kinship Door</h3>
-    <p>A grandmother, a 28-year-old conviction, and the distance between the agency’s checklist and the court’s authority.</p>
-    <p class="meta">23 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-4.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-4.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-12.html">
-    <h3>Scenario 12 — Two Homes</h3>
-    <p>Siblings in two placements, two workers, two calendars — one written request that forces coordination onto the record.</p>
-    <p class="meta">25 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-12.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-12.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-13.html">
-    <h3>Scenario 13 — The Night Shift</h3>
-    <p>Every service is scheduled inside a night-shift mother's sleep — an employer letter and a written amendment request, or quit the job, with neither path free.</p>
-    <p class="meta">27 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-13.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-13.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-14.html">
-    <h3>Scenario 14 — The Waiting List</h3>
-    <p>The ordered treatment has a six-week waitlist — building the record that proves the delay belongs to the system, not to her.</p>
-    <p class="meta">25 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-14.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-14.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-15.html">
-    <h3>Scenario 15 — The Protective Parent</h3>
-    <p>A survivor is alleged to have 'failed to protect' while the other parent is the danger — separating her record from his, in writing, without graphic detail.</p>
-    <p class="meta">24 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-15.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-15.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-16.html">
-    <h3>Scenario 16 — The Second County</h3>
-    <p>A mid-case move for housing, a file that takes a month to cross the county line, and clocks that don't pause — carrying her own copies so the case doesn't restart from zero.</p>
-    <p class="meta">25 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-16.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-16.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-17.html">
-    <h3>Scenario 17 — The Empty Apartment</h3>
-    <p>Reunification is approved in principle — but the new apartment fails inspection on four fixable items, and a landlord's 30-day lease hold, not any statute, sets the clock for the paper trail that decides it.</p>
-    <p class="meta">30 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-17.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-17.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-18.html">
-    <h3>Scenario 18 — The Paternity Question</h3>
-    <p>A father notified late in his daughter's case has six weeks to show up on paper — while her mother documents the stability any change must protect.</p>
-    <p class="meta">32 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-18.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-18.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-19.html">
-    <h3>Scenario 19 — The Probation Crossover</h3>
-    <p>A parent juggling a dependency case and a separate probation office's reporting schedule learns the scenario's one skill: one calendar, written notice to both offices, and saved confirmations — before two 10 a.m. appointments collide.</p>
-    <p class="meta">31 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-19.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-19.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-20.html">
-    <h3>Scenario 20 — The Daycare Letter</h3>
-    <p>A daycare worker and mother in an open dependency case gets an indicated report from a relative's child's fall — and must run a 90-day CPSL appeal clock and a June dependency review on two separate records at once.</p>
-    <p class="meta">32 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-20.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-20.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-21.html">
-    <h3>Scenario 21 — The Relapse Report</h3>
-    <p>At month eight, one screen is reported positive during trial-home time — what the next 48 hours put on paper decides where Sam sleeps.</p>
-    <p class="meta">33 scenes · 3 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-21.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-21.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-
-  <h2>Complex — the full cases</h2>
-  <p class="blurb">Parallel tracks and parallel clocks. Endings open and close on what got written down months earlier. These are the full cases.</p>
-  <a class="card" href="comic-3.html">
-    <h3>Scenario 3 — Fifteen Months</h3>
-    <p>Month 13 of placement: services nearly complete, housing the last condition, and ASFA’s three exceptions in play.</p>
-    <p class="meta">25 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-3.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-3.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-22.html">
-    <h3>Scenario 22 — Fifteen Months, Twins</h3>
-    <p>At the ASFA fifteen-month date, twins whose readiness has split force a child-by-child fight over the record — one thriving toward home, one mid-treatment.</p>
-    <p class="meta">34 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-22.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-22.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-23.html">
-    <h3>Scenario 23 — The Hospital Hold</h3>
-    <p>A newborn is not discharged after a birth-day concern while her older sister is safe at their grandmother's — three tracks, two children, one first week of paper.</p>
-    <p class="meta">37 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-23.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-23.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-24.html">
-    <h3>Scenario 24 — The Appeal Record</h3>
-    <p>An appeal told in flashback: what was objected to, offered, and said below decides what can be argued above — while the case below never pauses.</p>
-    <p class="meta">36 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-24.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-24.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-25.html">
-    <h3>Scenario 25 — The Expert Split</h3>
-    <p>Two experts read one fracture two ways: building the complete medical record and care timeline — not charm — decides the hearing, while an indicated-report clock runs beside it.</p>
-    <p class="meta">34 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-25.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-25.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-26.html">
-    <h3>Scenario 26 — The Incarcerated Father</h3>
-    <p>A father learns of his children's case by mail from inside — every move he has is paper, while the mother's track and the 15-month clock run beside his.</p>
-    <p class="meta">36 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-26.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-26.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-27.html">
-    <h3>Scenario 27 — The Long Way Home</h3>
-    <p>A willing aunt in another state, a child in stranger foster care, and a placement that can die of silence between two filing systems.</p>
-    <p class="meta">35 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-27.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-27.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-28.html">
-    <h3>Scenario 28 — The Education File</h3>
-    <p>A placed child changes schools, his education file scatters across five hands, and one binder has to teach two systems to read the same child before June.</p>
-    <p class="meta">42 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-28.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-28.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-29.html">
-    <h3>Scenario 29 — The Teen Who Says No</h3>
-    <p>A 15-year-old refuses her placement and services in her own words; her mother learns what a parent can still put on the record when the plan's subject won't cooperate.</p>
-    <p class="meta">33 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-29.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-29.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-30.html">
-    <h3>Scenario 30 — The Third Removal</h3>
-    <p>A low-level new report lands on a family with two closed cases and a completed voluntary period; the parent learns to separate THEN from NOW in writing — before history is read as the present.</p>
-    <p class="meta">33 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-30.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-30.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-31.html">
-    <h3>Scenario 31 — The Confidential File</h3>
-    <p>A parent's records request returns a redacted stack with the scored assessment pages missing entirely — and the fight for the file becomes the case.</p>
-    <p class="meta">35 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-31.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-31.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-32.html">
-    <h3>Scenario 32 — The Assessment, Appealed</h3>
-    <p>In a pilot county, a parent works the full challenge to a scored assessment she has never seen — request, worksheet, rater question — and measures the win by what gets onto the record.</p>
-    <p class="meta">34 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-32.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-32.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-33.html">
-    <h3>Scenario 33 — The Two Petitions</h3>
-    <p>Eleven months in, the agency moves to change the goal while you are still finishing the plan — run Track A in the open while Track B is built, and make the two timelines meet on the record.</p>
-    <p class="meta">36 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-33.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-33.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-34.html">
-    <h3>Scenario 34 — The Missed Year</h3>
-    <p>Three caseworkers in twelve months lose a referral, a completion, and a season of visits — your own folder is the only continuous record in the case.</p>
-    <p class="meta">38 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-34.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-34.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-35.html">
-    <h3>Scenario 35 — The Hearing That Wasn't</h3>
-    <p>Month 9 of placement: hearings slide for reasonable reasons while the ASFA 15-month date (June 10, 2026) does not — a chronology-and-readiness scenario about making delay visible in the record.</p>
-    <p class="meta">36 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-35.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-35.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-<a class="card" href="comic-36.html">
-    <h3>Scenario 36 — The Whole Table</h3>
-    <p>CAPSTONE — composite endings, not single outcomes: three children diverge (two with their grandmother, the oldest across town) while a 90-day CPSL appeal clock and the ASFA 15-of-22 clock run at once; each ending is a composite state across all three children and all three clocks.</p>
-    <p class="meta">40 scenes · 4 endings</p>
-    <p class="links"><span>▶ Comic edition</span> · <a href="play-36.html" onclick="event.stopPropagation()">Plain edition</a> · <a href="strategy-36.md" onclick="event.stopPropagation()">Strategy guide</a></p>
-  </a>
-
+<a class="skip" href="#library">Skip to the scenario library</a>
+<div class="wrap">
+  <header>
+    <div class="hero">
+      <figure class="hero-art">
+        <!-- Performance note: the cover art is about 1.4 MB and is heavy for mobile. It is accepted for v1 because the cover is the page's argument. It loads as-is inside its reserved-ratio frame, so the page is fully laid out and readable before the image arrives. -->
+        <img src="art/cover-art.webp" width="1280" height="1920" alt="A mother seen from behind, hair in a bun and wearing an amber sweater, an envelope in her hand, facing her own front door. Through the door's frosted glass, a caseworker is visible only as a silhouette holding a clipboard. Warm lamplight below, deep navy darkness above." loading="eager" decoding="async">
+        <span class="stamp" aria-hidden="true">PROTOTYPE</span>
+      </figure>
+      <div class="hero-lockup">
+        <p class="eyebrow">TACTIC WATCH · SCENARIO LIBRARY · VERSION 1</p>
+        <h1>The First 90 Days</h1>
+        <p class="hero-sub">Scenario Library</p>
+        <p class="standfirst">Thirty-six role-playing scenarios of what the child welfare system puts a parent through — built from the published court record, composited so no real family is recognizable. Version 1.</p>
+      </div>
+    </div>
+    <div class="gate">
+      <span class="gate-tab">READ FIRST</span>
+      <p>Fictional composite stories — no real family's case. Prototype — pending attorney verification. General information, not legal advice.</p>
+      <p>Content warning: these stories involve investigations, court hearings, and children being removed.</p>
+      <p>Every scenario has a <strong>Quick Exit</strong>, and every comic edition has a <strong>Watch Mode</strong> — it plays itself with random choices, so a room can watch without anyone playing.</p>
+    </div>
+    <h2 class="vh">Library at a glance</h2>
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><b>36</b><span>scenarios</span></div>
+      <div class="stat" role="listitem"><b>1,048</b><span>scenes</span></div>
+      <div class="stat" role="listitem"><b>117</b><span>endings</span></div>
+      <div class="stat" role="listitem"><b>36</b><span>strategy guides</span></div>
+      <div class="stat stat--tiers" role="listitem"><b>7 / 13 / 16</b><span>Foundation / Hard / Complex</span></div>
+    </div>
+  </header>
+  <main id="library">
+    <section class="tier" data-tier="foundation" aria-labelledby="tier-foundation-h">
+      <div class="tier-head">
+        <span class="folder-tab">EXHIBIT A</span>
+        <span class="tier-rule" aria-hidden="true"></span>
+      </div>
+      <h2 id="tier-foundation-h">Foundation — learn the moves</h2>
+      <p class="blurb">Start here. One pathway, one clock, one skill at a time — the folder, the letter, the phone call made before the deadline instead of after it.</p>
+      <div class="tier-bar" aria-hidden="true"></div>
+      <div class="cards">
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">05</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 5 — The Missed Appointment</h3>
+        <p class="card-desc">A bus transfer kills a drug-screen appointment — call ahead and document, or be recorded as a no-show.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 5 editions">
+          <a class="link-primary" href="comic-5.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-5.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-5.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">06</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 6 — The Folder</h3>
+        <p class="card-desc">A referral went to your old address — get your records, correct it in writing, and verify the fix downstream.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 6 editions">
+          <a class="link-primary" href="comic-6.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-6.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-6.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">07</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 7 — The School Note</h3>
+        <p class="card-desc">A truancy warning after a bus-route change and asthma appointments — answer in writing, with proof, by the date.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 7 editions">
+          <a class="link-primary" href="comic-7.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-7.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-7.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">08</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 8 — The First Visit</h3>
+        <p class="card-desc">Your child is already placed; visits are the case now — prepare for the hour, and write the day down the day it happens.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 8 editions">
+          <a class="link-primary" href="comic-8.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-8.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-8.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">09</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 9 — The Neighbor’s Couch</h3>
+        <p class="card-desc">A voluntary safety plan sends your son to a neighbor "for the weekend" — with no end date written. Get dates before the first night.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 9 editions">
+          <a class="link-primary" href="comic-9.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-9.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-9.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">10</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 10 — The Wrong Form</h3>
+        <p class="card-desc">Your housing referral is stalled because one form transposed two digits of your case ID — find it in your own copy and fix it in writing.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 10 editions">
+          <a class="link-primary" href="comic-10.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-10.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-10.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="foundation">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">11</span>
+          <span class="chip chip--foundation">FOUNDATION</span>
+        </div>
+        <h3>Scenario 11 — The Interpreter</h3>
+        <p class="card-desc">Meetings and forms arrive in English; you read Spanish at full speed — ask, in writing, for interpretation and translated papers.</p>
+        <p class="card-meta">18 scenes · 2 endings</p>
+        <nav class="card-links" aria-label="Scenario 11 editions">
+          <a class="link-primary" href="comic-11.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-11.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-11.md">Strategy guide</a>
+        </nav>
+      </article>
+      </div>
+    </section>
+    <section class="tier" data-tier="hard" aria-labelledby="tier-hard-h">
+      <div class="tier-head">
+        <span class="folder-tab">EXHIBIT B</span>
+        <span class="tier-rule" aria-hidden="true"></span>
+      </div>
+      <h2 id="tier-hard-h">Hard — when pressures collide</h2>
+      <p class="blurb">Two pressures at once: a job against a service plan, two counties, two systems, siblings in two homes. The record has to be built while life is happening.</p>
+      <div class="tier-bar" aria-hidden="true"></div>
+      <div class="cards">
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">01</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 1 — The Thursday Gap</h3>
+        <p class="card-desc">A report after a custody argument, a knock at the door, and an assessment that rates what she cannot see — the 72-hour clock scenario.</p>
+        <p class="card-meta">27 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 1 editions">
+          <a class="link-primary" href="comic-1.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-1.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-1.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">02</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 2 — The Indicated Letter</h3>
+        <p class="card-desc">An indicated report puts a preschool aide’s job on a 90-day clock — appeal it, prove it, or live with the letter.</p>
+        <p class="card-meta">24 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 2 editions">
+          <a class="link-primary" href="comic-2.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-2.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-2.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">04</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 4 — The Kinship Door</h3>
+        <p class="card-desc">A grandmother, a 28-year-old conviction, and the distance between the agency’s checklist and the court’s authority.</p>
+        <p class="card-meta">23 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 4 editions">
+          <a class="link-primary" href="comic-4.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-4.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-4.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">12</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 12 — Two Homes</h3>
+        <p class="card-desc">Siblings in two placements, two workers, two calendars — one written request that forces coordination onto the record.</p>
+        <p class="card-meta">25 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 12 editions">
+          <a class="link-primary" href="comic-12.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-12.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-12.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">13</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 13 — The Night Shift</h3>
+        <p class="card-desc">Every service is scheduled inside a night-shift mother's sleep — an employer letter and a written amendment request, or quit the job, with neither path free.</p>
+        <p class="card-meta">27 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 13 editions">
+          <a class="link-primary" href="comic-13.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-13.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-13.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">14</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 14 — The Waiting List</h3>
+        <p class="card-desc">The ordered treatment has a six-week waitlist — building the record that proves the delay belongs to the system, not to her.</p>
+        <p class="card-meta">25 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 14 editions">
+          <a class="link-primary" href="comic-14.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-14.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-14.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">15</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 15 — The Protective Parent</h3>
+        <p class="card-desc">A survivor is alleged to have 'failed to protect' while the other parent is the danger — separating her record from his, in writing, without graphic detail.</p>
+        <p class="card-meta">24 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 15 editions">
+          <a class="link-primary" href="comic-15.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-15.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-15.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">16</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 16 — The Second County</h3>
+        <p class="card-desc">A mid-case move for housing, a file that takes a month to cross the county line, and clocks that don't pause — carrying her own copies so the case doesn't restart from zero.</p>
+        <p class="card-meta">25 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 16 editions">
+          <a class="link-primary" href="comic-16.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-16.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-16.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">17</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 17 — The Empty Apartment</h3>
+        <p class="card-desc">Reunification is approved in principle — but the new apartment fails inspection on four fixable items, and a landlord's 30-day lease hold, not any statute, sets the clock for the paper trail that decides it.</p>
+        <p class="card-meta">30 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 17 editions">
+          <a class="link-primary" href="comic-17.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-17.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-17.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">18</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 18 — The Paternity Question</h3>
+        <p class="card-desc">A father notified late in his daughter's case has six weeks to show up on paper — while her mother documents the stability any change must protect.</p>
+        <p class="card-meta">32 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 18 editions">
+          <a class="link-primary" href="comic-18.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-18.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-18.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">19</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 19 — The Probation Crossover</h3>
+        <p class="card-desc">A parent juggling a dependency case and a separate probation office's reporting schedule learns the scenario's one skill: one calendar, written notice to both offices, and saved confirmations — before two 10 a.m. appointments collide.</p>
+        <p class="card-meta">31 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 19 editions">
+          <a class="link-primary" href="comic-19.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-19.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-19.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">20</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 20 — The Daycare Letter</h3>
+        <p class="card-desc">A daycare worker and mother in an open dependency case gets an indicated report from a relative's child's fall — and must run a 90-day CPSL appeal clock and a June dependency review on two separate records at once.</p>
+        <p class="card-meta">32 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 20 editions">
+          <a class="link-primary" href="comic-20.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-20.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-20.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="hard">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">21</span>
+          <span class="chip chip--hard">HARD</span>
+        </div>
+        <h3>Scenario 21 — The Relapse Report</h3>
+        <p class="card-desc">At month eight, one screen is reported positive during trial-home time — what the next 48 hours put on paper decides where Sam sleeps.</p>
+        <p class="card-meta">33 scenes · 3 endings</p>
+        <nav class="card-links" aria-label="Scenario 21 editions">
+          <a class="link-primary" href="comic-21.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-21.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-21.md">Strategy guide</a>
+        </nav>
+      </article>
+      </div>
+    </section>
+    <section class="tier" data-tier="complex" aria-labelledby="tier-complex-h">
+      <div class="tier-head">
+        <span class="folder-tab">EXHIBIT C</span>
+        <span class="tier-rule" aria-hidden="true"></span>
+      </div>
+      <h2 id="tier-complex-h">Complex — the full cases</h2>
+      <p class="blurb">Parallel tracks and parallel clocks. Endings open and close on what got written down months earlier. These are the full cases.</p>
+      <div class="tier-bar" aria-hidden="true"></div>
+      <div class="cards">
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">03</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 3 — Fifteen Months</h3>
+        <p class="card-desc">Month 13 of placement: services nearly complete, housing the last condition, and ASFA’s three exceptions in play.</p>
+        <p class="card-meta">25 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 3 editions">
+          <a class="link-primary" href="comic-3.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-3.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-3.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">22</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 22 — Fifteen Months, Twins</h3>
+        <p class="card-desc">At the ASFA fifteen-month date, twins whose readiness has split force a child-by-child fight over the record — one thriving toward home, one mid-treatment.</p>
+        <p class="card-meta">34 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 22 editions">
+          <a class="link-primary" href="comic-22.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-22.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-22.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">23</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 23 — The Hospital Hold</h3>
+        <p class="card-desc">A newborn is not discharged after a birth-day concern while her older sister is safe at their grandmother's — three tracks, two children, one first week of paper.</p>
+        <p class="card-meta">37 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 23 editions">
+          <a class="link-primary" href="comic-23.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-23.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-23.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">24</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 24 — The Appeal Record</h3>
+        <p class="card-desc">An appeal told in flashback: what was objected to, offered, and said below decides what can be argued above — while the case below never pauses.</p>
+        <p class="card-meta">36 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 24 editions">
+          <a class="link-primary" href="comic-24.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-24.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-24.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">25</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 25 — The Expert Split</h3>
+        <p class="card-desc">Two experts read one fracture two ways: building the complete medical record and care timeline — not charm — decides the hearing, while an indicated-report clock runs beside it.</p>
+        <p class="card-meta">34 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 25 editions">
+          <a class="link-primary" href="comic-25.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-25.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-25.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">26</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 26 — The Incarcerated Father</h3>
+        <p class="card-desc">A father learns of his children's case by mail from inside — every move he has is paper, while the mother's track and the 15-month clock run beside his.</p>
+        <p class="card-meta">36 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 26 editions">
+          <a class="link-primary" href="comic-26.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-26.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-26.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">27</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 27 — The Long Way Home</h3>
+        <p class="card-desc">A willing aunt in another state, a child in stranger foster care, and a placement that can die of silence between two filing systems.</p>
+        <p class="card-meta">35 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 27 editions">
+          <a class="link-primary" href="comic-27.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-27.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-27.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">28</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 28 — The Education File</h3>
+        <p class="card-desc">A placed child changes schools, his education file scatters across five hands, and one binder has to teach two systems to read the same child before June.</p>
+        <p class="card-meta">42 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 28 editions">
+          <a class="link-primary" href="comic-28.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-28.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-28.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">29</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 29 — The Teen Who Says No</h3>
+        <p class="card-desc">A 15-year-old refuses her placement and services in her own words; her mother learns what a parent can still put on the record when the plan's subject won't cooperate.</p>
+        <p class="card-meta">33 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 29 editions">
+          <a class="link-primary" href="comic-29.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-29.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-29.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">30</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 30 — The Third Removal</h3>
+        <p class="card-desc">A low-level new report lands on a family with two closed cases and a completed voluntary period; the parent learns to separate THEN from NOW in writing — before history is read as the present.</p>
+        <p class="card-meta">33 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 30 editions">
+          <a class="link-primary" href="comic-30.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-30.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-30.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">31</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 31 — The Confidential File</h3>
+        <p class="card-desc">A parent's records request returns a redacted stack with the scored assessment pages missing entirely — and the fight for the file becomes the case.</p>
+        <p class="card-meta">35 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 31 editions">
+          <a class="link-primary" href="comic-31.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-31.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-31.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">32</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 32 — The Assessment, Appealed</h3>
+        <p class="card-desc">In a pilot county, a parent works the full challenge to a scored assessment she has never seen — request, worksheet, rater question — and measures the win by what gets onto the record.</p>
+        <p class="card-meta">34 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 32 editions">
+          <a class="link-primary" href="comic-32.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-32.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-32.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">33</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 33 — The Two Petitions</h3>
+        <p class="card-desc">Eleven months in, the agency moves to change the goal while you are still finishing the plan — run Track A in the open while Track B is built, and make the two timelines meet on the record.</p>
+        <p class="card-meta">36 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 33 editions">
+          <a class="link-primary" href="comic-33.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-33.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-33.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">34</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 34 — The Missed Year</h3>
+        <p class="card-desc">Three caseworkers in twelve months lose a referral, a completion, and a season of visits — your own folder is the only continuous record in the case.</p>
+        <p class="card-meta">38 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 34 editions">
+          <a class="link-primary" href="comic-34.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-34.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-34.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">35</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 35 — The Hearing That Wasn't</h3>
+        <p class="card-desc">Month 9 of placement: hearings slide for reasonable reasons while the ASFA 15-month date (June 10, 2026) does not — a chronology-and-readiness scenario about making delay visible in the record.</p>
+        <p class="card-meta">36 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 35 editions">
+          <a class="link-primary" href="comic-35.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-35.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-35.md">Strategy guide</a>
+        </nav>
+      </article>
+      <article class="card" data-tier="complex">
+        <div class="card-top">
+          <span class="card-num" aria-hidden="true">36</span>
+          <span class="chip chip--complex">COMPLEX</span>
+        </div>
+        <h3>Scenario 36 — The Whole Table</h3>
+        <p class="card-desc">CAPSTONE — composite endings, not single outcomes: three children diverge (two with their grandmother, the oldest across town) while a 90-day CPSL appeal clock and the ASFA 15-of-22 clock run at once; each ending is a composite state across all three children and all three clocks.</p>
+        <p class="card-meta">40 scenes · 4 endings</p>
+        <nav class="card-links" aria-label="Scenario 36 editions">
+          <a class="link-primary" href="comic-36.html">▶ Comic edition</a>
+          <a class="link-secondary" href="play-36.html">Plain edition</a>
+          <a class="link-secondary" href="strategy-36.md">Strategy guide</a>
+        </nav>
+      </article>
+      </div>
+    </section>
+  </main>
   <footer>
-    Two editions of every scenario: the <b>comic edition</b> (graphic-novel skin, synthesized sound off by default, Watch Mode) and the <b>plain edition</b> (lightweight, same story and law). Every deadline in these stories is real law, cited in each scenario's debrief; every strategy guide's route was walked through the scenario's choice graph before it was published here.<br><br>
-    Design &amp; sources: <a href="design.md">game design</a> · <a href="visual-bible.md">visual bible</a> · <a href="audio-bible.md">audio bible</a> · <a href="sources-and-alterations.md">sources for Scenarios 1–4</a> · batch source files (sources-batch-A…E.md) sit alongside the scenarios in this folder.
+    <p>Two editions of every scenario: the <b>comic edition</b> (graphic-novel skin, synthesized sound off by default, Watch Mode) and the <b>plain edition</b> (lightweight, same story and law). Every deadline in these stories is real law, cited in each scenario's debrief; every strategy guide's route was walked through the scenario's choice graph before it was published here.</p>
+    <p>Design &amp; sources: <a href="design.md">game design</a> · <a href="visual-bible.md">visual bible</a> · <a href="audio-bible.md">audio bible</a> · <a href="sources-and-alterations.md">sources for Scenarios 1–4</a> · batch source files (sources-batch-A…E.md) sit alongside the scenarios in this folder.</p>
   </footer>
-</main>
+</div>
 </body>
 </html>
