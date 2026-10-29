@@ -1,6 +1,6 @@
 # THE FIRST 90 DAYS — VISUAL BIBLE
 ### The comic-book / graphic-novel design system for the Tactic Watch simulation
-*Version 1 — 2026-10-28. Companion build: `play-comic.html` (Scenario 1 reskin). Key art: `art/cover-art.webp`, `art/interior-sample.webp`. Everything in this system must be producible inside a zero-asset single HTML file — inline SVG and CSS only, no images, no webfonts, no network.*
+*Version 2 — 2026-10-29 (Version 1 — 2026-10-28). Companion build: `play-comic.html` (Scenario 1 reskin). Version 2 assets: `v2-kit.html` (new plates, figures, and overlays, as an insertable defs fragment); integration contract: `v2-design-spec.md`. Key art: `art/cover-art.webp`, `art/interior-sample.webp`. Everything in this system must be producible inside a zero-asset single HTML file — inline SVG and CSS only, no images, no webfonts, no network.*
 
 ---
 
@@ -110,7 +110,7 @@ The start screen evokes the cover composition in pure SVG: navy field deepening 
 
 ## 5. Cast — reusable figures
 
-Ten figures, one design language: flat silhouette bodies in `currentColor` (tintable per plate), heads as simple circles with one hair/hat distinction each, **exactly one prop per figure**, drawn as `<symbol>`s (`fig-*`) in a hidden SVG defs block and instanced with `<use>`. Figures are read at postcard size; they are *roles*, not people.
+Sixteen figures (ten in v1, six added in v2), one design language: flat silhouette bodies in `currentColor` (tintable per plate), heads as simple circles with one hair/hat distinction each, **exactly one prop per figure**, drawn as `<symbol>`s (`fig-*`) in a hidden SVG defs block and instanced with `<use>`. Figures are read at postcard size; they are *roles*, not people.
 
 | Figure | Symbol | Silhouette key | Prop |
 |---|---|---|---|
@@ -124,12 +124,18 @@ Ten figures, one design language: flat silhouette bodies in `currentColor` (tint
 | Father | `fig-father` | Cap, broad shoulders | Paper letter |
 | Officer | `fig-officer` | Cap with brim, uniform body | Badge (paper dot) |
 | Doctor | `fig-doctor` | Coat line, plain head | Stethoscope (paper stroke) |
+| Caseworker 2 *(v2)* | `fig-caseworker2` | Bob hair with side mass, narrow body | Shoulder bag (paper, on a strap line) |
+| Mother 2 *(v2)* | `fig-mother2` | Long hair mass past the shoulders, wider skirt line | Tote bag (paper) |
+| Kin caregiver *(v2)* | `fig-kin` | Glasses (paper-stroke circles + bridge, a worn distinction like the doctor's stethoscope), cardigan V line | Framed photo (paper) |
+| Supervisor *(v2)* | `fig-supervisor` | Flat short hair, wide blazer with lapel lines | Coffee cup (paper) |
+| Toddler *(v2)* | `fig-toddler` | ~102-unit internal height (child ≈147, adults ≈200+), head proportion larger | Stuffed toy (paper blob with ear circles) |
+| Older child *(v2)* | `fig-child2` | ~191-unit internal height, slimmer than `fig-child` | Book held at chest (paper) |
 
 Casting rule: a plate uses **at most two figures**. Crowds are rendered as architecture (rows of chairs, a bench, a wall of mailboxes) — the system's scale is shown by its rooms, not by multiplying people.
 
 ## 6. Plates — reusable location scenes
 
-Ten plates (`plate-*` symbols, 400×225 viewBox), each a flat duotone composition of 10–16 shapes over the warm or cold gradient, with the halftone pattern overlaid at low opacity:
+Seventeen plates (ten in v1, seven added in v2; `plate-*` symbols, 400×225 viewBox), each a flat duotone composition of 10–16 shapes over the warm or cold gradient, with the halftone pattern overlaid at low opacity:
 
 | Plate | Temp. | Composition (anchor elements) | Typical figures |
 |---|---|---|---|
@@ -143,6 +149,13 @@ Ten plates (`plate-*` symbols, 400×225 viewBox), each a flat duotone compositio
 | Apartment Exterior | Cold dusk | Facade grid, lit windows, porch light | — (place alone) |
 | Mail Room | Cold-neutral | Wall of mailbox doors, one open with an envelope | Mother |
 | Records Desk | Cold | Counter, folder stacks, shelved files | Caseworker |
+| Waiting Room *(v2)* | Cold | Rows of bolted chairs, ticket/counter window, ink wall clock (never red — the Red Law), fluorescent bars | Supervisor (behind the counter), Mother |
+| Courthouse Steps *(v2)* | Cold, exterior | Facade and columns above, wide steps descending toward the viewer, one warm accent: the lit doorway | Mother and Attorney, small at the foot of the steps |
+| School Office *(v2)* | Mixed | Desk with a blank nameplate block, filing cabinets (cold), small flag, chairs against the wall; warm room | Mother, Child (plain, beside her at the desk) |
+| Workplace *(v2)* | Cold-neutral | Tall racking/shelving grids, pallet stacks, high window band, wall time-clock block (ink dial, blank) | Mother 2 (tote reads as a work bag; no costume props) |
+| Bus Stop *(v2)* | Cold dusk | Sign pole with a blank round sign, shelter frame and bench, street band, apartment silhouettes with lit windows; one warm element: streetlamp glow | — (place alone) |
+| Laundromat *(v2)* | Warm-neutral | Row of round-front washer doors (circles in rects), folding counter, laundry basket block, folded stacks | Mother (child option deliberately not used — the row is the subject) |
+| Program Room *(v2)* | Warm-neutral | Ring of chairs suggested by backs at the edges, blank flip-chart easel, low table | Kin, Mother |
 
 ### 6.1 Selection convention (v1: no data changes)
 The engine chooses a node's plate from its **kicker + title** text, lowercased, against an ordered keyword table — **first match wins**, so order is part of the design:
@@ -163,10 +176,25 @@ The engine chooses a node's plate from its **kicker + title** text, lowercased, 
 
 Ordering notes, so future editors don't "fix" them: Courtroom outranks Kitchen so *Home After a Hearing* still plates as the courtroom that decided it; Agency Office outranks Apartment Exterior so *She Steps Outside to Call Her Supervisor* plates as the system, not the street; Doorway's `the visit` is deliberately narrow so the *supervised* visit (rule 4) is not stolen by home-visit nodes.
 
+**Version 2 additions (2026-10-29).** Seven rules are inserted into the table above; the relative order of the ten v1 rules is unchanged. In final position order: **Waiting Room** (`waiting room|lobby`, #2 — before Courtroom; never bare `waiting`, which is metaphorical in five existing titles), **Courthouse Steps** (`courthouse steps|courthouse|on the steps|outside court|leaving court|after court`, #3 — immediately before Courtroom; never bare `steps`, which is a *verb* in *She Steps Outside to Call Her Supervisor*), **Program** (`parenting|program|support group`, #7 — before School, so a parenting class is not stolen by School's bare `class`), **School Office** (`school office|principal|guidance office|school counselor`, #8 — immediately before School), **Workplace** (`warehouse|factory|night shift|shift work|employer|paycheck`, #10 — never bare `work`), **Bus Stop** (`bus stop|\btransit\b|\bbus\b`, #11 — the boundaries keep it out of *business* and *transition*, both attested traps), **Laundromat** (`laundromat|laundry|\bwash\b`, #12). The exact final array, the per-keyword false-positive audit, and the QA protocol are in `v2-design-spec.md` §1 and §4, which govern in case of any difference from this summary. Audited over all 1,048 nodes in the 36 scenarios, the v2 rules re-plate exactly **8** nodes (5 to Bus Stop, 2 to Waiting Room, 1 to Program — all eight from Kitchen in v1; two of the eight are flagged as questionable in the spec: *The Bus-Fare Ledger* and *Paper From the Program*); Courthouse Steps, School Office, Workplace, and Laundromat match zero existing titles and are purely additive.
+
 **Scenario 1 audit** (all 27 nodes, machine-checked against the shipped table): 26 of 27 plate as intended — knock/removal → Doorway (and the `knock` cue), interviews/decision/check-in/service plan/review → Agency Office, hearing → Courtroom, records beats → Records Desk, supervised visit → Visit Room, evenings/home beats/endings → Kitchen. The one miss is documented, not hidden: **"Not Yet"** (the post-hearing ruling node) contains no keyword and falls back to Kitchen. The convention accepts this rather than growing a one-word rule for a single node title; if the node is ever retitled, the table will catch it.
 
 ### 6.2 What plates are not
 Plates are *establishing shots*, not illustrations of the node's action. A plate never depicts the moment of removal, an injury, an argument, or any child's distress. The hardest panels in this game are a door, a table, an empty chair.
+
+### 6.3 Variants — time and weather overlays (v2)
+
+A plate may carry **one** time/weather overlay: a `400×225` symbol instanced *after* the plate `<use>` in the same SVG. An overlay tints a scene; it never re-lights it, carries no information, and never appears on the cover or outside a plate.
+
+| Overlay | Symbol | Rendering |
+|---|---|---|
+| Dawn | `ov-dawn` | Warm glow: a cream/amber radial glow (`gradDawn`) low-left + a soft glow ellipse |
+| Dusk | `ov-dusk` | Deepening wash: navy at low opacity + the halftone at .18 (plate standard is .13 warm / .15 cold) |
+| Night | `ov-night` | Navy wash at ~.30 + a small crescent moon (two circles) top-right |
+| Rain | `ov-rain` | A darker wash + the `rain` pattern (short diagonal ink lines) at low opacity |
+
+**Trigger convention** (selection is from the same kicker + title text as the plate; first match wins in the order rain → night → dusk → dawn; exact regexes and code are in `v2-design-spec.md` §2): rain words (`rain`, `storm`, `downpour`) fire **only on the exterior family** — Apartment Exterior, Courthouse Steps, Bus Stop, School, Doorway — because rain is an outdoor fact and the other twelve plates are interiors. The general night/dusk words (`night`, `tonight`, `overnight`, `evening`) are likewise exterior-only, because in these titles they are usually relative words (*The Night Before…* is a lit kitchen table, not a night exterior); the unambiguous hour/light words (`midnight`; `dusk`, `sunset`, `twilight`) and the dawn set (`dawn`, `sunrise`, `first light`, `daybreak`, `early morning` — never bare `morning`) may fire on any plate. Audited over the existing library, the convention changes exactly one existing node: *Track A, Night Class* (S33) gains a night overlay on its School (exterior) plate.
 
 ## 7. Lettering & type
 
@@ -208,6 +236,7 @@ Watch Mode (the game playing itself with random choices) is a *presentation* of 
 - Contrast: every text pairing meets WCAG AA; the main pairings meet AAA (table in §3).
 - **No information by color alone:** THE CLOCK is a labeled box, not a red glow; the stamp reads RATED in letters; the deadline is a sentence, not a hue; tier accents never carry meaning.
 - `prefers-reduced-motion`: stamp slam → fade; choice hover lift → none; no other animation exists to disable.
+- **Scene transition (v2 motion spec):** on a scene change, the plate and its caption box — and nothing else — enter with a fade + 8px rise over ~280 ms, ease-out, once. This transition exists **only** under `@media (prefers-reduced-motion: no-preference)`; under `reduce` there is no transition at all. The HUD, THE CLOCK, and the case-file panel never transition (the clock appears and *stays*, §4.5; the stamp keeps its own law, §4.7). Exact CSS is in `v2-design-spec.md` §3, item C5.
 - Plates are `role="img"` with a text label ("Scene: courtroom") — decorative to the story, available to a screen reader, never the sole carrier of plot.
 - Tap targets ≥ 56px (choices), ≥ 48px (controls) — inherited from the base engine and preserved in the reskin.
 - Focus states: 3px amber outline on navy, 3px ink outline on paper — visible on both fields.
@@ -216,9 +245,11 @@ Watch Mode (the game playing itself with random choices) is a *presentation* of 
 
 Version 1 is **36 scenarios**. At Scenario 1's density (27 nodes), the full library is roughly **900–1,000 nodes**, each of which would need its own painted panel in a fully illustrated edition — 900+ commissions, with consistency of faces, rooms, and palette across all of them, before a single line of dialogue ships. That is the *illustrated edition*: a real and worthwhile future artifact, and the two key-art plates exist precisely to anchor its style when funding and time allow.
 
-The kit inverts the cost: **10 plates + 10 figures + 1 grammar** cover all 36 scenarios, because the stories reuse the same *rooms* the system itself reuses — the same doorway, the same office, the same courtroom, county after county. That reuse is not only economical; it is the point. The system's sameness is part of what the game is about. New scenarios inherit the full visual identity the day their data file lands, at zero art cost, and the keyword convention means they need no visual authoring at all.
+The kit inverts the cost: **10 plates + 10 figures + 1 grammar** in v1 (**17 plates + 16 figures + 4 overlays** in v2) cover all 36 scenarios, because the stories reuse the same *rooms* the system itself reuses — the same doorway, the same office, the same courtroom, county after county. That reuse is not only economical; it is the point. The system's sameness is part of what the game is about. New scenarios inherit the full visual identity the day their data file lands, at zero art cost, and the keyword convention means they need no visual authoring at all.
 
 Expansion path, in order: (1) more plates for locations the library grows into (prison visiting room, treatment facility, school office); (2) figure variants (a second caseworker, a second mother — the system and the families both deserve more than one face); (3) the illustrated edition, scenario by scenario, starting with Scenario 1, reusing this bible's palette, grammar, and red law unchanged.
+
+**Progress on that path (v2, 2026-10-29): steps (1) and (2) have partially landed.** For (1): the school office plate is built, along with six further plates the library's titles called for (waiting room, courthouse steps, workplace, bus stop, laundromat, program room) — prison visiting room and treatment facility remain outstanding, and are now the head of step (1). For (2): the second caseworker and second mother are built, along with kin, supervisor, toddler, and older-child figures. The v2 assets ship as `v2-kit.html` with the integration contract in `v2-design-spec.md`; step (3), the illustrated edition, is untouched.
 
 ## 12. Build rules (non-negotiable for anyone reskinning)
 

@@ -39,11 +39,12 @@
   main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
   h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
   h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  #app h2{font-size:1.65rem;line-height:1.18;letter-spacing:-.01em;margin:0 0 10px;}
   .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
   .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
     color:var(--navy);margin:0 0 6px;}
   .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
-    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);margin:0 0 7px;}
   .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
     padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
   .disclaimer{font-weight:700;}
@@ -72,15 +73,15 @@
     padding:3px 9px;font-size:.8rem;white-space:nowrap;}
   /* ---------- Hero plate ---------- */
   .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
-    background:var(--navy);margin:0 0 16px;line-height:0;}
+    background:var(--ink);margin:0 0 10px;line-height:0;}
   .plate svg{display:block;width:100%;height:auto;}
   .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
     background:var(--navy);margin:0 0 18px;line-height:0;}
   .cover svg{display:block;width:100%;height:auto;}
   /* ---------- Caption box narration ---------- */
-  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
-    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
-  .captionbox p{margin:0 0 10px;}
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);line-height:1.62;
+    padding:16px 18px 8px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 11px;}
   .captionbox p:first-child{font-style:italic;}
   /* ---------- Choices as panel-option rows ---------- */
   .choices{counter-reset:choice;}
@@ -95,11 +96,11 @@
     font-style:italic;margin:12px 0 4px;}
   /* ---------- The case file ---------- */
   .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
-    padding:14px 16px;margin:26px 0 16px;
+    padding:14px 16px;margin:30px 0 16px;
     background:linear-gradient(var(--cream),var(--paper));}
-  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+  .panel::before{content:"CASE FILE";position:absolute;top:-27px;left:-2.5px;
     background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
-    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+    padding:4px 14px 3px;font-size:.78rem;font-weight:800;letter-spacing:.22em;}
   .panel.revealed{border-style:solid;}
   .panel h3{margin:0 0 6px;font-size:1.05rem;}
   .panel ul{margin:8px 0 4px;padding-left:22px;}
@@ -132,6 +133,10 @@
   #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
   #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
     cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: no-preference){
+    .plate, .captionbox{animation:sceneIn .28s ease-out;}
+    @keyframes sceneIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  }
   @media (prefers-reduced-motion: reduce){
     .stamp{animation:none;transition:opacity .3s ease;}
     .btn:active{transform:none;}
@@ -410,6 +415,312 @@
   <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
   <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
   <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- ============================================================================
+  THE FIRST 90 DAYS — COMIC KIT v2 (fragment)
+  Paste ALL of this INSIDE the existing <defs> block in play-comic.html,
+  after the v1 plates and before </defs>. Order inside this fragment matters:
+  gradients/patterns first, then figures, then plates, then overlays.
+  v1 idiom preserved: viewBox 0 0 120 240 figures / 0 0 400 225 plates,
+  body fill = currentColor, ONE held prop per figure in paper #f7ead0 with
+  ink #0d1520 stroke 2-4, every plate ends with the halftone overlay rect.
+  No text in any art. No faces. At most 2 figures per plate.
+  ============================================================================ -->
+
+<!-- ===== v2 gradients & patterns ===== -->
+<radialGradient id="gradDawn" cx="0.18" cy="0.95" r="0.95">
+  <stop offset="0" stop-color="#f7ead0" stop-opacity=".6"/>
+  <stop offset=".45" stop-color="#e8b04b" stop-opacity=".28"/>
+  <stop offset="1" stop-color="#e8b04b" stop-opacity="0"/>
+</radialGradient>
+<pattern id="rain" width="14" height="14" patternUnits="userSpaceOnUse">
+  <line x1="3" y1="-2" x2="7" y2="10" stroke="#0d1520" stroke-width="2"/>
+</pattern>
+
+<!-- ===== Cast v2 (viewBox 0 0 120 240; body = currentColor; one paper prop) ===== -->
+<!-- fig-caseworker2: bob hair with side mass (not hair-back), narrow body.
+     Prop: shoulder bag — paper rect on an ink strap line. -->
+<symbol id="fig-caseworker2" viewBox="0 0 120 240">
+  <rect x="42" y="30" width="7" height="26"/><rect x="71" y="30" width="7" height="26"/>
+  <path d="M43 44 A17 17 0 0 1 77 44 L77 50 L43 50 Z"/>
+  <circle cx="60" cy="44" r="14"/>
+  <path d="M38 68 L82 68 L86 156 L34 156 Z"/>
+  <rect x="40" y="156" width="14" height="76"/><rect x="66" y="156" width="14" height="76"/>
+  <line x1="76" y1="72" x2="92" y2="118" stroke="#0d1520" stroke-width="3"/>
+  <rect x="84" y="116" width="28" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-mother2: long hair mass past the shoulders (not a bun), wider skirt line.
+     Prop: tote bag — paper rect with an ink handle arc. -->
+<symbol id="fig-mother2" viewBox="0 0 120 240">
+  <path d="M38 30 Q60 12 82 30 L86 112 L34 112 Z"/>
+  <circle cx="60" cy="38" r="14"/>
+  <path d="M36 66 Q60 56 84 66 L94 156 L26 156 Z"/>
+  <rect x="39" y="156" width="14" height="76"/><rect x="67" y="156" width="14" height="76"/>
+  <path d="M90 112 Q99 100 108 112" fill="none" stroke="#0d1520" stroke-width="3"/>
+  <rect x="86" y="112" width="27" height="32" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-kin: glasses = two paper-stroke circles + bridge (silhouette distinction,
+     as the doctor's paper-stroke stethoscope in v1); cardigan V in paper stroke
+     (clothing, as the attorney's paper tie in v1). Prop: framed photo. -->
+<symbol id="fig-kin" viewBox="0 0 120 240">
+  <path d="M44 32 A16 14 0 0 1 76 32 L76 38 L44 38 Z"/>
+  <circle cx="60" cy="42" r="13"/>
+  <circle cx="52" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <circle cx="68" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <line x1="58" y1="42" x2="62" y2="42" stroke="#f7ead0" stroke-width="2.5"/>
+  <path d="M34 64 Q60 54 86 64 L92 154 L28 154 Z"/>
+  <path d="M50 66 L60 96 L70 66" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="40" y="154" width="14" height="78"/><rect x="66" y="154" width="14" height="78"/>
+  <rect x="88" y="98" width="24" height="30" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="94" y="104" width="12" height="12" fill="none" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-supervisor: flat short hair, wide blazer with paper lapel lines.
+     Prop: coffee cup — small paper rect with a lid line. -->
+<symbol id="fig-supervisor" viewBox="0 0 120 240">
+  <rect x="44" y="20" width="32" height="9"/>
+  <circle cx="60" cy="40" r="14"/>
+  <path d="M31 60 L89 60 L93 154 L27 154 Z"/>
+  <path d="M51 62 L60 92 L69 62" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="38" y="154" width="15" height="78"/><rect x="67" y="154" width="15" height="78"/>
+  <rect x="89" y="100" width="17" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="87" y="95" width="21" height="6" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-toddler: internal height ~102 units (child = ~147, adult = ~200+);
+     head proportion deliberately larger. Prop: stuffed toy — paper blob + ears.
+     Cast only in v2 plates: never placed in a plate in this kit. -->
+<symbol id="fig-toddler" viewBox="0 0 120 240">
+  <circle cx="58" cy="146" r="15"/>
+  <path d="M42 168 L74 168 L78 204 L38 204 Z"/>
+  <rect x="44" y="204" width="11" height="28"/><rect x="62" y="204" width="11" height="28"/>
+  <circle cx="86" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="100" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="93" cy="170" r="11" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-child2: older child — internal height ~191 units, slimmer than fig-child.
+     Prop: book held at chest — paper rect with an ink centre line. -->
+<symbol id="fig-child2" viewBox="0 0 120 240">
+  <path d="M46 52 A14 12 0 0 1 74 52 L74 56 L46 56 Z"/>
+  <circle cx="60" cy="56" r="13"/>
+  <path d="M45 76 L75 76 L78 172 L42 172 Z"/>
+  <rect x="46" y="172" width="11" height="60"/><rect x="63" y="172" width="11" height="60"/>
+  <rect x="43" y="102" width="34" height="25" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="60" y1="102" x2="60" y2="127" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+
+<!-- ===== Plates v2 (viewBox 0 0 400 225) ===== -->
+<!-- plate-waiting — Agency Waiting Room (COLD). Bolted chairs in two rows,
+     ticket/counter window with the supervisor behind it, ink wall clock,
+     fluorescent bars. Figures: supervisor (behind counter), mother. -->
+<symbol id="plate-waiting" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="52" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="238" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <circle cx="200" cy="46" r="16" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="200" y2="35" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="208" y2="50" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-supervisor" x="292" y="42" width="54" height="108" color="#0d1520"/>
+  <rect x="262" y="118" width="122" height="76" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="274" y="82" width="98" height="36" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <rect x="286" y="130" width="34" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="30" y="58" width="60" height="122" color="#c98f2b"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2">
+    <rect x="112" y="142" width="34" height="26"/><rect x="154" y="142" width="34" height="26"/>
+    <rect x="196" y="142" width="34" height="26"/>
+  </g>
+  <rect x="108" y="170" width="126" height="8" fill="#0d1520"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2" opacity=".75">
+    <rect x="126" y="188" width="30" height="20"/><rect x="164" y="188" width="30" height="20"/>
+    <rect x="202" y="188" width="30" height="20"/>
+  </g>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-courtsteps — Courthouse Steps (COLD, exterior). Facade + columns
+     above, wide steps descending toward the viewer, mother + attorney small
+     at the foot. One warm accent only: the lit doorway. -->
+<symbol id="plate-courtsteps" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <path d="M62 30 L200 6 L338 30 Z" fill="#0d1520"/>
+  <rect x="62" y="30" width="276" height="66" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="182" y="50" width="36" height="46" fill="#e8b04b" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#1f3a5c" stroke="#0d1520" stroke-width="2">
+    <rect x="82" y="38" width="15" height="58"/><rect x="122" y="38" width="15" height="58"/>
+    <rect x="243" y="38" width="15" height="58"/><rect x="283" y="38" width="15" height="58"/>
+  </g>
+  <rect x="52" y="96" width="296" height="11" fill="#0d1520"/>
+  <rect x="38" y="112" width="324" height="11" fill="#0d1520" opacity=".85"/>
+  <rect x="24" y="128" width="352" height="11" fill="#0d1520" opacity=".7"/>
+  <rect x="10" y="144" width="380" height="11" fill="#0d1520" opacity=".55"/>
+  <use href="#fig-mother" x="148" y="140" width="42" height="84" color="#c98f2b"/>
+  <use href="#fig-attorney" x="202" y="140" width="42" height="84" color="#0d1520"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-schooloffice — School Office (MIXED: warm room, cold cabinets).
+     Desk with a blank nameplate block, filing cabinets, small flag, wall
+     chairs. Figures: mother, child (plain, standing beside her at the desk). -->
+<symbol id="plate-schooloffice" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="14" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="94" x2="70" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="136" x2="70" y2="136" stroke="#0d1520" stroke-width="3"/>
+  <rect x="330" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="116" x2="386" y2="116" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="14" width="3" height="34" fill="#0d1520"/>
+  <rect x="309" y="14" width="26" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="86" width="26" height="20" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="106" width="26" height="7" fill="#0d1520"/>
+  <use href="#fig-mother" x="118" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="272" y="92" width="44" height="88" color="#16283f"/>
+  <rect x="96" y="156" width="208" height="13" fill="#0d1520"/>
+  <rect x="108" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="282" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="168" y="140" width="42" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-workplace — Warehouse / Workplace (COLD-neutral). Racking grids,
+     pallet stacks, high window band, wall time-clock block (ink dial, blank).
+     Figure: mother2 (tote reads as a work bag; no costume props). -->
+<symbol id="plate-workplace" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="24" y="14" width="352" height="26" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <line x1="112" y1="14" x2="112" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="14" x2="200" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="288" y1="14" x2="288" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <rect x="18" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="18" y1="104" x2="122" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="18" y1="150" x2="122" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="70" y1="58" x2="70" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="26" y="76" width="34" height="22" fill="#e8b04b" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="78" y="120" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="278" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="278" y1="104" x2="382" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="278" y1="150" x2="382" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="58" x2="330" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="338" y="76" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="182" y="60" width="36" height="44" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="200" cy="76" r="9" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="190" y="90" width="20" height="6" fill="#f7ead0"/>
+  <use href="#fig-mother2" x="168" y="76" width="64" height="130" color="#c98f2b"/>
+  <rect x="132" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="132" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect x="220" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="220" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-busstop — Bus Stop (COLD dusk). Sign pole with a blank round sign,
+     shelter frame + bench, street band, apartment silhouettes with lit
+     windows behind. One warm element only: the streetlamp glow.
+     No figures — a place alone, as plate-exterior in v1. -->
+<symbol id="plate-busstop" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="8" y="52" width="86" height="140" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="38" width="86" height="154" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="22" y="68" width="20" height="16" fill="#e8b04b" opacity=".8"/>
+  <rect x="56" y="68" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="22" y="104" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="56" width="20" height="16" fill="#e8b04b"/>
+  <rect x="354" y="56" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="92" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <ellipse cx="128" cy="58" rx="34" ry="20" fill="#e8b04b" opacity=".3"/>
+  <rect x="125" y="52" width="5" height="140" fill="#0d1520"/>
+  <circle cx="128" cy="48" r="7" fill="#e8b04b"/>
+  <rect x="158" y="66" width="5" height="126" fill="#0d1520"/>
+  <circle cx="160" cy="54" r="13" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="196" y="86" width="104" height="8" fill="#0d1520"/>
+  <rect x="200" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="290" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="208" y="146" width="80" height="10" fill="#0d1520"/>
+  <rect x="216" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect x="273" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect y="192" width="400" height="33" fill="#0d1520"/>
+  <rect x="36" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="182" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="328" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-laundromat — Laundromat (WARM-neutral). Round-front washer doors
+     (circles in rects), folding counter with a laundry basket block, folded
+     stacks on a shelf. Figure: mother. (Child optional in the brief — omitted
+     deliberately: the row is the subject, and the plate stays uncrowded.) -->
+<symbol id="plate-laundromat" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="20" y="20" width="150" height="10" fill="#0d1520"/>
+  <rect x="28" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="34" width="36" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="112" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#f7ead0" stroke="#0d1520" stroke-width="3">
+    <rect x="16" y="66" width="72" height="106"/><rect x="96" y="66" width="72" height="106"/>
+    <rect x="176" y="66" width="72" height="106"/>
+  </g>
+  <circle cx="52" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="132" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="212" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="52" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="132" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="212" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <rect x="28" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="108" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="188" y="76" width="48" height="8" fill="#0d1520"/>
+  <use href="#fig-mother" x="316" y="52" width="62" height="126" color="#c98f2b"/>
+  <rect x="256" y="150" width="96" height="11" fill="#0d1520"/>
+  <rect x="264" y="161" width="9" height="42" fill="#0d1520"/>
+  <path d="M272 128 L316 128 L310 148 L278 148 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="282" y1="134" x2="306" y2="134" stroke="#0d1520" stroke-width="2"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-program — Program / Parenting-Class Room (WARM-neutral). A ring of
+     chairs suggested by backs at the edges, blank flip-chart easel, low table.
+     Figures: kin (with the framed photo), mother. -->
+<symbol id="plate-program" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="172" y="30" width="56" height="66" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="186" y="24" width="28" height="9" fill="#0d1520"/>
+  <line x1="182" y1="96" x2="168" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <line x1="218" y1="96" x2="232" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#c98f2b" stroke="#0d1520" stroke-width="2" opacity=".8">
+    <rect x="86" y="56" width="26" height="20"/><rect x="288" y="56" width="26" height="20"/>
+    <rect x="56" y="104" width="26" height="20"/><rect x="318" y="104" width="26" height="20"/>
+  </g>
+  <use href="#fig-kin" x="112" y="54" width="60" height="122" color="#16283f"/>
+  <use href="#fig-mother" x="238" y="54" width="60" height="122" color="#c98f2b"/>
+  <ellipse cx="200" cy="158" rx="56" ry="11" fill="#0d1520"/>
+  <rect x="188" y="166" width="24" height="8" fill="#0d1520"/>
+  <rect x="158" y="140" width="30" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#0d1520">
+    <rect x="36" y="182" width="52" height="34"/><rect x="312" y="182" width="52" height="34"/>
+  </g>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+
+<!-- ===== Time / weather overlays (viewBox 0 0 400 225) =====
+     Instance AFTER the plate <use> in the same <svg> — see v2-design-spec.md
+     section 2. Exactly one overlay per plate, ever. Subtle by design: an
+     overlay tints a scene, it never re-lights it. -->
+<!-- ov-dawn: warm glow low-left (gradDawn) + one soft glow ellipse. -->
+<symbol id="ov-dawn" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradDawn)"/>
+  <ellipse cx="62" cy="205" rx="110" ry="42" fill="#e8b04b" opacity=".22"/>
+</symbol>
+<!-- ov-dusk: deepening navy wash + halftone at .18 (plate standard is .13/.15). -->
+<symbol id="ov-dusk" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".22"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".18"/>
+</symbol>
+<!-- ov-night: navy wash at .30 + a small crescent (two circles) top-right. -->
+<symbol id="ov-night" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#0d1520" opacity=".30"/>
+  <circle cx="350" cy="36" r="13" fill="#f7ead0"/>
+  <circle cx="358" cy="31" r="11" fill="#16283f"/>
+  <circle cx="306" cy="24" r="2" fill="#f7ead0"/>
+  <circle cx="330" cy="58" r="2" fill="#f7ead0"/>
+</symbol>
+<!-- ov-rain: darker wash + the rain pattern at low opacity. Exterior only. -->
+<symbol id="ov-rain" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".18"/>
+  <rect width="400" height="225" fill="url(#rain)" opacity=".35"/>
 </symbol>
 </defs>
 </svg>
@@ -1271,10 +1582,17 @@ function choiceAvailable(choice) {
 /* ---------- comic kit: plates ---------- */
 const PLATE_RULES = [
   ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["waiting room|lobby", "Waiting Room"],
+  ["courthouse steps|courthouse|on the steps|outside court|leaving court|after court", "Courthouse Steps"],
   ["court|hearing|judge|shelter care", "Courtroom"],
   ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
   ["supervised|visit room|one hour", "Visit Room"],
+  ["parenting|program|support group", "Program"],
+  ["school office|principal|guidance office|school counselor", "School Office"],
   ["school|teacher|classroom|class", "School"],
+  ["warehouse|factory|night shift|shift work|employer|paycheck", "Workplace"],
+  ["bus stop|\\btransit\\b|\\bbus\\b", "Bus Stop"],
+  ["laundromat|laundry|\\bwash\\b", "Laundromat"],
   ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
   ["mail|letter|envelope|notice", "Mail Room"],
   ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
@@ -1285,7 +1603,11 @@ const PLATE_IDS = {
   "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
   "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
   "Mail Room": "plate-mail", "Agency Office": "plate-office",
-  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen",
+  "Waiting Room": "plate-waiting", "Courthouse Steps": "plate-courtsteps",
+  "School Office": "plate-schooloffice", "Workplace": "plate-workplace",
+  "Bus Stop": "plate-busstop", "Laundromat": "plate-laundromat",
+  "Program": "plate-program"
 };
 function plateFor(node) {
   const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
@@ -1294,10 +1616,33 @@ function plateFor(node) {
   }
   return "Kitchen"; /* fallback: the family's ground */
 }
-function plateHTML(plateName) {
-  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+const EXTERIOR_PLATES = ["Apartment Exterior", "Courthouse Steps", "Bus Stop", "School", "Doorway"];
+const VARIANT_RULES = [
+  /* [regex, overlayId, exteriorOnly] — first match wins, one overlay max */
+  ["\\brain\\b|storm|downpour", "ov-rain", true],
+  ["midnight", "ov-night", false],
+  ["\\bnight\\b|tonight|overnight", "ov-night", true],
+  ["dusk|sunset|twilight", "ov-dusk", false],
+  ["evening", "ov-dusk", true],
+  ["dawn|sunrise|first light|daybreak|early morning", "ov-dawn", false]
+];
+function variantFor(node, plateName) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < VARIANT_RULES.length; i++) {
+    if (new RegExp(VARIANT_RULES[i][0]).test(text) &&
+        (!VARIANT_RULES[i][2] || EXTERIOR_PLATES.indexOf(plateName) !== -1)) {
+      return VARIANT_RULES[i][1];
+    }
+  }
+  return null;
+}
+function plateHTML(plateName, node) {
+  const v = node ? variantFor(node, plateName) : null;
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) +
+    (v ? ', ' + v.replace('ov-', '') : '') + '">' +
     '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
-    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+    '<use href="#' + PLATE_IDS[plateName] + '"/>' +
+    (v ? '<use href="#' + v + '"/>' : '') + '</svg></div>';
 }
 function coverHTML() {
   return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
@@ -1454,7 +1799,7 @@ function applyChoice(choice, currentNode) {
 }
 
 function storyPanelHTML(node, plate) {
-  let h = plateHTML(plate) +
+  let h = plateHTML(plate, node) +
     '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
     '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
   (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
