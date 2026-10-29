@@ -31,7 +31,7 @@ Programmatic principal-collision scan over all 136 scenario JSONs (introduction 
 - Forbidden-term scan (no assessment called AI / machine learning / predictive / algorithmic): clean.
 - Script parity: every `scenario-N-script.md` matches its JSON node-for-node (ids, order, titles, choice texts).
 - Strategy-guide win-name parity: every guide's named best ending resolves to an ending node in its scenario (all three house guide formats handled; Batch K's prefix-less quoting and trailing-period punctuation normalized).
-- **Gate-aware ending reachability** (engine semantics: `requiresFlags` / `requiresNoFlags` filter choices): every ending of every scenario is reachable — by exhaustive state-space BFS for 97 scenarios; by exhaustive BFS at 50,052,185 states for S46; by targeted per-ending DFS for S129 and S130, whose state spaces overflow BFS memory.
+- **Gate-aware ending reachability** (engine semantics: `requiresFlags` / `requiresNoFlags` filter choices): every ending of every scenario is reachable — by exhaustive state-space BFS for 97 scenarios; by exhaustive BFS at 5,087,231 states for S46 and 1,777,663 states for S130; by targeted per-ending DFS for S129, whose state space overflows BFS memory. (State counts corrected post-deployment from the completed gate-check run: an earlier partial figure for S46 appeared in the first version of this record.)
 - **Dead-state scan**: no reachable (node, flag-set) state in any scenario leaves the player without an available choice (exhaustive for 97; for S46/S129/S130, exhaustive to 600k states plus 2,000 seeded walks each).
 
 ### Defects found and repaired at the source (JSON → script → guide, then re-validated)
