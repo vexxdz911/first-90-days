@@ -1,0 +1,442 @@
+# THE FIRST 90 DAYS — Scenario 96: “Thirty Days After the Decree”
+
+*Human-readable script. This document and `scenario-96.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts the thirty days and the appellate season after a termination-of-parental-rights decree. The subject is grave; the treatment is procedural — paperwork, deadlines, transcripts, and courtrooms. There are no depictions of the underlying events. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier; `REQUIRES NO FLAG: name` means it is only available if that flag was never set. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, May 4, 2026. Day offsets are days since the scenario's start date.
+
+## [start] The Decree
+*Day 0 — Monday, May 4, 2026 (dayOffset 0)*
+
+Your name is Beatrix Lindqvist. Your son Alban is seven. Three weeks ago his termination-of-parental-rights trial ended; this morning the decree arrived, and the legal relationship between you and your son — the one that began in a delivery room in 2019 — has been ended by a document, subject to one thing: an appeal, on a clock that started with the decree's entry today, Monday, May 4, 2026.
+
+Alban lives with his foster family of two years, who are preparing an adoption petition. His grandmother Greta — your mother, seventy, unbowed — keeps his second bedroom made up in her house across town, a fact that is not evidence and is also not nothing. Your lawyer, Mr. Fenwick, is on the phone before the envelope is fully open: 'Do not read the reasoning first,' he says. 'Read the date. The date is the case now. Thirty days, Beatrix. Everything else is commentary.'
+
+The family is fictional — a composite. The thirty days are Pa.R.A.P. 903(a), and they are the least fictional thing you own.
+
+**Choices:**
+- Read the date, then call the lawyer's office for the triage appointment → **lawyer** _(FLAG: dateFirst)_
+  - NOTE (shown after choosing): June 3. Circled in red — the calendar's one permitted use of the color, borrowed from alarm.
+
+## [lawyer] Mr. Fenwick's Triage
+*Day 1 — Tuesday, May 5, 2026 (dayOffset 1)*
+
+"Termination appeals ask two questions," Mr. Fenwick says, "and panels answer them in order: were the grounds for termination proved as the law requires — by clear and convincing evidence — and was termination in the child's needs and welfare? A decree can fall on either. Ours has two preserved pressure points, and I mean preserved literally: things you and your trial counsel did in the room, on the record, that a panel can review.
+
+"Point one: the agency's central report — the one summarizing two years — came in over your counsel's objection, without its author available to be questioned. The judge ruled. Rulings are reviewable. Point two: the services evidence. The decree finds you failed to use the services offered; the trial record contains a referral that was never actually made, and your counsel cross-examined on it and offered the exhibit. If the finding rests on a service that doesn't exist, that is a record problem, not a sympathy problem.
+
+"What an appeal cannot do: retry your life, take new evidence, or pause the adoption track by existing. It reads. So this month is about reading — yours, starting with whether the record is what the decree says it is. The notice goes in this week."
+
+**Choices:**
+- Ask to go through the trial record's two pressure points, in order → **decree_read**
+  - NOTE (shown after choosing): Flashbacks, in transcript form. The trial is about to be re-read by the only audience that can unmake it.
+
+## [decree_read] The Decree, Read Second
+*Day 2 — Wednesday, May 6, 2026 (dayOffset 2)*
+
+The reasoning, read second as instructed, is twenty-two pages: your worst years summarized with a court's thoroughness, your recent months in noticeably less detail, the findings numbered. Finding 14 is the services finding. Finding 9 adopts the report's summary. Both findings cite the record by page — and page citations, in a decree as in a brief, are either load-bearing or decorative. Verifying which is a month of work that starts with ordering the trial transcripts and requesting the complete agency file, in writing, as the subjects of a case may (55 Pa. Code § 3130.44(d)). The transcripts of a multi-day trial cost $35.
+
+**Choices:**
+- Put the decree in the folder behind the calendar page → **phone_sister**
+  - NOTE (shown after choosing): June 3 faces out. The reasoning is behind it. Priorities, physicalized.
+
+## [phone_sister] Your Sister Calls From the Coast
+*Day 3 — Thursday, May 7, 2026 (dayOffset 3)*
+
+Your sister calls with the family's entire emotional register in one question: 'Is it over?' The answer, in Fenwick units: 'A court said so. A higher court gets asked whether the saying was done correctly, within thirty days, on the record. Whether it's over is a question with a date on it now, and the date is June 3.' She is quiet. 'Then we work until June 3,' she says, in the family's oldest grammar: we, work, until.
+
+**Choices:**
+- Tell her the truth and the date, and get back to the record → **flash_objection**
+  - NOTE (shown after choosing): We, work, until. The flashbacks are next, and they are mercifully in writing.
+
+## [flash_objection] Flashback: The Objection at Trial
+*Day 4 — Friday, May 8, 2026 (dayOffset 4)*
+
+FROM THE TRIAL TRANSCRIPT, day two. The agency offers its summary report — two years of the case compressed by an author who is not in the courtroom. Your trial counsel stands: 'Objection. The report is hearsay within hearsay as to the matters summarized; its author is not available to be cross-examined on its characterizations, several of which are contested.' The court hears argument — a page and a half of it, real argument — and rules: 'The objection is overruled. The report will be received.'
+
+Overruled. It reads like a loss. In appellate grammar it is an asset: the issue was raised, argued, and ruled on, which is the complete recipe for reviewability. Had counsel sat silent — as, in the trial's long second day, it would have been easy to do — Finding 9 would today be unreviewable weather.
+
+**Choices:**
+- In the flashback: the objection was made, argued, and ruled on → **flash_services** _(FLAG: preservedObjection ; HIDDEN + Trial record — objection to the summary report made, argued, and ruled on; issue preserved)_
+  - NOTE (shown after choosing): Preserved. The single most valuable word in the decree's opposition, and it was earned last month, standing up, in a losing minute.
+- In the flashback: skim the objection — it lost, after all → **flash_services**
+  - NOTE (shown after choosing): It lost the minute and won the season. Skimming is how such distinctions escape the people who most need them.
+
+## [flash_services] Flashback: The Referral That Wasn't
+*Day 6 — Sunday, May 10, 2026 (dayOffset 6)*
+
+FROM THE TRANSCRIPT, day three. The agency's witness testifies that you were referred to the intensive program in March of last year and 'did not engage.' Your counsel's cross is six pages long and ends with the witness reading from the agency's own referral log: the March referral was drafted and never sent — a clerical gap the witness concedes with visible discomfort. Counsel offers the log page as an exhibit. It is admitted and marked.
+
+The decree's Finding 14 nonetheless states that you failed to use the services offered, citing the testimony and not the log. A finding that overlooks the exhibit that answers it is the second pressure point — provided the exhibit is in the certified record, which is a fact about paper, checkable only against paper.
+
+**Choices:**
+- In the flashback: the cross was made and the exhibit offered and admitted → **notice_filed** _(FLAG: servicesExhibits ; HIDDEN + Trial record — unsent referral exposed on cross; referral log admitted as an exhibit)_
+  - NOTE (shown after choosing): Admitted and marked. Finding 14 now has a problem with a page number, and problems with page numbers are the kind panels can solve.
+- In the flashback: pass over the services fight — it felt small at the time → **notice_filed**
+  - NOTE (shown after choosing): It felt small. Findings have since been built on it. Small exhibits under large findings are appellate gold, and gold is where you left it: in the transcript, unread.
+
+## [notice_filed] The Notice, Signed on Day Eight
+*Day 8 — Tuesday, May 12, 2026 (dayOffset 8)*
+
+The notice of appeal is signed Tuesday, May 12 — day eight of thirty — in Fenwick's office, because he prepares the way pilots land. It identifies the decree and states that it has been entered on the docket. What remains is the smallest step in appellate practice and the only one that counts: the filing itself, which the office will make this week, and which generates the one artifact that proves the appeal exists — the clerk's receipt.
+
+The adoption track does not pause for any of this — an appeal, as every lawyer in this story repeats like a tolling bell, does not by itself stop the proceedings below. The foster family's petition will be prepared on its own schedule. Your appeal and their adoption now run in parallel, in different rooms, at different speeds, toward the same child.
+
+**Choices:**
+- Confirm the filing yourself: call for the receipt on day ten and put it in the folder → **clinic_second** _(FLAG: noticeFiled ; HIDDEN + Appeal — notice of appeal filed day ten of thirty; clerk's receipt in hand)_
+  - NOTE (shown after choosing): Receipt obtained, date-stamped, day ten. June 3 is now beaten in the only way dates can be: by being made irrelevant, early. Twenty days of margin, converted immediately into work.
+- Take a breath and let the lawyer's office confirm the filing in its own time → **notice_late**
+  - NOTE (shown after choosing): The timing, from here, is the office's — which sounds like delegation and functions, in the following weeks, as something else.
+
+## [notice_late] Day Thirty-Three
+*Day 33 — Saturday, June 6, 2026 (dayOffset 33)*
+
+It is June 6. The notice of appeal was signed in the lawyer's office on day eight — and filed, the docket confirms in the flat prose of catastrophe, as received on June 6: day thirty-three. Three days late. The margin a prompt filing would have banked was spent instead in an office's out-tray, across the whole of May, in the belief that timing had been delegated.
+
+Mr. Fenwick does not varnish it; it is the one professional virtue the situation left him. 'A late notice is jurisdictional,' he says. 'The appeal will be quashed. We will discuss what I owe you about that separately, in writing, because it should be in writing. What I owe you first is the truth: it isn't the panel's fault, or the rule's. The rule was on the calendar in your kitchen.'
+
+**Choices:**
+- Hear him out, and then ask what remains → **end_quashed**
+  - NOTE (shown after choosing): What remains is discussed in the debrief, because remedies after a quashed appeal are narrow, fact-specific, and not this game's to improvise. The calendar, meanwhile, keeps June 3 in the folder. It will stay there.
+
+## [clinic_second] The Second Opinion
+*Day 10 — Thursday, May 14, 2026 (dayOffset 10)*
+
+A second appellate lawyer — the clinic's reviewer, who reads termination decrees the way actuaries read mortality tables — confirms the triage in twenty minutes: 'Two preserved issues, both record-shaped. The case will be won or lost on whether the certified record contains what Fenwick says it contains. That is a question with a factual answer, obtainable this month, for the price of transcripts. Most appellants never ask it. Ask it.'
+
+**Choices:**
+- Ask it: order the trial transcripts and request the complete agency file, in writing → **records** _(cash −35 ; FLAG: recordsRequested ; HIDDEN + Record — trial transcripts ordered; complete agency file requested in writing)_
+  - NOTE (shown after choosing): $35, receipted. The factual question is now in the mail, in both directions: their file coming to you, the transcript coming to everyone.
+- Rely on Fenwick's memory of the trial — he was there → **records**
+  - NOTE (shown after choosing): He was there, and his memory is excellent, and the panel will not be reading it. Appeals are the one arena where being right in person is worth exactly nothing unaccompanied.
+
+## [records] The Whole Trial, In Boxes
+*Day 11 — Friday, May 15, 2026 (dayOffset 11)*
+
+The certified record assembles over two weeks: three days of trial in four binders, the exhibits in a fifth, the agency's file in a sixth that arrives smelling of copier heat. Somewhere in binders two and five are the two pressure points, as pages. The month's work is to find them, verify them, and build a brief that is nothing but a guided tour of them — the objection and its ruling; the cross and the log; the findings that overlook both. Everything else about your life that the brief might say is, for these purposes, weather.
+
+**Choices:**
+- Begin the verification, binder by binder → **transcript_bill**
+  - NOTE (shown after choosing): Binder one. Page one. The pencil is the same one from the winter of Scenario 95's file — this family of stories owns one pencil, and it has never once been wrong to use it.
+
+## [transcript_bill] The Transcript Bill
+*Day 14 — Monday, May 18, 2026 (dayOffset 14)*
+
+The bill for the complete set, against the estimate, with the exhibit binder priced as a separate insult: the folder's arithmetic absorbs it in the way of all the story's costs, by being smaller than the alternative. You pay it and photograph the receipt. In a case about whether the record supports a decree, the record's own receipt is not the least poetic document in the folder.
+
+**Choices:**
+- Pay it and keep verifying → **greta_house**
+  - NOTE (shown after choosing): Verified so far: the objection, where Fenwick said it would be, with the ruling in the margin of the transcript like a signature.
+
+## [greta_house] Greta's House, Meanwhile
+*Day 15 — Tuesday, May 19, 2026 (dayOffset 15)*
+
+Alban's contact with Greta continues under the existing orders while the appeal runs — Sundays at the house with the made-up bedroom, where he keeps a second set of opinions about everything. Greta, who has read the decree's summary in the newspaper of family telephone, states her position to the room: 'They can file what they like. On Sundays he eats here.' It is not a legal position. It is the substrate in which legal positions either root or don't: a child's actual week, continuing, witnessed, while documents contend about its future.
+
+**Choices:**
+- Keep Sundays ordinary and let Greta keep the bedroom made → **mailbox_days** _(FLAG: gretaSteady)_
+  - NOTE (shown after choosing): Ordinary Sundays, witnessed. If the decree falls, the remand will ask what Alban's life looks like. This is what it looks like. The answer is being lived, weekly, on the record of a grandmother's table.
+
+## [mailbox_days] The Mailbox Days
+*Day 18 — Friday, May 22, 2026 (dayOffset 18)*
+
+May's mail is appellate in texture: the Superior Court's docketing statement, the trial court's transmission list for the certified record — the inventory of what will be sent up. The transmission list is a document most appellants never read. It deserves reading the way cargo manifests do: because what arrives is what was listed, and what was listed is about to be compared, by you, against what the trial actually contained. One line of the manifest stops your pencil.
+
+**Choices:**
+- Read the transmission list against your binders → **adoption_news**
+  - NOTE (shown after choosing): Exhibit volume: listed as 'exhibits, 1 binder.' Your set has the exhibits in a fifth binder of their own. Manifests, like findings, are either load-bearing or decorative. This one is about to be tested.
+
+## [adoption_news] The Other Petition
+*Day 20 — Sunday, May 24, 2026 (dayOffset 20)*
+
+The adoption petition is filed by Alban's foster parents, through their lawyer, in the orphans' court — respectfully, without triumphalism, as people who love a seven-year-old and have been advised that the decree permits them to ask. Its existence changes no law in your appeal. It changes the emotional physics of every remaining week: the panel's reading is no longer the only clock. If the appeal is still pending when the adoption is heard, the proceedings will contend with each other's presence in the ways courts manage parallel tracks — and none of those ways involves the adoption simply stopping because your lawyer wishes it to.
+
+Fenwick's instruction is procedural and cold and correct: everything the adoption court should know about the pending appeal must reach it in writing, through counsel, on the record — not through hope, and not through Greta.
+
+**Choices:**
+- Have Fenwick file the written notice of the pending appeal in the adoption matter → **bus_home** _(FLAG: notedBelow ; HIDDEN + Adoption track — written notice of the pending appeal filed through counsel)_
+  - NOTE (shown after choosing): Filed. The adoption court now decides whatever it decides knowing the decree is under review — in writing, on its record, which is the only place such knowledge counts.
+- Trust the adoption court to know about the appeal on its own → **bus_home**
+  - NOTE (shown after choosing): Courts know what is filed in them. The adoption file, unnotified, is a room where your appeal does not exist.
+
+## [bus_home] The Bus Home
+*Day 22 — Tuesday, May 26, 2026 (dayOffset 22)*
+
+On the bus, the month is inventoried in the family's pad style: notice — filed day ten, receipt in hand. Record — arriving, being verified. Adoption — notified, in writing. Remaining: the brief, the missing-page question the manifest raised, Alban's Sundays, and your own conduct through a season designed by a hostile calendar to make a person behave like their worst summarized self in public. The last item is not the least. Every professional who will ever write about this family again is, in some sense, still taking notes.
+
+**Choices:**
+- Keep the inventory and behave like the brief's best exhibit → **work_boss**
+  - NOTE (shown after choosing): The brief's best exhibit is a mother who spent the appeal season making the record and keeping the Sundays. It is noted, in the only durable way: by being true, repeatedly, where people can see it.
+
+## [work_boss] The Warehouse, In Writing
+*Day 24 — Thursday, May 28, 2026 (dayOffset 24)*
+
+Your supervisor's letter — shifts, reliability, the promotion to the early line in April, two weeks before the decree — is NOT an appellate document, and Fenwick declines it for the brief with respect: 'The panel reads the trial record. Your promotion happened after it closed. Keep the letter for the remand that may come, where new evidence lives.' Knowing which documents belong to which proceeding is a literacy too, and the folder grows a section: FOR THE REMAND, IF. It is the most hopeful filing label of your life.
+
+**Choices:**
+- File the letter in the IF section and return to the binders → **payday** _(FLAG: remandSection)_
+  - NOTE (shown after choosing): IF. Two letters, tabbed. Hope, in this family, has always been a filing category before it was a feeling.
+
+## [payday] Payday Arithmetic
+*Day 27 — Sunday, May 31, 2026 (dayOffset 27)*
+
+The arithmetic of the appeal season: transcripts paid, copies pending, the brief's production billed in photocopies and one paralegal's Saturdays. It totals less than a month of the foster care the county is purchasing across town — a comparison you make once, in the privacy of the kitchen, and then put away, because it is true and useless in equal measure. What the money bought is verifiable: pages, in order, with two pressure points verified to exist in them.
+
+**Choices:**
+- Close the ledger and open binder five → **brief_work**
+  - NOTE (shown after choosing): Binder five: the exhibits. The log page is the first thing to check, and your pencil is already moving.
+
+## [brief_work] The Brief of a Trial
+*Day 30 — Wednesday, June 3, 2026 (dayOffset 30)*
+
+The brief is fifty pages about two pressure points: the report admitted over objection without its author (preserved, ruled on, transcript pages cited); and Finding 14, which states a failure to use services the agency's own admitted exhibit shows were never sent. Fenwick reads every citation against the certified binders, aloud, the way this story's lawyers do, and twice the pencil stops for corrections. Brief copies: $10. The argument does not mention your worst year except as the decree did. It does not mention Alban's Sundays. It is, deliberately, the least emotional document ever written about your family, and the most dangerous to the decree.
+
+**Choices:**
+- Check every citation against the certified binders with him → **appendix_check** _(cash −10 ; FLAG: briefChecked ; HIDDEN + Brief — all citations verified against the certified record before filing)_
+  - NOTE (shown after choosing): Two citations corrected. The brief now cites nothing that is not upstairs already, in a binder, with a tab. Panels reward this in the only currency they have.
+- Trust the brief's citations — Fenwick tried the case → **appendix_check**
+  - NOTE (shown after choosing): He did, and he is citing from memory a trial he remembers as he argued it. The binders remember it as it happened. The panel reads binders.
+
+## [appendix_check] The Appendix, Audited
+*Day 34 — Sunday, June 7, 2026 (dayOffset 34)*
+
+The appendix check is the brief season's last ritual: every reproduced page traced to its certified original. It is here that the manifest's odd line resolves: the certified exhibits, as transmitted, fill one binder — because the trial's third day, the day of the services cross, was bound into the transcript's fourth volume as an attachment rather than into the exhibits. Which raises the question the next node answers: is the referral log, as a marked exhibit, actually in the certified record upstairs — or only in your set?
+
+**Choices:**
+- Trace the log page through the certified volumes, tab by tab → **missing_pages**
+  - NOTE (shown after choosing): Binder four, attachment C. The log IS in the certified record — misfilled, mislabeled, and present. All three adjectives matter, in ascending order.
+
+## [missing_pages] The Missing Day of Trial
+*Day 38 — Thursday, June 11, 2026 (dayOffset 38)*
+
+Present but misfiled is better than absent and worse than findable. A panel's law clerks read records linearly; an exhibit bound as 'attachment C' to the wrong volume is an exhibit that may never be seen by the eyes the brief is written for. The remedy is unglamorous and entirely procedural: a motion practice so routine Fenwick's paralegal has a form for it — a filing that identifies the exhibit, its trial marking, and its certified location, and asks that it be lodged correctly, so the record the panel reads is the record the trial made. It costs $15 in fees and copies. It buys the difference between a true sentence in the brief ('the log is in the record') and a findable one.
+
+**Choices:**
+- File the correction so the log sits where a reader will find it → **folder_night** _(cash −15 ; FLAG: recordComplete ; HIDDEN + Record — misfiled exhibit's location corrected by filing; certified record now findable and complete)_
+  - NOTE (shown after choosing): Filed and lodged. The record upstairs is now the record the trial made, in the order readers read. This is what 'recordComplete' means in practice: not more paper — paper where eyes land.
+- Leave it — the log is technically in the record → **folder_night**
+  - NOTE (shown after choosing): Technically in the record is the epitaph of a thousand exhibits. Panels decide from what they find. Findability is not a technicality; it is the substance wearing its working clothes.
+
+## [folder_night] The Folder, Termination Edition
+*Day 44 — Wednesday, June 17, 2026 (dayOffset 44)*
+
+The folder's sections, in May's final form: the decree (reasoning read second, date beaten first); the notice receipt; the brief, checked; the record map, showing any reader where the two pressure points live; the IF section, for the remand that may come; and at the back, unfiled and unfilable, Alban's school photograph from April, in which he is missing a tooth and holding a frog in the approved manner. The folder is not an argument. It is the argument's supply chain, and tonight the supply chain is complete.
+
+**Choices:**
+- Close the folder and keep the Sundays → **visits_below**
+  - NOTE (shown after choosing): Argument is in July. June belongs to Alban's summer and the case's quiet machinery. Both need a mother who is present in them, not only in paper about them.
+
+## [visits_below] Contact Under a Decree
+*Day 48 — Sunday, June 21, 2026 (dayOffset 48)*
+
+Your contact with Alban runs as the existing orders provide while the appeal pends — supervised, scheduled, and logged by people whose notes will exist in whatever proceeding comes next. The visits are strange in the way of all supervised tenderness: a seven-year-old narrating a frog, a mother performing ordinariness for an audience of one professional, both of them pretending the performance is not happening. The log, kept by others, will say what it says. Yours — the parallel one, in the folder's back — records the same hours in a mother's hand: frog, tooth, the question about whether Greta's dog dreams.
+
+**Choices:**
+- Ask, in writing, for the contact log to note the full visits as they occur → **alban_question** _(FLAG: visitLog ; HIDDEN + Contact log — full post-decree visits documented specifically, in writing)_
+  - NOTE (shown after choosing): Noted. Whatever court reads about Alban's summer — appellate, adoption, or a remand court — will read about full hours and a frog, not about attendance.
+- Let the log be the log → **alban_question**
+  - NOTE (shown after choosing): The log will be read someday by a decision-maker as the entire summer. 'Visit occurred' is not a summer. It is a rumor of one.
+
+## [alban_question] Alban Asks About the Judges
+*Day 52 — Thursday, June 25, 2026 (dayOffset 52)*
+
+'Greta says judges are reading about me,' Alban says, with the frog negotiations concluded. 'Are they nice judges?' The honest arithmetic of parenthood under appeal: 'They are reading judges. Our job was to give them the true papers. We did that part.' He considers the division of labor. 'Then they should do their part,' he says, with a seven-year-old's clean theory of institutions, and returns to the frog, whose name is now a matter of record in the back of a folder in a kitchen across town.
+
+**Choices:**
+- Tell him Greta's Sundays continue either way, and mean it → **school_note**
+  - NOTE (shown after choosing): Either way is doing work in that sentence neither of you examines. Sundays continue. That much is not under appeal.
+
+## [school_note] The School Note, Filed Nowhere
+*Day 55 — Sunday, June 28, 2026 (dayOffset 55)*
+
+Alban's teacher sends home the year-end note: a good year, reading strong, the frog incident 'handled with notable diplomacy.' It is not evidence in any pending proceeding — the appellate record is closed, the adoption court has its own file, the remand exists only in an IF tab. You file it in the IF section anyway, because the IF section is where this family keeps the future, and because if the decree falls, a remand court will one day ask what Alban's life looked like while the law decided, and the answer will be: documented, by the people living it, in real time.
+
+**Choices:**
+- File the note in the IF tab and turn to argument season → **dinner_greta** _(FLAG: ifSectionGrown)_
+  - NOTE (shown after choosing): IF grows by a teacher's note and a school photograph. Hope, filed, with tabs.
+
+## [dinner_greta] Dinner at Greta's
+*Day 58 — Wednesday, July 1, 2026 (dayOffset 58)*
+
+Dinner at Greta's runs on her rules: Alban sets the table with the seriousness of a bailiff, the dog is fed first for reasons of state, and the decree is not discussed until the boy is in the yard performing frog diplomacy. Then Greta, seventy and unbowed, gives her assessment of appellate practice: 'They read in rooms I can't see, about a boy they haven't met, to decide if the first room did it right. It's a strange way to run a family.' 'It is,' you say. 'It's also the only appeal there is.' She nods at the yard. 'Then we'd better have given them the right papers.' You did. It is, in the end, the entire dinner conversation, and it is enough.
+
+**Choices:**
+- Help with the dishes and keep the summer ordinary → **greta_letter** _(cash −12)_
+  - NOTE (shown after choosing): Groceries for the month's Sundays: $12 of the folder's arithmetic. The cheapest exhibits in the case are the ones eaten at a grandmother's table.
+
+## [greta_letter] Greta's Letter to the IF File
+*Day 62 — Sunday, July 5, 2026 (dayOffset 62)*
+
+Greta writes a letter — unrequested, unedited, in her upright hand — describing Alban's Sundays, his bedroom, his reading, his place in the house's routines, 'for whichever court eventually asks what his life is.' It goes in the IF tab, where it legally belongs (the appellate record being closed) and where, if the decree falls, it will be the first document of the remand's kinship picture: a grandmother, documented, in place, with a made-up bedroom and two years of Sundays. Kinship, in a remand as in a disposition, is an argument made of exactly such paper.
+
+**Choices:**
+- File Greta's letter in the IF tab, dated and complete → **letter_alban** _(FLAG: gretaLetter ; HIDDEN + Kinship — grandmother's written account of the child's life filed for any remand)_
+  - NOTE (shown after choosing): Filed. If the decree falls, the remand will not start from zero. It will start from a grandmother's handwriting.
+
+## [letter_alban] The Letter You Don't Send
+*Day 68 — Saturday, July 11, 2026 (dayOffset 68)*
+
+You write Alban a letter he will not read this year — for the file in the drawer, the human one, where the case's unsent letters live. It says what the brief cannot: that the papers were never the point, that the point is asleep across town with a frog's name on his lips, and that whatever the judges decide about the correctness of rooms he never saw, his mother's account of him was kept, in full, in real time, in a hand that never shook on the important pages. Some records are for courts. This one is for a reader who doesn't exist yet, at an age when the file will be his to request if he wants it — a right that will belong to him then, as it belonged to you.
+
+**Choices:**
+- Put the letter in the drawer and prepare for argument → **night_call**
+  - NOTE (shown after choosing): Drawer closed. Argument in a week. The record — all of the records, the court's and the family's — are as ready as records get.
+
+## [night_call] Fenwick's Night Call
+*Day 72 — Wednesday, July 15, 2026 (dayOffset 72)*
+
+"Final shape," Fenwick says. "The brief is the record's tour. Argument is the tour with questions. Expect the panel to press on the report — what standard governs its admission, what the objection preserved, what the decree took from it. Expect them to press harder on Finding 14, because exhibits that answer findings are the panel's favorite kind of problem: the soluble kind. Do not expect them to ask about Alban's Sundays. If they do, the answer is one sentence and back to the record."
+
+"And if we win?" you ask. He is precise to the end: 'The decree falls. There is a new trial, on a corrected footing, with Greta's letter and your promotion and the whole IF tab in play. Winning this appeal does not give you Alban. It gives you back the question, asked correctly. Anyone who tells you more is selling something.'
+
+**Choices:**
+- Sleep, and let the tour be taken → **argument_prep**
+  - NOTE (shown after choosing): A week of quiet. The record, upstairs, is findable and complete. The rest is reading, done by strangers, about a boy with a frog.
+
+## [argument_prep] Argument Week
+*Day 75 — Saturday, July 18, 2026 (dayOffset 75)*
+
+The moot is held with two clinic lawyers playing the panel, and they do not play gently: the report question gets eleven minutes of pressure, and Finding 14 gets the session's only laugh — a dry one, from the lawyer playing the presiding judge, reading the log page against the finding aloud and looking up: 'Counsel, is there a page where this referral is sent?' 'There is not, Your Honor. That is the appeal, in one exchange.'
+
+Your part in argument week is attendance and silence. It is the hardest assignment of the season, and the shortest: the record talks now, or it doesn't, and you built it to.
+
+**Choices:**
+- Attend, be silent, and let the record talk → **waiting**
+  - NOTE (shown after choosing): Silence, as a litigation position, is only bearable when the paper is loud. Yours is.
+
+## [waiting] The Waiting
+*Day 82 — Saturday, July 25, 2026 (dayOffset 82)*
+
+Between the moot and the morning there are three days in which nothing can be added to anything: the brief is filed, the record is lodged, the Sundays continue. Alban loses the tooth. The frog is renamed twice. Greta's letter sits in the IF tab like a held breath. Appellate practice, at this altitude, is a discipline of completed things — the only story in this family's saga where doing nothing is, finally, the correct and only move, because everything doable was done in May and June, on dates circled in a kitchen.
+
+**Choices:**
+- Spend the three days on Alban's summer and nothing else → **courthouse_steps**
+  - NOTE (shown after choosing): Summer, kept. The morning will be what it will be. The record already is what it is.
+
+## [courthouse_steps] The Courthouse Steps
+*Day 84 — Monday, July 27, 2026 (dayOffset 84)*
+
+Fenwick, on the steps, gives the appeal its benediction: 'Whatever happens in there, the record they are reading is the record the trial made, complete and findable, with the two questions preserved in it like flies in amber. That part — our part — is done, and it was filed early, not at day thirty. Remember that on the drive home, whichever way it goes.'
+
+Inside, the courtroom has three chairs at the bench and a clock that runs in fifteen-minute increments. Your son's legal existence is about to be argued in units of preserved error. You would not have chosen this instrument. It is the one the system provides, and you have maintained it like a professional.
+
+**Choices:**
+- Go in and listen to the reading → **argument**
+  - NOTE (shown after choosing): Fifteen-minute increments. Two questions. One record.
+
+## [argument] Argument
+*Day 85 — Tuesday, July 28, 2026 (dayOffset 85)*
+
+The agency's counsel argues the decree: the record as a whole, the trial court's credibility calls, the years. Then Fenwick rises, and the appeal becomes a choice about what it is for.
+
+**Choices:**
+- Lead with the preserved report objection AND the Finding 14 exhibit → **decision_vacated** _(REQUIRES FLAG: preservedObjection ; REQUIRES FLAG: recordComplete)_
+  - NOTE (shown after choosing): The objection, its ruling, the author who never sat for cross — then the log page, found in four seconds by a clerk because it was lodged where readers look. The panel asks the agency the moot's question. The answer takes considerably longer than four seconds.
+- Lead with the services exhibit and drop the report objection as too technical → **decision_split**
+  - NOTE (shown after choosing): Finding 14 gets its full airing and lands with weight. The report question — preserved, argued below, abandoned here — is noted by the presiding judge in a tone that enters it into the record of things panels remember about advocates.
+- Lead with Alban: his Sundays, his grandmother, his mother's transformation → **decision_affirmed**
+  - NOTE (shown after choosing): True, all of it, and in the IF tab where it belongs — which is to say, not in this record. A judge asks, not unkindly, for the preserved error. The silence is filled, eventually, by counsel for the agency.
+
+## [decision_vacated] The Opinion: Vacated
+*Day 98 — Monday, August 10, 2026 (dayOffset 98)*
+
+The opinion is twenty-six pages, and its holding is on page three: the decree is VACATED. The report's admission over a preserved objection, without its author subject to cross-examination on its contested characterizations, was error that cannot be called harmless where the decree's findings expressly rest on it; and Finding 14, the services finding, is unsupported on the record — the agency's own admitted exhibit establishes that the referral it faults the mother for ignoring was never sent. Either ground required vacatur. The case is remanded for a new termination trial, on a corrected record.
+
+Beatrix is, in law, Alban's mother again tonight — the decree that ended that is gone. Alban is at his foster family's tonight and at Greta's on Sunday, and the adoption petition, premised on the decree, cannot proceed on a vacated foundation. A new trial will be scheduled. Its record will include the IF tab: a promotion, a grandmother's letter, a teacher's note, two years of Sundays. The question will be asked again — correctly, this time, on a record where findings must survive their own exhibits.
+
+**Choices:**
+- Read the holding a third time and call Greta → **end_vacated**
+  - NOTE (shown after choosing): 'Then we'd better keep the bedroom made,' Greta says, 'for the duration of the question.' The duration of the question. Seventy years old, and she drafts like a judge.
+
+## [decision_split] The Opinion: Split
+*Day 98 — Monday, August 10, 2026 (dayOffset 98)*
+
+The opinion is nineteen pages. Finding 14 falls: unsupported on the agency's own exhibit, it cannot stand, and the decree is vacated in part and remanded for the trial court to reconsider the grounds analysis without it. The report question, abandoned at argument, is not reached — the panel notes the preservation, notes the abandonment, and moves on, as panels do, leaving Finding 9, built on the report, intact for the remand court to weigh as it will.
+
+The decree is wounded, not fallen: termination's second question and the remaining findings survive to be reconsidered below, in a proceeding where the mother now holds one established appellate victory and the IF tab's contents become evidence. The adoption track pauses against a decree under remand — a posture its lawyers will describe, accurately, as unsettled.
+
+**Choices:**
+- Read the last page and call Greta with the precise shape of it → **end_split**
+  - NOTE (shown after choosing): 'Half,' Greta says. 'Then we work on the other half at the new hearing.' The family's oldest grammar, deployed again: we, work, until.
+
+## [decision_affirmed] The Opinion: Affirmed
+*Day 98 — Monday, August 10, 2026 (dayOffset 98)*
+
+The opinion is fourteen pages, courteous and complete: the decree is AFFIRMED. Reviewing the appeal as argued, the panel finds the trial court's evidentiary rulings within its discretion on the issues presented, the findings supported by competent evidence, and the needs-and-welfare determination a proper exercise of the trial court's judgment. The two pressure points on which the appeal was built are addressed in a footnote — the preservation noted, the failure to press them at argument noted after it, in the passive voice panels reserve for professional disappointments.
+
+The adoption may proceed. Alban's Sundays at Greta's will become whatever the adoption's parties arrange or a future court orders. Your legal parenthood ends not with the decree of May 4 but with this affirmance, twenty-six pages of record discipline having been spent, in the final fifteen minutes, on the one argument no record can carry.
+
+**Choices:**
+- Read the footnote twice and put the opinion in the folder → **end_affirmed**
+  - NOTE (shown after choosing): The folder's last appellate section. The IF tab remains, unopened by any court, tabbed with a grandmother's handwriting. Paper keeps. That sentence has never been the whole of comfort, and it is not now.
+
+## [end_vacated] Ending — Vacated: The Decree Falls
+*Day 105 — Monday, August 17, 2026 (dayOffset 105)*
+
+Tonight the law says Beatrix Lindqvist is Alban's mother, because the document that said otherwise was built on a report nobody could question and a finding its own exhibit refuted, and an appellate court, reading a complete and findable record, said so. There will be a new trial. It may end the same way — the agency's remaining evidence is real, Alban's needs are real, and two years of placement are real. It will not end this way: on unexamined paper and an unsent referral. What was won is the correctness of the asking.
+
+The IF tab opens next month, at a case conference, its contents converting from hope to exhibits one by one. Greta's bedroom remains made. The frog, renamed a third time, is not evidence and is also not nothing.
+
+**ENDING — Debrief:**
+
+THE WIN, NAMED HONESTLY — A partial win, and the strongest this scenario offers: the termination decree is vacated and the case remanded for a new trial. Alban does not come home tonight, no court has found that termination is wrong on the merits, and the new trial could reach the same destination by a corrected road. What the appeal won is the thing appeals exist to win — a decision made lawfully, on a reviewable record — plus time, a reset burden, and a record for the retrial that now includes two years the decree never weighed.
+
+THE LAW IN THE BEATS — The clock is Pa.R.A.P. 903(a): a notice of appeal within 30 days after entry of the order — verified from the official rule text for this batch, as is the cross-appeal provision of 903(b) used in Scenario 93. The burden at a termination trial is clear and convincing evidence on the agency (in the verified set); the appeal's mechanics beyond the clock — preservation, the certified record, abandonment of an issue by failing to press it — are stated generically, as appellate practice's ground rules rather than as quoted rules, the same discipline Version 1 used. The parallel adoption track and the absence of any automatic pause are stated the same way: an appeal does not by itself suspend the proceedings below. The record was assembled under 55 Pa. Code § 3130.44(d).
+
+THE HIGHEST-LEVERAGE MOVES — Three, in chronological order: trial counsel's objection (preservation, earned in a losing minute); the notice filed inside its first ten days (margin, converted to work); and the $15 correction that lodged the misfiled exhibit where readers read. The last is the smallest and the one this scenario would save if it could save only one: panels can only credit what they can find.
+
+WHAT NO STRATEGY CONTROLS — The panel's weighing, the retrial's outcome, the foster family's next steps, a seven-year-old's clock, which runs faster than any court's. The route controlled preservation, timing, and the record's completeness and findability. That is the whole of an appellant's power, and this scenario's claim is only that it is real power — sufficient, here, to unmake a decree, and not sufficient, anywhere, to promise a childhood.
+
+
+## [end_split] Ending — Split: Half the Decree Falls
+*Day 105 — Monday, August 17, 2026 (dayOffset 105)*
+
+The services finding is gone; the report-based finding stands for the remand court to weigh; the decree is half-dismantled and the case returns below for a reconsidered grounds analysis, with the adoption unsettled and the mother's appellate credibility established on the point she pressed. Beatrix remains, in the eyes of the surviving findings, subject to a termination that must now be re-justified without its weakest pillar — a materially better position than May's, purchased by half an argument.
+
+The abandoned issue is the ending's tuition: it was preserved at cost, carried through a summer of verification, and spent in a single sentence at argument — 'we rest on the services point' — by an advocate rationing attention. Panels ration too. What is not pressed is, in the end, not decided in your favor; it is merely not decided, and the finding it would have felled stands.
+
+**ENDING — Debrief:**
+
+NAMED HONESTLY — A partial outcome below the best: a genuine appellate win on Finding 14 and a self-inflicted forfeiture on Finding 9. It ranks above affirmance because the decree no longer stands intact and the remand proceeds on a record the mother has already once beaten in part. It ranks below vacatur because the report — the decree's broadest pillar — was never actually argued to the panel that could have felled it.
+
+THE LAW IN THE BEATS — Same frame as the winning route (Pa.R.A.P. 903(a); clear-and-convincing burden; the certified-record discipline; 55 Pa. Code § 3130.44(d)). The abandonment point is stated generically, as before: issues preserved below but not pressed on appeal are not reached — practice's ground rule, dramatized, not a quoted rule.
+
+WHAT NO STRATEGY CONTROLS — The remand court's reconsideration may rebuild the grounds on the surviving findings or fail to; the adoption's lawyers will adapt; Alban will lose another tooth on his own schedule, indifferent to captions. The route controlled the record completely. The argument controlled the route. The lesson lives in the second sentence.
+
+
+## [end_affirmed] Ending — Affirmed: The Footnote
+*Day 105 — Monday, August 17, 2026 (dayOffset 105)*
+
+The decree stands, affirmed. The adoption may proceed on its own schedule. What remains to Beatrix is what remains after any final order: the IF tab's contents, which no court ever opened; Greta's Sundays, which will continue in whatever form a post-adoption family arranges or doesn't; and a record — preserved, timely, complete, findable — that was defeated not by its contents but by the fifteen minutes in which its contents were not argued.
+
+The footnote is the epitaph and the indictment: the panel saw the preserved issues, recorded that they were preserved, and recorded that they were not pressed. Everything the system offers an appellant was built in this story. The building was flawless. The opening of the building, to the only audience empowered to act on it, never quite occurred.
+
+**ENDING — Debrief:**
+
+WHY THIS ENDING — Appellate courts decide the issues argued to them, on the record cited to them. Preservation without presentation is inventory without a store. The decree's two documented weaknesses — an unexaminable report under Finding 9, an unsent referral under Finding 14 — survive this ending unexamined not because they were weak but because the argument chose ground (attachment, transformation, Sundays) that lives outside the certified record and therefore outside the panel's jurisdiction to reward. Post-decree transformation is real evidence — for a remand or a new proceeding. In an appeal, it is weather, and the panel said so in a footnote, kindly, forever.
+
+THE LAW THAT WAS AVAILABLE — All of it: Pa.R.A.P. 903(a)'s clock, beaten inside its first ten days; the clear-and-convincing burden the decree had to carry; the complete record under 55 Pa. Code § 3130.44(d), verified and made findable at the cost of $15 and an afternoon. The scenario's bitter thesis: appellate practice can be lost at exactly one point — the podium, in the framing — after being won at every other.
+
+WHAT NO STRATEGY CONTROLS — No honest guide can say the pressed argument would certainly have won; panels weigh preserved error through harmless-error lenses and a decree's remaining strength. What can be said, exactly: the pressed argument would have been decided. The unpressed one was footnoted. Between decision and footnote lies the whole of advocacy, and this ending is its tuition bill.
+
+
+## [end_quashed] Ending — Quashed: Three Days Late
+*Day 40 — Saturday, June 13, 2026 (dayOffset 40)*
+
+The Superior Court quashes the appeal without reading it. The decree stands — not affirmed, never examined, simply final by the passage of a date that was circled in a kitchen in May. The adoption may proceed. The two preserved issues, the verified record, the misfiled exhibit, the whole summer of work that would have been: none of it occurs, because the one filing on which all of it depended was made on day thirty-three of a thirty-day rule.
+
+Mr. Fenwick's separate, written accounting of his office's failure is a professional document, and whatever remedies it discusses belong to rooms this game does not enter. What the game records is simpler and colder: the rule was Pa.R.A.P. 903(a); the date was June 3; the calendar was in the kitchen; the margin existed and was spent in an out-tray. Beatrix did everything the first week asked of her. The system does not grade the first week. It grades the filing.
+
+**ENDING — Debrief:**
+
+WHY THIS ENDING — A notice of appeal must be filed within 30 days after the entry of the order (Pa.R.A.P. 903(a), verified text). The failure to file a timely notice implicates the appellate court's jurisdiction, and untimely appeals are quashed rather than heard. The scenario presents the lawyer's failure without varnish and the parent's remedy questions without improvisation: what a client may do about a blown deadline is fact-specific professional-liability territory, and the game states that it exists without mapping it — the honest boundary of general information.
+
+THE LAW THAT WAS AVAILABLE — Everything in the winning route, available at the price of a timely filing that this story's Beatrix, in this branch, delegated instead of verifying. The doctrine of the batch, in its harshest form: in appellate practice, trust is not a filing method. Receipts are.
+
+WHAT NO STRATEGY CONTROLS — Office systems, clerks' logs, Fridays. Almost everything else in this scenario was controllable and controlled. That is why this ending exists alongside Scenario 88's: clocks are the one opponent in this system that never bluffs, never tires, and never, ever rounds.
+

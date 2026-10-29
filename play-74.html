@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "startCash": 170,
+  "startDateISO": "2026-12-08",
+  "startNode": "start",
+  "subtitle": "Scenario 74 — Goal: Changed? (a fictional composite)",
+  "summary": "At month ten, the agency asks the court to change Quinn's permanency goal from reunification to adoption — and his mother has nine days to turn eight months of real progress into evidence the court can act on.",
+  "tier": "Complex",
+  "title": "The First 90 Days"
+ },
+ "nodes": [
+  {
+   "body": [
+    "Your name is Josephine Haas — Josie to everyone who has ever actually met you. Your son Quinn is four. He has been living in foster care since February 9, 2026, after an adjudication that followed a relapse you do not waste breath denying anymore. That was ten months ago. The woman in that paperwork has been, piece by piece, replaced.",
+    "Today's mail holds the agency's newest filing. It asks the court, at the permanency hearing on Thursday, December 17, to change Quinn's permanency goal from reunification to adoption.",
+    "Your hands do the thing they used to do in March. Then you put the kettle on, sit down, and read the whole filing twice — because the first thing your lawyer taught you is that a filing is a list of claims, and claims can be answered."
+   ],
+   "choices": [
+    {
+     "next": "filing_terms",
+     "note": "\"Read me the caption and the last page,\" she says. \"Then breathe.\"",
+     "text": "Call your lawyer before you call anyone else"
+    },
+    {
+     "next": "filing_terms",
+     "note": "By the third pass, one sentence stands out: the agency is asking. Asking is not getting.",
+     "text": "Read it a third time, alone, until the words stop swimming"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "start",
+   "kicker": "Day 0 — Tuesday, December 8, 2026",
+   "title": "The Filing in the Mail"
+  },
+  {
+   "body": [
+    "Your lawyer, Ms. Adler, explains it plainly, the way she explains everything: a permanency goal is what the plan aims at. Right now the plan aims at Quinn coming home, and every service, visit, and review is organized around that aim. The agency wants the court to change the aim itself.",
+    "\"Here is what it is not,\" she says. \"It is not a termination of your rights. Nobody's rights end at a goal-change hearing — termination, if it ever comes, is its own case, and the agency would have to prove it by clear and convincing evidence. Here is what it is: when the goal changes, the energy changes with it. Services aimed at return wind down. Visits stop being rehearsals for home. Everyone in the system starts working toward a different ending.\"",
+    "\"So we don't argue about whether you love him,\" she says. \"We argue about what the evidence shows. That fight, we can prepare for.\""
+   ],
+   "choices": [
+    {
+     "next": "counsel_map",
+     "note": "\"Now you're asking the hearing's real question.\"",
+     "text": "Ask what the judge actually has to decide on December 17"
+    },
+    {
+     "next": "counsel_map",
+     "note": "\"It counts if the court can see it. Seeing it is our job for the next nine days.\"",
+     "text": "Ask whether eight months of doing everything counts for anything"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "filing_terms",
+   "kicker": "Day 0 — Tuesday, December 8, 2026",
+   "title": "What a Goal Change Is — and Is Not"
+  },
+  {
+   "body": [
+    "Ms. Adler draws the hearing the way the statute builds it. This is a permanency hearing — held within six months of removal and within six months of each previous permanency hearing (42 Pa.C.S. § 6351(e)(3)(i)) — and at each one the court must determine specific things: the continuing necessity of placement; compliance with the permanency plan; progress toward alleviating the circumstances that caused placement; and whether reasonable efforts were made to finalize the plan. (§ 6351(f)(1), (2), (3), (5.1))",
+    "\"Only after those determinations — based upon the determinations made under subsection (f) and all relevant evidence — does the court choose the outcome.\" (§ 6351(f.1)) The outcomes on the menu are: return to parent; adoption, with the agency to file for termination; a legal custodian; a fit and willing relative; or another planned permanent living arrangement. (§ 6351(f.1))",
+    "\"Sequence is the law's, not the agency's,\" she says. \"Determinations first. Outcome second. If we win the first part honestly, the second part is a much shorter argument.\""
+   ],
+   "choices": [
+    {
+     "next": "record_request",
+     "note": "\"Nine days. The file first, then your proof, then the people. In that order.\"",
+     "text": "Start where she starts: with the agency's own file"
+    },
+    {
+     "next": "record_request",
+     "note": "\"It almost certainly can't, and asking spends goodwill we'll need. Nine days is enough — if we spend them on paper.\"",
+     "text": "Ask if the hearing can be postponed to buy preparation time"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "counsel_map",
+   "kicker": "Day 0 — Tuesday, December 8, 2026",
+   "title": "Two Questions, in the Law's Order"
+  },
+  {
+   "body": [
+    "Ms. Adler wants the agency's complete record — not the summary the caseworker reads from, the file itself: notes, referrals, the scored summary, all of it. The regulation is one sentence long and she makes you say it back to her: the record \"shall be released upon request.\" (55 Pa. Code § 3130.44(d)) And it is not to be read to protect agency employees' privacy as a basis for withholding. (§ 3130.44(f))",
+    "\"You have asked for pieces of this file before, on the phone, and been told pieces were coming,\" she says. \"Phone requests live where hallway promises live. This one goes in writing, dated, with a copy kept — so that on December 17 there is a request in the world that can be pointed to.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "File — agency record on written request (§ 3130.44(d)): housing referral drafted March 4, sent May 27"
+     ],
+     "next": "request_receipt",
+     "note": "One page. It will take days to be filled — and what it surfaces on day 6 will matter more than anything said in the hallway.",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "text": "Sign the written request for the complete agency record, through counsel, today"
+    },
+    {
+     "next": "request_receipt",
+     "note": "She says she'll \"get the highlights together.\" Highlights chosen by the other side have a way of highlighting the other side.",
+     "text": "Ask the caseworker by phone to just send the important parts"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "record_request",
+   "kicker": "Day 2 — Thursday, December 10, 2026",
+   "title": "Hinge A: The Written Request"
+  },
+  {
+   "body": [
+    "The request goes out with a copy for your folder — the folder that now lives on your kitchen counter the way other people's Bibles used to, consulted daily and carried everywhere. Ms. Adler dates her copy, stamps yours, and writes the hearing date across the top of both in red pen.",
+    "\"Whatever arrives, arrives against a deadline,\" she says. \"And whatever doesn't arrive, we'll be able to say exactly when we asked. In this system, the asking is half the evidence.\""
+   ],
+   "choices": [
+    {
+     "next": "gal_call",
+     "note": "Front of the folder. Where, nine days from now, a judge's clerk will be able to find it in seconds.",
+     "text": "File the stamped copy at the front of the folder, where the hearing exhibits will go"
+    },
+    {
+     "next": "gal_call",
+     "note": "Crowded is what a worked case looks like. Back pockets are where good paper goes to be forgotten, though.",
+     "text": "Put it in the folder's back pocket — the folder is getting crowded"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "request_receipt",
+   "kicker": "Day 2 — Thursday, December 10, 2026",
+   "title": "A Copy, a Receipt, a Date"
+  },
+  {
+   "body": [
+    "Quinn has his own lawyer in this — the guardian ad litem, Mr. Osei — whose job is Quinn's interests, not yours and not the agency's. Ms. Adler calls him with you on the line, because a fact learned secondhand arrives bent.",
+    "He is measured, the way he always is, and then he is not: he has watched Quinn run to you at every visit for months; he has read the aftercare reports; he is not prepared to tell a court that this case should stop aiming at home. \"If the record at the hearing is what you describe,\" he says, \"I will support more time — and I will say so on the record.\"",
+    "\"On the record\" is the only dialect this building fully trusts. You write his words in the folder, with the date, while he is still saying them."
+   ],
+   "choices": [
+    {
+     "next": "aunt_first",
+     "note": "\"Dates,\" he says. \"Give me a return that happens on dates, and I can defend it. Give me 'soon' and I can't.\"",
+     "setFlags": [
+      "galSupport"
+     ],
+     "text": "Ask him exactly what he wants to see in the packet before he commits to a schedule"
+    },
+    {
+     "next": "aunt_first",
+     "note": "Support is real, and it is also conditional in the way of all courtroom things: on the record he is shown.",
+     "text": "Thank him and take the support as settled"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "gal_call",
+   "kicker": "Day 2 — Thursday, December 10, 2026",
+   "title": "The Guardian ad Litem's Voice"
+  },
+  {
+   "body": [
+    "Your sister Lori lives in Ohio, four hours and one state line away, and she has spent the autumn doing something the agency's filing does not mention: a full home study, completed, approved, filed in her county — she is cleared to take Quinn if a court ever asks her to.",
+    "On the phone she is blunt in the family way. \"I am not trying to take your son, Josie. I am trying to make sure nobody can stand up in that courtroom and say adoption by strangers is the only permanence on the table. Because it isn't. I'm on the table.\"",
+    "She is right about the law's menu, too: alongside return to a parent and adoption, the court may choose a fit and willing relative. (§ 6351(f.1)) Her study doesn't replace your case. It removes the agency's favorite sentence — \"there is no other option\" — from the room."
+   ],
+   "choices": [
+    {
+     "next": "evidence_shelf",
+     "note": "\"Cleared since October,\" she says. \"Tell your lawyer I'm a phone call, not a hope.\"",
+     "text": "Ask her to keep December 17 completely clear, in case counsel needs her live"
+    },
+    {
+     "next": "evidence_shelf",
+     "note": "A letter is something. A voice that can answer the judge's questions is something else. The choice comes back on day 4.",
+     "text": "Ask her to write it all in a letter instead — live testimony feels like a lot to ask"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "aunt_first",
+   "kicker": "Day 2 — Thursday, December 10, 2026",
+   "title": "Ohio, on the Phone"
+  },
+  {
+   "body": [
+    "That evening you lay eight months on the kitchen table, literally. Treatment completion certificate, framed by nobody, creased by your folder. Aftercare attendance records. Screen results — every one negative since spring, a small stack of unglamorous miracles. The visit log. The lease, signed in June, and five months of rent receipts paper-clipped behind it.",
+    "It is a lot of proof, and it is shaped like a pile. Ms. Adler's voice in your head is unkind and accurate: a pile persuades nobody. Judges read exhibits — numbered, indexed, findable in the thirty seconds a fact is being argued about.",
+    "The difference between your eight months and the agency's version of your eight months is, in large part, stationery."
+   ],
+   "choices": [
+    {
+     "next": "exhibits_build",
+     "note": "Stationery, yes. Also the whole ballgame.",
+     "text": "Spend day 4 turning the pile into a packet — numbered exhibits, one-page index"
+    },
+    {
+     "next": "exhibits_build",
+     "note": "Her report tells a story. You have read her summaries before. It is not this one.",
+     "text": "Trust that the caseworker's report already tells this story"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "evidence_shelf",
+   "kicker": "Day 2 — Thursday, December 10, 2026",
+   "title": "The Shelf of Proof"
+  },
+  {
+   "body": [
+    "Saturday is for the unglamorous sacrament: the copy shop, the three-hole punch, the tabs. Ms. Adler's paralegal loans you the template — Exhibit 1, treatment; Exhibit 2, aftercare; Exhibit 3, screens; Exhibit 4, visits; Exhibit 5, housing — and a one-page index that says, in plain lines, what each exhibit proves and which determination it answers.",
+    "Copies for the court, the agency, the GAL, and you. The register tape says twenty dollars. It is the best-funded argument you own."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Exhibit — progress packet with index: treatment, aftercare, screens, visits, lease"
+     ],
+     "cash": -20,
+     "next": "treatment_records",
+     "note": "When a fact is argued on December 17, this is the difference between 'it's in there somewhere' and 'Exhibit 3, Your Honor.'",
+     "setFlags": [
+      "exhibitsReady"
+     ],
+     "text": "Build the full packet — five exhibits, one-page index, four copies"
+    },
+    {
+     "next": "treatment_records",
+     "note": "Originals in a lap are not exhibits. You have heard this sentence before, in other parents' stories. It is still true in yours.",
+     "text": "Bring the originals in the folder and let counsel sort it out at the hearing"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "exhibits_build",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "Hinge B: A Packet With an Index"
+  },
+  {
+   "body": [
+    "The treatment program's counselor, Ms. Tran, answers on a Saturday, which tells you something about her. Yes, she will put it in writing: program completed in July; aftercare attended weekly since; relapse-prevention plan in place and, as far as her records show, lived.",
+    "\"Everyone in your hearing will say the word 'progress,'\" Ms. Adler says, reading the letter when it arrives. \"This letter is what progress looks like when it's a document instead of an adjective. It answers the (f)(3) question — progress toward alleviating the circumstances that caused placement — in a professional's own hand.\""
+   ],
+   "choices": [
+    {
+     "next": "screens_history",
+     "note": "Dates are the difference between a claim and a chronology. She adds them without being asked twice.",
+     "setFlags": [
+      "providerLetter"
+     ],
+     "text": "Ask Ms. Tran to include the aftercare dates, not just the completion date"
+    },
+    {
+     "next": "screens_history",
+     "note": "It does say that. It just doesn't yet say the eight quiet months after it, which are the actual argument.",
+     "text": "Take the letter as it stands — it says completed, and completed is the point"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "treatment_records",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "Aftercare, in Writing"
+  },
+  {
+   "body": [
+    "The screen history, printed out, is a column of dates and a column of one repeated word. Negative. Negative. Negative. Random screens, scheduled screens, screens after visits and screens after holidays — the spring relapse that started this case has not repeated, and the column is the proof in its least poetic form.",
+    "Ms. Adler slides it into Exhibit 3 without ceremony. \"The agency's filing says 'history of relapse' eleven times,\" she says. \"This exhibit says the history has a second half.\""
+   ],
+   "choices": [
+    {
+     "next": "visit_log_node",
+     "note": "Random screens are the ones nobody can accuse you of scheduling around. They go in front.",
+     "text": "Have the lab print the complete history, including the random screens"
+    },
+    {
+     "next": "visit_log_node",
+     "note": "The summary is accurate and thinner — it omits the spring randoms, which happen to be the strongest pages.",
+     "text": "Use the summary page the program already sent"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "screens_history",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "Eight Months of Screens"
+  },
+  {
+   "body": [
+    "The visit log is the exhibit you did not have to build, only to obtain: every scheduled visit since March, and in the attendance column, a perfect record — through the bus strike in October, through the week Quinn had an ear infection and the visit moved to the agency's quiet room, through your double shift in November.",
+    "Quinn's foster mother, initialling the log each week, has been writing your (f)(2) compliance evidence all year without either of you calling it that. Compliance with the permanency plan is one of the determinations the court must make (§ 6351(f)(2)) — and here it is, initialled, dated, boring, perfect."
+   ],
+   "choices": [
+    {
+     "next": "housing_lease",
+     "note": "The initialled pages are the exhibit. A summary of them would be a rumor about an exhibit.",
+     "text": "Get a clean copy of the full log for Exhibit 4, initialled pages included"
+    },
+    {
+     "next": "housing_lease",
+     "note": "The agency's copy exists. Whether it is the copy the judge's packet opens to is another question, and not yours to control.",
+     "text": "Note the perfect record in the index and rely on the agency's copy"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "visit_log_node",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "Never Missed"
+  },
+  {
+   "body": [
+    "Housing is where filings go to sound reasonable. The agency's filing says you were \"without stable housing into the summer\" — true, in the way a photograph of March is true of December. You signed the lease in June. Six months of receipts say the apartment has been yours, paid, quiet, and ready since.",
+    "What the filing does not say — what you do not yet know, because it is sitting in the agency's own file waiting for your written request to surface it — is why the spring housing search took as long as it did. That answer arrives on day 6, in the agency's own handwriting.",
+    "For now, the lease goes into Exhibit 5 with the receipts behind it, and the index line writes itself: housing stable since June."
+   ],
+   "choices": [
+    {
+     "next": "aunt_prep",
+     "note": "A start date turns 'stable now' into 'stable for six months' — a different sentence in a judge's mouth.",
+     "text": "Add the rent receipts and the June lease together, so the stability has a start date"
+    },
+    {
+     "next": "aunt_prep",
+     "note": "In this building there is no overkill. There is only proof and the absence of it, wearing similar clothes.",
+     "text": "Include the lease alone — the receipts feel like overkill"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "housing_lease",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "The Lease and the Quiet Months"
+  },
+  {
+   "body": [
+    "Ms. Adler is direct: Lori's completed home study is already a document, and documents are good. But at the hearing, the agency will argue that adoption is the only permanence available — and a document cannot answer a judge's follow-up question. A person can. Lori can testify by phone or video; courts do this routinely, and her study would be handed up while she speaks.",
+    "\"Her being live reframes the whole (f.1) menu,\" Ms. Adler says. \"It's no longer mother-or-adoption. It's mother, with a studied, approved relative standing behind the return — and that same relative as an option herself if the court wants one. The agency's 'only option' argument dies either way.\""
+   ],
+   "choices": [
+    {
+     "next": "records_reveal",
+     "note": "\"Four hours is a long drive to be a letter,\" Lori says. \"Set up the camera.\"",
+     "setFlags": [
+      "kinTestifies"
+     ],
+     "text": "Ask Lori to testify live by video, home study in hand"
+    },
+    {
+     "next": "records_reveal",
+     "note": "The study will be in the packet either way. What won't be there is a voice, answering, when the judge leans forward.",
+     "text": "File her home study and letter, and spare her the witness chair"
+    }
+   ],
+   "dayOffset": 4,
+   "id": "aunt_prep",
+   "kicker": "Day 4 — Saturday, December 12, 2026",
+   "title": "Hinge C: Will She Testify?"
+  },
+  {
+   "body": [
+    "The agency's record arrives Monday, in response to the written request — thick, partly blacked out at the edges, and entirely worth the asking. Ms. Adler reads it the way she reads everything: with a ruler, a highlighter, and no expression at all.",
+    "Then she stops. She turns back four pages. She turns forward again. \"Josie,\" she says, in the tone of a woman laying down a winning card she intends to play politely, \"tell me about the housing referral.\"",
+    "\"What housing referral?\" you say. \"Exactly,\" she says."
+   ],
+   "choices": [
+    {
+     "next": "referral_timeline",
+     "note": "Dates first. In this file, dates are the whole story.",
+     "text": "Read the referral pages with her, line by line, dates first"
+    },
+    {
+     "next": "referral_timeline",
+     "note": "She summarizes. But she makes you look at the two dates yourself before she puts the ruler down.",
+     "text": "Ask her to summarize — the file's handwriting makes your eyes ache"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "records_reveal",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "The Record Arrives"
+  },
+  {
+   "body": [
+    "The dates are these: the agency's housing referral — the referral your plan required, to the program that eventually found your apartment — was drafted on March 4. It was sent on May 27. Eleven weeks in a drawer, or an outbox, or wherever unsent referrals go, while your file recorded you as 'not yet housed' and your plan clock ran.",
+    "Your June lease, in other words, is not evidence that you were slow. Part of the delay was the agency's own — and that is not gossip, it is reasonable-efforts material: at the hearing the court must determine whether reasonable efforts were made to finalize the permanency plan. (§ 6351(f)(5.1))",
+    "\"We don't wave this like a flag,\" Ms. Adler says. \"We lay it down like a date. March 4. May 27. The court can do its own arithmetic.\""
+   ],
+   "choices": [
+    {
+     "next": "casa_choice",
+     "note": "One page, three dates, no adjectives. It is the most dangerous page in the packet precisely because it has no adjectives.",
+     "setFlags": [
+      "referralDated"
+     ],
+     "text": "Build a one-page timeline — drafted, sent, lease signed — and put it behind the index"
+    },
+    {
+     "next": "casa_choice",
+     "note": "Oral arithmetic fades by lunch. A timeline in the packet is still true, and still findable, at 4 p.m.",
+     "text": "Raise it orally at the hearing and let the judge ask for the file"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "referral_timeline",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "Eleven Weeks, in Two Dates"
+  },
+  {
+   "body": [
+    "The other document in the judge's packet is the CASA report — the court-appointed advocate's summary, warm in tone and five months old. It describes a woman in early, fragile recovery: missed appointments, unstable housing, 'limited insight.' It describes July's Josie, faithfully. It will be read on Thursday as if it describes December's.",
+    "Ms. Adler is calm about the fix and firm about the method. \"We do not attack a volunteer. We correct a document. A short written correction, filed through counsel before the hearing — two pages, dates, proof attached — so the judge reads the correction alongside the report, not instead of hearing about it for the first time mid-testimony. Objecting cold in the room makes it a fight. Filing makes it a record.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Filing — written correction to the CASA report, filed before the hearing"
+     ],
+     "next": "summary_rebuttal",
+     "note": "Two pages, dated, courteous, and impossible to un-read. The judge's packet now corrects itself.",
+     "setFlags": [
+      "casaCorrected"
+     ],
+     "text": "File the short written correction through counsel before the hearing, proof attached"
+    },
+    {
+     "next": "summary_rebuttal",
+     "note": "In the moment is where corrections go to sound like arguments. The report, meanwhile, will have sat in the packet, uncorrected, for days.",
+     "text": "Save it for the hearing — object when the report is mentioned, in the moment"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "casa_choice",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "Hinge D: The Stale Report"
+  },
+  {
+   "body": [
+    "There is a second stale line, smaller and colder. The scored assessment summary in the file still carries a provision from the spring: \"housing: unstable.\" It was a true line in April. It rides into December's hearing stapled to the agency's paperwork as if nothing since had happened — no lease, no receipts, no June.",
+    "Ms. Adler drafts a short rebuttal to file alongside the CASA correction, citing the rule that lets a party present evidence and argument to rebut a provision, and challenge factual errors. (Pa.R.J.C.P. 1340(E), (F)) Then she says the sentence she says about this rule every single time, because it is true every single time: whether Rule 1340 reaches a scored assessment summary has NOT been tested in a published opinion — it is an argument counsel makes, not a settled right.",
+    "\"We file it as an argument, labeled as an argument,\" she says. \"The lease is the proof. The rule is the door we knock on.\""
+   ],
+   "choices": [
+    {
+     "next": "clock_answer",
+     "note": "Honest paper: the proof is certain, the rule is an argument, and the filing says which is which.",
+     "setFlags": [
+      "summaryRebutted"
+     ],
+     "text": "File the rebuttal with the lease attached, Rule 1340 flagged as untested in the filing itself"
+    },
+    {
+     "next": "clock_answer",
+     "note": "The lease does answer it — in your packet. The summary line sits in theirs, unanswered in the place it was written.",
+     "text": "Leave the summary line alone — the lease exhibit already answers it"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "summary_rebuttal",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "One Line in the Scored Summary"
+  },
+  {
+   "body": [
+    "Ms. Adler rehearses the agency's best argument before they can make it, because it is coming: Quinn has been in care ten months. In five more, he reaches fifteen of the most recent twenty-two months — and the agency will stand up and call that a deadline with your name on it.",
+    "\"Here is the honest law,\" she says. \"The fifteen-of-twenty-two determination is not today's question. At fifteen months, the court determines whether the agency has filed or joined a termination petition — unless the child is cared for by a relative, or the agency has documented a compelling reason filing would not serve the child, or the family was not provided the services necessary for safe return within the plan's time frames. (§ 6351(f)(9)) At month ten, that determination has not been triggered. Nobody gets to borrow May's clock to win December's hearing.\"",
+    "\"And the services clause matters in embryo,\" she adds. \"A referral that sat unsent for eleven weeks is the plan's own time frame, testified against itself. We don't hide from the clock. We date it, and we answer it.\""
+   ],
+   "choices": [
+    {
+     "next": "packet_sent",
+     "note": "Named, dated, answered. A clock that has been answered out loud loses most of its power to frighten a courtroom.",
+     "setFlags": [
+      "clockAnswered"
+     ],
+     "text": "Prepare the answer: the (f)(9) determination is not triggered at month ten — and the plan's time frames cut both ways"
+    },
+    {
+     "next": "packet_sent",
+     "note": "Judges raise timelines. It is, in a real sense, the job description. An unanswered clock is the loudest thing in the room.",
+     "text": "Hope the judge doesn't raise the timeline if counsel doesn't"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "clock_answer",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "Answering a Clock That Has Not Struck"
+  },
+  {
+   "body": [
+    "By Monday evening the machinery is in motion: the progress packet ready to hand up, the CASA correction filed, the summary rebuttal filed with it, the referral timeline behind the index, Lori's testimony arranged, the GAL's support spoken aloud and written down in your folder with its date.",
+    "Copies go to the GAL's office so Mr. Osei reads your version before Thursday, not during it. Postage and printing come out of the envelope in your purse marked, in your own hand, COURT."
+   ],
+   "choices": [
+    {
+     "cash": -10,
+     "next": "stepped_draft",
+     "note": "An ally who has read the packet is a different witness from an ally who is handed it in the hallway.",
+     "setFlags": [
+      "packetShared"
+     ],
+     "text": "Send the GAL a courtesy copy of the full packet today, and keep the mailing receipt"
+    },
+    {
+     "next": "stepped_draft",
+     "note": "First looks in courtrooms happen at courtroom speed. Mr. Osei's support was promised against a record — this choice makes him find it live.",
+     "text": "Let the hearing itself be the GAL's first full look"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "packet_sent",
+   "kicker": "Day 6 — Monday, December 14, 2026",
+   "title": "Paper, Filed Before the Hearing"
+  },
+  {
+   "body": [
+    "The night before the hearing is for the most important drafting in the case, and it is not a speech. It is the ask. Ms. Adler spreads two versions on the table. Version one says: give Josie more time. Version two says something else entirely.",
+    "\"Quinn's life is not on hold while we deliberate — the agency will say that sentence, and it is a true sentence,\" she says. \"So our answer cannot be 'more open-ended time.' Our answer is a stepped return, with dates: unsupervised day visits in January, overnights by February, full return by the spring review, services and screens continuing through every step. That is (f.1)(1) — return to parent — drawn as a schedule instead of a hope. It gives the judge something to sign. 'More time' gives the judge something to refuse.\""
+   ],
+   "choices": [
+    {
+     "next": "findings_language",
+     "note": "A schedule is an argument a judge can grant. It also answers the clock: this plan finishes before May ever arrives.",
+     "setFlags": [
+      "steppedAsk"
+     ],
+     "text": "Draft the ask as a stepped return with dates — overnights by February, full return by the spring review"
+    },
+    {
+     "next": "findings_language",
+     "note": "Progress does not speak. Exhibits speak, witnesses speak, and asks get granted or refused. 'More time' is the ask this hearing was built to refuse.",
+     "text": "Ask for more time under the current goal, and trust the progress to speak for itself"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "stepped_draft",
+   "kicker": "Day 8 — Wednesday, December 16, 2026",
+   "title": "The Ask, With Dates"
+  },
+  {
+   "body": [
+    "Ms. Adler drafts the closing the way she drew the hearing on day 0: determinations first, outcome second, in the statute's own sequence. Substantial compliance with the plan — § 6351(f)(2) — and the visit log, the aftercare record, and the screens are its exhibits. The circumstances that caused placement, alleviated — § 6351(f)(3) — treatment completed, relapse unrepeated for eight months, housing stable since June.",
+    "And then the honest sentence, laid down like a date: on reasonable efforts to finalize the plan — § 6351(f)(5.1) — the record shows a mother who did her parts on time, and a housing referral that sat unsent for eleven weeks of the plan's own spring. \"We ask the court to find the efforts were not all reasonable,\" Ms. Adler says, \"and then to choose the outcome the determinations point to: (f.1)(1), return, on the stepped schedule. Findings first. Outcome second. That order is not our preference. It is the law's.\""
+   ],
+   "choices": [
+    {
+     "next": "aunt_logistics",
+     "note": "Determinations, then outcome. By the third rehearsal you could recite it in your sleep, which is roughly the plan.",
+     "text": "Rehearse the closing in that order until the sequence is automatic"
+    },
+    {
+     "next": "aunt_logistics",
+     "note": "\"Fairness is the closing's heart,\" she says, \"but the statute is its skeleton. Hearts without skeletons don't stand up in court.\"",
+     "text": "Ask her to lead with the fairness of it — eight months of work should open the argument"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "findings_language",
+   "kicker": "Day 8 — Wednesday, December 16, 2026",
+   "title": "Findings Language"
+  },
+  {
+   "body": [
+    "Wednesday evening is logistics, the unglamorous load-bearing wall of every hearing: the video link tested twice, Lori's home study scanned and in the packet, her phone charged, her testimony outlined in four plain points — who she is, what the study found, that she supports Quinn going home to his mother, and that she stands ready herself if the court ever wants a fit and willing relative instead.",
+    "\"She is not your backup plan,\" Ms. Adler says, watching the test call connect. \"In the law's language she is a permanency option — (f.1)(4) — and her existing is what makes 'adoption or nothing' untrue. Those are different jobs and she does both by simply showing up.\""
+   ],
+   "choices": [
+    {
+     "next": "rehearsal",
+     "note": "Everything that can be rehearsed has been. What remains is sleep, which is also preparation.",
+     "text": "Run the full test — link, study, four points — and end the night early"
+    },
+    {
+     "next": "rehearsal",
+     "note": "There is always one more page. There is only one of you, and she has a hearing at nine.",
+     "text": "Keep polishing the packet past midnight — there is always one more page"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "aunt_logistics",
+   "kicker": "Day 8 — Wednesday, December 16, 2026",
+   "title": "Testing the Link"
+  },
+  {
+   "body": [
+    "Last rehearsal. Ms. Adler takes the judge's chair — a kitchen chair, turned around — and asks the question she guarantees is coming, in the plainest voice she owns: \"Ms. Haas. There was a relapse before. What is different this time?\"",
+    "It is the question the whole case hides inside. A promise answers it badly; the year has heard promises. A record answers it well: treatment completed, aftercare kept, a column of negative screens, visits never missed, a lease six months old — each one a page the judge can be handed while you say it.",
+    "\"Don't tell the court you're different,\" Ms. Adler says, turning the chair back. \"Show the court the difference, one exhibit at a time. Differences that can be handed up survive cross-examination. Differences that are only said are just weather.\""
+   ],
+   "choices": [
+    {
+     "next": "night_before",
+     "note": "By the last answer, you are not pleading. You are indexing. It feels, strangely, like dignity.",
+     "setFlags": [
+      "answerReady"
+     ],
+     "text": "Answer it with the record — exhibit by exhibit, date by date"
+    },
+    {
+     "next": "night_before",
+     "note": "The judge will hear a mother either way. The question is whether she'll also be holding the proof while she listens.",
+     "text": "Answer it from the heart — the judge should hear a mother, not a filing cabinet"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "rehearsal",
+   "kicker": "Day 8 — Wednesday, December 16, 2026",
+   "title": "What Is Different This Time?"
+  },
+  {
+   "body": [
+    "Quinn's drawing is on your refrigerator: a house, a sun doing its best, two figures holding hands with the seriousness of architecture. He drew it at a visit in November and the worker let you keep it, and it has been supervising your kitchen ever since.",
+    "The folder is packed. The packet is copied. The ask has dates. Somewhere in Ohio your sister is charging her phone; somewhere across town a stale report sits in a judge's packet next to its correction, like a photograph next to its negative; and the agency's own file now contains two dates — March 4, May 27 — that it will have to carry into the room itself.",
+    "You sleep the way people sleep before weather: lightly, and in full knowledge that you've done the preparing that preparing can do."
+   ],
+   "choices": [
+    {
+     "next": "hearing_open",
+     "note": "Tomorrow the record speaks. Tonight, remarkably, there is nothing left to file.",
+     "text": "Set the alarm, lay out the folder, and sleep"
+    },
+    {
+     "next": "hearing_open",
+     "note": "You know it cold by page two. Some things a year teaches you completely.",
+     "text": "Read the agency's filing one last time, to know the other side cold"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "night_before",
+   "kicker": "Day 8 — Wednesday, December 16, 2026",
+   "title": "The Night Before"
+  },
+  {
+   "body": [
+    "The courtroom is smaller than its consequences. The judge has the packet — the agency's reports, the CASA report and, filed days ago and already in her hands, its correction. Ms. Adler sits close enough that her sleeve brushes yours when she writes. Mr. Osei, Quinn's lawyer, sits where Quinn's interests sit, which today is its own geography.",
+    "The judge opens the way the statute opens: this is a permanency hearing; the court will make its determinations on placement, compliance, progress, and reasonable efforts, and then determine the permanency outcome. (§ 6351(f), (f.1)) Sequence, announced out loud, on the record. Your lawyer's whole strategy, spoken by the court itself."
+   ],
+   "choices": [
+    {
+     "cash": -10,
+     "next": "agency_opening",
+     "note": "Early is a small exhibit too. The bailiff notices. Bailiffs notice everything.",
+     "text": "Take the bus in early, packet on your lap, and be seated before the agency arrives"
+    },
+    {
+     "next": "agency_opening",
+     "note": "On time, represented, prepared. The hearing does not grade arrivals — but it remembers textures.",
+     "text": "Arrive with counsel at the call of the list, packet in her briefcase"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "hearing_open",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "The Permanency Hearing"
+  },
+  {
+   "body": [
+    "The agency's counsel is professional and unhurried. Quinn, she says, has been in care ten months. His mother relapsed once, after a period of sobriety, which is precisely the pattern this court must weigh. The plan has run most of a year. Children, she says, cannot wait indefinitely on adult recovery timelines — Quinn deserves a decision, and the decision the evidence supports is a goal of adoption under § 6351(f.1).",
+    "It is a well-built argument. Notice what it is built of: the spring, the pattern, the passage of time. Notice what it does not yet contain: a single document dated after July."
+   ],
+   "choices": [
+    {
+     "next": "agency_witness",
+     "note": "Ms. Adler writes one word on her pad and turns it toward you: sequence.",
+     "text": "Listen without reacting — your turn is a place in the order, not an interruption"
+    },
+    {
+     "next": "agency_witness",
+     "note": "She writes two of them down. The rest, her pad says without looking up, are already exhibits.",
+     "text": "Whisper corrections to Ms. Adler as each spring fact lands"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "agency_opening",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "The Agency's Ask"
+  },
+  {
+   "body": [
+    "The caseworker testifies honestly about the case she knows best: the February relapse, the March chaos, housing searched for and not found, a mother at the beginning of treatment whose insight was, in the file's phrase, limited. Cross-examination is gentle and chronological. When did treatment complete? July. Screens since? The witness consults the file. Negative, all of them. Visits missed? A pause. None.",
+    "The testimony does not collapse — the spring was real, and nobody in your chair pretends otherwise. It simply acquires a second half, question by dated question, until the witness has described two different women and the file only has a name for one of them."
+   ],
+   "choices": [
+    {
+     "next": "agency_clock",
+     "note": "Short crosses end on the strongest answer. The strongest answer here was a pause, then: none.",
+     "text": "Let the chronology do the work — counsel keeps the cross short and dated"
+    },
+    {
+     "next": "agency_clock",
+     "note": "She asks it once, cleanly, and sits down on the answer: the reports are written on a cycle. The cycle, not the mother, is what stopped at July.",
+     "text": "Signal counsel to press the witness on why the reports stop at July"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "agency_witness",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "The Caseworker's Spring"
+  },
+  {
+   "body": [
+    "Then the agency plays the clock, exactly as rehearsed. In five months, counsel says, Quinn will have been in placement fifteen of the most recent twenty-two months. The law's patience has a number, and the number is approaching. Quinn's childhood, counsel says, is not a waiting room; every month of limbo is a month of a four-year-old's life spent between addresses.",
+    "It lands, because half of it is true: Quinn does deserve a decision. What the argument quietly does is borrow a determination the statute schedules for month fifteen (§ 6351(f)(9)) and spend it at month ten, in a hearing whose actual questions are compliance, progress, and efforts. Ms. Adler's pen moves once. She has been waiting, politely, for this exact sentence."
+   ],
+   "choices": [
+    {
+     "next": "agency_packet",
+     "note": "Clocks are answered with dates, and the dates are all in the closing's first five minutes.",
+     "text": "Let Ms. Adler answer the clock in the closing, where the determinations live"
+    },
+    {
+     "next": "agency_packet",
+     "note": "She shakes her head once, barely. \"Not an objection,\" she whispers. \"A determination. We answer it in the (f) findings, where it can't be waved off.\"",
+     "text": "Ask her to object now — the fifteen-month rule isn't this hearing's rule"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "agency_clock",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "Fifteen Months Is Five Months Away"
+  },
+  {
+   "body": [
+    "The agency rests on its packet: the caseworker's reports, the CASA summary — five months old, warm, describing July — and the scored assessment summary with its spring provision still reading \"housing: unstable.\" The judge turns pages with the particular stillness of a person comparing documents against each other.",
+    "In her packet, because your side filed them days ago, sit the correction and the rebuttal, each with its proof attached: the lease behind one, the receipts behind the other. Nobody has to announce them. That is the entire point of filing before the hearing: the packet corrects itself while the agency is still talking."
+   ],
+   "choices": [
+    {
+     "next": "josie_case",
+     "note": "Paper filed early works in silence. It is the only advocate in the room who never gets nervous.",
+     "text": "Watch the judge read — the filed paper is doing its work without you"
+    },
+    {
+     "next": "josie_case",
+     "note": "\"She's seen them,\" Ms. Adler murmurs. \"Watch her bookmark. Judges bookmark what they're going to use.\"",
+     "text": "Ask Ms. Adler to highlight the stale dates out loud for the transcript"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "agency_packet",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "The Packet They Brought"
+  },
+  {
+   "body": [
+    "Your case is not a speech. It is a handing-up. Exhibit 1: treatment, completed, with the provider's letter and its aftercare dates. Exhibit 2 becomes Exhibit 3 in the judge's hands — she is reading ahead — screens, a column of one word, eight months long. Exhibit 4: the visit log, initialled, complete, unbroken. Exhibit 5: the lease, June, with the receipts standing behind it like ushers.",
+    "Ms. Tran's letter is read into the record. The (f)(2) compliance story and the (f)(3) progress story are the same exhibits wearing their two statutory hats, and counsel says so, once, so the transcript knows it. The judge asks two questions — both about dates. Dates are the questions this packet was built to survive."
+   ],
+   "choices": [
+    {
+     "next": "referral_cross",
+     "note": "Index order. Thirty seconds a fact, exactly as the one-page index promised the court.",
+     "text": "Hand up each exhibit as counsel names it, in index order"
+    },
+    {
+     "next": "referral_cross",
+     "note": "Either way, the exhibits arrive numbered. The judge's bookmarks multiply at the end of the table.",
+     "text": "Let counsel handle the paper and keep your eyes on the judge"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "josie_case",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "Exhibit by Exhibit"
+  },
+  {
+   "body": [
+    "Then counsel lays down the timeline, politely, the way it was rehearsed: not an accusation, a page. The housing referral — required by the plan, necessary to the housing the agency's filing calls late — drafted March 4. Sent May 27. The lease the mother obtained anyway: June. The page comes from the agency's own record, produced on the mother's written request under § 3130.44(d).",
+    "The agency's counsel does not dispute the dates; there is nothing in them to dispute. The judge writes for a long moment. Whatever the (f)(5.1) reasonable-efforts determination says at the end of this hearing, it will now be written in a room where those two dates have been said out loud, on the record, with the file to prove them."
+   ],
+   "choices": [
+    {
+     "next": "gal_testimony",
+     "note": "Silence after a date is the sound of a determination changing shape.",
+     "text": "Sit still through the silence after the dates — it is working"
+    },
+    {
+     "next": "gal_testimony",
+     "note": "Her face suggests the drawer had an owner, and it wasn't her. Files outlive the hands that fill them. That's the system's mercy and its menace.",
+     "text": "Look at the caseworker — not in triumph, just to see if she knew"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "referral_cross",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "March 4. May 27."
+  },
+  {
+   "body": [
+    "Mr. Osei rises for Quinn — not for you, and he says so, which is why the room believes what follows. He has watched the visits. He has read the aftercare reports and the screen history. In his judgment, Quinn's interest is not served by ending the aim of return while the return is, demonstrably, being built — and he supports the stepped schedule, because it is a schedule: \"Dates, Your Honor. The child gets either a homecoming or a record of exactly where it stopped, and either way he is not asked to wait in the abstract.\"",
+    "Support from the child's own lawyer is not a favor banked. It is a professional judgment, entered on the record, and the judge receives it the way she receives exhibits: as something that will still exist tomorrow."
+   ],
+   "choices": [
+    {
+     "next": "aunt_testimony",
+     "note": "For four seconds the hearing is about a small boy and a drawing of a house. Then it is a courtroom again.",
+     "text": "Listen the way Quinn would want you to — as his mother, not as a litigant collecting allies"
+    },
+    {
+     "next": "aunt_testimony",
+     "note": "\"Not asked to wait in the abstract.\" You will think about that sentence for years, whatever happens next.",
+     "text": "Note his exact words in your folder, dated, while he says them"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "gal_testimony",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "Quinn's Lawyer Speaks"
+  },
+  {
+   "body": [
+    "The clerk brings up the video link, or the packet's tab is turned to Lori's study — the form depends on choices made days ago — and Quinn's aunt enters the record: your sister, in Ohio, studied and approved, four plain points delivered in a voice so much like your mother's that you have to look at the table for a moment.",
+    "She supports Quinn going home to you; she says it first, before anything about herself. And she is, herself, a completed study and a standing option — a fit and willing relative under § 6351(f.1) — which means the sentence the agency built its opening around, the only-permanence sentence, cannot be said in this room anymore with a straight face."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — maternal aunt testified; completed home study filed"
+     ],
+     "next": "casa_moment",
+     "note": "The judge asks her two questions directly, and she answers them like a person, not a document. That was the whole argument for live.",
+     "requiresFlags": [
+      "kinTestifies"
+     ],
+     "text": "Lori testifies live by video, and her completed home study is handed up as she speaks"
+    },
+    {
+     "next": "casa_moment",
+     "note": "The study is real and filed. The judge reads it in the time she has, which is less time than a voice would have been given.",
+     "requiresNoFlags": [
+      "kinTestifies"
+     ],
+     "text": "Counsel hands up Lori's home study and letter, and summarizes her position for the record"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "aunt_testimony",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "The Voice From Ohio"
+  },
+  {
+   "body": [
+    "Near the end, the CASA report surfaces by name — the judge has it, and its age comes up the way ages of documents do in courtrooms: in a question that sounds casual and isn't. \"This describes the spring, does it not?\"",
+    "This is the moment the day-6 choice was made for. The correction is either already in the packet — filed, dated, courteous, proof attached — or it has to be manufactured now, out loud, against a volunteer who came to help a child and whose only error was writing in July about July. How counsel handles the next sixty seconds will be remembered by the one person whose memory decides the case."
+   ],
+   "choices": [
+    {
+     "next": "josie_question",
+     "note": "The judge nods at the packet, not at the argument. Filed paper gets nods. Volunteers keep their dignity. Both things stay in the room.",
+     "text": "Counsel addresses the paper, not the person: \"The report was accurate when written; the correction and its proof were filed Monday, Your Honor.\""
+    },
+    {
+     "next": "josie_question",
+     "note": "The question lands badly in the way Ms. Adler predicted: the room's sympathy moves, visibly, to the volunteer — and the court's confidence in your side's judgment cools with it.",
+     "setFlags": [
+      "casaAttacked"
+     ],
+     "text": "Counsel challenges the volunteer personally — how closely has she actually followed this case since summer?"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "casa_moment",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "Correcting a Document, Not a Person"
+  },
+  {
+   "body": [
+    "Then the judge turns to you, and it is the kitchen-chair question, except the chair is real and so is the silence around it. \"Ms. Haas. There was a relapse before this case, in a period when things were also, I am told, going well. What is different this time?\"",
+    "Every eye in the room is a weight. The woman you were in February would have answered with a vow. The woman in this chair has a folder, an index, and eight months of dated paper, and she answers the way she rehearsed — or she answers from the heart alone, and the heart, in this room, has no exhibit number."
+   ],
+   "choices": [
+    {
+     "next": "closing",
+     "note": "\"Different,\" you say, \"is a paper trail, Your Honor. February me made promises. I brought you the receipts instead.\"",
+     "text": "Answer with the record: treatment, aftercare, the column of screens, the unbroken visits, the June lease — date by date"
+    },
+    {
+     "next": "closing",
+     "note": "It is true, every word. Truth without an exhibit number is the most perishable substance in this building, and the moment carries it away like weather.",
+     "text": "Answer from the heart: tell her what Quinn's drawing on your refrigerator means to you"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "josie_question",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "\"What Is Different This Time?\""
+  },
+  {
+   "body": [
+    "Closings. The agency's is brief and returns to its strengths: the spring, the pattern, the clock, a child's life not on hold. Then Ms. Adler stands, and the whole nine days stand with her, because a closing can only argue what a record contains.",
+    "She begins where the statute begins. The court must make its determinations under § 6351(f) — placement's necessity, compliance, progress, reasonable efforts — on this record; and only based upon those determinations and all relevant evidence does the court choose among § 6351(f.1)'s outcomes. What she asks the court to choose depends, in the most literal way, on what the last nine days put into the room. She takes a breath, and chooses her ask."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Order — determinations under § 6351(f)(2), (3), (5.1) made on the record",
+      "Order — stepped return schedule with dates"
+     ],
+     "next": "end_win",
+     "note": "Every element of this ask exists because a choice built it: the record was requested, the packet was indexed, the return was drafted as a schedule.",
+     "requiresFlags": [
+      "recordsRequested",
+      "exhibitsReady",
+      "steppedAsk"
+     ],
+     "requiresNoFlags": [
+      "casaAttacked"
+     ],
+     "text": "Close in sequence: (f)(2) compliance, (f)(3) progress, (f)(5.1) the unsent referral — then (f.1)(1), the stepped return with dates"
+    },
+    {
+     "addHidden": [
+      "Order — determinations under § 6351(f)(2), (3), (5.1) made on the record"
+     ],
+     "next": "end_partial",
+     "note": "The goal survives this ask. A schedule does not — and a judge left to set the tempo sets it with the clock out loud.",
+     "text": "Ask only to hold the goal at reunification, with a short review — no return schedule proposed"
+    },
+    {
+     "addHidden": [
+      "Order — the findings that preserve the issues"
+     ],
+     "next": "end_loss",
+     "note": "Fairness, argued in the air, meets an evidence fight on the ground. The room can feel which one the statute is listening to.",
+     "text": "Argue the goal in the abstract — eight months of effort, a mother's fairness claim — without tying it to the determinations"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "closing",
+   "kicker": "Day 9 — Thursday, December 17, 2026",
+   "title": "Determinations First"
+  },
+  {
+   "body": [
+    "The order arrives the next day, and Ms. Adler reads it to you over the phone slowly, the way you'd read a letter from the front. The agency's request to change Quinn's permanency goal is denied. The goal remains reunification. And under § 6351(f.1)(1), the court orders the return it was actually offered: a stepped schedule, with dates — unsupervised day visits in January, overnights by February, full return by the spring review, services and screens continuing through every step.",
+    "Inside the order, in the findings, the determinations sit in their statutory order: substantial compliance with the plan (§ 6351(f)(2)); the circumstances that caused placement, alleviated in the respects the exhibits proved (§ 6351(f)(3)); and on reasonable efforts to finalize the plan (§ 6351(f)(5.1)), a single dry sentence noting that the agency's housing referral was drafted March 4 and sent May 27, and that the resulting delay is not the mother's.",
+    "Quinn is told, in words for a four-year-old, that home now has a calendar. You put the order in the folder, in front of the request that started it all. The folder, for once, is a happy archive."
+   ],
+   "dayOffset": 10,
+   "debrief": [
+    "WHAT THE FILE SAID — The record the court acted on contained: the agency record produced on the written request under 55 Pa. Code § 3130.44(d), whose own pages dated the housing referral March 4 (drafted) and May 27 (sent); the indexed progress packet — treatment and aftercare, eight months of negative screens, the unbroken visit log, the June lease; the maternal aunt's live testimony and completed home study; the written correction to the five-month-old CASA report, filed before the hearing; the rebuttal to the scored summary's stale \"housing: unstable\" line; and the GAL's stated support. The hidden assessment in this scenario rated the same items the form always rates — what the file could see. This time, the file could see December.",
+    "THE LAW THAT CONTROLLED IT — A permanency hearing must determine continuing necessity, compliance with the plan (§ 6351(f)(2)), progress toward alleviating the circumstances that caused placement (§ 6351(f)(3)), and whether reasonable efforts were made to finalize the plan (§ 6351(f)(5.1)); only based upon those determinations and all relevant evidence does the court choose the § 6351(f.1) outcome. The stepped return was that outcome — (f.1)(1), return to parent. The § 6351(f)(9) fifteen-of-twenty-two determination was not triggered at month ten and decided nothing here; and the aunt's presence kept (f.1)(4), a fit and willing relative, on the table, defeating the claim that adoption was the only permanency available.",
+    "THE HONEST PART — This ending was built from paper, and paper is never the whole story: a different judge could have weighed the spring more heavily; the GAL could have landed the other way; the referral page could have been missing from the produced record, as pages sometimes are. Outcomes in this system turn on workers, judges, resources, and luck as much as on any parent's work, and this outcome is not a verdict that Josie is a good mother — it is a record of what a court could see, on the day it had to decide. The return still has steps, and steps can stumble. What changed is that the plan aims at home again, with dates — and dates, unlike hopes, can be kept."
+   ],
+   "ending": true,
+   "id": "end_win",
+   "kicker": "Day 10 — Friday, December 18, 2026",
+   "title": "Goal Held — Reunification, With a Date"
+  },
+  {
+   "body": [
+    "The order holds the line and names the price of holding it. The agency's request to change the goal is denied — reunification remains Quinn's permanency goal. But the court orders no return schedule. Placement continues, services continue, and a review is set ninety days out.",
+    "And then, in the hearing's last minutes and again in the order's final paragraph, the judge does the thing unanswered clocks invite judges to do: she dates it. Quinn reaches fifteen of the most recent twenty-two months next May — May 2027 — and at that point the § 6351(f)(9) determination will be this court's business in earnest. \"Everyone in this case,\" the order concludes, \"should conduct themselves between now and then as if that date were on the cover of the file.\" It is now. She put it there.",
+    "You won the goal and lost the tempo. The folder goes home with you, thicker, and the spring is suddenly a deadline with exhibits due."
+   ],
+   "dayOffset": 10,
+   "debrief": [
+    "WHAT THE FILE SAID — The goal survived on whatever of the record was actually built and argued: the progress was real, and enough of it reached the court to defeat a goal change today. What the file did not contain — or what the closing did not ask for — was a return the court could sign: no dated, stepped schedule under § 6351(f.1)(1) was granted, whether because the packet was never indexed, the agency record was never requested in writing (so the unsent referral stayed unproven), the CASA paper went personally contested instead of corrected, or the ask itself was framed as open-ended time. The court kept the aim and kept the child placed, and filled the silence where a schedule should have been with the only date left in the room: the clock's.",
+    "THE LAW THAT CONTROLLED IT — The § 6351(f) determinations were made and supported holding the goal; the § 6351(f.1) outcome chosen was continuation under the existing goal with a ninety-day review, not a return. The § 6351(f)(9) determination — whether, at fifteen of the last twenty-two months, the agency has filed or joined a termination petition, subject to the relative-care, documented-compelling-reason, and services-not-provided exceptions — is not triggered at month ten, and this judge did not pretend otherwise. She did something courts may always do: she named the coming date aloud, in May 2027, and set the case's tempo by it. A named clock is not a ruling. It is a promise about the next hearing's weather.",
+    "THE HONEST PART — A partial win is a real win with a fuse in it, and this ending is not a judgment on Josie's worth or effort — outcomes here turn on workers, judges, calendars, and luck, and on which papers existed when a particular judge looked up. The ninety days ahead are not a lesser version of the fight; they are the fight, at higher speed, with one advantage the last nine days proved: the machinery of paper — requests, packets, corrections, schedules — is learnable, and it is now learned. The clock is named. Named clocks can be answered. The next hearing is where the answering is due."
+   ],
+   "ending": true,
+   "id": "end_partial",
+   "kicker": "Day 10 — Friday, December 18, 2026",
+   "title": "Goal Held — The Clock Named Aloud"
+  },
+  {
+   "body": [
+    "The order changes the goal. Under § 6351(f.1), Quinn's permanency goal is now adoption, and the agency is directed to proceed accordingly. Ms. Adler reads the whole order to you, including the parts that hurt, because she has never once edited the truth for you and is not starting on the worst day.",
+    "Read it the way she taught you, all the way to the end. The goal change is not a termination of your rights — no rights ended today, and termination, if the agency ever seeks it, remains its own proceeding at which the agency would have to prove its grounds by clear and convincing evidence. Your exhibits are in the record. The aunt's completed home study is filed in this case, where no future court can pretend it doesn't exist. The determinations were made on a record that contains your December, not only your spring — and records outlast orders.",
+    "In February, Quinn went into care, and a file began rating a woman it could barely see. The woman it rates now has a folder, a lawyer whose chair she can picture, and a sister in Ohio with an approved home. The goal changed. The record she built did not disappear with it — and every future fight in this case starts from that record, not from zero."
+   ],
+   "dayOffset": 10,
+   "debrief": [
+    "WHAT THE FILE SAID — In this ending the evidence fight was lost on its mechanics, not on the year's facts: the progress existed, but too little of it reached the court in usable form — the agency record never requested in writing, so the eleven-week referral delay stayed an assertion instead of two dates; or the proof arrived as a pile rather than an indexed packet; or the closing argued the goal in the abstract while the agency argued determinations. What survives in the file matters and is real: the exhibits that were offered, the aunt's filed home study, the corrections and timelines that were filed — the findings that preserve the issues for whatever comes next.",
+    "THE LAW THAT CONTROLLED IT — Based on the determinations made under § 6351(f) and the evidence as the court weighed it, the court chose the § 6351(f.1) outcome of adoption, directing the agency to file for termination. That choice changes what the plan aims at and what the system works toward — and it is all it does today. It is not itself a termination: parental rights end, if ever, only at a separate termination proceeding where the agency bears the burden of proof by clear and convincing evidence. The fifteen-of-twenty-two determination under § 6351(f)(9) was not the basis of this order — at month ten it is not yet triggered — but the changed goal now runs toward it, which is why the preserved record matters.",
+    "THE HONEST PART — This is the bad outcome, and no strategy guide should dress it as a secret victory: a goal changed to adoption is a serious, grievous turn in a family's case. It is also not a verdict that Josie failed as a mother — her eight months happened; the screens, the visits, the lease are facts regardless of what one hearing did with them. Outcomes in this system turn on workers, judges, resources, and luck, alongside preparation, and the same record in a different courtroom can end differently. What no one can take is what the preparation built: a mother who knows how this system reads, a filed study in Ohio, and a record — hers now, as much as theirs — that every next step starts from."
+   ],
+   "ending": true,
+   "id": "end_loss",
+   "kicker": "Day 10 — Friday, December 18, 2026",
+   "title": "Goal Changed — The Record She Built"
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s74';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

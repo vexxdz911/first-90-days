@@ -1,0 +1,52 @@
+# Strategy Guide — Scenario 71: "Four More Weeks"
+
+*Game documentation for a fictional simulation in "The First 90 Days" (Tactic Watch). The family, the case, and every choice below are fictional. This guide is general information about how the scenario is built — it is not legal advice for any real case.*
+
+## (1) The win
+
+**Best ending: "Heard Today — Home by Supper."**
+
+State it plainly: this is a full win, and it happens on Day 1. The agency asks for four more weeks because it is not ready; Teresa is ready — certificate in hand, witnesses in the hallway, Omar's 63 days in placement stated on the record — the judge denies the continuance, the agency's proof collapses to a supervisor reading a file she didn't write, the burden is not carried, the petition is dismissed, and Omar is home by supper on Tuesday, November 17, 2026.
+
+The scenario's other good ending, **"Four Weeks, With Teeth," is a partial win, and is labeled partial honestly**: consenting to the continuance in exchange for terms written into the court's order — visits doubled, service start dates fixed, the record request acknowledged — produces a month that is actually used, a record showing two referrals the agency never sent, and a disposition that brings Omar home under 42 Pa.C.S. § 6351(a)(1). He still comes home four weeks later than he should have. The win cost a month of a 13-year-old's life, and the guide does not round that down.
+
+## (2) The route
+
+Verified by walking the scenario graph from the start node (see the verification note at the end). Key decision points, in order — node title, winning choice, and what it changes:
+
+1. **The Four O'Clock Call** — *Ask Ms. Ferreira to file the written request for the full agency record tonight.* Cash −5. Sets **recordsRequested**. The request rests on 55 Pa. Code § 3130.44(d) — the record "shall be released upon request" — and it is filed before the hearing, which is the only time filing it helps tomorrow.
+2. **Omar's Question** — *Tell him the truth: the delay would be about the grown-ups' paperwork, not about him — and drive his school shoes over tonight.* Cash −10. Sets **omarTold**. No legal effect. It is in the route anyway, because the scenario counts Omar's clock as real even when the court's doesn't.
+3. **The Counsel Room, 8:40 A.M.** — *Put the record in her hands: certificate in the folder, witnesses confirmed in the hallway, the 63 days counted and ready to state.* Sets **evidenceReady**; hidden item: the parenting course certificate, in counsel's hand at the hearing. This is the flag the entire win turns on — it converts "opposing" from a posture into a record.
+4. **The Ask, in the Hallway** — *OPPOSE — take the request into the courtroom and fight it.* A route choice, not a flag. The other two doors are real strategies with their own endings; this door is the only one that can end the case today.
+5. **How to Oppose** — *OPPOSE ON THE RECORD — the 63 days stated, the certificate in hand, the witnesses named, readiness declared.* This choice is flag-gated: it is only available with **evidenceReady** set. Sets **opposedOnRecord**; hidden item: the transcript of the objection, with the child's 63 days in placement stated on the record. The judge is no longer weighing how Teresa feels about the delay; she is weighing diligence, readiness, and prejudice — the things continuance decisions actually turn on.
+6. **The Judge Asks Three Questions** — *Proceed.* The continuance is denied because the record answered the judge's questions: the agency knew about the leave for weeks, the hearing predated it, the child has waited 63 days, and only one side is ready.
+7. **A Supervisor, Reading** — *Rest without testifying, or put the certificate and one witness on anyway (cash −5 for copies if you do).* Either way the cross-examination has done the work: the agency's only witness wrote none of the notes she reads, and the relaxed written-report rules of 42 Pa.C.S. § 6341(d)(1), (d)(2) belong to disposition, not adjudication.
+8. **The Agency Rests** — *Hear the ruling.* The agency's closing problem is structural: a burden announced that morning, carried by no one. The walk ends at **"Heard Today — Home by Supper"** — you finish the route with $115 of the $130 start.
+
+Supporting logic worth naming: nothing on this route is expensive, dramatic, or clever. Its total cost is $15 and its total substance is a dated request, a counted number, a carried folder, and two people sitting on a hallway bench at 9 a.m. That is the scenario's thesis about where leverage in a continuance fight actually lives.
+
+## (3) Why this wins — the law as it is supposed to work
+
+Only principles from the scenario's verified set are stated here:
+
+- **The burden is the agency's, and it is a high one.** At adjudication the court may find a child dependent only "from clear and convincing evidence" — 42 Pa.C.S. § 6341(c). The parent does not have to prove innocence or fitness to win; the judge decides credibility; a fact not proven is a fact the court cannot use. The whole route is built to make the agency carry that burden *today*, with the proof it actually has.
+- **If it is not proven, the case ends.** Where dependency is not proven, the petition is dismissed and the child discharged — 42 Pa.C.S. § 6341(a). That is the win ending, verbatim from the statute's logic.
+- **Evidence rules differ by hearing, and the difference mattered here.** At disposition — not adjudication — "all evidence helpful," including written reports, may be received even if it would not be competent at adjudication, and parties may examine and controvert written reports and cross-examine the people who made them — 42 Pa.C.S. § 6341(d)(1), (d)(2). A supervisor reading an absent caseworker's file is a disposition shortcut; at adjudication it is the gap the cross-examination walks through.
+- **Counsel is a right, not a favor** — the right to counsel, appointed if the parent cannot afford one, 42 Pa.C.S. § 6337. Every record-making move in the route is made through counsel, on the record, where it survives the morning.
+- **Agency records are obtainable on request** — 55 Pa. Code § 3130.44(d) ("shall be released upon request"). Step 1 exercises it the night before the hearing. On the consent branch (see the traps), that same request is what surfaces the two referrals the agency never sent — the reasonable-efforts material that turns the December hearing.
+- **On continuances, the scenario states the practice generically and deliberately without case citations:** continuances live in the court's discretion, and what persuades is a record — the child's time in placement, diligence and readiness on each side, and the prejudice of drift — not outrage, and not volume. The route is that sentence, executed.
+
+## (4) The traps
+
+1. **Objecting loudly and bringing nothing, at "How to Oppose."** The worst cell in the table. The judge asks what you are offering — days, witnesses, exhibits — and the answer is a folder at the aunt's house. Cost: the continuance is granted anyway, *and* the order records that the objection was unsupported by any showing of prejudice or readiness, discounting every ask your side makes afterward. The branch drains into the drift weeks and the loss ending. Arguing unfairness is free; it is priced accordingly.
+2. **Letting it happen, at "The Ask, in the Hallway."** Silence is not neutrality. The order granting the continuance is one paragraph, with no visits, no start dates, no acknowledged request — and the agency's report preserves the sentence the December hearing will quote: "mother did not object to the continuance." Cost: the whole month, spent at an hour's visiting a week while the agency assembles the file it asked for time to assemble, ending at **"Four More Weeks of Nothing."**
+3. **Consent without terms, at "The Price of Four Weeks."** The agency lawyer's hallway promise — "we'll take care of it" — is probably sincere and completely unenforceable. Cost: the same drift as Trap 2, entered through a door marked negotiation. The consent branch only pays if the terms land in a signed order (flag: **consentWithTerms**); anything less is Trap 2 with better manners.
+4. **Consenting with teeth but leaving the record out of the December presentation, at "What the Weeks Were For."** The visits and services still get credited — and the agency's completed file still carries the day, because the one set of pages that made the agency's own efforts an issue (the record released under § 3130.44(d), showing the referrals never sent) stayed in a folder at home. The hearing gate is mechanical: the partial ending requires **consentWithTerms** + **recordsRequested**, presented. A warm presentation is not a substitute for the sharp pages.
+5. **"He's fine at his aunt's," in the drift weeks.** He is fine, and the home is good, and that is exactly the trap: fine is a condition, not a duration, and Omar's clock is Omar's. Treating placement comfort as proof that time doesn't matter is how four granted weeks become ninety-three counted days — while the other side, which never believed time didn't matter, uses every one of them.
+
+## (5) What no strategy controls
+
+Whether this judge, on this morning, treats a caseworker's leave as a reason or as an excuse. Whether the agency is genuinely unready or merely unassembled — a supervisor who testifies well from someone else's file, or a caseworker back a week early, changes the cross-examination's yield entirely. The four weeks themselves, when they are granted: the referrals that sit unsent in a queue no one in your family staffs, the scheduling office's first phone call, the luck of which worker reads the order first. The route above does not control any of that. It controls only what was ready, what was written, and what was stated where a transcript keeps it. Outcomes in this system turn on workers, judges, and luck as much as on any parent's choices — the strategy's claim is narrower: on the one morning readiness was the question, Teresa's side was the one that could prove it.
+
+---
+*Verification: this route was walked programmatically against `scenario-71.json` — each named choice was followed from the start node in order; every intermediate node and choice exists; every flag-gated choice's requirements were satisfied by flags set earlier on the walk; the walk terminates at the ending node titled "Heard Today — Home by Supper" after visiting 9 nodes, with $115 of the $130 starting cash remaining.*

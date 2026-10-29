@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 59 — Two Buses to the Visit (a fictional composite)",
+  "startDateISO": "2026-05-11",
+  "startNode": "start",
+  "startCash": 140,
+  "tier": "Foundation",
+  "summary": "Visits move across the county — two buses, ninety minutes, twenty minutes late — and the note records only that he was late."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, May 11, 2026",
+   "dayOffset": 0,
+   "title": "The Letter About the Visits",
+   "body": [
+    "Your name is Andre. Your daughter Ruby is seven, and she is in foster care — placed before this story opens, in a home across the county from yours. Your visits with her have been the steady part of this case: Saturday afternoons at the neighborhood office, a short walk from your door, in a room Ruby knows.",
+    "The letter that arrives on Monday, May 11, 2026 is one page and entirely procedural. Because of a provider consolidation, visits are moving: starting this week, they will be held at a visitation center across the county. Same day, same time. What the letter does not mention is the journey — two buses, ninety minutes each way, with a connection that works when it works.",
+    "Nothing in the letter invites a reply. Letters like this rarely do. Whether one is sent anyway is the decision this scenario is built from."
+   ],
+   "choices": [
+    {
+     "text": "Take the two buses to the new center for the first moved visit",
+     "next": "first_trip",
+     "cash": -12,
+     "note": "Twelve dollars of fares for the round trip. You leave ninety minutes before the visit — the letter's own arithmetic, done by you, at your kitchen table."
+    }
+   ]
+  },
+  {
+   "id": "first_trip",
+   "kicker": "Day 5 — Saturday, May 16, 2026",
+   "dayOffset": 5,
+   "title": "Two Buses, Ninety Minutes",
+   "body": [
+    "The first trip teaches you the route's true shape. The first bus is fine. The connection is not: it leaves as your bus arrives, and the next one costs you twenty minutes you had already spent twice in your head. You reach the center on Saturday, May 16, 2026 twenty minutes after the visit was to start, having left home ninety minutes early.",
+    "The visit is shortened by exactly the lateness. Ruby takes it the way seven-year-olds take shortened things — completely, and then, because she is Ruby, she gets on with the visit there is. You sign the center's sign-in sheet on the way in. Its clock says what time you arrived. It does not say when you left home, or why the road took what it took."
+   ],
+   "choices": [
+    {
+     "text": "Sign in, take the visit there is, and keep the transfer stubs in your pocket",
+     "next": "note_exists",
+     "addHidden": [
+      "Visit note — ‘father arrives late; visit shortened’"
+     ],
+     "note": "The stubs go in your pocket out of habit. Habits like that are about to matter more than they should have to."
+    }
+   ]
+  },
+  {
+   "id": "note_exists",
+   "kicker": "Day 6 — Sunday, May 17, 2026",
+   "dayOffset": 6,
+   "title": "Father Arrives Late",
+   "body": [
+    "Days later, you hear the first visit described the way the file describes it, in the note that follows the visit: “father arrives late; visit shortened.” Four words of arrival, one of consequence. No letter, no move, no buses, no ninety minutes — a note about a man who was late, written about a journey it does not mention.",
+    "The note is not false. You did arrive late, and the visit was shortened. It is simply the journey with the journey removed — and a file, read over months, becomes the notes it is made of. Future readers will meet this sentence before they ever meet you.",
+    "The move can still be answered — in writing, asking for a nearer site or for transportation support, on paper where answers live. Or it can be absorbed, Saturday by Saturday, one shortened visit at a time."
+   ],
+   "choices": [
+    {
+     "text": "Decide how to answer the move — on paper, or not at all",
+     "next": "split_request",
+     "note": "Not at all is also an answer. It is the one the file is currently assuming you gave."
+    }
+   ]
+  },
+  {
+   "id": "split_request",
+   "kicker": "Day 7 — Monday, May 18, 2026",
+   "dayOffset": 7,
+   "title": "Answer the Move, or Absorb It",
+   "body": [
+    "A written answer is a small, plain thing: a dated letter or email to your caseworker and the center, saying the visits moved, what the new journey takes — two buses, ninety minutes — and asking for a nearer site or for transportation support. It does not refuse anything. It does not threaten anything. It puts the journey into the same file that currently holds only the arrival.",
+    "Absorbing it is also plain: leave earlier, run the same buses, say nothing on paper, and let the notes keep their four words. The visits will happen either way. What differs is what the review, months from now, will be able to read about why they started late."
+   ],
+   "choices": [
+    {
+     "text": "Answer the move in writing — nearer site or transportation support, asked for on paper",
+     "next": "written_track",
+     "setFlags": [
+      "visitMoveAnswered"
+     ],
+     "addHidden": [
+      "Visit move — answered in writing; nearer site or transportation support requested"
+     ],
+     "cash": -12,
+     "note": "Dated, copied, kept. Twelve more dollars of fares take you to the second visit — the asking and the going now travel together."
+    },
+    {
+     "text": "Absorb it quietly — leave earlier and say nothing on paper",
+     "next": "quiet_track",
+     "cash": -12,
+     "note": "Twelve dollars of fares, an earlier alarm, and no letter. The journey gets longer and the file stays exactly as short as it was."
+    }
+   ]
+  },
+  {
+   "id": "written_track",
+   "kicker": "Day 9 — Wednesday, May 20, 2026",
+   "dayOffset": 9,
+   "title": "Asked, on Paper",
+   "body": [
+    "Your letter goes in this week, and the reply, when it comes, is honest about the system's shape: the consolidation is provider-wide, your request is noted, and a nearer site or support will be “considered as capacity allows.” No change is promised. No date is given.",
+    "And yet the file is different tonight than it was last week. It now contains two documents about Saturdays: a note that says you arrive late, and a dated letter that says what arriving now requires and what you asked for. Reviews are where documents like those meet. They have not met yet."
+   ],
+   "choices": [
+    {
+     "text": "Go to the second visit — and pay attention to the sign-in sheet this time",
+     "next": "log_beat",
+     "note": "The center's sheet records arrivals to the minute. Minutes, it turns out, can be evidence — if anyone keeps them."
+    }
+   ]
+  },
+  {
+   "id": "quiet_track",
+   "kicker": "Day 9 — Wednesday, May 20, 2026",
+   "dayOffset": 9,
+   "title": "The Same Trip, Quietly",
+   "body": [
+    "You leave earlier. The buses do not reward it reliably — connections keep their own counsel — and the second Saturday's journey takes what it takes. Nothing about the trip is written anywhere except the stubs in your pocket and the sign-in sheet at the other end.",
+    "Quiet has a cost structure of its own: it costs nothing today, in nerve or postage, and it charges later, in a room where the only account of your Saturdays is a column of arrival times with no journey attached to any of them."
+   ],
+   "choices": [
+    {
+     "text": "Go to the second visit — and pay attention to the sign-in sheet this time",
+     "next": "log_beat",
+     "note": "The sheet is by the door, with its clock and its ruled lines. It has been recording your case all along. The question is whether you start keeping a copy of its story."
+    }
+   ]
+  },
+  {
+   "id": "log_beat",
+   "kicker": "Day 12 — Saturday, May 23, 2026",
+   "dayOffset": 12,
+   "title": "The Sign-In Sheet",
+   "body": [
+    "The second visit, Saturday, May 23, 2026: the journey runs long again — not by your choosing, which is rather the point — and you sign in below the other names, at the time the center's clock gives you. The sheet is a plain document: names, times, a column for the room. It will be filed. It is, whether anyone calls it this, the center's own record of what the move costs.",
+    "You can start keeping your own arrival log — photograph the sign-in sheet each visit, note your departure time and the buses, keep the stubs — so that arrival times someday sit beside journey times. Or you can sign, go in, and spend the visit being a father instead of a filing system, which is also a completely understandable choice, and the one the file is quietly counting on."
+   ],
+   "choices": [
+    {
+     "text": "Photograph the sign-in sheet and start a dated arrival log — departures, buses, arrivals",
+     "next": "third_visit",
+     "setFlags": [
+      "arrivalLog"
+     ],
+     "addHidden": [
+      "Arrival log — sign-in times photographed; departures and buses logged by father"
+     ],
+     "note": "Thirty seconds with a phone, at a door, each Saturday. The log is boring. Boring, dated, and yours — the three qualities exhibits are made of."
+    },
+    {
+     "text": "Sign in and go straight in — the visit is the point, not the paperwork",
+     "next": "third_visit",
+     "note": "The visit is the point. It is also, in note form, the only part of the day the file will describe as shortened — and the log is the only version of the journey that would ever be attached to it."
+    }
+   ]
+  },
+  {
+   "id": "third_visit",
+   "kicker": "Day 19 — Saturday, May 30, 2026",
+   "dayOffset": 19,
+   "title": "The Third Saturday",
+   "body": [
+    "The third visit, Saturday, May 30, 2026, runs the way the route runs: a connection missed or made by minutes, an arrival after the start, a visit shortened by the difference. If you are keeping the log, this Saturday's page joins the others — departure, buses, sign-in time, each dated, none of them argued about.",
+    "Ruby has started managing the shortened visits the way she manages everything: completely, and then practically. She has a order she does things in now, so the important things happen first in case the end comes early. It is a sensible system. It is also a sentence no parent should have to watch a seven-year-old invent, and the file's version of its cause is still four words long: father arrives late."
+   ],
+   "choices": [
+    {
+     "text": "Pay the third trip's fares into the same pocket as the stubs, and go home the long way",
+     "next": "pattern_note",
+     "cash": -12,
+     "note": "Twelve dollars, third time. The fares are the move's real price list, and so far you are the only one keeping it."
+    }
+   ]
+  },
+  {
+   "id": "pattern_note",
+   "kicker": "Day 23 — Wednesday, June 3, 2026",
+   "dayOffset": 23,
+   "title": "Three Times, One Word",
+   "body": [
+    "The pre-review summary arrives, and your Saturdays are in it as a pattern now: three visits, each described with the same word. Late. Late. Late — shortened, shortened, shortened. Patterns in summaries are how single notes grow into character, and character is how summaries get used at reviews.",
+    "The summary does not mention the letter that moved the visits, because the summary was written from the notes, and the notes never mentioned it either. A pattern built from arrivals alone is now the official shape of your effort — unless the underlying documents are ever put beside it.",
+    "The visit notes themselves — the center's own pages, with their recorded times — are part of your case record. You have not seen them. You could."
+   ],
+   "choices": [
+    {
+     "text": "Ask how to get the visit notes themselves, in writing",
+     "next": "records_fork",
+     "note": "Not the summary of the notes. The notes — the center's own times, in the center's own hand, for all three Saturdays."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 25 — Friday, June 5, 2026",
+   "dayOffset": 25,
+   "title": "Ask for the Notes",
+   "body": [
+    "The request is yours to make: ask, in writing, for the visit notes from your case record. Under 55 Pa. Code § 3130.44(d), the record is to be released on request — the material “shall be released upon request” — and visit notes are the record of the very Saturdays the summary has been describing in one word.",
+    "Or you can go to the review armed with the summary and your own account of the buses, and ask the room to take the journey on your word, against the pattern on its paper."
+   ],
+   "choices": [
+    {
+     "text": "Request the visit notes in writing — all three visits — and keep a copy of the request",
+     "next": "notes_arrive",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -3,
+     "note": "Three dollars of copies across the errand. The notes, when they come, will be the center's own account — which is exactly why they are worth requesting."
+    },
+    {
+     "text": "Work from the summary — you know what the notes will say",
+     "next": "no_notes",
+     "note": "You know what you lived. What the notes say — their exact times, their exact words — is a different piece of knowledge, and reviews run on the second kind."
+    }
+   ]
+  },
+  {
+   "id": "notes_arrive",
+   "kicker": "Day 30 — Wednesday, June 10, 2026",
+   "dayOffset": 30,
+   "title": "The Center’s Own Times",
+   "body": [
+    "The notes arrive, and you read them with the letter open beside them. The center recorded what it records: scheduled starts, sign-in times, shortened endings — arrivals twenty, fifteen, and eighteen minutes after the start, across the three Saturdays, each one dated, each one in the center's own hand.",
+    "Read alone, they are the pattern. Read beside the move letter of Monday, May 11, 2026 and your log — departures ninety minutes before each start, buses, connections — they become something else: the system's own measurements of the journey the system imposed. The center timed your lateness very carefully. It is only fair that its times be allowed to testify about the whole trip."
+   ],
+   "choices": [
+    {
+     "text": "Put the notes with the letter and the log, in date order",
+     "next": "prep",
+     "addHidden": [
+      "Visit notes — center’s recorded arrival times obtained and kept with the move letter"
+     ],
+     "note": "Letter, log, notes. Three documents, three different authors, one journey. Assembled, they are the first complete account of your Saturdays anyone has made."
+    }
+   ]
+  },
+  {
+   "id": "no_notes",
+   "kicker": "Day 30 — Wednesday, June 10, 2026",
+   "dayOffset": 30,
+   "title": "Summaries of Summaries",
+   "body": [
+    "Without the notes, the review will be a meeting about a summary of notes you have never seen — their times summarized into a word, the word repeated into a pattern, the pattern carried into a room as your record. At each step the journey fell away, because at each step the journey was in nobody's document.",
+    "You still know it by heart: the departure times, the connection, the clock over the sign-in sheet. Knowledge by heart is real knowledge. It is just not the kind that gets photocopied for a review packet."
+   ],
+   "choices": [
+    {
+     "text": "Turn to preparing for the review, with what you have",
+     "next": "prep",
+     "note": "What you have is true, warm, and unattached. The review is the kind of room that attaches things or it does not weigh them."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 36 — Tuesday, June 16, 2026",
+   "dayOffset": 36,
+   "title": "One Packet, in Date Order",
+   "body": [
+    "Preparation is assembly: the move letter with its date, your written answer if you sent one, your arrival log if you kept one, the center's notes if you requested them. In date order they make a single argument without raising their voice: the visits moved on this date; the journey became this; the arrivals became that; here is every document, including the system's own.",
+    "Or the Saturdays can be carried in as a story — a father, two buses, a little girl with an order she does things in. It is a story that deserves a better room than the one it is about to be told in, because that room runs on packets."
+   ],
+   "choices": [
+    {
+     "text": "Assemble the packet — letter, written answer, log, and notes — in date order",
+     "next": "packet_ready",
+     "setFlags": [
+      "reviewPacket"
+     ],
+     "addHidden": [
+      "Review packet — move letter, written answer, arrival log, and visit notes in date order"
+     ],
+     "cash": -4,
+     "note": "Four dollars of copies. The packet's first page is the move letter — because chronology is the argument, and chronology starts there."
+    },
+    {
+     "text": "Bring the story and the stubs — the room should hear it from you",
+     "next": "story_only",
+     "note": "The stubs are real, and in a pocket they are almost documents. In a packet they would have been pages. The distance between those two is this scenario's whole geography."
+    }
+   ]
+  },
+  {
+   "id": "packet_ready",
+   "kicker": "Day 38 — Thursday, June 18, 2026",
+   "dayOffset": 38,
+   "title": "Letter, Log, and Notes",
+   "body": [
+    "The packet is not thick. It does not need to be. Its power is sequence: a one-page letter moves a visit; a dated reply answers the move; a log records the journeys; the center's own notes record the arrivals; and the summary's one word — late — is left sitting on top of four documents that explain it more completely than it explains itself.",
+    "Your lawyer, reading it through, taps the move letter once. “Everything after this page is a consequence of this page,” she says. “Tomorrow we just ask the record to admit it.”"
+   ],
+   "choices": [
+    {
+     "text": "Make a copy for the folder, and go home the long way one more time",
+     "next": "review_eve",
+     "note": "Ninety minutes home, the route the packet is about. Tomorrow, for once, the journey gets described by the people who made it — on paper, in order."
+    }
+   ]
+  },
+  {
+   "id": "story_only",
+   "kicker": "Day 38 — Thursday, June 18, 2026",
+   "dayOffset": 38,
+   "title": "What He Knows, Unwritten",
+   "body": [
+    "You know your Saturdays completely: when you leave, which connection fails, the clock over the sign-in sheet, Ruby's order of important things. The knowledge is exact, lived, and entirely in one person's keeping — yours.",
+    "Tomorrow it will be offered, out loud, against a printed pattern. Rooms like tomorrow's do not doubt fathers like you, particularly. They simply have a rule they cannot say out loud: what is not in the packet is, for the record, a claim; and claims are weighed against documents the way voices are weighed against clocks."
+   ],
+   "choices": [
+    {
+     "text": "Get the fare ready for the morning, and go to bed early",
+     "next": "review_eve",
+     "note": "Early bed, early bus — the disciplines of a man whose file says the opposite of his alarms. Both facts will be in the room tomorrow. Only one of them is printed."
+    }
+   ]
+  },
+  {
+   "id": "review_eve",
+   "kicker": "Day 41 — Sunday, June 21, 2026",
+   "dayOffset": 41,
+   "title": "The Night Before the Review",
+   "body": [
+    "The night before the review, your lawyer goes through the materials with you one last time. You have counsel because the law provides for it in these cases, and for appointed counsel if a parent cannot afford one (42 Pa.C.S. § 6337); her job tomorrow is to make the record describe a journey instead of a trait.",
+    "“Late,” she says, “is a conclusion. Tomorrow we find out whether the record underneath it gets read — the letter, the log, their own times — or whether the conclusion gets to keep standing in for all of it.”"
+   ],
+   "choices": [
+    {
+     "text": "Take the folder and the morning fare, and go to the review",
+     "next": "review",
+     "note": "The folder, the fare, and the earliest bus there is. Some preparations are paper. Some are just mornings, made on purpose."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 42 — Monday, June 22, 2026",
+   "dayOffset": 42,
+   "title": "The Review",
+   "body": [
+    "The review on Monday, June 22, 2026 takes up your visits in their summary form: a pattern of lateness, three shortened visits, a concern noted about consistency. The words are read aloud in the level tone of people reading weather.",
+    "Then your lawyer asks that the underlying documents be put beside the summary — the move, the answer, the journeys, the center's own times — before the pattern is adopted as your record. What happens next depends, with a precision this scenario has been honest about since the first bus, on what your choices actually put in her hands."
+   ],
+   "choices": [
+    {
+     "text": "Present the packet — the move letter, the written answer, the arrival log, and the center’s own notes",
+     "next": "end_win",
+     "requiresFlags": [
+      "visitMoveAnswered",
+      "arrivalLog",
+      "recordsRequested",
+      "reviewPacket"
+     ],
+     "note": "Chronology does the arguing: first the move, then the asking, then the journeys, then their own times. The pattern is re-read in the room, in order."
+    },
+    {
+     "text": "Present what you have — part of the packet, without the full sequence",
+     "next": "end_lose",
+     "note": "Part of a chronology is a story with its first page missing. The summary, whole and printed, has no missing pages."
+    },
+    {
+     "text": "Tell the Saturdays as a story — the departures, the buses, Ruby’s order of things",
+     "next": "end_lose",
+     "note": "It is the truest telling in the room. The pattern across the table is the printed one, and printed things are what reviews adopt."
+    }
+   ]
+  },
+  {
+   "id": "end_win",
+   "kicker": "Day 45 — Thursday, June 25, 2026",
+   "dayOffset": 45,
+   "title": "Ending — On Time, On Record",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A complete chronology, written by four different hands: the move letter of Monday, May 11, 2026 relocating the visits across the county; your dated written answer asking for a nearer site or transportation support; your arrival log — departures, buses, stubs — kept from the second visit on; and the visitation center's own notes, obtained on request, recording the arrivals its move produced. At the review, the pattern was re-attributed on the record: the lateness belonged to the move, not to the father. Visits were ordered to a nearer site for the next cycle, with transportation support in the meantime, and the note language was corrected to carry the journey with the arrival.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The instruments were the verified ones. The visit notes were part of your case record, released on request (55 Pa. Code § 3130.44(d)) — requesting them is what turned the center's times into evidence for the journey instead of only against the arrival. Counsel (42 Pa.C.S. § 6337) presented the packet in sequence. The rest was generic process, done early and on paper: a move answered in writing while it was still new, and a log kept from the second visit, when the log-keeping was still a choice. Nothing here required the center or the agency to have acted in bad faith — only that consequences, to be weighed fairly, have to be documented by someone. This time, they were.",
+    "THE HONEST PART: Label this win honestly — it is partial. Ruby is still in foster care tonight; this ending moves visits, not custody, and the three shortened visits already happened: that time with her is not returned by any order, and Ruby's careful order-of-things will take longer to unlearn than it took to learn. A different reviewer might have noted the journey and kept the far site anyway; a center whose sign-in times were sloppier would have given the packet less to work with. Workers, centers, reviewers, and bus connections all held pieces of this. Your share was the paper: you answered a one-page letter with a dated letter, and then you kept the receipts of every journey the letter imposed. On the record now, you were on time where it counts — in the documents, in order, from the first week."
+   ]
+  },
+  {
+   "id": "end_lose",
+   "kicker": "Day 45 — Thursday, June 25, 2026",
+   "dayOffset": 45,
+   "title": "Ending — Late, As Recorded",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Three notes and a summary: “father arrives late; visit shortened,” repeated into a pattern, and read at the review as a concern about consistency. The move letter is in the file too — filed, unanswered by you, and unconnected to the notes by any document: no dated request, no arrival log, no visit notes obtained and put beside the summary. Your account at the review was detailed and, in the way of unaccompanied accounts, believed personally and adopted never. The far site stands. The shortened visits continue. The pattern now has the review's weight behind it, available to every future reader as the settled shape of your Saturdays.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The tools existed from the first week, and they are the verified ones plus one habit. Answer the move in writing — a nearer site or transportation support, asked for on paper, so the asking has a date. Keep an arrival log, so journey times exist beside arrival times. And request the visit notes, which as part of your case record are released on request (55 Pa. Code § 3130.44(d)), so the center's own times can be read beside the letter that caused them; counsel (42 Pa.C.S. § 6337) can then present a chronology instead of a claim. None of this guarantees a nearer site. It guarantees the review must describe a journey before it may describe a trait — and in this ending, no one made it.",
+    "THE HONEST PART: The record's sentence is not a verdict on you as a father, and this debrief will not pretend it is a fair summary of you either: you left ninety minutes early, paid the fares three times over, and showed up — across a county, on two buses — for every visit there was. The system moved the room and then recorded the journey as a flaw in the traveler, because arrivals are timed by clocks and journeys are only recorded by the people who make them. A different center might have written the move into its own notes; some do. This one timed instead. What remains yours is portable: the next visit can be logged, the move can still be answered in writing, and a log begun next Saturday is worth more at the next review than this paragraph's fairness. Late, as recorded, is a description of a file. It was never a description of the effort."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s59';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

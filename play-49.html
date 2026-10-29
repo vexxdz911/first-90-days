@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 49 — Two Houses (a fictional composite)",
+  "startDateISO": "2026-02-16",
+  "startNode": "start",
+  "startCash": 190,
+  "tier": "Hard",
+  "summary": "You are Deshawn. A furnace fire took your apartment, not your children — but the shelter system took them anyway, into two different foster homes, because no single home that night had two beds. Your great-aunt Odette has a house, two spare rooms, and one complication: a grandson who stays some weekends, about whom everything must be written down exactly right."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, February 16, 2026",
+   "dayOffset": 0,
+   "title": "The night of the fire",
+   "body": [
+    "The furnace fire did not hurt anybody, and it took everything anyway: the apartment is red-tagged, your shifts at the warehouse come with a cot at your cousin's for you, and Kira (ten) and Micah (six) are, as of tonight, in two different foster homes across the county from each other — because the emergency list had no house with two open beds, and a sibling set of two is, to a placement desk at midnight, a math problem.",
+    "The caseworker, Ms. Moreau, is apologetic in the practiced way of someone delivering weather. \"It's temporary. We'll work on getting them together.\" Temporary is a word whose meaning depends entirely on who is keeping the calendar."
+   ],
+   "choices": [
+    {
+     "text": "Ask — tonight, before she leaves — \"Who keeps the calendar on 'together,' and when is it reviewed?\" Get the hearing date and write it on the shelter's discharge paper.",
+     "next": "the_date",
+     "addHidden": [
+      "placement-split"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "the_date",
+   "kicker": "Day 0 — Monday, February 16, 2026",
+   "dayOffset": 0,
+   "title": "The date",
+   "body": [
+    "The shelter care hearing is Thursday — emergency placements get reviewed within 72 hours by law (42 Pa.C.S. § 6332). Cohesion is not on that hearing's short agenda; custody is. But Ms. Moreau, pinned gently to specifics, gives you two useful things: the names of both foster homes' neighborhoods, and confirmation that the children can see each other — visits between siblings are arranged, not automatic, and arranging starts with asking.",
+    "On the bus back to your cousin's couch, you make the call that this whole scenario will turn on. Your great-aunt Odette — your grandmother's sister, sixty-three, retired from the school cafeteria, in the brick house on Walnut with the porch — has two spare rooms and has been asking about the children since midnight."
+   ],
+   "choices": [
+    {
+     "text": "Call her now, from the bus, and ask the question whole: \"Aunt Odette — both of them. Your house. Would you?\"",
+     "next": "aunt_call"
+    }
+   ]
+  },
+  {
+   "id": "aunt_call",
+   "kicker": "Day 1 — Tuesday, February 17, 2026",
+   "dayOffset": 1,
+   "title": "Odette",
+   "body": [
+    "She answers like the phone insulted her by ringing so late with so obvious a question. \"Boy, I changed your diapers in that house. Get me whatever papers they need. Both rooms. Kira gets the blue one — she'll say it's hers anyway.\" Then, practical as a tide table: \"My grandson Tomas stays some weekends when his shift runs late. He's twenty-four. Sleeps on the third floor. That's part of the house too. Put it in whatever they ask.\"",
+    "A household is everyone who sleeps under the roof — on the form, in the study, and in the truth. Odette has just handed you the fact that will make or break her application, depending on what you do with it."
+   ],
+   "choices": [
+    {
+     "text": "Put Odette's offer in writing to the agency tomorrow — full name, address, phone, both children named, and Tomas's weekend stays stated in the letter itself.",
+     "next": "letter_full",
+     "setFlags": [
+      "kinNamedWritten",
+      "householdHonest"
+     ],
+     "addHidden": [
+      "named-kin"
+     ]
+    },
+    {
+     "text": "Put Odette's offer in writing tomorrow — name, address, phone, both children. Tomas is a grown man with his own apartment; weekends hardly count as living there. Leave him out of it.",
+     "next": "letter_short",
+     "setFlags": [
+      "kinNamedWritten"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "letter_short",
+   "kicker": "Day 2 — Wednesday, February 18, 2026",
+   "dayOffset": 2,
+   "title": "The shorter letter",
+   "body": [
+    "The letter goes in clean and simple, and that is exactly its problem. Somewhere in a database the agency can search — because agencies search households, not just people — Tomas's name is attached to that address from an old matter in another county. It may be nothing. It may be a dismissed charge from when he was nineteen. But the study will find it, and when it does, the question will not be about Tomas. It will be about the letter that didn't mention him.",
+    "You hear about the match from Ms. Moreau, carefully, a week later — and spend the rest of the study climbing out of a hole labeled 'omission.'"
+   ],
+   "choices": [
+    {
+     "text": "Correct it in writing, immediately and completely: Tomas's full name, his own address, his weekend pattern, and an apology for the gap — then help Odette get his clearances started anyway.",
+     "next": "hearing49",
+     "setFlags": [
+      "omissionCorrected"
+     ],
+     "cash": -10
+    }
+   ]
+  },
+  {
+   "id": "letter_full",
+   "kicker": "Day 2 — Wednesday, February 18, 2026",
+   "dayOffset": 2,
+   "title": "The whole letter",
+   "body": [
+    "Your letter names everybody who sleeps in that house, including the one who sleeps there eight nights a month. Ms. Moreau reads it and does something that tells you the letter worked: she starts asking you questions about Tomas as logistics, not as secrets. \"He'll need clearances too, as a household member for study purposes. Can he get fingerprinted this week?\"",
+    "A disclosed complication is a task. An undisclosed one is a finding."
+   ],
+   "choices": [
+    {
+     "text": "Call Tomas yourself. \"Aunt Odette's taking the kids. The county needs your prints. It's not about you — it's the shape of the house.\"",
+     "next": "hearing49"
+    }
+   ]
+  },
+  {
+   "id": "hearing49",
+   "kicker": "Day 3 — Thursday, February 19, 2026",
+   "dayOffset": 3,
+   "title": "Thursday — shelter care",
+   "body": [
+    "The shelter care hearing is short and mostly about custody, not addresses: the judge confirms the emergency, continues the children in care, and sets the review for March 19th. But because Odette's letter is already in the file, your counsel gets one sentence into the record that will matter in March: 'A kinship resource, the children's great-aunt, has been identified in writing; the agency is directed to proceed with her study.'",
+    "Directed. On the record. Studies that are directed finish on schedules; studies that are merely 'in process' finish on sympathies."
+   ],
+   "choices": [
+    {
+     "text": "Leave with the order's sentence copied into your notebook. It is the study's leash.",
+     "next": "the_study"
+    }
+   ]
+  },
+  {
+   "id": "the_study",
+   "kicker": "Day 4 — Friday, February 20, 2026",
+   "dayOffset": 4,
+   "title": "The study",
+   "body": [
+    "Odette's study opens with her clearances, Tomas's fingerprints, and a home visit that she treats like a church inspection: the blue room gets a second bed before the worker arrives, not after. Ms. Moreau walks the third floor, notes the separate bathroom, asks Tomas his schedule directly, and writes it all down in front of him — which is what honest paper looks like.",
+    "Then the pace changes. Studies move at the speed of their slowest document, and Odette's slowest document is her late husband's death certificate, needed to clear an old joint account flag on a background report. Nobody thinks it means anything. It still has to arrive."
+   ],
+   "choices": [
+    {
+     "text": "Get the certificate yourself — county office, same week, fee paid — and hand-deliver a copy to the agency with a receipt.",
+     "next": "odettes_house",
+     "cash": -18,
+     "setFlags": [
+      "paperChased"
+     ]
+    },
+    {
+     "text": "Let the agency request it through channels. It is their study; the flag is their paperwork.",
+     "next": "odettes_house"
+    }
+   ]
+  },
+  {
+   "id": "odettes_house",
+   "kicker": "Day 6 — Sunday, February 22, 2026",
+   "dayOffset": 6,
+   "title": "The third floor",
+   "body": [
+    "The study's logistics come to Odette's kitchen table: her clearances are filed; the home visit is set; and Tomas — home for the weekend — sits for his part without being asked twice. Ms. Moreau explains what his fingerprints are for with a directness he respects: 'The study has to describe the whole house. You're part of the house. That's the whole speech.'",
+    "'First honest form I've ever been on,' Tomas says, and rolls his thumb in the ink."
+   ],
+   "choices": [
+    {
+     "text": "His appointment is kept, his prints taken, his name spelled right on every form — the unglamorous liturgy of a household with nothing to hide.",
+     "next": "micah_tooth"
+    }
+   ]
+  },
+  {
+   "id": "micah_tooth",
+   "kicker": "Day 7 — Monday, February 23, 2026",
+   "dayOffset": 7,
+   "title": "A tooth, at the right address",
+   "body": [
+    "Sunday visits at Odette's begin — the agency's practical bridge while the study runs — and on the second Sunday Micah loses a tooth at her table, in a meatball, with ceremony. Odette produces an envelope, writes 'MICAH — FIRST TOOTH — HER HOUSE' on it in pencil, and puts it in the drawer where she keeps the family's important papers, between the deed and a baptismal certificate.",
+    "Children file their own evidence. By March, that drawer will hold the argument this case is really about. On the drive back, the one remaining errand from the study list surfaces — the death certificate for the background flag — and it is yours to chase or to leave to channels."
+   ],
+   "choices": [
+    {
+     "text": "Get the certificate yourself — county office, same week, fee paid — and hand-deliver a copy to the agency with a receipt.",
+     "next": "certificate",
+     "cash": -18,
+     "setFlags": [
+      "paperChased"
+     ]
+    },
+    {
+     "text": "Let the agency request it through channels. It is their study; the flag is their paperwork.",
+     "next": "certificate_slow"
+    }
+   ]
+  },
+  {
+   "id": "certificate_slow",
+   "kicker": "Day 9 — Wednesday, February 25, 2026",
+   "dayOffset": 9,
+   "title": "Through channels",
+   "body": [
+    "Channels take nineteen days. In those nineteen days, Kira has a birthday in one foster home and Micah loses a tooth in the other, and you spend both events in a family visitation room with party hats from a dollar store, doing arithmetic about what 'temporary' costs when other people hold the calendar.",
+    "When the certificate lands, the study resumes exactly where it stopped. Nothing was denied. Nothing was decided. That is the most common way sibling placements stay split: not by ruling, but by drift."
+   ],
+   "choices": [
+    {
+     "text": "From here in, nothing travels without you carrying a copy. Ask for the sibling visits in writing while you wait.",
+     "next": "sibling_visits",
+     "setFlags": [
+      "visitsWritten"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "certificate",
+   "kicker": "Day 9 — Wednesday, February 25, 2026",
+   "dayOffset": 9,
+   "title": "Paper, chased",
+   "body": [
+    "The certificate arrives inside the week. The flag clears. And because you are at the agency anyway, you do the second thing this scenario is about: you put the sibling visits in writing. Kira and Micah have seen each other twice in three weeks, both times because a foster parent volunteered a drive. That is kindness. Kindness is not a schedule.",
+    "\"I'm asking that sibling visits be written into the plan — weekly, arranged by the agency, until they're placed together.\" Ms. Moreau types it where requests go to become obligations."
+   ],
+   "choices": [
+    {
+     "text": "Weekly sibling visits, in the plan, in writing — starting this Saturday.",
+     "next": "sibling_visits",
+     "setFlags": [
+      "visitsWritten"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sibling_visits",
+   "kicker": "Day 13 — Sunday, March 1, 2026",
+   "dayOffset": 13,
+   "title": "Saturdays",
+   "body": [
+    "The visits change the children's weather. Micah's foster mother reports he sleeps better on Saturday nights; Kira keeps a countdown on a paper chain. The file now documents something agencies are supposed to weigh and often only notice when it's written down: these two are not a caseload of two. They are a set.",
+    "Odette's study, meanwhile, has one more room in it: the interview where she is asked, as every kinship applicant is asked now, about Tomas — when he stays, where he sleeps, what the children call him. There is only one way to answer it that helps her."
+   ],
+   "choices": [
+    {
+     "text": "\"Everything in my letter is everything there is. Tomas stays two weekends a month, third floor, and here's his number — ask him.\"",
+     "next": "kira_call",
+     "setFlags": [
+      "householdHonest"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "kira_call",
+   "kicker": "Day 15 — Tuesday, March 3, 2026",
+   "dayOffset": 15,
+   "title": "Kira's call",
+   "body": [
+    "Kira calls from her foster home on a Tuesday, on the phone the foster mother holds and then, kindly, leaves the room for. 'Micah's tooth came out at Aunt Odette's,' she reports, with the grievance of a bureau chief whose branch offices act without her. 'I keep the chain. He keeps the teeth. Tell them at the meeting I want the Saturdays at her house. Both of us. Together.'",
+    "A ten-year-old has just dictated a placement preference with more administrative clarity than most case plans contain. You write it down in her words."
+   ],
+   "choices": [
+    {
+     "text": "Her words go to Ms. Moreau in writing the next day — the children's stated wishes, filed by the person who heard them.",
+     "next": "weekend_visit",
+     "addHidden": [
+      "child-voice"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "weekend_visit",
+   "kicker": "Day 17 — Thursday, March 5, 2026",
+   "dayOffset": 17,
+   "title": "A whole Saturday",
+   "body": [
+    "The first full Saturday at Odette's runs on her rules: pancakes in shifts, the blue room inspected by Kira and claimed with a hair ribbon on the doorknob, Tomas arriving at noon with hoagies and leaving the children the run of the porch. Ms. Moreau's visit note — you will read it later, in the record — is two lines long and both are gold: 'Children relaxed. Sibling interaction continuous and unforced.'",
+    "The file is learning what the family already knew. The study's last open item is Tomas's history, which the county's answer on his fingerprints will frame one way or another."
+   ],
+   "choices": [
+    {
+     "text": "The answer comes back exactly as disclosed. Be in the room when Odette is asked about it.",
+     "next": "tomas_check"
+    }
+   ]
+  },
+  {
+   "id": "tomas_check",
+   "kicker": "Day 18 — Friday, March 6, 2026",
+   "dayOffset": 18,
+   "title": "The check",
+   "body": [
+    "Tomas's record is what Odette said it would be: a single charge at nineteen, dismissed, in a county two hours away. The dismissed charge is a fact. What the study writes about it is a judgment — and the judgment it writes, when the household was disclosed from the first letter, is 'household composition known; adult member's history reviewed; no current concern.'",
+    "Had it surfaced as a discovery, the same facts would have been written as a credibility problem for the applicant. Same Tomas. Different letter."
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Moreau what remains before the March review — and get the answer as a list.",
+     "next": "tomas_job",
+     "setFlags": [
+      "checklistKept"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tomas_job",
+   "kicker": "Day 20 — Sunday, March 8, 2026",
+   "dayOffset": 20,
+   "title": "Tomas, documented",
+   "body": [
+    "The study's final folder is Tomas-shaped: his employer's letter (six years on the same shift), his lease across town (proving the weekends are weekends, not residence), his fingerprint results, and the dismissed-charge disposition from the other county — obtained by you, at the clerk's window, for eleven dollars, because paper chased is paper arrived.",
+    "Assembled, it reads the way honest households read: layered, dated, and slightly boring. Boring is what truth looks like in a kinship file."
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Moreau what remains before the March review — and get the answer as a list.",
+     "next": "the_list2"
+    }
+   ]
+  },
+  {
+   "id": "the_list2",
+   "kicker": "Day 22 — Tuesday, March 10, 2026",
+   "dayOffset": 22,
+   "title": "What remains",
+   "body": [
+    "The list is short: the study report to be written, Odette's approval signature from a supervisor, and the hearing itself. It is also the moment to make sure the review hears the person the law added to the room. Since 2023, a potential kinship care resource — someone who meets the emergency-caregiver requirements and has said yes to being a kinship caregiver — has a statutory right to be heard at a hearing on one subject: her qualifications to provide kinship care (42 Pa.C.S. § 6336.1, as amended by Act 48 of 2023; the definition sits at 42 Pa.C.S. § 6302).",
+    "It is not standing, and Ms. Fontaine, your appointed counsel — yours by right under 42 Pa.C.S. § 6337 — is careful about the difference. \"She can't argue your case. But on whether she can take them, the court must hear her, and must then decide whether she gets notice and a voice going forward. Make sure she's there.\""
+   ],
+   "choices": [
+    {
+     "text": "Odette will be there, in her good coat, with her folder. Ask Ms. Fontaine to note her presence for the record at the start.",
+     "next": "foster_moms",
+     "setFlags": [
+      "auntHeard"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "foster_moms",
+   "kicker": "Day 24 — Thursday, March 12, 2026",
+   "dayOffset": 24,
+   "title": "Two foster mothers",
+   "body": [
+    "Both foster mothers will be heard at the review if they wish — notice and the right to be heard are theirs under 42 Pa.C.S. § 6336.1 — and Ms. Moreau, doing the rounds, reports their positions honestly: Kira's foster mother supports the move ('She's packed twice already, in her head'). Micah's is torn in the open: bonded to a six-year-old who has been hers since the fire, and unwilling to pretend otherwise — but she has met Odette, and what she asks the court for is a transition, not a veto.",
+    "Opposition would have been simpler. This is better: a case where every adult is telling the truth, and the court gets to decide on placements instead of on credibility."
+   ],
+   "choices": [
+    {
+     "text": "Thank both of them, through the agency, in writing. Truth-telling adults are this case's infrastructure.",
+     "next": "deshawn_plan"
+    }
+   ]
+  },
+  {
+   "id": "deshawn_plan",
+   "kicker": "Day 25 — Friday, March 13, 2026",
+   "dayOffset": 25,
+   "title": "Your own address",
+   "body": [
+    "Your side of the file moves too: the red-tagged apartment is settled with the landlord, your cousin's couch has an end date, and a lease on a two-bedroom — two bedrooms, chosen with a caseworker's eye — is signed for April, contingent on the review. Your counsel will present it as context, not argument: the kinship placement is the bridge; your housing is the far shore being built on schedule.",
+    "Cases are never only about the question on the docket. Judges read trajectories. Yours, this month, points one way."
+   ],
+   "choices": [
+    {
+     "text": "File the lease copy with your review papers. Then get the record you requested weeks ago.",
+     "next": "records49"
+    }
+   ]
+  },
+  {
+   "id": "records49",
+   "kicker": "Day 26 — Saturday, March 14, 2026",
+   "dayOffset": 26,
+   "title": "The record, both ways",
+   "body": [
+    "Before the review, Ms. Fontaine suggests the request she suggests in every case: the agency's file, in writing — a parent's right under 55 Pa. Code § 3130.44(d). The placement summaries confirm the split was a bed-count accident, not a clinical judgment: both foster homes rate the children thriving; both note the sibling countdown chains.",
+    "Paper that agrees with you is still worth having. Judges trust documents that were written before anybody knew they'd be exhibits."
+   ],
+   "choices": [
+    {
+     "text": "File the request. Bring the summaries to the review.",
+     "next": "review_prep49",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "record-request"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "review_prep49",
+   "kicker": "Day 28 — Monday, March 16, 2026",
+   "dayOffset": 28,
+   "title": "The packet",
+   "body": [
+    "Ms. Fontaine assembles the review packet on her conference table, and it has a spine: the first letter (whole household, day one), the hearing order directing the study, the study itself, the Saturday visit notes, Kira's dictated sentence, the foster mothers' positions, your lease. 'Cases like this are won in the passive voice,' she says. 'Everything already happened. The judge just gets to agree with the record.'",
+    "The agency's filing is due Thursday. Ms. Moreau has been straight with you for six weeks, and her report will say what her file says. The question is what her supervisor's recommendation line says underneath it."
+   ],
+   "choices": [
+    {
+     "text": "Sleep on the packet. Tomorrow the agency files; the day after, you answer if you must.",
+     "next": "continuance_scare"
+    }
+   ]
+  },
+  {
+   "id": "continuance_scare",
+   "kicker": "Day 29 — Tuesday, March 17, 2026",
+   "dayOffset": 29,
+   "title": "The scare",
+   "body": [
+    "The agency's filing requests a thirty-day continuance — 'to complete supervisory review of the kinship study' — and for one evening the packet feels like a sandcastle at tide. Ms. Fontaine opposes in writing the same day: the study is complete, the children are split, the statute's clock does not recognize supervisory weather. The court denies the continuance on the papers, in a two-line order that Ms. Fontaine reads to you twice.",
+    "March 19th stands. Systems request delay the way water finds downhill; opposed, in writing, on a complete record, delay sometimes loses."
+   ],
+   "choices": [
+    {
+     "text": "March 19th. Iron something. Odette already has.",
+     "next": "the_review49"
+    }
+   ]
+  },
+  {
+   "id": "the_review49",
+   "kicker": "Day 31 — Thursday, March 19, 2026",
+   "dayOffset": 31,
+   "title": "March 19th",
+   "body": [
+    "The judge has the study, the sibling-visit log, and a great-aunt in the second row. Ms. Moreau presents the agency's position; Ms. Fontaine presents yours; and when the question of the kinship home arrives, Odette is heard — on her qualifications, which turn out to be a life story with a spare room attached.",
+    "\"Ms. Moreau,\" the judge says, \"the agency's recommendation on placement with the great-aunt?\""
+   ],
+   "choices": [
+    {
+     "text": "Hold still. The answer was assembled in February, one letter at a time.",
+     "next": "night_before49"
+    }
+   ]
+  },
+  {
+   "id": "night_before49",
+   "kicker": "Day 31 — Thursday, March 19, 2026",
+   "dayOffset": 31,
+   "title": "The night before",
+   "body": [
+    "Odette lays out the children's rooms for nobody — they are not moving tomorrow whatever happens; tomorrow is only the order — and then lays them out again, because hands need work on the night before a judge decides where a family lives. Tomas calls from his apartment: 'Tell the part about the tooth drawer.'",
+    "'They'll read the visits,' you tell him. 'The drawer is in the visits.' It is, too — two lines, gold, in the record you requested and read."
+   ],
+   "choices": [
+    {
+     "text": "Walk in with the record already read. It changes how a courtroom sounds.",
+     "next": "outcome49"
+    }
+   ]
+  },
+  {
+   "id": "outcome49",
+   "kicker": "Day 31 — Thursday, March 19, 2026",
+   "dayOffset": 31,
+   "title": "One roof, or two",
+   "body": [
+    "The recommendation depends on what the study could honestly say about the whole household — and on how much of the month the paper spent traveling instead of arriving."
+   ],
+   "choices": [
+    {
+     "text": "The household was disclosed from the first letter, the certificate chased, the visits documented, and Odette has been heard on her qualifications: the agency recommends both children to her home.",
+     "next": "end_oneroof",
+     "requiresFlags": [
+      "householdHonest",
+      "paperChased",
+      "auntHeard"
+     ]
+    },
+    {
+     "text": "The study supports Kira — school-age, blue room ready — but the agency wants 'more time' on the household picture before Micah, the younger child, moves too.",
+     "next": "end_splitfix"
+    },
+    {
+     "text": "The file is too thin to recommend a joint move today.",
+     "next": "end_visits"
+    }
+   ]
+  },
+  {
+   "id": "end_oneroof",
+   "kicker": "Day 31 — Thursday, March 19, 2026",
+   "dayOffset": 31,
+   "title": "Ending — One Roof",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Kira and Micah move to Walnut Street on Saturday, into the blue room and the room beside it, with Tomas's third-floor weekends written into the safety plan like the ordinary fact they always were. The judge, granting Odette notice and participation going forward, says the quiet part into the record: the kinship resource was ready before the system was, and the file shows it.",
+    "Three things carried this outcome. The kinship offer was made in writing on day one, with the whole household in it — a disclosed complication is a task, an undisclosed one is a credibility finding. The sibling bond was made into paper: weekly visits, requested in writing, logged, and impossible to un-know by March. And Odette used the voice current law gives her: under 42 Pa.C.S. § 6336.1 (Act 48 of 2023), a potential kinship care resource (§ 6302) must be heard on her qualifications to provide kinship care, and the court must then decide her notice and participation going forward. She still has no standing in your case — the statute is explicit — but her qualifications are now a courtroom fact instead of a file hope.",
+    "What no strategy controls: the hearing judge's view of a six-year-old and a dismissed charge at nineteen, and Tomas himself. If his record had held more, this ending narrows. The strategy's job was never to guarantee Odette's house wins — it was to make sure it was judged on its actual contents, all of them, from the first letter forward."
+   ]
+  },
+  {
+   "id": "end_splitfix",
+   "kicker": "Day 45 — Thursday, April 2, 2026",
+   "dayOffset": 45,
+   "title": "Ending — One Roof, One Still Away (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Kira moves to Walnut Street. Micah does not — not yet: the court keeps him in his foster home 'pending household stabilization' and sets the question again in six weeks, with Odette approved as his respite and weekend home in the meantime. It is half a family under one roof and half a countdown chain, and Micah's half is the heavier half to carry out of the courtroom.",
+    "Be honest about what produced the split: not Tomas, and not his record — the delay. Paper that travels by channel instead of by hand cost the study the weeks in which a supervisor's caution might have been answered twice over. Every reviewer of a young child's placement is choosing between two risks, and an unfinished file makes 'wait' the defensible choice. Finished files are how parents take 'wait' off the table.",
+    "This is a partial win with a working engine: Odette is approved, heard, and in the case with notice going forward (§ 6336.1). The six-week review is a date, not a hope. Keep the Saturday visits in writing, keep the countdown chains in the file, and let the next hearing decide about a household that has been running, visibly and without incident, for a month and a half."
+   ]
+  },
+  {
+   "id": "end_visits",
+   "kicker": "Day 45 — Thursday, April 2, 2026",
+   "dayOffset": 45,
+   "title": "Ending — Sundays Together (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The children stay where they are, in two houses, and the court's order does the one solid thing this file could support today: sibling visits every Saturday, agency-arranged, written into the plan where they cannot quietly evaporate — and Odette's study kept open with a review date, her right to be heard on her qualifications acknowledged on the record.",
+    "It is not the ending this family aimed at, and the debrief owes you the unvarnished reason: the joint placement failed on file depth. A study slowed by undisclosed household facts and slow paper presented the judge a choice between two thriving foster placements and an unfinished kinship file — and unfinished files lose that comparison even when the home behind them is the right one. The bond evidence (the visits, the countdowns) did its work: it is why the visits are ordered and the study kept open rather than closed.",
+    "Treat this ending as a waypoint, not a verdict. The study continues; the next review inherits a complete household picture, a documented sibling bond, and a kinship resource the court has already heard once. Families reach One Roof from exactly here. The road is just measured in reviews instead of weeks."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s49';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

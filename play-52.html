@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 52 — The Notice on the Fridge (a fictional composite)",
+  "startDateISO": "2026-08-03",
+  "startNode": "start",
+  "startCash": 175,
+  "tier": "Hard",
+  "summary": "You are Noelle. Your daughter Sanaa, thirteen, has lived eight months with the Kellermans, a foster family who are good at teenagers. Tonight they tape their thirty-day notice to their own fridge: a parent's illness, a house to sell, an ending they hate. The agency's plan for a thirteen-year-old on a deadline is the plan agencies keep for teenagers nobody claims: a group placement. Sanaa's uncle Hakim would claim her in a heartbeat. The file says he was 'contacted.' He says his phone never rang."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, August 3, 2026",
+   "dayOffset": 0,
+   "title": "Two phone calls",
+   "body": [
+    "The first call is from Mrs. Kellerman, and she is crying in the controlled way of a woman reading from a paper she wrote so she would say it right: her mother's care, a move to Ohio, the house — and the formal thirty-day notice the agency requires, given today, August 3rd. Sanaa's placement with them ends September 2nd. \"We asked them to tell you first. They said the plan would be shared when there's a plan.\"",
+    "The second call is yours, to the agency, and Ms. Nowak is honest in the way that should worry you more than evasion would: \"For a thirteen-year-old, on thirty days, our realistic option is the group placement on Route 30. Family homes don't take teens on short notice. We'll list her and see.\" Listed. Like a house. Like the Kellermans'."
+   ],
+   "choices": [
+    {
+     "text": "Write down the two dates before anything else: notice given August 3rd; placement ends September 2nd. Then ask the question the system hopes you'll ask later: \"What kin has been contacted for Sanaa — by name?\"",
+     "next": "by_name",
+     "addHidden": [
+      "move-notice"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "by_name",
+   "kicker": "Day 1 — Tuesday, August 4, 2026",
+   "dayOffset": 1,
+   "title": "By name",
+   "body": [
+    "The answer comes by email the next day, because you asked for it in writing: family finding for Sanaa consists of one entry, dated March: 'Paternal uncle (Hakim B.) — left voicemail, no response.' One voicemail, to a number with a transposed digit — you can see it from your chair, because you have been texting Hakim at the right number for a decade. Family finding did not fail. It dialed wrong once, in March, and stopped.",
+    "Sanaa, thirteen and done being managed, supplies the verdict at your next visit: \"Uncle Hakim has the same number since I was six. He makes the rice the right way. Why does the paper say he doesn't answer?\""
+   ],
+   "choices": [
+    {
+     "text": "Ask Sanaa to write it — her uncle's correct number, in her own handwriting, on the visit sign-in sheet where it enters the record.",
+     "next": "sanaa_visit",
+     "setFlags": [
+      "correctNumber"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sanaa_visit",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "Sanaa's accounting",
+   "body": [
+    "At Saturday's visit, Sanaa gives you the teenager's audit of the situation, itemized on her phone's notes app: the Kellermans — 'good people, this isn't about them'; the group placement — 'a building where the staff rotate and the girls who've been there longest run the bathroom schedule'; her school — 'mid-semester transfer means I lose French and the track season'; and then the item she has clearly been saving.",
+    "'Mom. Uncle Hakim has had the same number since I was six. He texts me on Eid. Whatever the paper says about “contacted,” the paper is wrong, and I can prove it from my own phone.' She holds it up: a thread of texts, years long, ending with a photo of rice."
+   ],
+   "choices": [
+    {
+     "text": "Screenshot nothing yet. Ask her to write the number down in her own hand at the sign-in sheet — the record takes handwriting more seriously than phones.",
+     "next": "her_handwriting",
+     "addHidden": [
+      "child-voice"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "her_handwriting",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "Her handwriting",
+   "body": [
+    "Teenagers' knowledge is the most underused database in child welfare: they hold the family's real phone tree, the real addresses, the real names people go by. The sign-in sheet now holds the number in Sanaa's hand. What it does not do by itself is travel — paper in a visit file waits; paper filed with the court and the agency moves.",
+    "Ms. Nowak, to her credit, does not defend the March entry when you send her the correction. \"Then we call him today,\" she says. \"You'll want it in writing that we did.\""
+   ],
+   "choices": [
+    {
+     "text": "In writing: your letter names Hakim fully — address, phone, his relationship, his willingness — and asks for an expedited kinship study, with the September 2nd date stated in the letter's first line.",
+     "next": "march_entry",
+     "setFlags": [
+      "kinWritten"
+     ],
+     "addHidden": [
+      "named-kin"
+     ],
+     "cash": -6
+    }
+   ]
+  },
+  {
+   "id": "march_entry",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "Side by side",
+   "body": [
+    "You lay two documents side by side on Ms. Nowak's desk — the intake form from Sanaa's first week, with Hakim's number in your own exhausted handwriting, correct; and the March family-finding entry, with the same number and two digits transposed. The distance between your family and a group placement is visible to the naked eye: it is the distance between a 3 and an 8.",
+    "Ms. Nowak looks at the pair for a long moment. 'We'll correct the entry,' she says, 'and I'll make the call today myself.' It is not an apology. It is better: it is a procedure changing course in front of a witness, on paper you will request in writing."
+   ],
+   "choices": [
+    {
+     "text": "Your letter follows within the day — Hakim named in full, the expedited study requested, September 2nd in the first line.",
+     "next": "the_letter52"
+    }
+   ]
+  },
+  {
+   "id": "the_letter52",
+   "kicker": "Day 3 — Thursday, August 6, 2026",
+   "dayOffset": 3,
+   "title": "Hakim",
+   "body": [
+    "Hakim answers on the first ring, because that is what his phone does when it is dialed correctly. He is thirty-eight, a school bus driver with a spare room, a daughter at college whose room Sanaa already calls 'the room,' and a record consisting of one parking ticket. He listens to the whole story — the notice, the date, the group placement — in a silence with a shape.",
+    "\"September 2nd,\" he says. \"Then I have thirty days to become a paperwork uncle. Tell me every form. I will do them in order.\""
+   ],
+   "choices": [
+    {
+     "text": "Give him the list as the agency gives it: clearances, fingerprints, home visit, references — and the family's part: you and Sanaa document what he is to her. Godfather at her christening. Every Eid dinner. The rice.",
+     "next": "agency_pushback"
+    }
+   ]
+  },
+  {
+   "id": "agency_pushback",
+   "kicker": "Day 4 — Friday, August 7, 2026",
+   "dayOffset": 4,
+   "title": "Are you sure",
+   "body": [
+    "The agency's first response to your letter has a hesitation in it that you have learned to recognize as the file defending itself: 'Our notes indicate the uncle was unresponsive in March; before we invest in an expedited study, can the family confirm his current willingness?' The March fiction is being cited as a reason to doubt the March correction — a snake digesting its own tail, in triplicate.",
+    "Your reply is two attachments long: the intake form and the corrected entry, with one sentence — 'Willingness confirmed by direct contact on August 4th; the March entry has been corrected by your office.' Fictions cannot survive being answered with their own file."
+   ],
+   "choices": [
+    {
+     "text": "Hakim gets his list the same day. The study is now a race the agency has agreed to run.",
+     "next": "hakim_list"
+    }
+   ]
+  },
+  {
+   "id": "hakim_list",
+   "kicker": "Day 5 — Saturday, August 8, 2026",
+   "dayOffset": 5,
+   "title": "Expedited",
+   "body": [
+    "Expedited is a word agencies use for studies done at the speed of a deadline instead of the speed of a queue, and Hakim's study earns it: clearances filed within the week, fingerprints done on his lunch break, a home visit where the worker photographs the room, the desk, and — noted in the margin, because workers are human — the rice cooker, plugged in and warm.",
+    "The Kellermans, meanwhile, are doing the thing good foster parents do at the end: telling the truth early. Their notice was honest; their worry now is the cliff — Sanaa packed on September 2nd whether or not the next door is open."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mrs. Kellerman the question that protects Sanaa most: \"If Hakim's approval lands after the 2nd — days after — would you keep her those extra days, if the court asked?\"",
+     "next": "group_home_call"
+    }
+   ]
+  },
+  {
+   "id": "group_home_call",
+   "kicker": "Day 6 — Sunday, August 9, 2026",
+   "dayOffset": 6,
+   "title": "The default, inspected",
+   "body": [
+    "You ask to tour the group placement — not to fight it, but because Sanaa deserves a mother who has seen the place she is threatened with. It is not a villain's address: the staff are kind, the kitchen is bright, and there are eight girls, a curfew bell, a sign-out board, and a waiting list for the phone. It is a facility doing its best for teenagers nobody's family was found for. Sanaa's family has been found. That is the entire indictment, and nobody at the facility disputes it.",
+    "'If she comes to us,' the director says, 'we'll take good care of her. If she doesn't have to — better. We keep a bed for the ones with no Hakim.'"
+   ],
+   "choices": [
+    {
+     "text": "Thank her. Then go see the room at Hakim's, where the alternative is being assembled.",
+     "next": "hakim_house"
+    }
+   ]
+  },
+  {
+   "id": "hakim_house",
+   "kicker": "Day 7 — Monday, August 10, 2026",
+   "dayOffset": 7,
+   "title": "The room",
+   "body": [
+    "Hakim's spare room was his daughter's, and it still has her track medals on the wall — which he offers to take down and Sanaa, consulted by phone, forbids: 'Tell him the medals stay. I run too.' His clearances are already filed; the fingerprint card is on the counter by the rice cooker, appointment circled; his sister-in-law two doors down has signed the backup-care page without being asked twice.",
+    "A kinship home assembling itself looks like this: not a courtroom argument, but a room, a calendar, and a man doing forms in the order given."
+   ],
+   "choices": [
+    {
+     "text": "The worker confirms the expedited track in writing tomorrow. The Kellermans, meanwhile, have a question to be asked.",
+     "next": "ashford_call"
+    }
+   ]
+  },
+  {
+   "id": "ashford_call",
+   "kicker": "Day 8 — Tuesday, August 11, 2026",
+   "dayOffset": 8,
+   "title": "Expedited, confirmed",
+   "body": [
+    "Ms. Nowak's email confirms the architecture in writing: Hakim's study designated expedited; home visit within ten days; clearance results pending; the review on August 27th identified as 'the decision point for placement,' with the Kellermans' September 2nd end date noted as 'the operative deadline.' Every one of those phrases is a handle the next month can grip.",
+    "You forward it to Hakim and to your counsel. Paper that is shared is paper that survives."
+   ],
+   "choices": [
+    {
+     "text": "Now the hard question to the Kellermans: if the approval lands days late, will they bridge the gap?",
+     "next": "kellerman_ask"
+    }
+   ]
+  },
+  {
+   "id": "kellerman_ask",
+   "kicker": "Day 9 — Wednesday, August 12, 2026",
+   "dayOffset": 9,
+   "title": "Days after",
+   "body": [
+    "\"If the court asks and the agency pays the days, yes,\" she says. \"A week. Maybe two. We close on the house the 21st — I can't lie to you past that.\" She will say it in the courtroom too: foster parents receive notice of hearings and may be heard at them (42 Pa.C.S. § 6336.1), and what she has to say is not opposition — it is a bridge, offered with an honest far shore.",
+    "The review is August 27th — six days before the notice runs out. Everything in this scenario is now a race between a study's last signature and a calendar."
+   ],
+   "choices": [
+    {
+     "text": "File the record request too — Sanaa's file, your right as a party under 55 Pa. Code § 3130.44(d) — so the family-finding entry and its wrong digit are exhibits, not anecdotes.",
+     "next": "hakim_fingerprints",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "record-request"
+     ],
+     "cash": -8
+    }
+   ]
+  },
+  {
+   "id": "hakim_fingerprints",
+   "kicker": "Day 10 — Thursday, August 13, 2026",
+   "dayOffset": 10,
+   "title": "Fingerprint weather",
+   "body": [
+    "Hakim's fingerprint appointment is canceled by the system the morning of — a database outage, rescheduled nine days out, which in this August is the difference between a signature and a cliff. He does the thing this batch keeps teaching: he calls, he documents the outage in an email to Ms. Nowak with the cancellation notice attached, and he drives to the walk-in site in the next county on his lunch break, where a human being with ink takes his prints the same day.",
+    "Expedited is not a designation. It is a behavior."
+   ],
+   "choices": [
+    {
+     "text": "His prints are in; the home visit is done; the interview remains — the worker meets the man the wrong number hid.",
+     "next": "hakim_interview",
+     "cash": -10
+    }
+   ]
+  },
+  {
+   "id": "hakim_interview",
+   "kicker": "Day 11 — Friday, August 14, 2026",
+   "dayOffset": 11,
+   "title": "The interview",
+   "body": [
+    "The study interview is where kinship stops being paperwork: Hakim talks about discipline ('First I feed them. Rules land better after rice'), about Sanaa's father — his brother, whose absence is in both their files — about the spare room's medals, about his daughter's opinion, rendered by speakerphone from college: 'Dad's been practicing having a teenager again. He's ready. Also, tell Sanaa the top bunk is structurally hers.'",
+    "The worker writes for a long time. What gets written about a home while it is being lived in, by a worker watching it work, is the strongest paper a study produces."
+   ],
+   "choices": [
+    {
+     "text": "While the study finishes, your record request lands — Sanaa's file, and the March entry in its original ink.",
+     "next": "records52"
+    }
+   ]
+  },
+  {
+   "id": "records52",
+   "kicker": "Day 12 — Saturday, August 15, 2026",
+   "dayOffset": 12,
+   "title": "The wrong digit",
+   "body": [
+    "The file, when it arrives, contains the March entry exactly as described, and the intake form from Sanaa's first week — on which you, exhausted and half-conscious in a hospital chair, wrote Hakim's number correctly. The agency had the right number in its own file for eight months. The voicemail went to a stranger, who presumably still wonders about it.",
+    "You do not need to prove anyone lazy or cruel. You need the court to see a sequence: correct number on file, wrong number dialed once, no second attempt, 'no response' recorded — and a group placement proposed at the end of it. Sequences indict themselves."
+   ],
+   "choices": [
+    {
+     "text": "Build the review packet with your counsel (appointed, as always, under 42 Pa.C.S. § 6337): the intake form, the March entry, Hakim's study status, the Kellermans' bridge offer.",
+     "next": "sanaa_school",
+     "setFlags": [
+      "packetBuilt"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sanaa_school",
+   "kicker": "Day 13 — Sunday, August 16, 2026",
+   "dayOffset": 13,
+   "title": "The counselor's letter",
+   "body": [
+    "Sanaa's school counselor, asked in writing, answers in writing: a mid-semester transfer to the group placement's district would cost Sanaa her French sequence and her track season; her grades, 'after a hard year by any measure,' have stabilized since spring; and the counselor's professional opinion, offered without being asked twice, is that 'the proposed kinship placement preserves every structure currently supporting this student.'",
+    "Schools are the continuous institution in a teenager's disrupted life. Their letters carry a weight in review courtrooms that parents' letters, through no justice, do not. Yours is in the packet now."
+   ],
+   "choices": [
+    {
+     "text": "One more Sunday at the Kellermans' before the review — and it is not an ordinary Sunday.",
+     "next": "kellerman_dinner"
+    }
+   ]
+  },
+  {
+   "id": "kellerman_dinner",
+   "kicker": "Day 15 — Tuesday, August 18, 2026",
+   "dayOffset": 15,
+   "title": "The last Sunday dinner (provisional)",
+   "body": [
+    "Mrs. Kellerman cooks Sanaa's favorites and gives her the recipe cards, handwritten, 'for whichever kitchen' — along with their Ohio address and a standing invitation that has the force of kinship though the law calls it former foster care. Mr. Kellerman fixes the strap on Sanaa's track bag without being asked, which is his whole dialect of love.",
+    "'If it goes wrong at the review,' Mrs. Kellerman says at the door, 'she comes back here until the house closes, and if the agency gives us trouble about days, the judge will hear from us. We know our rights too, dear.' They do: notice, and a voice, § 6336.1. This family is bracketed by people who know theirs."
+   ],
+   "choices": [
+    {
+     "text": "Carry their bridge offer to your counsel — the packet is nearly closed.",
+     "next": "counsel52"
+    }
+   ]
+  },
+  {
+   "id": "counsel52",
+   "kicker": "Day 16 — Wednesday, August 19, 2026",
+   "dayOffset": 16,
+   "title": "The chronology",
+   "body": [
+    "Your counsel builds the review around a one-page chronology, because chronology is the argument: March — correct number on file, wrong number dialed, no second attempt; August 3rd — notice; August 4th — uncle reached on the first ring; the study expedited; the bridge offered; the signature pending. 'Judges forgive systems many things,' she says. 'A year of a teenager's life filed under a typo is not usually one of them. We don't ask for anger. We ask for an order that makes the file tell the truth going forward.'",
+    "The packet closes: intake form, March entry, chronology, school letter, Hakim's study, the Kellermans' offer. One signature is still out there in a queue."
+   ],
+   "choices": [
+    {
+     "text": "Watch the signature the way sailors watch weather — daily, in writing, with dates.",
+     "next": "packet52"
+    }
+   ]
+  },
+  {
+   "id": "packet52",
+   "kicker": "Day 18 — Friday, August 21, 2026",
+   "dayOffset": 18,
+   "title": "Six days of margin",
+   "body": [
+    "Hakim's approval is the race's photo finish: clearances clear, home approved, references glowing — and the final supervisor signature scheduled for August 26th, the day before the review, if the supervisor's queue cooperates. Ms. Nowak confirms the timeline in writing, because by now everyone on this case has learned what writing is for.",
+    "Sanaa packs a 'maybe bag' at the Kellermans' — her words — with two compartments she labeled herself: 'Uncle's' and 'Elsewhere.' Thirteen-year-olds should not have to label bags like that. The review decides which label was right."
+   ],
+   "choices": [
+    {
+     "text": "At the review, ask that Hakim be heard on his qualifications as a potential kinship care resource (§ 6336.1) whether or not the signature has landed.",
+     "next": "signature_watch",
+     "setFlags": [
+      "hakimHeard"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "signature_watch",
+   "kicker": "Day 20 — Sunday, August 23, 2026",
+   "dayOffset": 20,
+   "title": "The queue",
+   "body": [
+    "The supervisor's signature becomes your morning liturgy: a call, an email, a status line in reply — 'with supervisor,' 'in review,' 'expected Friday.' Ms. Nowak, to her credit, answers in writing each time, which means the queue now exists as a document rather than a rumor. If the signature lands late, the packet will at least be able to prove exactly where the days went — and proof of where days went is, in this system, a form of pressure all by itself.",
+    "Sanaa, packing and unpacking her maybe-bag at the Kellermans', asks the only question that matters nightly: 'Did it sign?'"
+   ],
+   "choices": [
+    {
+     "text": "Plan the move as though it signed: Hakim's van, the Kellermans' boxes, your own calendar cleared for the 30th.",
+     "next": "transport_plan"
+    }
+   ]
+  },
+  {
+   "id": "transport_plan",
+   "kicker": "Day 21 — Monday, August 24, 2026",
+   "dayOffset": 21,
+   "title": "Logistics of a rescue",
+   "body": [
+    "The move, if ordered, has a choreography now: the Kellermans drive Sanaa and her boxes on the 30th and stay for the first rice; Hakim's daughter drives down from college 'for the installation'; your sister keeps your shift. Even Mrs. Kellerman's bridge — the extra days, if the signature lags — is written into the plan with its far shore (the September 21st closing) honestly marked.",
+    "Plans with named people and dated steps are what courts order when they order transitions. You have built one. The review will decide if it runs."
+   ],
+   "choices": [
+    {
+     "text": "The night before the review, Sanaa repacks the maybe-bag one last time. Be on the phone for it.",
+     "next": "night_before52"
+    }
+   ]
+  },
+  {
+   "id": "night_before52",
+   "kicker": "Day 23 — Wednesday, August 26, 2026",
+   "dayOffset": 23,
+   "title": "Uncle's / Elsewhere",
+   "body": [
+    "Sanaa talks you through the packing on speakerphone — the two labeled compartments, the track bag Mr. Kellerman repaired, the recipe cards in the front pocket 'because those go wherever I go.' Her voice is steady in the way of teenagers performing steadiness for their mothers, and you match it, because steadiness is also a thing mothers perform for daughters, and both of you know it, and neither of you says so.",
+    "'If it's Elsewhere tomorrow,' she says, 'it's Elsewhere with a date to appeal it. You taught me that. Everything's a draft until the file's closed.' She has become fluent in the family's second language. You would give a great deal for her to never have needed it."
+   ],
+   "choices": [
+    {
+     "text": "Tomorrow: the review, her statement, and the agency's document — signed, or not.",
+     "next": "review52"
+    }
+   ]
+  },
+  {
+   "id": "review52",
+   "kicker": "Day 24 — Thursday, August 27, 2026",
+   "dayOffset": 24,
+   "title": "August 27th",
+   "body": [
+    "The courtroom holds the whole geometry: the Kellermans in the second row, entitled to notice and to be heard, offering their bridge; Hakim in a tie Sanaa picked, heard on his qualifications under § 6336.1 — the school bus route he drives past her school, the room, the decade of Eid dinners; and Sanaa's own statement, taken by the judge in chambers and summarized with care: 'Uncle's. Please. Uncle's.'",
+    "Ms. Nowak presents the agency's plan. This morning, it is one of two documents. The signature is either on it, or it isn't."
+   ],
+   "choices": [
+    {
+     "text": "Listen for which document she is holding.",
+     "next": "in_chambers"
+    }
+   ]
+  },
+  {
+   "id": "in_chambers",
+   "kicker": "Day 24 — Thursday, August 27, 2026",
+   "dayOffset": 24,
+   "title": "Her words, summarized",
+   "body": [
+    "The judge returns from chambers and does the thing good dependency judges do with a teenager's statement: she puts its substance on the record herself, so Sanaa owns it in the open courtroom without having had to perform it there. 'Sanaa asks to be placed with her uncle. She asks not to be transferred schools. She asked me to note that she provided the correct telephone number herself, in March and again in August.' A ripple — the judge's eye rests, for one level second, on the agency's table.",
+    "'Counsel,' she says to the agency, 'your recommendation, and the status of the kinship approval. Exactly, please.'"
+   ],
+   "choices": [
+    {
+     "text": "Exactly is the word the whole month was building toward. Hear the answer.",
+     "next": "outcome52"
+    }
+   ]
+  },
+  {
+   "id": "outcome52",
+   "kicker": "Day 24 — Thursday, August 27, 2026",
+   "dayOffset": 24,
+   "title": "The signature",
+   "body": [
+    "Thirty days was never much time. What filled it — the corrected number, the expedited study, the bridge, the packet — decides what the agency can recommend today."
+   ],
+   "choices": [
+    {
+     "text": "Hakim's approval is signed, his qualifications heard, the Kellermans' transition offered: placement with the uncle, before September 2nd.",
+     "next": "end_familyaddress",
+     "requiresFlags": [
+      "kinWritten",
+      "packetBuilt",
+      "hakimHeard"
+     ]
+    },
+    {
+     "text": "The approval is days short of signed. The Kellermans' bridge covers the gap — barely — and the group placement waits in between.",
+     "next": "end_elevendays"
+    },
+    {
+     "text": "No kin was ever reached in time, and the file shows a plan built on one wrong number.",
+     "next": "end_defaultplan"
+    }
+   ]
+  },
+  {
+   "id": "end_familyaddress",
+   "kicker": "Day 24 — Thursday, August 27, 2026",
+   "dayOffset": 24,
+   "title": "Ending — A Family Address, Not a Facility",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Sanaa moves to Hakim's on August 30th — three days inside the deadline — with the Kellermans carrying her boxes and staying for the rice, which is, she reports, right. The group placement's bed goes to a teenager whose family search is still running. The judge's order does one more thing: it directs the agency to note the corrected family-finding entry, so the file's March mistake stops being the family's official history.",
+    "The sequence that won: the deadline was written down the day it existed (August 3rd → September 2nd); kinship was investigated by name, not by category — 'what kin has been contacted, by name' is the question that found a wrong digit; the teenager's own knowledge was put into the record in her own hand; the study ran expedited because the letter stated the date in its first line; and at the hearing, both seated voices were used — the foster parents' right to notice and to be heard, and the potential kinship care resource's right to be heard on qualifications (42 Pa.C.S. § 6336.1; the definition at § 6302, added by Act 48 of 2023). Underneath it all, the parent's record right (§ 3130.44(d)) supplied the exhibit that made 'family finding' answer for itself.",
+    "What no strategy controls: Hakim. A willing uncle with a clear record and a spare room is not a strategy output — he is a family's luck, and many families' searches find less. The strategy's promise is narrower: if the Hakim exists, he will be found in time, dialed correctly, studied fast, and heard. Group placements fill with teenagers whose Hakims were in the file the whole time, under the wrong number."
+   ]
+  },
+  {
+   "id": "end_elevendays",
+   "kicker": "Day 35 — Monday, September 7, 2026",
+   "dayOffset": 35,
+   "title": "Ending — Eleven Days Between (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The approval lands September 4th — two days after the notice ran, nine days after the Kellermans' house closing forced the end of their bridge. Sanaa spends eleven days in the group placement: a bed in a room with three other girls, a worker who is kind, a curfew bell. Then she moves to Hakim's, where the room had been waiting, painted, since August. She counts the eleven days the way teenagers count such things: exactly, and forever.",
+    "This partial ending is the honest center of the scenario, because deadlines in kinship work are not lost in courtrooms — they are lost in queues: a supervisor's signature queue, a clearance queue, a queue for a queue. Everything in the winning route was done here too, and done well; the margin was simply thinner than the bureaucracy. The lesson is not 'do it better.' It is 'start the clock-watching earlier than feels reasonable.' The March entry sat wrong for five months before the notice made it urgent. Families cannot audit what they cannot see — which is why the record request (§ 3130.44(d)) belongs at the START of a placement, not at the emergency.",
+    "Sanaa's eleven days are in the file now, and so is the sequence that caused them. If this system ever asks her to trust it again, it will have to answer for the digit. Files remember. That, in the end, is the family's leverage and the system's teacher."
+   ]
+  },
+  {
+   "id": "end_defaultplan",
+   "kicker": "Day 35 — Monday, September 7, 2026",
+   "dayOffset": 35,
+   "title": "Ending — The Default Plan",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Sanaa moves to the group placement on September 2nd, on schedule, because schedules are what default plans have instead of people. Her file's recommendation says 'no available kinship resource,' a sentence that will be copied into the next review's packet, and the next, acquiring truth by repetition — about an uncle whose phone never rang, at a number that was in the file all along.",
+    "This ending is the scenario's reason to exist. It requires no villainy: one transposed digit, one unreturned-by-stranger voicemail, a category assumption ('family homes don't take teens') doing the work family finding was supposed to do. Default plans are what happen to unexamined files, and teenagers — whose placements are the system's hardest and whose voices are its most discounted — absorb the defaults. The countermeasures are all unglamorous: ask for contacts by name, in writing; put the child's own family knowledge in the record; request the file early and read the family-finding page first; and treat 'contacted' as a claim to be verified, not a fact to be accepted.",
+    "From here, the road back runs through the next review: Hakim, once alerted, can still be studied and heard (§ 6336.1), and group placements are reviewed, not eternal. But the guide's honesty requires the ending's real name: the default won this round, and it won in March, silently, one digit at a time."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s52';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

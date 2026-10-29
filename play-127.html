@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 127 — The Whole Table, Gently (a fictional composite)",
+  "startDateISO": "2026-03-02",
+  "startNode": "start",
+  "startCash": 160,
+  "tier": "Foundation",
+  "summary": "A capstone in scope, gentle in mechanics: one incident makes two files — an indicated report with a 90-day appeal clock, and a kinship placement with your sister — and the win is learning to work both files in the right order."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, March 2, 2026",
+   "dayOffset": 0,
+   "title": "Two Envelopes",
+   "body": [
+    "Your name is Tomasa. You clean rooms at a motel off the highway, and you are raising Zayd, seven, and Leire, four, in a one-bedroom above a laundromat. In February the building's boiler failed twice, and on the coldest night you did what the neighbor downstairs suggested: you all slept at her place, three floors of stairs between your children and any exit the fire code would recognize.",
+    "Nobody was hurt. But a report was made, and this morning there are two envelopes. The first says Zayd and Leire will stay with your sister Garazi while the agency looks at your housing. The second says a report about that night has been marked indicated — and that word, a caseworker explains, can follow you onto every childcare clearance you will ever need, including the motel's sister property where you were about to pick up weekend shifts in the playroom.",
+    "Two files. Two clocks. This story is about working both of them, in the right order, on paper."
+   ],
+   "choices": [
+    {
+     "text": "Sit down with the flyer your sister printed and read both letters all the way through",
+     "next": "read_both",
+     "note": "The second letter is the one with a deadline in it. Most people read it last."
+    },
+    {
+     "text": "Call the caseworker and ask her to just explain it quickly",
+     "next": "read_both",
+     "note": "She explains the visit schedule. The deadline in the second letter stays unread a little longer."
+    }
+   ]
+  },
+  {
+   "id": "read_both",
+   "kicker": "Day 2 — Wednesday, March 4, 2026",
+   "dayOffset": 2,
+   "title": "The Deadline in the Second Letter",
+   "body": [
+    "The second letter holds the number that matters: a person named as a perpetrator in an indicated report may appeal and ask for the report to be amended or expunged — in writing — within 90 days of being notified (23 Pa.C.S. § 6341(a)(2)). You were notified on Monday, March 2, 2026. Ninety days later is Sunday, May 31, 2026.",
+    "The first letter holds no deadline at all, which is its own kind of trap: Garazi's home study, your repair plan with the landlord, and the review hearing will all move at the speed of whoever writes things down."
+   ],
+   "choices": [
+    {
+     "text": "Write both dates on the kitchen calendar and circle May 31",
+     "next": "calendar",
+     "setFlags": [
+      "calendarSet"
+     ],
+     "addHidden": [
+      "Appeal deadline calendared from the notice date"
+     ],
+     "note": "Two clocks, one calendar, both visible from the refrigerator."
+    },
+    {
+     "text": "Keep the dates in your head — you have a good memory",
+     "next": "calendar",
+     "note": "Memory is a fine thing. It is not a filing system."
+    }
+   ]
+  },
+  {
+   "id": "calendar",
+   "kicker": "Day 5 — Saturday, March 7, 2026",
+   "dayOffset": 5,
+   "title": "Garazi's Kitchen",
+   "body": [
+    "Garazi has a spare room, a fold-out couch, and a caseworker of her own now — the kinship worker, who needs clearances, a home visit, and a form signed by everyone over eighteen in the house. Zayd has already claimed the top bunk of a bed that does not exist yet.",
+    "The kinship worker says the study usually takes a few weeks. She does not say what happens to the paperwork if nobody asks about it. Garazi looks at you over the children's heads: ask, she mouths."
+   ],
+   "choices": [
+    {
+     "text": "Ask what the study needs, write the list down, and text it to yourself before you leave",
+     "next": "visits127",
+     "cash": -5,
+     "setFlags": [
+      "studyList"
+     ],
+     "addHidden": [
+      "Kinship study requirements obtained in writing"
+     ],
+     "note": "A list you can check off beats a timeline you were told."
+    },
+    {
+     "text": "Trust the process — she said a few weeks",
+     "next": "visits127",
+     "note": "Weeks pass at different speeds depending on whether anyone is counting."
+    }
+   ]
+  },
+  {
+   "id": "visits127",
+   "kicker": "Day 8 — Tuesday, March 10, 2026",
+   "dayOffset": 8,
+   "title": "Visits at Garazi's Table",
+   "body": [
+    "Visits happen at Garazi's kitchen table, twice a week, with the refrigerator sign-in sheet Garazi invented on day one: date, time in, time out, one line about the day. Zayd signs his name in letters that improve weekly, which the sheet records whether anyone meant it to or not.",
+    "The caseworker calls this 'supervised by kin.' Garazi calls it dinner. Both descriptions are accurate; only one of them is in the file, and it is the one with the sign-in sheet attached."
+   ],
+   "choices": [
+    {
+     "text": "Keep the sheet religiously and copy it monthly into your folder",
+     "next": "study_list",
+     "setFlags": [
+      "visitLog"
+     ],
+     "addHidden": [
+      "Kinship visit sign-in sheet kept and copied"
+     ],
+     "note": "A small sheet, doing a large job."
+    },
+    {
+     "text": "Enjoy the visits and skip the clerical part",
+     "next": "study_list",
+     "note": "Dinner is dinner. The file, however, eats paper or it eats nothing."
+    }
+   ]
+  },
+  {
+   "id": "study_list",
+   "kicker": "Day 9 — Wednesday, March 11, 2026",
+   "dayOffset": 9,
+   "title": "The Lawyer's Twenty Minutes",
+   "body": [
+    "The legal-aid clinic gives you twenty minutes and a lawyer, Ms. Mendieta, who draws two columns on a legal pad: APPEAL and CASE. Under APPEAL she writes: file it early, in writing, keep the stamp. Under CASE she writes: housing first, everything dated.",
+    "You have the right to counsel in the dependency case, and to appointed counsel if you cannot afford one (42 Pa.C.S. § 6337). The appeal, she says, is simpler than people fear and stricter than people hope: the paper has to exist, and it has to be on time."
+   ],
+   "choices": [
+    {
+     "text": "Ask her to help you draft the appeal letter today, while you are sitting here",
+     "next": "draft_appeal",
+     "setFlags": [
+      "lawyerMet"
+     ],
+     "addHidden": [
+      "Parent consulted counsel about both tracks"
+     ],
+     "note": "Twenty minutes, used like an hour."
+    },
+    {
+     "text": "Take her card and plan to draft the letter at home this weekend",
+     "next": "draft_appeal",
+     "note": "The card goes in the folder. The weekend, as weekends do, fills up."
+    }
+   ]
+  },
+  {
+   "id": "draft_appeal",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "One Letter, Two Copies",
+   "body": [
+    "The appeal letter is half a page: your name, the report number, the words amend or expunge, your signature, today's date. Ms. Mendieta's advice is mechanical: mail one copy so it leaves a record, keep one copy, and photograph the stamped receipt.",
+    "It feels too small to matter. She smiles the smile of a woman who has watched small letters move large files."
+   ],
+   "choices": [
+    {
+     "text": "Mail the appeal this week and keep the stamped copy in the folder",
+     "next": "appeal_sent",
+     "cash": -10,
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "Indicated-report appeal filed in writing within the 90-day window"
+     ],
+     "note": "Filed on day 12 of 90. The clock that scared you is now the clock that protects you."
+    },
+    {
+     "text": "Hold the letter until you know more about what the agency has",
+     "next": "appeal_risk",
+     "note": "Knowing more is a plan. It is also how day 12 becomes day 60."
+    }
+   ]
+  },
+  {
+   "id": "appeal_risk",
+   "kicker": "Day 40 — Saturday, April 11, 2026",
+   "dayOffset": 40,
+   "title": "The Letter in the Drawer",
+   "body": [
+    "The letter is still in the drawer, under the good scissors. The housing hunt ate the spring. The appeal window did not eat anything; it just quietly counted, the way clocks do, indifferent rather than cruel.",
+    "There is still time — that is the dangerous sentence. There is less of it than the sentence suggests."
+   ],
+   "choices": [
+    {
+     "text": "Mail it today, stamped copy in the folder, no more drawer",
+     "next": "appeal_sent",
+     "cash": -10,
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "Indicated-report appeal filed in writing within the 90-day window"
+     ],
+     "note": "Day 40 of 90. Late is a direction, not a destination — this once."
+    },
+    {
+     "text": "Wait until the review hearing settles the case side first",
+     "next": "end_registry",
+     "note": "The hearing settles the case. It was never going to settle the registry."
+    }
+   ]
+  },
+  {
+   "id": "appeal_sent",
+   "kicker": "Day 44 — Wednesday, April 15, 2026",
+   "dayOffset": 44,
+   "title": "The Boiler, On Paper",
+   "body": [
+    "The landlord's repair log exists — if you ask for it in writing. The boiler company's invoice exists too, dated the week of the cold night, with the words emergency replacement on it. Paper like this does not argue. It simply sits in a file being true.",
+    "Your caseworker, Ms. Agirre, says she can note your explanation in the file. Noting is good. Attached is better."
+   ],
+   "choices": [
+    {
+     "text": "Request the repair log and invoice in writing and attach copies to both files",
+     "next": "appeal_ack",
+     "cash": -5,
+     "setFlags": [
+      "repairPaper"
+     ],
+     "addHidden": [
+      "Landlord repair log and boiler invoice obtained and filed"
+     ],
+     "note": "The coldest night of February, now with documentation."
+    },
+    {
+     "text": "Let the caseworker note your explanation — that should be enough",
+     "next": "appeal_ack",
+     "note": "Your explanation, in her words, in her summary. Summaries summarize."
+    }
+   ]
+  },
+  {
+   "id": "appeal_ack",
+   "kicker": "Day 48 — Sunday, April 19, 2026",
+   "dayOffset": 48,
+   "title": "The Acknowledgment",
+   "body": [
+    "A thin letter comes back: your appeal has been received and docketed. It decides nothing. It proves everything about timing — the date on it is inside the window, and the window was the whole battle of the appeal's first phase.",
+    "Ms. Mendieta makes you file it on top of the appeal copy. 'First page of the appeal file,' she says. 'Proof before argument. Always in that order.'"
+   ],
+   "choices": [
+    {
+     "text": "File the acknowledgment with the stamped copy and note the docket number on the calendar",
+     "next": "records_beat",
+     "setFlags": [
+      "appealDocketed"
+     ],
+     "addHidden": [
+      "Appeal acknowledgment filed; docket number calendared"
+     ],
+     "note": "The appeal is now a case with a number, not a hope with a stamp."
+    },
+    {
+     "text": "Put it in the folder and move on to the housing hunt",
+     "next": "records_beat",
+     "note": "In the folder is good. On top, in order, is better — but the folder forgives."
+    }
+   ]
+  },
+  {
+   "id": "records_beat",
+   "kicker": "Day 52 — Thursday, April 23, 2026",
+   "dayOffset": 52,
+   "title": "Asking for the File",
+   "body": [
+    "A parent advocate at the clinic mentions the move nobody had mentioned: you may request the agency's record of your own case, and the material shall be released upon request (55 Pa. Code § 3130.44(d)). Some pages come back with black bars over other people's names — that is the rule, not a trick (55 Pa. Code § 3130.44(f)).",
+    "What arrives will show you what the appeal reviewer will see, and what the review hearing will read. It is the only mirror the system hands you."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written record request and keep the stamped copy",
+     "next": "packet_back",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record requested in writing under § 3130.44(d)"
+     ],
+     "note": "The mirror is requested. It arrives the way mirrors do in this system: by mail, in an envelope too small for it."
+    },
+    {
+     "text": "Skip it — you know what happened that night",
+     "next": "packet_back",
+     "note": "You know what happened. The file knows what was written. Those are different knowledges."
+    }
+   ]
+  },
+  {
+   "id": "packet_back",
+   "kicker": "Day 58 — Wednesday, April 29, 2026",
+   "dayOffset": 58,
+   "title": "What the Mirror Shows",
+   "body": [
+    "The packet shows two things you did not expect. The investigator's note says the children were 'appropriately dressed for the cold' and the neighbor 'seemed credible.' And your own explanation — the boiler, the neighbor, the one night — is recorded in a single line: 'Mother states housing issue.'",
+    "Six words for the worst night of your winter. The appeal reviewer will read those six words unless the file gains the repair log, the invoice, and a page in your own hand."
+   ],
+   "choices": [
+    {
+     "text": "Write a one-page statement in your own words and file it with the repair documents, in both files",
+     "next": "mirror_detail",
+     "cash": -5,
+     "setFlags": [
+      "statementFiled"
+     ],
+     "addHidden": [
+      "Parent's written statement and repair documents filed in both tracks"
+     ],
+     "note": "Your page, your words, both files. The six-word version is no longer the only version."
+    },
+    {
+     "text": "The note about the children being dressed warmly is enough — leave the file as it is",
+     "next": "mirror_detail",
+     "note": "It is a good line. It is one line, in someone else's hand."
+    }
+   ]
+  },
+  {
+   "id": "mirror_detail",
+   "kicker": "Day 62 — Sunday, May 3, 2026",
+   "dayOffset": 62,
+   "title": "The Line You Underline",
+   "body": [
+    "One more page of the packet deserves its own evening: the scored assessment form's summary — present in redacted form — rates 'housing stability' at the bottom of its scale, dated the week of the cold night. It does not mention the boiler, the repair order, or the new unit's waitlist, because on the day it was scored, none of that paper existed yet.",
+    "Forms are photographs. They show the day they were taken. The strategy of this whole case is to make sure later photographs get taken — with the repair log in the frame."
+   ],
+   "choices": [
+    {
+     "text": "Write the form's date on your statement's first line: 'As of the night scored, the following was also true'",
+     "next": "statement_filed",
+     "setFlags": [
+      "formDated"
+     ],
+     "addHidden": [
+      "Assessment summary dated and answered on the record"
+     ],
+     "note": "You cannot retake the photograph. You can caption it, with dates."
+    },
+    {
+     "text": "Leave the form alone — arguing with a score looks defensive",
+     "next": "statement_filed",
+     "note": "Captioning is not arguing. But the statement still gets filed, and it carries most of the weight."
+    }
+   ]
+  },
+  {
+   "id": "statement_filed",
+   "kicker": "Day 66 — Thursday, May 7, 2026",
+   "dayOffset": 66,
+   "title": "The Study Comes Back",
+   "body": [
+    "Garazi's study is approved. The bunk bed exists now; Zayd has claimed the top in writing, on the refrigerator, in crayon. The kinship worker notes the placement is stable and the children are doing well — the sentence every later reader will weigh.",
+    "Stability at Garazi's cuts both ways, and Ms. Mendieta warned you about the second edge: a comfortable placement can make a slow case feel finished. The review hearing is in three weeks. Comfortable is not the goal. Home is."
+   ],
+   "choices": [
+    {
+     "text": "File a one-page progress summary before the review — housing application, shifts, the repaired boiler, the filed appeal",
+     "next": "school_note",
+     "cash": -5,
+     "setFlags": [
+      "reviewFiled"
+     ],
+     "addHidden": [
+      "Written progress summary filed before the review hearing"
+     ],
+     "note": "The judge will meet your spring as a document before she meets you as a person."
+    },
+    {
+     "text": "Show up and explain it all in person at the hearing",
+     "next": "school_note",
+     "note": "You will get minutes. The document would have gotten there first and stayed longer."
+    }
+   ]
+  },
+  {
+   "id": "school_note",
+   "kicker": "Day 71 — Tuesday, May 12, 2026",
+   "dayOffset": 71,
+   "title": "The School's Sentence",
+   "body": [
+    "Zayd's teacher, asked by the caseworker how he is doing, does something teachers are not required to do: she writes it down. One paragraph — attendance perfect, reading ahead, 'asks when the boiler at Mom's is fixed, in the tone of a boy expecting an answer.'",
+    "It is the single most believed document in most files: a professional with no stake, writing about an ordinary week."
+   ],
+   "choices": [
+    {
+     "text": "Ask for a copy for both files and thank her in writing",
+     "next": "review_prep",
+     "cash": -5,
+     "setFlags": [
+      "schoolLetter"
+     ],
+     "addHidden": [
+      "Teacher's written statement filed in both tracks"
+     ],
+     "note": "Filed in both. Paper does not walk hallways by itself; you are the hallway."
+    },
+    {
+     "text": "Let the caseworker forward it if she thinks of it",
+     "next": "review_prep",
+     "note": "She might. The file's memory for favors is shorter than its memory for documents."
+    }
+   ]
+  },
+  {
+   "id": "review_prep",
+   "kicker": "Day 78 — Tuesday, May 19, 2026",
+   "dayOffset": 78,
+   "title": "Housing, With a Date On It",
+   "body": [
+    "The waitlist letter arrives: your application for the two-bedroom on Chestnut Street is approved pending a unit, estimated June. It is not a key. It is a dated letter on letterhead saying a key is coming, which in this system is the next best thing — the raw material of a compelling reason, written down.",
+    "The review is in one week. The appeal reviewer, in a separate building, is reading a file that now contains your page."
+   ],
+   "choices": [
+    {
+     "text": "Attach the waitlist letter to your progress summary and hand a copy to every party at the review",
+     "next": "shift_swap",
+     "setFlags": [
+      "housingLetter"
+     ],
+     "addHidden": [
+      "Dated housing waitlist letter filed and distributed"
+     ],
+     "note": "Everyone at the table reads the same June."
+    },
+    {
+     "text": "Mention the letter if the judge asks about housing",
+     "next": "shift_swap",
+     "note": "Judges ask about what is in front of them. Give them something to ask about."
+    }
+   ]
+  },
+  {
+   "id": "shift_swap",
+   "kicker": "Day 81 — Friday, May 22, 2026",
+   "dayOffset": 81,
+   "title": "The Schedule, Signed",
+   "body": [
+    "Your motel supervisor signs the schedule you will need when the children come home: no overnight shifts on school nights, weekends at the playroom rate — the weekend job the registry almost took. A signed schedule is the plan's least poetic and most cross-examined page.",
+    "Ms. Mendieta calls documents like this 'load-bearing paper': unglamorous, and the wall stands on them."
+   ],
+   "choices": [
+    {
+     "text": "File the signed schedule with the progress summary before the review",
+     "next": "review_day",
+     "setFlags": [
+      "schedulePaper"
+     ],
+     "addHidden": [
+      "Signed work schedule filed before the review"
+     ],
+     "note": "The plan now has a timetable, signed by someone other than you."
+    },
+    {
+     "text": "Bring the schedule to the hearing in your bag",
+     "next": "review_day",
+     "note": "In your bag is a location. In the file is an argument."
+    }
+   ]
+  },
+  {
+   "id": "review_day",
+   "kicker": "Day 85 — Tuesday, May 26, 2026",
+   "dayOffset": 85,
+   "title": "The Review",
+   "body": [
+    "The courtroom is smaller than its reputation. The judge has the file: the study, your summary, the waitlist letter, the repair log. The caseworker confirms the placement is stable, the visits are kept, the boiler is replaced, the appeal is pending in its own building.",
+    "The judge looks up. 'What is the plan,' she asks, 'and what is it waiting on?' Everything you filed was, in the end, an answer to that one question."
+   ],
+   "choices": [
+    {
+     "text": "Ask, through your lawyer, for a step-down: expanded time at home now, return when the unit opens, the plan in writing",
+     "next": "end_home",
+     "requiresFlags": [
+      "recordsRequested",
+      "appealFiled",
+      "reviewFiled"
+     ],
+     "note": "The answer exists because the paper does."
+    },
+    {
+     "text": "Ask for return today, on the strength of everything, without the step-down plan",
+     "next": "end_plan",
+     "note": "Almost is a real outcome in this system. It is just not the best one."
+    },
+    {
+     "text": "Let the hearing happen to you and hope the file speaks",
+     "next": "end_plan",
+     "note": "Files speak in the order they are read. Yours needed a voice."
+    }
+   ]
+  },
+  {
+   "id": "end_home",
+   "kicker": "Day 96 — Saturday, June 6, 2026",
+   "dayOffset": 96,
+   "title": "Ending — Home by Friday",
+   "body": [
+    "The order is two pages. Expanded time begins this week; the children return home when the Chestnut Street unit opens, with the kinship placement held open as the family's own safety net — Garazi, written into the order as what she always was: the plan, not the problem.",
+    "In June you carry Leire up the new stairs past a boiler room with a new boiler. In July, a second envelope arrives: the appeal has been granted, the indicated report amended to unfounded on the record the file now holds. Two files, two clocks — both answered with paper, in the right order.",
+    "Zayd's written claim on the top bunk is honored, by acclamation."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE TWO CLOCKS — The appeal clock: notified Monday, March 2, 2026; the written appeal was due within 90 days — Sunday, May 31, 2026 (23 Pa.C.S. § 6341(a)(2)) — and on the winning route it was mailed on day 12. The case clock: no single date, but a sequence — study, services, review — that moved at the speed of dated paper. The whole capstone lesson is the order of operations: protect the deadline that cannot move first, then build the record the movable ones read.",
+    "THE RECORD REQUEST — Agency records are released on request (55 Pa. Code § 3130.44(d)); the packet showed the parent her own case in the system's six-word summary, in time to file her own page. Redactions of other people's information are the regulation's design, not a withholding trick (55 Pa. Code § 3130.44(f)). Counsel in the dependency case is a right, including appointed counsel for those who cannot afford it (42 Pa.C.S. § 6337).",
+    "WHAT NO STRATEGY CONTROLS — The waitlist, the study queue, the appeal reviewer's reading, and the judge. This ending is written as a win because the documents existed to be read; outcomes in real cases also turn on workers, judges, housing stock, and luck, and the same paper in a different county can meet a different day."
+   ]
+  },
+  {
+   "id": "end_plan",
+   "kicker": "Day 96 — Saturday, June 6, 2026",
+   "dayOffset": 96,
+   "title": "Ending — The Plan Continues",
+   "body": [
+    "The children stay with Garazi a while longer. The plan continues: more time, another review, the unit still coming in June. Nobody in the courtroom thought you were failing; the file simply did not finish its sentence, and the court does not complete sentences for people.",
+    "The appeal, if you filed it, still runs in its building. The case will get another hearing. The folder is not closed — it is continued, which in this system is both a mercy and a cost, paid in weeks of a childhood."
+   ],
+   "ending": true,
+   "debrief": [
+    "A PARTIAL WIN, NAMED HONESTLY — The placement is safe, the kinship door stayed open, and the case continues toward return. What separated this ending from the best one was not effort or love; it was whether the record was requested (§ 3130.44(d)), the appeal was on time (§ 6341(a)(2)), and the progress existed as filed paper before the hearing rather than as testimony during it.",
+    "WHAT NO STRATEGY CONTROLS — Housing supply, the study queue, and the individual judge. A continued case is not a lost one; it is a clock still running, and the same moves remain available at the next review — the file keeps what it is given, whenever it is given."
+   ]
+  },
+  {
+   "id": "end_registry",
+   "kicker": "Day 110 — Saturday, June 20, 2026",
+   "dayOffset": 110,
+   "title": "Ending — The Quiet Registry",
+   "body": [
+    "The case side ended the way case sides often do: the children came home in the summer, the file closed, the folder went into a drawer. The registry side never got its letter. Ninety days from March 2 was May 31, and May 31 passed in the drawer, next to the good scissors.",
+    "The indicated report remains. It will surface on clearances — at the playroom job, at the school volunteer desk, at the nursing program you talked about in Garazi's kitchen. The case is over. The word remains, because one clock in this story could not be extended by anybody's good intentions."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE CLOCK THAT COULD NOT MOVE — A perpetrator may appeal an indicated report in writing within 90 days of notification (23 Pa.C.S. § 6341(a)(2)). Notified Monday, March 2, 2026, the deadline was Sunday, May 31, 2026. Help on the case side — studies, services, hearings — does not file the appeal; only the letter does, and only on time.",
+    "WHAT NO STRATEGY CONTROLS — Nothing in this ending turns on the worker, the judge, or the facts of the cold night. It turns on a date and a drawer. That is precisely why the appeal letter is taught as the first move, not the last: it is the one piece of paper in the whole system that cannot be written late."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s127';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

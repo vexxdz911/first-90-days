@@ -1,0 +1,362 @@
+# THE FIRST 90 DAYS — Scenario 60: “The New Worker”
+
+*Human-readable script. This document and `scenario-60.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a parent whose caseworker changes eight months into her son's foster-care placement, told through letters, summaries, draft reports, and a review. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier; `REQUIRES NO FLAG: name` means it is only available if that flag was never set. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, June 1, 2026. Day offsets are days since the scenario's start date. Tier: Hard.
+
+## [start] The Goodbye Letter
+*Day 0 — Monday, June 1, 2026 — Monday, June 1, 2026 (dayOffset 0)*
+
+You are Marta. Your son Silas is nine, and he has been in foster care for eight months — long enough to have a second geography: a second bedroom, a second school route, a visit room whose clock you know by heart. Your case is in its middle: a parenting program completed, screens passed, visits kept, a plan that is mostly green ink and forward motion.
+
+Today's mail changes the cast without changing the case. Ms. Renshaw, your caseworker since the first month — the one who watched you finish the program, who knows which screen was rescheduled and why — is leaving the agency. Her letter is kind and two paragraphs long. A new worker, Mr. Wilkes, will take the case. He will receive, the letter says, a summary of your file.
+
+A summary. Eight months, compressed by a departing hand into the pages a stranger will meet you through. Everything in this scenario follows from a plain fact of this system: when the worker changes, the file becomes the case — and you are one of the few people who knows what the file leaves out.
+
+**Choices:**
+- Read the letter twice, then look at your own papers → **handover_note**
+  - NOTE (shown after choosing): Her last day is this week. His first day is next week. The summary travels between those two days without you in the room.
+
+## [handover_note] What the Letter Says, and Doesn't
+*Day 2 — Wednesday, June 3, 2026 — Wednesday, June 3, 2026 (dayOffset 2)*
+
+The letter says what letters like it say: a new assignment, a new phone number, appreciation for your cooperation. It does not say what the summary says. It does not say whether the summary was written from the whole file or from the last report, or whether the certificates you handed Ms. Renshaw in the spring are attached to it or filed three folders away.
+
+Ms. Renshaw knew your case the way people know things: by having been there. Mr. Wilkes will know it the way files know things: by what survived the handoff, in writing, in order. Between those two kinds of knowing there is a gap, and gaps in this system do not stay empty. They get filled by whoever writes next.
+
+The question the next eight weeks will ask, in different rooms, is who does the filling: the summary, your memory — or your paper.
+
+**Choices:**
+- Decide what your own record of this case actually looks like tonight → **binder_beat**
+  - NOTE (shown after choosing): Eight months of paper is either an archive or a pile. Tonight it gets to be one of them on purpose.
+
+## [binder_beat] The Kitchen-Table Archive
+*Day 4 — Friday, June 5, 2026 — Friday, June 5, 2026 (dayOffset 4)*
+
+Your paper lives the way most parents' paper lives: some of it in a binder a parent mentor gave you in the second month, some of it in a shoebox, all of it real. The binder, when you keep it up, is formidable: the program certificate, the screen results with their dates, sign-in sheets, visit notes, every letter you ever sent, in date order — a parallel file, kept by the only person who attended every event in it.
+
+Keeping it current costs an evening and a little money: fresh copies, new tabs, the spring certificates filed where a stranger could find them in thirty seconds. The shoebox costs nothing tonight. It will charge later, in a different currency, at a worse moment.
+
+This is the earliest choice in the scenario, and it is the one whose weight lasts longest — because every later room will ask the same question: can you show it, now, in order?
+
+**Choices:**
+- Bring the binder current tonight — tabs, copies, everything in date order → **binder_kept**  _(cash -10; FLAG: binderKept; HIDDEN + Parent's binder — certificates, sign-in sheets and screen results kept in date order from month one)_
+  - NOTE (shown after choosing): An evening's work. The binder now answers questions in the order a file gets asked them.
+- Leave the shoebox as it is — you know what's in it, and that's what matters → **binder_loose**  _(HIDDEN + Parent's papers — loose collection; contents known to the parent, not organized for anyone else)_
+  - NOTE (shown after choosing): You do know. Knowing, in this system, is the half of proof that cannot be handed across a table.
+
+## [binder_kept] Date Order
+*Day 6 — Sunday, June 7, 2026 — Sunday, June 7, 2026 (dayOffset 6)*
+
+By midnight the binder tells your case the way you would tell it if you had an hour and a calm room: program — completed, certificate, date. Screens — submitted, passed, dates. Visits — kept, notes, dates. Nothing in it argues. It simply declines to let your spring be summarized by anyone who wasn't there.
+
+You do not know yet which two pages of it will matter. Nobody ever does. That is what a binder is for: the pages you cannot predict, kept as carefully as the ones you can.
+
+**Choices:**
+- Go to the first meeting with Mr. Wilkes → **first_meeting**
+  - NOTE (shown after choosing): You bring the binder, not because you expect trouble, but because bringing it has become the habit the case taught you.
+
+## [binder_loose] Mostly Remembered
+*Day 6 — Sunday, June 7, 2026 — Sunday, June 7, 2026 (dayOffset 6)*
+
+The shoebox holds everything, the way a drawer holds everything: truly, and unfindably. The program certificate is in there, under the visit drawings. A screen result is in there, folded into a letter. If a question is ever asked slowly, with time to dig, you could answer it. Questions in this system are rarely asked slowly.
+
+You go to the first meeting the way most parents go: on time, cooperative, carrying your memory of your own case — accurate, complete, and impossible to hand to anyone.
+
+**Choices:**
+- Go to the first meeting with Mr. Wilkes → **first_meeting**
+  - NOTE (shown after choosing): He will be working from a summary. You will be working from eight months of having lived it. Only one of those fits in a folder.
+
+## [first_meeting] Mr. Wilkes, Week One
+*Day 9 — Wednesday, June 10, 2026 — Wednesday, June 10, 2026 (dayOffset 9)*
+
+Mr. Wilkes is courteous, prepared in the way a person can be prepared by a document, and clearly carrying more cases than the week has hours. He has your summary open. He walks the plan with you, line by line, the way a person reads a map of a town he has just moved to.
+
+Then two lines surface, spoken the way a summary speaks them — flatly, as facts. The parenting program, he says, is listed as still open; you will want to finish that. And a screen from the spring is listed as missed; the plan may need to account for it.
+
+You completed that program. Its certificate exists. You passed that screen; its result exists. In the room, in this minute, neither document exists — because existence, in this system, means in the file, in front of the person reading it. Mr. Wilkes is not doubting you. He is reading. That is the more dangerous problem.
+
+**Choices:**
+- Note the two lines, word for word, before you answer them → **stale_detail**  _(HIDDEN + New worker's summary — two stale lines: completed program listed as open; passed screen listed as missed)_
+  - NOTE (shown after choosing): You write down his exact wording. Corrections later will be built out of the sentences they correct.
+
+## [stale_detail] Two Lines, Both Wrong
+*Day 12 — Saturday, June 13, 2026 — Saturday, June 13, 2026 (dayOffset 12)*
+
+After the meeting you sit with the two lines. They are not lies, exactly; they are something more ordinary and harder to fight — stale paper. The program line was true once, months ago, before the certificate. The screen line may have been copied from a week when a result was still pending, before it came back passed. A summary written in a hurry, by a departing worker doing her best, carried both of them forward into a new worker's hands.
+
+Mr. Wilkes said he would 'check when he can.' You believe he means it. You also know what his week looks like, because he told you: a full caseload, inherited whole, every family in it a summary to someone.
+
+Your lawyer, Ms. Parr, has a saying for moments like this: a file corrects at the speed of paper, not at the speed of intentions. The two lines will sit in every report drafted from that summary until something in writing displaces them.
+
+**Choices:**
+- Decide how the correction travels — this week, or on his schedule → **letter_choice**
+  - NOTE (shown after choosing): The lines are soft right now, the way fresh print is soft. Reports harden them. Time is a material in this case.
+
+## [letter_choice] The First-Week Letter
+*Day 14 — Monday, June 15, 2026 — Monday, June 15, 2026 (dayOffset 14)*
+
+There is a move available this week, while Mr. Wilkes is still forming his picture of the case: a one-page status letter, from you, through Ms. Parr's office — what is complete, with dates; what is in progress; what you are asking to have corrected in the summary — with copies of the program certificate and the passed screen result attached.
+
+Sent in his first weeks, it is not an argument. It is orientation: the new reader of your case receives the primary documents before the summary sets. Sent later, the same letter becomes a dispute — your word against an established file. Same page. Different physics.
+
+The other option is patience: let him learn the case, as Ms. Renshaw did, by living it alongside you. It worked with her. She had eight months. The review is closer than that.
+
+**Choices:**
+- Send the status letter this week, with the certificates attached → **letter_sent**  _(cash -6; FLAG: letterSent; HIDDEN + Status letter with certificates — sent to the new worker in his first weeks, copied to counsel)_
+  - NOTE (shown after choosing): One page, two attachments, a copy for your own papers. The summary now has company.
+- Wait — let him learn the case the way Ms. Renshaw did → **letter_waited**
+  - NOTE (shown after choosing): A reasonable hope, held by many parents before you. His learning curve is now part of your case plan, whether the plan says so or not.
+
+## [letter_sent] Sent, Copied, Dated
+*Day 16 — Wednesday, June 17, 2026 — Wednesday, June 17, 2026 (dayOffset 16)*
+
+Your letter is dated Monday, June 15, 2026 — inside Mr. Wilkes's second week. Program: completed, certificate attached. Screen: passed, result attached. Everything else: in progress, on schedule, visits kept. It asks, in one closing sentence, that the summary be corrected to match the attachments.
+
+Ms. Parr files her copy. Yours goes in your papers. Somewhere in an agency inbox, a new worker now holds primary documents that are newer than his summary — which means the summary, from today, is no longer the freshest paper in the file. In a system run on paper, freshness is a form of authority.
+
+You have not won anything. You have done something quieter: you have made the stale lines expensive to repeat, because repeating them now means repeating them against attachments.
+
+**Choices:**
+- Go on with the plan — visits, meetings, all of it → **reorder**
+  - NOTE (shown after choosing): The case continues the way cases do: the next piece of paper is already on its way to you.
+
+## [letter_waited] His Learning Curve
+*Day 16 — Wednesday, June 17, 2026 — Wednesday, June 17, 2026 (dayOffset 16)*
+
+The weeks arrange themselves the way they arrange themselves for a new worker with a full caseload: visits supervised, meetings held, your cooperation noted — and every note written by a man whose map of your case is a summary with two wrong lines on it. He is not careless. He is new, and the file is what newness has to steer by.
+
+Nothing goes badly, exactly. That is the texture of this path: not a crisis, but a slow setting, like plaster — the summary's version of your spring becoming, report by report, the version everyone in the next room will have read before you arrive.
+
+**Choices:**
+- Go on with the plan — visits, meetings, all of it → **reorder**
+  - NOTE (shown after choosing): Then the mail brings a piece of paper that shows you exactly what steering by that summary costs.
+
+## [reorder] The Assessment, Again
+*Day 19 — Saturday, June 20, 2026 — Saturday, June 20, 2026 (dayOffset 19)*
+
+The letter from the agency is routine in tone and remarkable in content: an updated family assessment has been scheduled for you — the full assessment you already completed in the spring, with Ms. Renshaw, over two long appointments.
+
+Mr. Wilkes, when you call, is apologetic and precise about the reason: the copy in the file is a draft — unsigned, marked as a working copy. The completed version was never filed, or was filed somewhere the handoff didn't reach. Without a completed copy in the file, his instructions are to re-order it. The system does not doubt that you did it. The system simply cannot find the paper that says so, and in this system those are the same sentence.
+
+Redoing it costs what redoing costs: two appointments, time off work, the same questions answered again, and a new date in the file that will forever look later than the first one. Answering in writing costs a stamp: your completion certificate and the dated sign-in page from the spring appointments, attached to a letter asking that the file copy be replaced.
+
+**Choices:**
+- Answer in writing — attach the completion certificate and the dated sign-in page → **attach_cert**  _(cash -4; HIDDEN + Assessment — completion certificate and dated sign-in page sent in writing; draft file copy challenged)_
+  - NOTE (shown after choosing): Your spring, in attachments. The draft now has to compete with the finished thing it was a draft of.
+- Redo the assessment quietly — done is done, and arguing helps no one → **redo_assessment**  _(cash -30; HIDDEN + Assessment — repeated at the parent's time and expense; original completion not asserted in writing)_
+  - NOTE (shown after choosing): Two appointments, a shift traded, the questions answered again. Cooperation, certainly. Also: a second date, waiting to be mistaken for the first.
+
+## [attach_cert] The Certificate Answers
+*Day 22 — Tuesday, June 23, 2026 — Tuesday, June 23, 2026 (dayOffset 22)*
+
+The reply takes ten days and is three lines long: the assessment re-order is withdrawn; the certificate and sign-in page are accepted; the completed report will be located or reconstructed from the provider's copy and filed. Three lines. Underneath them, a principle of this whole series, working quietly: a document answered with a document.
+
+Mr. Wilkes adds, in his own hand at the bottom, that he has flagged the file copy as a draft. You believe him, and — this is the new habit the case is teaching you — you also keep his three lines, dated, in your papers. Belief and filing are not opposites. In this system, filing is what belief looks like when it plans to survive a staff change.
+
+**Choices:**
+- Ask Ms. Parr what else the file itself would tell you, if you asked for it → **records_beat**
+  - NOTE (shown after choosing): Because one draft has now surfaced by accident. Files rarely contain exactly one surprise.
+
+## [redo_assessment] Twice, On Paper Once
+*Day 22 — Tuesday, June 23, 2026 — Tuesday, June 23, 2026 (dayOffset 22)*
+
+You do the assessment again. The questions are the same questions; your answers are the same answers, given to a different chair. The new report, when it is filed, will carry this season's date — and nothing in its text will explain that an earlier, identical completion exists somewhere as an unsigned draft in a transferred file.
+
+You have been cooperative, and the file will say so. It will also, unless something else corrects it, tell every future reader a quieter falsehood: that this piece of your plan was completed months later than it was. Late, on paper, is a character trait in this system. It attaches to the person, not to the filing error that produced it.
+
+**Choices:**
+- Ask Ms. Parr what the file itself would tell you, if you asked for it → **records_beat**
+  - NOTE (shown after choosing): Because the draft problem turned out to be real. Files rarely contain exactly one surprise.
+
+## [records_beat] Ask for the File Itself
+*Day 25 — Friday, June 26, 2026 — Friday, June 26, 2026 (dayOffset 25)*
+
+Ms. Parr listens to the whole spring — the handoff, the two stale lines, the draft — and asks the question this scenario has been walking toward: 'What does the draft review report say?' The review is written from reports, and the next report is being drafted now, somewhere, from Mr. Wilkes's summary.
+
+You do not have to guess. A party may request the case record, and the material in it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). The request is one page, in writing: the file, including the draft review report and the assessment copies. What it shows you, weeks before the review, is the exact text your correction has to answer — line by line, instead of rumor by rumor.
+
+The alternative is to prepare for the review from the meetings: from tone, from assurances, from what Mr. Wilkes seems to understand. Tone is not a document. The review will be conducted entirely in documents.
+
+**Choices:**
+- Sign the written request for the record — draft report, assessment copies, all of it → **record_arrives**  _(FLAG: recordsRequested; HIDDEN + Case record — requested in writing, including the draft review report and assessment copies)_
+  - NOTE (shown after choosing): Signed, dated, copied. Whatever the draft says about your spring, you are about to be able to quote it.
+- Rely on the meetings — Mr. Wilkes is reasonable, and the file is the agency's business → **no_record**
+  - NOTE (shown after choosing): The file is the agency's business the way weather is a sailor's business: not yours to control, and entirely yours to be rained on.
+
+## [record_arrives] The Draft, With Template Lines
+*Day 29 — Tuesday, June 30, 2026 — Tuesday, June 30, 2026 (dayOffset 29)*
+
+The packet arrives thick, and partly blacked out — some of that is the law working as written: released material may not include material that violates another person's privacy or is protected or made confidential by law (55 Pa. Code § 3130.44(f)). The redactions are not the story. The draft review report is.
+
+There they are, in report type, with the authority of print: the program, still open. The screen, still missed. And a template sentence about the assessment — carried from the draft copy's cover sheet, the kind of line that gets pasted into reports because it was pasted into the last one — describing a completion that never quite happened, in a case where it happened in the spring.
+
+A draft is a mercy, if you get to see it: every line in it is still soft enough to correct. Ms. Parr spreads it on her desk beside your papers. 'Now,' she says, 'we stop arguing with a summary. We correct a text.'
+
+**Choices:**
+- Decide how the correction is delivered — in writing before the review, or in person at the next meeting → **correction_choice**
+  - NOTE (shown after choosing): The draft's deadline is the review itself. Corrections filed before it arrive as paper. Corrections spoken at it arrive as weather.
+
+## [no_record] Summaries of Summaries
+*Day 29 — Tuesday, June 30, 2026 — Tuesday, June 30, 2026 (dayOffset 29)*
+
+Without the draft, you prepare from what you have: the summary's two lines, as Mr. Wilkes spoke them; Ms. Parr's notes; your own certain knowledge of your spring. You know the lines are wrong. What you do not have is their exact wording in the report the review will read — and corrections, like keys, only work when they are cut to the lock.
+
+Ms. Parr is honest about the shape of it: 'We can still object at the review. We will be objecting to sentences we are hearing for the first time, in a room that has already read them.' She opens a blank page in her file. Whatever correction gets made from here will be made at speaking speed, against print.
+
+**Choices:**
+- Decide how the correction is delivered — in writing before the review, or in person at the next meeting → **correction_choice**
+  - NOTE (shown after choosing): You know a correction is needed. The question left is whether it will exist as a document before the room convenes.
+
+## [correction_choice] Correct It Where It Lives
+*Day 33 — Saturday, July 4, 2026 — Saturday, July 4, 2026 (dayOffset 33)*
+
+Ms. Parr drafts the correction the way this scenario has taught you everything durable is drafted: one page per line. Line one: program — completed, certificate attached. Line two: screen — passed, result attached. Line three: assessment — completed in the spring, certificate and sign-in page attached; the file copy is a draft. Each line asks for one thing: that the report be amended to match its own attachments, before the review.
+
+Filing it — with copies to the agency and into the court file, weeks ahead — costs copies and a trip. Raising the same points at the next meeting costs nothing, and Mr. Wilkes, face to face, will very likely agree with every one of them. Agreement, in this system, has a half-life measured in days. A filed correction's half-life is the life of the case.
+
+**Choices:**
+- File the written correction before the review, certificates attached → **correction_filed**  _(cash -5; FLAG: correctionFiled; HIDDEN + Written correction — filed before the review with certificates attached, line by line)_
+  - NOTE (shown after choosing): Stamped, copied, in the court file before anyone drafts another sentence from the old lines.
+- Raise it at the next meeting instead — he has been fair in person → **correction_oral**
+  - NOTE (shown after choosing): He has. The meeting is in three weeks. The report drafting is this week. Sequence is a kind of evidence too.
+
+## [correction_filed] Filed, Not Just Said
+*Day 35 — Monday, July 6, 2026 — Monday, July 6, 2026 (dayOffset 35)*
+
+The correction goes in with its attachments, and the system does the thing it does with filed paper: it routes it, stamps it, and makes the next writer reckon with it. The amended draft, when Ms. Parr sees it, has the three lines struck and rewritten — program completed, screen passed, assessment completed in the spring — each with a small, beautiful footnote: 'per parent correction and attachments.'
+
+Your spring now reads the same in every copy of the file. That sameness has a name in this scenario's title sense: continuity — except that nobody handed it to you. You manufactured it, one attachment at a time, and filed it where a stranger's summary used to be the only account.
+
+**Choices:**
+- Meet Mr. Wilkes again — the second meeting → **second_meeting**
+  - NOTE (shown after choosing): He opens a file that now contains your paper at the front. Meetings read differently from the front of a corrected file.
+
+## [correction_oral] Said, Warmly
+*Day 35 — Monday, July 6, 2026 — Monday, July 6, 2026 (dayOffset 35)*
+
+The meeting goes exactly as hoped, which is the problem's disguise. Mr. Wilkes listens, nods, turns his screen, and agrees: the program line is wrong, the screen line is wrong, the assessment is a draft-copy mix-up. 'I'll pass it along,' he says, and means it, and writes himself a note on the pad he uses for everything.
+
+Nothing is stamped. Nothing is filed. The correction now lives in a note on a busy man's pad, competing with forty other notes — and the report, which is drafted by a process and not by his memory, is already moving through the process.
+
+You leave with his goodwill, which is real, and without a document, which is also real. The review will weigh one of those. It is not the goodwill.
+
+**Choices:**
+- Meet Mr. Wilkes again — the second meeting → **second_meeting**
+  - NOTE (shown after choosing): He remembers the conversation kindly. What the file remembers is a separate question, and files are what reviews read.
+
+## [second_meeting] The Second Meeting
+*Day 39 — Friday, July 10, 2026 — Friday, July 10, 2026 (dayOffset 39)*
+
+The second meeting with Mr. Wilkes is a study in what paper does to a conversation. Where the file has been corrected in writing, he works from the corrected lines as naturally as he once worked from the stale ones — the map improved, so the driving improved. Where the correction was only spoken, he apologizes that the report 'may still show the old lines' and offers to speak to them at the review itself.
+
+He is, throughout, the same man: conscientious, overloaded, reading what the file gives him to read. This scenario has never been about whether he is a good worker. It is about what a good worker can do with a bad summary, and what a parent can put in front of him that outlasts the meeting.
+
+Silas's plan, underneath the paperwork, is unchanged and progressing: visits, school, the ordinary machinery of a case in its ninth month, waiting for a review to describe it.
+
+**Choices:**
+- Keep the rest of the plan exactly as clean as it has been → **wilkes_checkin**
+  - NOTE (shown after choosing): Because the review reads the whole file, not only the three corrected lines. The rest of it should say what it has always said: kept, submitted, attended.
+
+## [wilkes_checkin] The Check-In Call
+*Day 42 — Monday, July 13, 2026 — Monday, July 13, 2026 (dayOffset 42)*
+
+The weekly check-in call is four minutes long, and it is the most ordinary scene in this scenario — which is why it matters. Mr. Wilkes confirms the visit schedule, the next screen window, and the review date, reading each from the file in front of him.
+
+A month ago, that file would have given him two wrong things to confirm. Today, whatever your choices have put in it is what he reads back to you, in his flat, careful voice — the correction filed, or the apology repeated, or the stale lines still sitting where the summary put them. The call is a small preview of the review: the case, as the paper currently tells it, read aloud by the person who inherited it.
+
+You hang up knowing exactly which version of your spring will walk into the review room. The only remaining question is what you will carry in with it.
+
+**Choices:**
+- Run the last weeks before the review exactly as planned → **visits_meanwhile**
+  - NOTE (shown after choosing): Visits, screens, meetings — the plan's ordinary weeks, run ordinarily, dated as they happen.
+
+## [visits_meanwhile] Visits, and Everything Else
+*Day 43 — Tuesday, July 14, 2026 — Tuesday, July 14, 2026 (dayOffset 43)*
+
+The weeks before the review are the plan's ordinary weeks, and you run them the way you have run them all year: visits with Silas — a school project reconstructed at a visit-room table, a chapter book moving by installments — screens submitted when called, meetings signed. None of it is dramatic. All of it is dated, and dated is what files eat.
+
+It is worth pausing on the strangeness of your position: the strongest facts in your case are the ones nobody disputes, and the weakest are the ones you completed months ago, because completion is exactly the kind of fact a handoff loses. Doing a thing and the file knowing you did it are two separate achievements in this system, and the second one is yours alone to schedule.
+
+**Choices:**
+- Prepare for the review with Ms. Parr → **review_prep**  _(HIDDEN + Compliance — visits kept and screens submitted while the file was being corrected)_
+  - NOTE (shown after choosing): Your recent record is clean in the lived sense and, page by page, in the filed sense too.
+
+## [review_prep] Ms. Parr Builds the Packet
+*Day 50 — Tuesday, July 21, 2026 — Tuesday, July 21, 2026 (dayOffset 50)*
+
+You have had a lawyer throughout this case, as the law provides (42 Pa.C.S. § 6337) — and Ms. Parr, in the week before the review, shows you what counsel is for in a paperwork case: not eloquence, but inventory. She spreads the whole matter on her conference table in two piles.
+
+Pile one is the story the summary told: program open, screen missed, assessment doubtful. Pile two is your paper: the binder in date order, the first-week status letter with its certificates, the record packet with the draft report, the filed correction with its attachments. 'The review,' she says, 'is a contest between these two piles — except that only one of them is allowed to be surprised on the day.'
+
+She is equally plain about the limit: a packet does not decide a review. Judges and report writers read the same paper differently, and Silas's placement will turn on more than three lines. What the packet decides is narrower: which version of your spring the room starts from.
+
+**Choices:**
+- Assemble the final packet, in date order, with copies for the court → **packet_assembly**
+  - NOTE (shown after choosing): Date order. The handoff, corrected by the person it was handed to.
+
+## [packet_assembly] Date Order, Again
+*Day 52 — Thursday, July 23, 2026 — Thursday, July 23, 2026 (dayOffset 52)*
+
+The packet takes an evening: the goodbye letter, the summary's two lines as you noted them word for word, the status letter and its certificates, the assessment correspondence, the draft report beside the filed correction, the clean recent weeks. Copied, paginated, plain. It weighs almost nothing. So does a summary. Reviews, in the end, are decided by which light thing a room believes.
+
+Ms. Parr puts her copy in her trial bag. Yours goes in the binder — last pages, this month, where the next worker, if there ever is one, will find the whole story of how this file learned to correct itself.
+
+**Choices:**
+- File the packet copies and go to the review → **review**  _(cash -5; HIDDEN + Review packet — status letter, certificates, correction and record excerpts filed in date order)_
+  - NOTE (shown after choosing): Every page in it existed before the review was convened. That sentence is the packet's entire argument.
+
+## [review] The Review
+*Day 56 — Monday, July 27, 2026 — Monday, July 27, 2026 (dayOffset 56)*
+
+The review convenes on Monday, July 27, 2026. The report is read the way reports are read: as the case, in summary, by the people who were not there for any of it. The three lines arrive in their order — program, screen, assessment — and what happens next depends, with a precision this scenario has been honest about from its first letter, on what your choices put in the room before the reading started.
+
+Ms. Parr rises. The presentation she can make is the one your paper built: the full packet, a subset of it, or — if the paper was never assembled — your voice, explaining a spring that three documents could have explained without you saying a word.
+
+Choose the presentation the record you actually built can carry.
+
+**Choices:**
+- Present the corrected record — binder, first-week letter, record packet, and the correction filed before today → **end_win**  _(REQUIRES FLAG: binderKept; REQUIRES FLAG: letterSent; REQUIRES FLAG: recordsRequested; REQUIRES FLAG: correctionFiled)_
+  - NOTE (shown after choosing): This presentation exists because four pieces of paper exist, in order, filed before the room convened.
+- Present the filed correction and answer the rest from your own papers → **end_partial**  _(REQUIRES FLAG: correctionFiled)_
+  - NOTE (shown after choosing): The correction is real and filed. What surrounds it is thinner — and the room can feel the thinness.
+- Present what paper you have — some of it dated, some of it assembled this week → **end_partial**
+  - NOTE (shown after choosing): Half a packet is an argument with missing premises. It still changes the room — just later, and at a higher price.
+- Explain it all yourself — you were there, and the truth should be enough → **end_worst**
+  - NOTE (shown after choosing): Your account is accurate in every detail. Accuracy, unattached, is the currency this room accepts least.
+
+## [end_win] Ending — Continuity, Supplied by You
+*Day 63 — Monday, August 3, 2026 — Monday, August 3, 2026 (dayOffset 63)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): At the review on Monday, July 27, 2026, the report's three contested lines were corrected on the record before they could be argued about — program completed, screen passed, assessment completed in the spring — each traced to its attachment: the binder kept in date order, the status letter sent in Mr. Wilkes's first weeks with certificates, the record packet obtained on request, and the written correction filed before the review. Mr. Wilkes confirmed the amendments from his own file. The case the review discussed was your actual case, because you supplied the continuity the handoff had dropped. Silas remains in foster care and the plan continues; no honest debrief will call that a finished story. What is finished is the false version of your spring, and it is finished in every copy of the file at once.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Every instrument here was an ordinary one. The case record was available on written request — it 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — and its limits were honored rather than fought: released material may omit what violates another person's privacy or is protected or made confidential by law (55 Pa. Code § 3130.44(f)). Counsel's role was the one the law assigns from the start of a case (42 Pa.C.S. § 6337): not to invent facts, but to put the true ones — certificate, result, sign-in page — into the file in a form the next reader cannot miss. A worker change is not an error anyone was punished for; it is a routine event whose cost is normally paid, silently, by the parent's record. This time the parent paid it in copies and stamps instead, which is cheaper and leaves receipts.
+- THE HONEST PART: A different supervisor could have contested the correction line by line; a different review could have weighed the spring differently even on a corrected record; Mr. Wilkes could have been less conscientious about amending his own summary, and no packet compels a worker to be gracious about being corrected. Workers, judges, and luck all held pieces of this outcome. And the deepest honesty is this: nothing you did brought Silas home today, because that was never what these three lines decided. What they decided was whether the next nine months would be built on your real record or on a stale copy of it. Outcomes in this system are not verdicts on a parent's worth — this one is a verdict on a filing system, and for once the filing system was yours.
+
+## [end_partial] Ending — Reset, Then Repaired
+*Day 63 — Monday, August 3, 2026 — Monday, August 3, 2026 (dayOffset 63)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): The correction reached the review on Monday, July 27, 2026 — but it reached it there, in the room, instead of in the file beforehand. The contested lines were argued rather than read as settled: the agency accepted some amendments on the spot, questioned the dating on others, and the review treated your spring as disputed territory rather than as either version's ground. The judge directed that the file be amended to match the certificates — going forward. The review itself, however, was conducted against the old summary, and its order reads accordingly: cautious, provisional, describing a parent whose progress is 'to be confirmed.' The repair is real. So is the reset it had to repair, in front of everyone, at speaking speed.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Nothing in this ending failed for lack of a right. The record was always requestable (55 Pa. Code § 3130.44(d)); counsel was always there to file the correction (42 Pa.C.S. § 6337). What was missing was sequence: paper that arrives at the hearing contests; paper that arrives before the hearing settles. A correction filed weeks ahead becomes the report's new text, and the review starts from it. The same correction, raised orally or assembled late, becomes an argument the report's writer gets to answer — and contested paper earns contested outcomes, here as everywhere in this series. The file going forward is correct, which matters for every future reader. The review that just happened was priced on the file as it stood when the room convened.
+- THE HONEST PART: Be fair to the version of you that lands here: you did the program, passed the screen, completed the assessment, and then did the documentation work too — some of it, in the right order, under the pressure of a case in its ninth month and a worker still learning your name. Judges differ in how much late paper they credit without a fight, and this one credited it forward instead of backward, as many do. Workers rotate again; summaries get rewritten again; the corrected file you leave behind today is the summary the next stranger will meet Silas's case through — which means the work was not wasted, only mistimed. It bought the future a true file. It could not buy the present a settled one.
+
+## [end_worst] Ending — Starting Over at Month Nine
+*Day 63 — Monday, August 3, 2026 — Monday, August 3, 2026 (dayOffset 63)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): At the review on Monday, July 27, 2026, the only complete account in the room was the summary's. Program: open. Screen: missed. Assessment: not completed. Your explanations were heard, and believed in the way unattached explanations are believed in rooms that run on exhibits — personally, and without effect. The stale lines did the thing stale lines do when nothing in writing displaces them: they hardened into findings, and the order built a plan on top of them. You are directed to complete the parenting program you completed in the spring, to submit to screening as if the passed result did not exist, and to undergo the assessment you already underwent. Month nine of your case begins, on paper, at the start of services you finished months ago.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): This ending is not produced by a rule that says summaries win. It is produced by an absence: the instruments that answer a stale file were never taken up. The case record — which would have shown the draft report's exact lines while they were still correctable — was available on written request (55 Pa. Code § 3130.44(d)). Counsel could have filed a one-page correction with the certificates attached at any point in the eight weeks (42 Pa.C.S. § 6337). The certificates themselves existed the whole time, in a kitchen, in a pile — real, accurate, and never converted into the only form a review can use. No one in this ending acted in bad faith. A departing worker summarized in haste; a new worker read what he was given; a report copied the summary. Systems do not need villains to repeat their errors. They need only silence where the correction was supposed to be filed.
+- THE HONEST PART: Let this debrief be as fair as the review was not: you did the work. The program was completed, the screen was passed, the assessment was sat through twice over in everything but paperwork, and any measure of you as a parent that starts from those facts starts from the truth. The injustice here is narrower and more mechanical than a judgment on your parenting — it is that a handoff taxed your record for its own incompleteness, and the tax was payable only in a currency nobody handed you: dated paper, filed early. A different worker might have caught the lines himself; some do, and some parents' files are rescued by exactly that luck. Yours was not, and luck is not a filing system. The corrected record can still be built — starting at the next meeting, in writing — and it will matter at the next review. It simply cannot retroactively un-harden the findings this one just made.

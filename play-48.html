@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 48 — The Spare Room (a fictional composite)",
+  "startDateISO": "2026-04-06",
+  "startNode": "start",
+  "startCash": 120,
+  "tier": "Foundation",
+  "summary": "You are Gwen. Your son Hugo, nine, has been in a foster home for two weeks while you finish a treatment program. Your father has a spare room, a steady pension, and a heart condition he manages like a train schedule. Between his offer and Hugo's bed in that room stands a home study — and everything a study can get wrong on paper."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, April 6, 2026",
+   "dayOffset": 0,
+   "title": "Your father's kitchen",
+   "body": [
+    "Your father Walter keeps a list on his refrigerator of everything his cardiologist has ever told him, in chronological order, and he follows it the way he followed a bus route for thirty-one years: exactly. He pours coffee and says the thing he has clearly rehearsed.",
+    "\"The spare room is Hugo's. It was always going to be Hugo's, since before any of this. You finish your program. The boy sleeps under my roof. Tell them.\" You are two weeks into the program that is the center of your case, and Hugo is two weeks into a foster home across town with a kind family, the Delacroix family."
+   ],
+   "choices": [
+    {
+     "text": "\"I will, Pop. In writing — so it lands in the file, not just in a phone call.\"",
+     "next": "tell_in_writing",
+     "setFlags": [
+      "kinNamedWritten"
+     ],
+     "addHidden": [
+      "named-kin"
+     ]
+    },
+    {
+     "text": "\"I will, Pop.\" You will tell Hugo's worker, Mr. Solberg, when you see him Thursday.",
+     "next": "tell_thursday"
+    }
+   ]
+  },
+  {
+   "id": "tell_thursday",
+   "kicker": "Day 3 — Thursday, April 9, 2026",
+   "dayOffset": 3,
+   "title": "Thursday, in passing",
+   "body": [
+    "You tell Mr. Solberg in the hallway after your visit with Hugo, while he is balancing a coffee and a laptop bag, and he says \"That's great, I'll note it\" the way people do in hallways. A week later, at your program review, you learn what the note became: one line — \"maternal grandfather may be resource.\" No address. No phone. The study clock has not started, because as far as the paperwork is concerned, there is barely a person to study.",
+    "The fix is unglamorous and entirely within your power."
+   ],
+   "choices": [
+    {
+     "text": "Write it properly this time: a letter to the agency with his full name, address, phone, and the words \"I am asking for a kinship home study.\"",
+     "next": "tell_in_writing",
+     "setFlags": [
+      "kinNamedWritten"
+     ],
+     "addHidden": [
+      "named-kin"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "tell_in_writing",
+   "kicker": "Day 3 — Thursday, April 9, 2026",
+   "dayOffset": 3,
+   "title": "The letter",
+   "body": [
+    "However it got there, the file now holds a letter with a person's name, address, and telephone number, and a request a supervisor can route: kinship home study, maternal grandfather. Walter gets a call within days — not because the system is fast, but because a named, reachable person is the one thing every system knows how to process.",
+    "The study has three parts, Mr. Solberg explains: background clearances, a home visit, and interviews. \"It's not a test he passes by being a good man,\" he says. \"It's a list. We go down the list.\""
+   ],
+   "choices": [
+    {
+     "text": "\"Then get him the list. All of it, up front — not one surprise at a time.\"",
+     "next": "phone_interview",
+     "setFlags": [
+      "listRequested"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "phone_interview",
+   "kicker": "Day 4 — Friday, April 10, 2026",
+   "dayOffset": 4,
+   "title": "The phone interview",
+   "body": [
+    "Mr. Solberg calls Walter the next afternoon, and you listen on the extension your father insists on holding six inches from his ear. The worker asks about the house, the heart, the spare room, and Hugo — in that order, which Walter later reports with approval: 'He asked about the boy last and longest.'",
+    "At the end, Mr. Solberg says the sentence that separates a study from a rumor: 'I'm going to send you the requirements list. Everything on it. At once.'"
+   ],
+   "choices": [
+    {
+     "text": "Thank him, and tell your father to clear the kitchen table. Paper is coming.",
+     "next": "the_list"
+    }
+   ]
+  },
+  {
+   "id": "the_list",
+   "kicker": "Day 5 — Saturday, April 11, 2026",
+   "dayOffset": 5,
+   "title": "The list",
+   "body": [
+    "To Mr. Solberg's credit, the list arrives as one document: clearances for Walter and any adult in the home, income verification, a medical statement from his doctor, and the home itself — sleeping arrangements, safety items, medications secured. Walter reads it twice at the kitchen table with a pencil, the way he used to read route changes.",
+    "\"Medicines,\" he says. \"Mine are in the bathroom cabinet. Boy could reach them on a chair.\" He says it before any worker does. That will matter more than he knows."
+   ],
+   "choices": [
+    {
+     "text": "Help him start on the fixable things this weekend — the list is a ladder if you climb it before the visit, and a verdict if you read it after.",
+     "next": "fix_weekend"
+    }
+   ]
+  },
+  {
+   "id": "fix_weekend",
+   "kicker": "Day 6 — Sunday, April 12, 2026",
+   "dayOffset": 6,
+   "title": "Saturday work",
+   "body": [
+    "The weekend becomes a project with a nine-year-old's name on it. A lockbox for the medications, screwed to the closet shelf. A handrail for the basement stairs, which Walter has been meaning to fix since 2019 and now fixes in an afternoon with his neighbor's drill. Hugo's room gets the bed from the attic, clean sheets, and the shelf of model buses moved down to eye level.",
+    "None of it is expensive. All of it is the difference between a study that reports problems and a study that reports solutions."
+   ],
+   "choices": [
+    {
+     "text": "Spend $25 at the hardware store and keep the receipt in the study folder.",
+     "next": "clearances",
+     "cash": -25,
+     "setFlags": [
+      "homeFixed"
+     ]
+    },
+    {
+     "text": "Do the work with what is in the garage — lockbox from your brother, rail repaired not replaced.",
+     "next": "clearances",
+     "cash": -8,
+     "setFlags": [
+      "homeFixed"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "clearances",
+   "kicker": "Day 9 — Wednesday, April 15, 2026",
+   "dayOffset": 9,
+   "title": "Paper that travels slowly",
+   "body": [
+    "Walter's clearances go in with his fingerprints on a Tuesday. His doctor's statement takes longer — the cardiologist's office faxes it to the wrong number once, because medical offices are where faxes go to be reborn as mysteries. You learn the study's least dramatic rule: nothing is submitted until somebody confirms it arrived.",
+    "You call the agency twice that week. The second call finds the fax. Persistence is not a personality trait in this system; it is a tracking method."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mr. Solberg for a checklist of what is still missing, in writing, so the study has a finish line you can see.",
+     "next": "program_letter",
+     "setFlags": [
+      "checklistKept"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "program_letter",
+   "kicker": "Day 10 — Thursday, April 16, 2026",
+   "dayOffset": 10,
+   "title": "Your side of the file",
+   "body": [
+    "A kinship study examines the caregiver. Your case examines you. Your program counselor's letter — attendance, phase progress, a drug screen history as clean as the program keeps — goes into the same review packet, because a judge deciding whether Hugo moves to his grandfather is also, always, deciding how this story is trending.",
+    "You are not the placement. You are the reason the placement is a bridge instead of a destination. The letter says so in a counselor's flat, credible prose."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mr. Solberg for the study checklist anyway — and put in your own written request for the case record under 55 Pa. Code § 3130.44(d), so the study's paper reaches you too.",
+     "next": "checklist",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "record-request"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "checklist",
+   "kicker": "Day 12 — Saturday, April 18, 2026",
+   "dayOffset": 12,
+   "title": "The finish line",
+   "body": [
+    "The written checklist says: clearances — received. Medical statement — received. Home visit — scheduled. One interview — Walter's, and one with you. Your program counselor will send attendance verification directly. For the first time since Hugo left your apartment, a piece of this case has an end you can point at.",
+    "The home visit is set for next week. Walter asks if he should bake. You tell him caseworkers have seen everything and pie is not on the list. He bakes anyway."
+   ],
+   "choices": [
+    {
+     "text": "Be there for the visit if the agency allows — a daughter who shows up is data too.",
+     "next": "home_visit"
+    }
+   ]
+  },
+  {
+   "id": "home_visit",
+   "kicker": "Day 16 — Wednesday, April 22, 2026",
+   "dayOffset": 16,
+   "title": "The walk-through",
+   "body": [
+    "Mr. Solberg walks the house with his list, and the house answers him: medications locked, handrail solid, Hugo's bed made, smoke detectors beeping their small green assent. He opens the bathroom cabinet out of professional habit and finds toothpaste and a man who planned ahead. \"Your father fixed these before I flagged them,\" he says, and writes for a while.",
+    "What a home study records is not a house. It is whether the adults around a problem move toward it or wait to be told."
+   ],
+   "choices": [
+    {
+     "text": "Walk him out. Ask the only question that matters: \"What happens at the review on April 30th?\"",
+     "next": "hugo_visit"
+    }
+   ]
+  },
+  {
+   "id": "hugo_visit",
+   "kicker": "Day 18 — Friday, April 24, 2026",
+   "dayOffset": 18,
+   "title": "Hugo, inspecting",
+   "body": [
+    "The agency arranges Hugo's next visit at Walter's house — part visit, part quiet evidence. Hugo inspects the spare room with the seriousness of a building department: the bed, the shelf, the model bus at eye level. He tests the handrail twice, like a man who has seen a worker do it.",
+    "On the porch he asks his grandfather whether the school bus that stops at the corner is 'his bus.' It is the right route for Hugo's same school — a fact you confirm with the district that week, in writing, because school continuity is a sentence judges underline."
+   ],
+   "choices": [
+    {
+     "text": "Confirm it in writing: same school, same route, stop at the corner.",
+     "next": "before_review",
+     "setFlags": [
+      "schoolConfirmed"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "before_review",
+   "kicker": "Day 20 — Sunday, April 26, 2026",
+   "dayOffset": 20,
+   "title": "Before the review",
+   "body": [
+    "What happens depends on the study being finished — reports written, approvals signed — and on the recommendation the agency carries into the courtroom. Yours is assembling well. One piece remains that is yours alone: a short written statement to the court supporting the placement, so the judge hears your voice asking for your father's home, not just the agency's voice reporting it.",
+    "Parents are parties in their children's cases. Parties may be heard. The smallest version of that right is a page with your name on it, filed before the hearing instead of wished for after it."
+   ],
+   "choices": [
+    {
+     "text": "Write it: one page — the program, the plan, your father, and what Hugo asks for when he calls you (his room at Pop's).",
+     "next": "voss_call",
+     "setFlags": [
+      "motherStatement"
+     ]
+    },
+    {
+     "text": "You will speak at the review instead. Writing feels like homework from a system that already took your son.",
+     "next": "voss_call"
+    }
+   ]
+  },
+  {
+   "id": "voss_call",
+   "kicker": "Day 21 — Monday, April 27, 2026",
+   "dayOffset": 21,
+   "title": "Mrs. Delacroix calls",
+   "body": [
+    "Mrs. Delacroix — Hugo's foster mother — calls you the week before the review, which foster parents are not required to do and the good ones do anyway. 'He talks about the room,' she says. 'If the court moves him, we'll pack his things properly and I'll send the bus shelf photo with him. I wanted you to hear that from me.'",
+    "Foster parents receive notice of hearings and may be heard at them (42 Pa.C.S. § 6336.1). What Mrs. Delacroix will say, if asked, is that Hugo is ready and the grandfather is real. Support like that cannot be bought or faked — but it can be welcomed, in writing, so it reaches the file."
+   ],
+   "choices": [
+    {
+     "text": "Thank her in a letter the agency gets a copy of. Bridges get built from both banks.",
+     "next": "walter_letter"
+    }
+   ]
+  },
+  {
+   "id": "walter_letter",
+   "kicker": "Day 22 — Tuesday, April 28, 2026",
+   "dayOffset": 22,
+   "title": "Walter's page",
+   "body": [
+    "Walter writes his own statement for the court, one page, in handwriting like a route manifest: the house, the heart ('managed, see doctor's letter'), the room, the years he has known his grandson, and the last line, which he reads to you twice to make sure it is spelled right: 'I am not a backup plan. I am his grandfather.'",
+    "It is not a legal document. Courts are moved by legal documents that have a pulse. Your own statement is already filed; his will sit beside it, and the pair of them say what the study alone cannot: this placement has two generations asking for it."
+   ],
+   "choices": [
+    {
+     "text": "File his page with yours. Then sleep. Tomorrow is paperwork's last mile.",
+     "next": "the_review"
+    }
+   ]
+  },
+  {
+   "id": "the_review",
+   "kicker": "Day 24 — Thursday, April 30, 2026",
+   "dayOffset": 24,
+   "title": "The review",
+   "body": [
+    "The courtroom version of your father's spare room is a two-page report: clearances clear, medical managed, home safe, fixes made before they were findings. Mr. Solberg presents it. Mrs. Delacroix, Hugo's foster mother, tells the judge Hugo talks about his grandfather's model buses \"like church.\"",
+    "The judge reads the report's last page, where the recommendation lives."
+   ],
+   "choices": [
+    {
+     "text": "Wait for the sentence the whole spring has been walking toward.",
+     "next": "the_drive"
+    }
+   ]
+  },
+  {
+   "id": "the_drive",
+   "kicker": "Day 24 — Thursday, April 30, 2026",
+   "dayOffset": 24,
+   "title": "The drive to court",
+   "body": [
+    "Walter drives, because Walter always drives, and parks with the care of a man for whom parking was once a profession. In the courthouse hallway, Hugo's file goes past on a cart — two inches thick already, for a nine-year-old who has done nothing but be loved in inconvenient circumstances.",
+    "Everything the spring built is in those two inches: your letter, his list, the lockbox receipt, the fax that was found. The judge is about to read the last page first, the way judges do. The last page is the recommendation."
+   ],
+   "choices": [
+    {
+     "text": "Take your seat.",
+     "next": "outcome"
+    }
+   ]
+  },
+  {
+   "id": "outcome",
+   "kicker": "Day 24 — Thursday, April 30, 2026",
+   "dayOffset": 24,
+   "title": "The recommendation",
+   "body": [
+    "What the judge can order depends on what the study can support — a finished study with an approval, or an unfinished one with a promise."
+   ],
+   "choices": [
+    {
+     "text": "The study is complete and approved — clearances, medical, home, your statement — and the agency recommends the move.",
+     "next": "end_move",
+     "requiresFlags": [
+      "homeFixed",
+      "checklistKept",
+      "motherStatement"
+     ]
+    },
+    {
+     "text": "The study is nearly there, but a piece of paper is still traveling.",
+     "next": "end_study"
+    }
+   ]
+  },
+  {
+   "id": "end_move",
+   "kicker": "Day 24 — Thursday, April 30, 2026",
+   "dayOffset": 24,
+   "title": "Ending — The Spare Room, Occupied",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The court orders Hugo placed with his grandfather, effective this weekend, with your program schedule written into the order so visits and overnights build toward home. Walter, who dressed for court in his route-supervisor tie, accepts the judge's thanks with the nod of a man who has been handed a route he intends to run on time. Hugo's bed — the one from the attic, with the model buses at eye level — gets its boy.",
+    "Nothing in this scenario required money, connections, or a brilliant legal move. It required the kinship basics, in order: the relative named in writing with a way to reach him; the study treated as a list to climb before the visit instead of a verdict to fear after it; every slow-moving paper tracked until somebody confirmed it arrived; and your own voice in the file asking for it. Courts can only approve the homes that paper makes visible. Walter was ready in March. The study's job — and yours — was making the file able to see it.",
+    "What no strategy controls: the clearances and the judge. A clearance can surface something a family did not know it had to answer, and no letter fixes that overnight. This story's grandfather had a clean record and a managed heart. Another family's story has more chapters. The sequence still matters: it is how those chapters get found early, answered in writing, and weighed as facts — instead of arriving as surprises at the hearing."
+   ]
+  },
+  {
+   "id": "end_study",
+   "kicker": "Day 38 — Thursday, May 14, 2026",
+   "dayOffset": 38,
+   "title": "Ending — Approved in Principle (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The judge praises the study's progress, approves your father as a placement resource in principle, and sets the move for the next review — fourteen days out — when the last verification is filed. Hugo spends two more weeks with the Delacroix family, who send him to Walter's for Sunday dinner in the meantime with the court's blessing. It is a good outcome wearing a waiting room's clothes.",
+    "The lesson is about paper travel time. Somewhere between the cardiologist's fax, the clearance office, and the report writer's desk, this case kept losing days it could not see — and the only instrument that finds lost days is a checklist, requested in writing, checked by a person who calls twice. Ask for the study's finish line early: what is missing, who holds it, and what date it is due. A study with a visible finish line finishes. A study without one becomes weather — everybody discusses it, nobody can schedule around it.",
+    "This ending is a partial win, and a common one: the placement is approved, the boy is loved in both houses, and the only cost was time. Name the cost anyway. In a child's calendar, two weeks is not a rounding error — and the next family over, the one that tracks its paper from day one, is the reason this scenario exists."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s48';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

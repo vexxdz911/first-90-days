@@ -1,0 +1,782 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 93 — Fourteen Days (a fictional composite)",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "The court gave the twins to their grandmother. The agency is appealing. The mother's own appeal — a cross-appeal — runs on a fourteen-day clock nobody mentioned in the courtroom.",
+  "startDateISO": "2026-08-03"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, August 3, 2026",
+   "dayOffset": 0,
+   "title": "The Order Nobody Won",
+   "body": [
+    "Your name is Octavia Reed. Your daughters, Noor and Leila, are six-year-old twins with matching gaps in their smiles and opposite opinions about everything else. They have been in foster care for nine months. Last week, after a disposition the whole family attended holding its breath, the court transferred temporary legal custody of the twins to their grandmother — your mother — under 42 Pa.C.S. § 6351(a)(2)(i), with your visitation set at two afternoons a week and the goal left as reunification.",
+    "It was not the order you asked for — you asked for them home. It was not the order the agency asked for — it asked that they stay in foster care. It was the middle order, the family order, and on the courthouse steps your mother cried and your lawyer, Ms. Kaur, did an unusual thing: she looked worried at a win.",
+    "\"The agency can appeal,\" she said. \"And if it does, something else becomes possible — and urgent. Get to my office tomorrow. Bring the order. Appeals in this family are about to have clocks inside clocks.\"",
+    "The family is fictional — a composite. The clocks inside clocks are standard equipment."
+   ],
+   "choices": [
+    {
+     "text": "Go tomorrow, with the order and a notebook",
+     "next": "lawyer",
+     "note": "Tomorrow turns out to be the correct unit of urgency for everything in this story."
+    }
+   ]
+  },
+  {
+   "id": "lawyer",
+   "kicker": "Day 1 — Tuesday, August 4, 2026",
+   "dayOffset": 1,
+   "title": "Ms. Kaur Draws Three Lines",
+   "body": [
+    "\"Three lines,\" Ms. Kaur says, and the legal pad comes out — the profession's true medium. \"Line one: the agency's appeal. It has thirty days from the order to file its notice (Pa.R.A.P. 903(a)). If it does, it will argue the kinship order was wrong.",
+    "\"Line two: yours. You lost things in that order too — return, and more visitation. If the agency files first, your appeal becomes a cross-appeal, and a cross-appeal runs on its own clock: within fourteen days of the date the first notice of appeal was served, or within your own thirty days, whichever expires last (Pa.R.A.P. 903(b)). Fourteen days is not a typo. Families miss it every term because nobody says it out loud in the courtroom.",
+    "\"Line three: the case below. Reviews, visits, your mother's household, your services. It does not pause for either appeal. We defend the grandmother order, we prosecute the cross-appeal, and we keep line three fed. Questions?\""
+   ],
+   "choices": [
+    {
+     "text": "Ask what has to be watched between now and the agency's filing",
+     "next": "phone_tree",
+     "note": "\"Service,\" she says. \"The fourteen days run from when their notice is served on us — not from when we happen to open the mail. So we watch the mail like it owes us money. It does. It owes us fourteen days.\""
+    }
+   ]
+  },
+  {
+   "id": "phone_tree",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "The Phone Tree",
+   "body": [
+    "The plan gets built at your mother's kitchen table, because that is where this family's government sits: she will check the mailbox daily and photograph every envelope from a court or the agency; your sister is backup; Ms. Kaur's office will call the day anything is served. Clocks inside clocks require a phone tree, and phone trees, like childhoods, run on whoever actually shows up."
+   ],
+   "choices": [
+    {
+     "text": "Set the phone tree and write both clocks on the calendar",
+     "next": "service_watch",
+     "setFlags": [
+      "clocksKept"
+     ],
+     "addHidden": [
+      "Appeal clocks — agency's 30-day and cross-appeal 14-day windows calendared with a service watch"
+     ],
+     "note": "August is now a calendar with two circles on it, one of them around a date that doesn't exist yet. Readiness, in this system, looks exactly like this."
+    }
+   ]
+  },
+  {
+   "id": "service_watch",
+   "kicker": "Day 4 — Friday, August 7, 2026",
+   "dayOffset": 4,
+   "title": "Waiting for the Other Side's Paper",
+   "body": [
+    "Days pass in the new arrangement: the twins at your mother's, learning her house's geography; visits Tuesday and Friday; your services on their schedule. The agency says nothing, which is its own genre of statement. An appeal not yet filed is a decision not yet made — agencies let the thirty days run while committees meet, and every quiet day is a day the order stands and the twins' life in their grandmother's house becomes more documented, more ordinary, more real."
+   ],
+   "choices": [
+    {
+     "text": "Use the quiet days to keep line three immaculate",
+     "next": "work_schedule",
+     "note": "Quiet days are still record days. The visit log does not know an appeal is coming, and that is its strength."
+    }
+   ]
+  },
+  {
+   "id": "work_schedule",
+   "kicker": "Day 6 — Sunday, August 9, 2026",
+   "dayOffset": 6,
+   "title": "The Schedule, In Writing",
+   "body": [
+    "Your employer — a medical-supply warehouse with a point system and a good supervisor stranded inside it — needs your court and visit schedule in writing to protect your shifts. The written version exists because Ms. Kaur's office produces such letters the way bakeries produce bread. The letter costs nothing and defends two things at once: the job, and the record's account of the job, which in nine months has been described by everyone except the employer."
+   ],
+   "choices": [
+    {
+     "text": "Get the signed schedule letter for the file",
+     "next": "kitchen_calendar",
+     "setFlags": [
+      "scheduleLetter"
+     ],
+     "addHidden": [
+      "Employment — signed schedule letter filed; shifts protected in writing"
+     ],
+     "note": "Signed. The record now contains the employer's own account, which has the radical quality of being checkable."
+    },
+    {
+     "text": "Handle the schedule verbally with your supervisor",
+     "next": "kitchen_calendar",
+     "note": "Verbal agreements with good supervisors survive exactly as long as the supervisor's memory and employment. Both are finite. Paper is the hedge."
+    }
+   ]
+  },
+  {
+   "id": "kitchen_calendar",
+   "kicker": "Day 7 — Monday, August 10, 2026",
+   "dayOffset": 7,
+   "title": "The Calendar With Two Circles",
+   "body": [
+    "Your mother's calendar has the twins' dentist, your visits, your service nights — and the two circles. On day nine, the mailbox produces the envelope the phone tree exists for: the agency's notice of appeal, filed and served. The phone tree fires like a volunteer fire company. Photographs are taken. Ms. Kaur's office confirms service: Wednesday, August 12.",
+    "Fourteen days from service is Wednesday, August 26. Your own thirty days would run to September 2 — the cross-appeal rule takes whichever expires last (Pa.R.A.P. 903(b)), so your true deadline is September 2. But Ms. Kaur's office files cross-appeals the way pilots land planes: early, because weather exists."
+   ],
+   "choices": [
+    {
+     "text": "Call Ms. Kaur and start the cross-appeal the day theirs lands",
+     "next": "agency_files",
+     "note": "Day nine. Their clock started the story; yours starts now, with twenty-four days of margin and no intention of spending them."
+    }
+   ]
+  },
+  {
+   "id": "agency_files",
+   "kicker": "Day 9 — Wednesday, August 12, 2026",
+   "dayOffset": 9,
+   "title": "The Agency Appeals",
+   "body": [
+    "The agency's notice appeals the kinship-custody order: it will argue the court erred in placing the twins with their grandmother over its recommendation. Its brief is months away. Its effect is immediate: the order stands while the appeal runs — appeals do not pause cases — but the twins' placement now has a legal weather system over it, and everyone in the family can feel the pressure change.",
+    "Your mother, feeding the twins breakfast inside the appealed order, states the family's position with a grandmother's economy: 'Then we keep doing it right, on paper, where they have to look at it.'"
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Kaur what the cross-appeal should actually claim",
+     "next": "cross_decision",
+     "note": "\"Not everything,\" she says. \"Two things: the visitation was set below what the record supported, and the order's review structure ignored your documented progress. Preserved, paper-based, winnable. The cross-appeal is a scalpel. People keep trying to file it as a memoir.\""
+    }
+   ]
+  },
+  {
+   "id": "cross_decision",
+   "kicker": "Day 11 — Friday, August 14, 2026",
+   "dayOffset": 11,
+   "title": "Fourteen Days",
+   "body": [
+    "The cross-appeal's claims get chosen at the kitchen table with the order and the disposition transcript between you: the two preserved, documented complaints — visitation set at two afternoons despite the visit record, and a review schedule that took no account of the progress exhibits. Everything else — the nine months, the foster home, the first worker — is true, felt, and unusable, because a cross-appeal, like every appeal, reviews a record, not a history.",
+    "Deciding is the easy part. The record work is next, and it is the same as it ever was: transcripts, and the complete agency file, requested in writing (55 Pa. Code § 3130.44(d)), at $30 the set."
+   ],
+   "choices": [
+    {
+     "text": "Decide the two claims and start the record work the same day",
+     "next": "records",
+     "setFlags": [
+      "crossDecided"
+     ],
+     "addHidden": [
+      "Cross-appeal — claims limited to preserved, documented issues: visitation and review structure"
+     ],
+     "note": "Two claims, both with page numbers waiting for them. The scalpel is chosen. Now the sharpening."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 13 — Sunday, August 16, 2026",
+   "dayOffset": 13,
+   "title": "The Record, For Two Appeals",
+   "body": [
+    "Two appeals will read one record. The disposition transcripts contain the grandmother's testimony, the agency's recommendation, the visit exhibits, and the court's findings — the whole contested ground. Ordering the complete set and requesting the agency's full file in writing is $30 and an afternoon of forms; working from excerpts is free and, in an appeal you did not start about a placement you must defend, a false economy measured in other people's children."
+   ],
+   "choices": [
+    {
+     "text": "Order the complete transcripts and request the full agency record, in writing",
+     "next": "grandma_house",
+     "cash": -30,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Record — complete transcripts ordered; full agency file requested in writing for both appeals"
+     ],
+     "note": "Receipts filed. Both appeals will now be read from the same complete paper — yours will simply have been read more carefully."
+    },
+    {
+     "text": "Work from the agency's excerpts — they appealed; make them carry it",
+     "next": "grandma_house",
+     "note": "They will carry it — to their conclusions, from their excerpts, at their pace. Defense is not a spectator position."
+    }
+   ]
+  },
+  {
+   "id": "grandma_house",
+   "kicker": "Day 16 — Wednesday, August 19, 2026",
+   "dayOffset": 16,
+   "title": "Grandmother's House, On Paper",
+   "body": [
+    "The kinship file is the appeal's battlefield, so it gets audited like one: your mother's clearances, the home assessment, the school enrollment for the twins, the pediatrician transfer, her attendance at every hearing since spring. It is, file-wise, a strong house — and its strength is currently stored in a drawer, in the original envelopes, in no order known to law. Ms. Kaur's paralegal spends a morning making it a record: indexed, copied, complete."
+   ],
+   "choices": [
+    {
+     "text": "Have the kinship file indexed and completed for the record",
+     "next": "mailbox",
+     "setFlags": [
+      "kinFile"
+     ],
+     "addHidden": [
+      "Kinship record — grandmother's clearances, assessment, school and medical documentation indexed and complete"
+     ],
+     "note": "The house was always strong. Now it is strong in the format appellate courts are able to notice."
+    },
+    {
+     "text": "Leave the drawer as it is — the court already saw the house",
+     "next": "mailbox",
+     "note": "The trial court saw the house. The appellate court sees the file. Conflating the two audiences is this story's most expensive available mistake."
+    }
+   ]
+  },
+  {
+   "id": "mailbox",
+   "kicker": "Day 18 — Friday, August 21, 2026",
+   "dayOffset": 18,
+   "title": "The Mailbox, Day Eighteen",
+   "body": [
+    "The transcripts arrive; the agency file arrives; the cross-appeal is drafted, its claims wearing their page citations. The filing plan is day nineteen — a week ahead of the fourteen-day mark, with the thirty-day backstop unused and unneeded. Paper, early, on purpose: the whole strategy, as ever, is a date with a margin."
+   ],
+   "choices": [
+    {
+     "text": "File the cross-appeal on day nineteen as planned",
+     "next": "cross_filing",
+     "note": "Day nineteen. The clerk stamps two captions now. The case has a second appellant, and she is the twins' mother."
+    },
+    {
+     "text": "Hold the filing a few more days to polish the phrasing",
+     "next": "cross_late",
+     "note": "Polish is a virtue in prose and a vice in calendaring. The draft was finished on day eighteen. The days after that are not editing; they are weather exposure."
+    },
+    {
+     "text": "Set the cross-appeal aside entirely — defending the order is enough",
+     "next": "cross_skipped",
+     "note": "One appeal, one record, one fight: it has a clean logic to it. It also leaves the order's flaws exactly where the trial court left them, unreviewed, forever. Ms. Kaur says nothing, which is her loudest register."
+    }
+   ]
+  },
+  {
+   "id": "cross_skipped",
+   "kicker": "Day 19 — Saturday, August 22, 2026",
+   "dayOffset": 19,
+   "title": "The Appeal That Isn't",
+   "body": [
+    "No cross-appeal is filed. The decision is made the way consequential non-decisions usually are: not in anger, not in ignorance of the rule — Ms. Kaur stated the fourteen days plainly — but in the arithmetic of a tired family choosing one fight. August 26 passes inside the twins' first weeks of first grade. September 2 passes inside a visit afternoon. The windows close without sound, the way windows in this system do: not slammed, simply no longer open.",
+    "The defense of the kinship order continues at full strength. It is, from here on, the only appellate business this family has."
+   ],
+   "choices": [
+    {
+     "text": "Turn everything to the defense and the briefs",
+     "next": "agency_file_read",
+     "note": "The defense is excellent. It will need to be. It is now carrying the whole case, including the parts it was never designed to argue."
+    }
+   ]
+  },
+  {
+   "id": "cross_filing",
+   "kicker": "Day 19 — Saturday, August 22, 2026",
+   "dayOffset": 19,
+   "title": "Filing the Cross-Appeal",
+   "body": [
+    "Filed: notice of cross-appeal, day nineteen from the order, nine days after the agency's notice was served — inside every clock the rules contain (Pa.R.A.P. 903(a), (b)). The clerk's stamp makes a sound like a small door locking from the inside, in the good way. The twins' placement will be defended, and their mother's complaints will be heard, in the same appeal, on the same record, before the same panel.",
+    "Your mother, told by phone tree, says: 'Good. Now both sides of the order get read.' That is exactly, and not at all obviously, what just happened."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the briefs — and to line three, which never stopped",
+     "next": "agency_file_read",
+     "setFlags": [
+      "crossFiled"
+     ],
+     "note": "Two appeals, one record, three lines on a pad. The winter of this family will be bibliographic."
+    }
+   ]
+  },
+  {
+   "id": "cross_late",
+   "kicker": "Day 24 — Thursday, August 27, 2026",
+   "dayOffset": 24,
+   "title": "Day Twenty-Four",
+   "body": [
+    "The polish ate the margin a day at a time. On day twenty-four the cross-appeal is filed — still inside the thirty-day window that Rule 903(b) measures as 'whichever expires last,' as Ms. Kaur confirms with a steadiness that costs her visible effort, and the filing is accepted. What the delay bought was nothing; what it risked was everything; what it taught is the lesson this scenario exists to teach at full price or a discount, and you have chosen the discount with four days to spare and a lawyer who will be telling this story, with names changed, for years.",
+    "\"We file nothing else at a deadline in this family,\" she says. \"Ever. The twins' case has used its luck. From here, we are a margin family.\""
+   ],
+   "choices": [
+    {
+     "text": "Become a margin family and turn to the briefs",
+     "next": "agency_file_read",
+     "setFlags": [
+      "crossFiled"
+     ],
+     "note": "Filed, timely, and terrifying in retrospect. The cross-appeal exists. So does the new household rule, which is also filed, mentally, in triplicate."
+    }
+   ]
+  },
+  {
+   "id": "agency_file_read",
+   "kicker": "Day 26 — Saturday, August 29, 2026",
+   "dayOffset": 26,
+   "title": "Reading the Other Side First",
+   "body": [
+    "The agency's file, obtained on the written request, contains its internal placement memorandum — the document its appeal will be built from. Reading the other side's foundation before your brief is due is the least dramatic advantage in litigation and among the most real: their memo relies on the foster home's licensing level and a services concern that the disposition record answers with the grandmother's completed assessment and your progress exhibits. Their brief will say what the memo says. Your briefs — defense and cross — can now be written against the actual argument, not the imagined one."
+   ],
+   "choices": [
+    {
+     "text": "Build both briefs against the memo's actual claims",
+     "next": "briefs_season",
+     "setFlags": [
+      "memoRead"
+     ],
+     "addHidden": [
+      "Opponent's record — agency's placement memorandum read before briefing; briefs built against the actual argument"
+     ],
+     "note": "An afternoon of reading that rearranges the next month of writing. Paper, again, doing the work of drama."
+    },
+    {
+     "text": "Write from your own outline — their memo is their problem",
+     "next": "briefs_season2",
+     "note": "Their memo is about to become the panel's reading material. Unread, it is also yours."
+    }
+   ]
+  },
+  {
+   "id": "briefs_season",
+   "kicker": "Day 30 — Wednesday, September 2, 2026",
+   "dayOffset": 30,
+   "title": "Two Briefs, One Record",
+   "body": [
+    "Brief season. The defense brief answers the agency: the kinship order was within the court's disposition authority (42 Pa.C.S. § 6351(a)(2)(i)), supported by findings on a record containing an assessed, documented kinship home. The cross brief presses the two preserved claims, visitation and review structure, page by page. Ms. Kaur reads every citation against the certified record, because a brief's citations are its load-bearing walls and she has seen one collapse. Copies: $10."
+   ],
+   "choices": [
+    {
+     "text": "Check every citation in both briefs against the certified record",
+     "next": "school_forms",
+     "cash": -10,
+     "setFlags": [
+      "briefChecked"
+     ],
+     "addHidden": [
+      "Briefs — defense and cross-appeal citations verified against the certified record"
+     ],
+     "note": "One citation in the cross brief pointed at the wrong hearing. It points correctly now. These are the sentences appeals are quietly made of."
+    },
+    {
+     "text": "Trust the drafts and spend the evening with the twins",
+     "next": "school_forms",
+     "note": "The twins get the evening either way — they are six, and visits are visits. The citations get the errors they were drafted with. Both facts will matter, in different rooms."
+    }
+   ]
+  },
+  {
+   "id": "briefs_season2",
+   "kicker": "Day 30 — Wednesday, September 2, 2026",
+   "dayOffset": 30,
+   "title": "One Record, Read Soberly",
+   "body": [
+    "Whatever the filing season's shape, this desk is where it ends: the brief work, done on the record as it stands. There is no separate season for regrets; families that filed early, families that filed late inside the 'whichever expires last' rule, and families defending alone all arrive at the same work — briefs written against the actual record, citations checked against the certified set, copies paid for. The desk does not care how you got here. The panel will read what leaves it."
+   ],
+   "choices": [
+    {
+     "text": "Proceed to line three with the briefs filed",
+     "next": "school_forms",
+     "setFlags": [
+      "briefChecked"
+     ],
+     "note": "Same desk, same briefs. The only difference is stored in a lawyer's memory and a family's household rules about margins — and in what the briefs are able to ask for."
+    }
+   ]
+  },
+  {
+   "id": "school_forms",
+   "kicker": "Day 33 — Saturday, September 5, 2026",
+   "dayOffset": 33,
+   "title": "School Forms at Grandmother's Table",
+   "body": [
+    "Line three, in its school-uniform form: the twins start first grade from their grandmother's address. The enrollment packet wants documentation of the custody order; the school's counselor wants to know who signs what. These forms are the placement's ordinary life being ordinary — and ordinary life, documented, is what the agency's appeal says this placement cannot provide. Every signed form is a small exhibit in an argument nobody makes out loud at the school office."
+   ],
+   "choices": [
+    {
+     "text": "File the enrollment packet with the order attached, and keep copies",
+     "next": "visits_below",
+     "setFlags": [
+      "schoolFiled"
+     ],
+     "note": "Enrolled. Two first-graders, one address, a counselor who now knows the family's shape and the grandmother's pie. The record of a placement being a childhood."
+    },
+    {
+     "text": "Let Grandmother handle school her way, without copies",
+     "next": "visits_below",
+     "note": "Her way works at the school. Copies are for the other building, where her way has to be provable by strangers."
+    }
+   ]
+  },
+  {
+   "id": "visits_below",
+   "kicker": "Day 38 — Thursday, September 10, 2026",
+   "dayOffset": 38,
+   "title": "Visits at Grandmother's Table",
+   "body": [
+    "Your Tuesday and Friday afternoons happen in your mother's kitchen now, with homework and her soup and the twins' running commentary on first grade. The visit supervisor's role shrank when the placement did; the notes are brief and warm. Brief and warm, in an appellate season, deserves reinforcement: the cross-appeal's first claim is that these afternoons should be more and longer, and that claim lives or dies on the documented quality of the ones that exist."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, for the visit notes to record the homework, the meals, the full afternoons",
+     "next": "twins_school",
+     "setFlags": [
+      "visitLog"
+     ],
+     "addHidden": [
+      "Visit record — grandmother-home visits documented specifically, in writing, supporting the cross-appeal's first claim"
+     ],
+     "note": "The notes grow specifics. Specifics are the cross-appeal's native language."
+    },
+    {
+     "text": "Let the visits be visits and the notes be brief",
+     "next": "twins_school",
+     "note": "The visits are lovely. The notes say 'visit occurred.' Somewhere, a panel will one day read those two words as the entire case for more time."
+    }
+   ]
+  },
+  {
+   "id": "twins_school",
+   "kicker": "Day 45 — Thursday, September 17, 2026",
+   "dayOffset": 45,
+   "title": "The School Play, Line Three",
+   "body": [
+    "The twins are sheep in the school play — both of them, a casting decision suggesting either abundance or diplomacy. You attend with your mother; your sister photographs; the agency's appeal is not mentioned by any sheep. This is line three at its best: a family being unremarkable in public, on the record of a school gymnasium, while lawyers elsewhere argue about whether the arrangement is working."
+   ],
+   "choices": [
+    {
+     "text": "Keep the program with the visit notes",
+     "next": "bus_ride2",
+     "note": "Into the folder it goes, between the school letter and the schedule. Programs are evidence too, of the only thing that ultimately matters: a childhood, proceeding."
+    }
+   ]
+  },
+  {
+   "id": "bus_ride2",
+   "kicker": "Day 50 — Tuesday, September 22, 2026",
+   "dayOffset": 50,
+   "title": "The Bus Ride Inventory",
+   "body": [
+    "On the bus to the interim review, the inventory, pad-style: the defense — order, findings, kinship file, school and visit paper, all in the record. The cross — two claims, preserved, cited, filed inside every clock. Line three — services current, visits documented, twins enrolled and ovine. Remaining risks, honestly listed: the panel's view of kinship versus licensure; the passage of appellate time (the twins will be seven before this is decided, and childhood does not toll for briefing schedules); the review below, where progress determinations will be made while the appeal reads."
+   ],
+   "choices": [
+    {
+     "text": "Take the inventory into the review and feed line three again",
+     "next": "review_below",
+     "note": "The review is a hearing, not a formality. It gets the written summary, as hearings in this family now do."
+    }
+   ]
+  },
+  {
+   "id": "review_below",
+   "kicker": "Day 55 — Sunday, September 27, 2026",
+   "dayOffset": 55,
+   "title": "The Review Below, Under Appeal",
+   "body": [
+    "The interim review proceeds with an appeal hanging over the case like weather in another county: the judge notes both appeals in one sentence and turns to the statute's business — compliance, progress, the placement's continuance (42 Pa.C.S. § 6351(f)(2), (3)). Your written summary — services, visits, the twins' school start — is handed up and filed, because the case below is where the twins actually live and its record is being written in the present tense. Cost of copies: $10."
+   ],
+   "choices": [
+    {
+     "text": "Hand up the written summary with the school and visit records attached",
+     "next": "lawyer_call2",
+     "cash": -10,
+     "setFlags": [
+      "reviewRecord"
+     ],
+     "addHidden": [
+      "Review record — written progress summary filed at interim review during the appeals"
+     ],
+     "note": "Stamped. Whatever the panel decides about the order, the record beneath the order keeps improving, which panels have been known to notice."
+    },
+    {
+     "text": "Attend and let the agency's report speak for the case",
+     "next": "lawyer_call2",
+     "note": "The report speaks fluently and entirely. It is, at this point, a pen with an institutional memory and no knowledge of sheep."
+    }
+   ]
+  },
+  {
+   "id": "lawyer_call2",
+   "kicker": "Day 65 — Wednesday, October 7, 2026",
+   "dayOffset": 65,
+   "title": "Ms. Kaur's Weather Report",
+   "body": [
+    "\"Argument is set,\" Ms. Kaur says. \"The panel will have both briefs and one record. Expect the agency to argue licensure as a principle — that the court privileged family over their framework. Our answer is the statute: the disposition menu names relatives expressly (42 Pa.C.S. § 6351(a)(2)(i)), the findings were made, and the home is documented. Expect your cross to be treated as the smaller matter — panels ration attention. We spend ours accordingly: defend first, cross second, grievances never.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask how the family should spend the remaining weeks",
+     "next": "grandma_call",
+     "note": "'Line three,' she says, without looking up. 'It is always line three. The argument is already written. The twins' autumn isn't.'"
+    }
+   ]
+  },
+  {
+   "id": "grandma_call",
+   "kicker": "Day 70 — Monday, October 12, 2026",
+   "dayOffset": 70,
+   "title": "Grandmother's Assessment of Appellate Practice",
+   "body": [
+    "Your mother has formed views. 'Lawyers took my perfectly good house,' she says, shelling peas for a dinner the twins will eat at her table on a court-ordered afternoon inside an appealed order, 'and turned it into an index.' She says it with pride. Her clearances, her assessment, her Thursdays — paper she generated by living her life in an organized way for sixty years, now load-bearing in a courthouse she has visited twice.",
+    "'Tell Ms. Kaur,' she says, 'that if the judges want to see the index work, there is a school play recording.' There is. It is filed. Of course it is filed."
+   ],
+   "choices": [
+    {
+     "text": "Tell her argument is in three weeks and the index is ready",
+     "next": "argument_prep",
+     "note": "'Then we keep the soup on,' she says, 'and the afternoons full.' Line three, in its native language."
+    }
+   ]
+  },
+  {
+   "id": "argument_prep",
+   "kicker": "Day 75 — Saturday, October 17, 2026",
+   "dayOffset": 75,
+   "title": "Two Captions, One Morning",
+   "body": [
+    "Argument morning will carry two captions: the agency as appellant, you as cross-appellant, the twins' grandmother's house as the territory under discussion. Ms. Kaur moots both arguments with clinic students. The defense's spine: authority, findings, record. The cross's spine: the visitation the record supported and the order didn't give. The moot panel's hardest question goes to the cross: 'Counsel, isn't more visitation a matter for the trial court's discretion?' The answer — discretion exercised against its own record is the reviewable kind — gets a nod from the student playing the chief judge, who has clearly done this before in another life."
+   ],
+   "choices": [
+    {
+     "text": "Sleep, and let the briefs talk",
+     "next": "moot",
+     "note": "The family's part in the writing is over. What remains is the reading, and a morning."
+    }
+   ]
+  },
+  {
+   "id": "moot",
+   "kicker": "Day 77 — Monday, October 19, 2026",
+   "dayOffset": 77,
+   "title": "The Moot's Last Question",
+   "body": [
+    "A student judge asks the family's question, the one from the kitchen table: 'If you defend the order, why are you also appealing it?' Ms. Kaur's answer is the scenario in one breath: 'Because an order can be right about the house and wrong about the afternoons, Your Honor. We defend what it got right. We appeal what it got wrong. The record supports both positions because it is the same record.'",
+    "Outside, your sister texts a photograph: two sheep costumes, airing on a line at your mother's house. Line three, ready for its next performance."
+   ],
+   "choices": [
+    {
+     "text": "Carry that answer into the real morning",
+     "next": "night_before",
+     "note": "Right about the house, wrong about the afternoons. The whole cross-appeal, in a sentence a grandmother could shell peas to."
+    }
+   ]
+  },
+  {
+   "id": "night_before",
+   "kicker": "Day 80 — Thursday, October 22, 2026",
+   "dayOffset": 80,
+   "title": "The Night Before",
+   "body": [
+    "The twins are asleep at your mother's. Your folder is closed. Somewhere in a courthouse, three judges have read — or are reading, with the particular attention of people who know children are attached to the footnotes — one record, two briefs, and a cross. Nothing else can be added. That is the terror and the mercy of appellate practice: the record is closed, and so, tonight, is your part in making it."
+   ],
+   "choices": [
+    {
+     "text": "Sleep in the quiet of a closed record",
+     "next": "courthouse_morning",
+     "note": "Tomorrow is the reading, out loud, with questions."
+    }
+   ]
+  },
+  {
+   "id": "courthouse_morning",
+   "kicker": "Day 82 — Saturday, October 24, 2026",
+   "dayOffset": 82,
+   "title": "The Courthouse, Morning",
+   "body": [
+    "The courtroom is the big one, with flags. Your mother is in the second row in her good coat, present as what she legally is in this appeal — the subject of the order, and not a party to its defense, which is its own lesson about how this system routes love through captions. The clerk calls the case, twice, under two captions."
+   ],
+   "choices": [
+    {
+     "text": "Take your seat for both arguments",
+     "next": "argument",
+     "note": "Both captions. Both arguments. The family's whole autumn, read aloud in forty minutes.",
+     "requiresFlags": [
+      "crossFiled"
+     ]
+    },
+    {
+     "text": "Take your seat for the agency's appeal, your cross-appeal having never been filed",
+     "next": "argument_late",
+     "note": "One caption. The order will be defended today. The afternoons will not be argued by anyone.",
+     "requiresNoFlags": [
+      "crossFiled"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "argument",
+   "kicker": "Day 82 — Saturday, October 24, 2026",
+   "dayOffset": 82,
+   "title": "Argument, Twice",
+   "body": [
+    "The agency argues licensure and framework; the panel's questions keep returning to the statute's text and the assessed home in the record. Ms. Kaur defends the order in the record's language — then rises again, under the second caption, and the room's geometry changes: now the order's own author is being asked to answer for the afternoons."
+   ],
+   "choices": [
+    {
+     "text": "Defend the kinship order on its record AND press the cross-appeal on visitation",
+     "next": "decision_best",
+     "note": "Authority, findings, the indexed house — then, without a breath wasted: the visit record, the progress exhibits, the afternoons the record supported. Two arguments, one record, no grievances.",
+     "requiresFlags": [
+      "crossFiled",
+      "kinFile"
+     ]
+    },
+    {
+     "text": "Defend the order and let the cross-appeal rest entirely on its brief",
+     "next": "decision_split",
+     "note": "The defense persuades. The cross, unargued, reads to the panel like an afterthought with citations — which is, in the end, how it gets treated."
+    },
+    {
+     "text": "Spend the argument on the nine months and the first worker",
+     "next": "decision_rev",
+     "note": "The panel's patience ends at the second unrecorded grievance. What a panel cannot review, it eventually stops hearing — including the parts it could have."
+    }
+   ]
+  },
+  {
+   "id": "argument_late",
+   "kicker": "Day 82 — Saturday, October 24, 2026",
+   "dayOffset": 82,
+   "title": "Argument, Once",
+   "body": [
+    "One caption, one argument. The defense is well made — authority, findings, record. But the room contains a silence where the cross-appeal would have been: nobody argues the afternoons, because no filing ever carried them into this building. The panel decides appeals that exist."
+   ],
+   "choices": [
+    {
+     "text": "Defend the order and let the record speak for the rest",
+     "next": "decision_quash",
+     "note": "The defense does its work. The rest of the family's case stands outside the courtroom, in a folder, in a kitchen, unfiled."
+    }
+   ]
+  },
+  {
+   "id": "decision_best",
+   "kicker": "Day 95 — Friday, November 6, 2026",
+   "dayOffset": 95,
+   "title": "The Opinion, In Two Parts",
+   "body": [
+    "The opinion arrives in the twins' second autumn in their grandmother's house. Part one: the agency's appeal is DENIED — the kinship-custody order is affirmed, the court having acted within § 6351(a)(2)(i) on findings supported by an assessed and documented record. Part two: the cross-appeal is GRANTED in part — the visitation schedule is vacated and remanded with directions to set visitation consistent with the documented visit record and the mother's progress, and the review structure is to account for that progress on the record.",
+    "Neither part gives Octavia her daughters home. Both parts together mean the placement is settled law and the afternoons are about to double — decided by judges who never met the twins, from paper a family spent a season making true."
+   ],
+   "choices": [
+    {
+     "text": "Read part two twice and call your mother",
+     "next": "end_best",
+     "note": "'More afternoons,' she says. 'Then we'd better get a bigger calendar.' The calendar, in this family, is a legal instrument."
+    }
+   ]
+  },
+  {
+   "id": "decision_split",
+   "kicker": "Day 95 — Friday, November 6, 2026",
+   "dayOffset": 95,
+   "title": "The Opinion, In One and a Half Parts",
+   "body": [
+    "The agency's appeal is DENIED; the kinship order is affirmed on its record, exactly as defended. The cross-appeal is also denied — respectfully, briefly, in the register panels use for matters they were not truly argued into: the visitation schedule, the panel finds, was within the trial court's discretion on the record presented.",
+    "The placement is safe and the afternoons are unchanged. Half the family's case was won outright. The other half was lost in the rationing of attention on a single morning, by a choice about what to spend it on."
+   ],
+   "choices": [
+    {
+     "text": "Read the cross-appeal part twice and call your mother",
+     "next": "end_split",
+     "note": "'The house held,' she says. 'We'll work on the afternoons the slow way — at reviews, with the log.' She is already reaching for it. She usually is."
+    }
+   ]
+  },
+  {
+   "id": "decision_rev",
+   "kicker": "Day 95 — Friday, November 6, 2026",
+   "dayOffset": 95,
+   "title": "The Opinion Nobody Framed",
+   "body": [
+    "The agency's appeal is GRANTED. The panel, unpersuaded by an argument that spent itself on unreviewable grievances, examines the kinship order with colder eyes than the record deserved: the order is vacated and the matter remanded for a new disposition, with the placement framework's concerns to be addressed. The cross-appeal, framed as it was, is dismissed in the same weather.",
+    "The twins do not move tomorrow — remand means a new hearing, and the grandmother's house, its school, its Thursdays remain facts a new court must weigh. But the order that protected the placement is gone, and it was lost in the arguing, not the facts: the record that could have defended it sat in the brief, unled."
+   ],
+   "choices": [
+    {
+     "text": "Read the last page first, the way lawyers do in bad news",
+     "next": "end_reversed",
+     "note": "The last page is about the new hearing. Even here, the story's doctrine holds: a remand is work, and work can be done. It is simply work that did not have to exist."
+    }
+   ]
+  },
+  {
+   "id": "decision_quash",
+   "kicker": "Day 95 — Friday, November 6, 2026",
+   "dayOffset": 95,
+   "title": "The Opinion, With a Silence In It",
+   "body": [
+    "The agency's appeal is DENIED — the kinship order affirmed on the record that defended it. There is no part two. The visitation question, the review-structure question: not denied, not granted — absent, the way questions are when no cross-appeal ever carried them into the building. The opinion does not mention the afternoons. Appellate courts decide the appeals that are filed. The file of this case will forever contain one argument about this order, and it was the agency's."
+   ],
+   "choices": [
+    {
+     "text": "Read the single part and call your mother",
+     "next": "end_quashed",
+     "note": "'The house held,' she says, because it did. Neither of you says the other sentence. The calendar on her wall says it, in two circles, from August."
+    }
+   ]
+  },
+  {
+   "id": "end_best",
+   "kicker": "Day 100 — Wednesday, November 11, 2026",
+   "dayOffset": 100,
+   "title": "Ending — Affirmed Where It Mattered, Reversed Where It Counted",
+   "body": [
+    "The twins stay with their grandmother — the order is now affirmed law, not a trial court's experiment — and their afternoons with their mother are about to expand under the panel's directions, inside a case whose goal remains reunification and whose record, below, keeps improving in the present tense. No one in the family calls this victory without a qualifier, and the qualifier is the point: Octavia's daughters are not home. But every structure around that fact moved in the family's direction this year, moved by paper, and stayed moved.",
+    "Fourteen days was the hinge. Inside it: a cross-appeal. Outside it: this opinion's second part would not exist."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE WIN, NAMED HONESTLY — A partial win, and the strongest this scenario offers: kinship custody affirmed against the agency's appeal, plus the cross-appeal's partial grant on visitation and review structure. Reunification remains the goal, not the fact. The guide labels it partial because the twins still sleep at their grandmother's — and because it is, nonetheless, the outcome the entire record strategy was built to reach.",
+    "THE LAW IN THE BEATS — Both clocks are Pa.R.A.P. 903: thirty days for a notice of appeal (903(a)); a cross-appeal within fourteen days of service of the first notice or the otherwise-prescribed period, whichever expires last (903(b)) — verified from the official rule text for this batch, and dramatized here with the safety margin the rule's structure invites. The defended order rests on 42 Pa.C.S. § 6351(a)(2)(i) (temporary legal custody to a relative) and the § 6351(f) determinations reviewed below while the appeals ran. The record both appeals were read from was assembled under 55 Pa. Code § 3130.44(d).",
+    "THE HIGHEST-LEVERAGE MOVE — The service watch: a family phone tree built to catch the day the agency's notice landed, because the cross-appeal's fourteen days run from service. Every later success in this scenario is downstream of a photographed envelope.",
+    "WHAT NO STRATEGY CONTROLS — The panel's view of kinship versus licensure, the pace of appellate time against first grade, the agency's next moves below. The route controlled clocks, claims, and citations. That is the whole of what an appellant controls, and this scenario is the proof that it is not little."
+   ]
+  },
+  {
+   "id": "end_split",
+   "kicker": "Day 100 — Wednesday, November 11, 2026",
+   "dayOffset": 100,
+   "title": "Ending — The House Held; The Afternoons Didn't Move",
+   "body": [
+    "The placement is affirmed and safe; the visitation is unchanged; the case continues below, where reviews will hear about afternoons in the ordinary rhythm, with a log that keeps growing. The family's position is stronger than August in every way except the one the cross-appeal existed for.",
+    "The split was not decided by law or fact but by emphasis — a morning's ration of attention, spent entirely on the defense. Appellate argument is a finite resource spent in a single pass, and panels decide what is pressed, warmly, in the room — not merely what is filed, correctly, in the brief."
+   ],
+   "ending": true,
+   "debrief": [
+    "NAMED HONESTLY — A middle outcome: a full win on the agency's appeal and a loss on the cross, netting the status quo the cross was filed to improve. It ranks above the reversed and unfiled endings because the placement — the twins' actual daily lives — was protected outright.",
+    "THE LAW IN THE BEATS — Same frame as the winning route: Pa.R.A.P. 903(a) and (b) clocks, both beaten; § 6351(a)(2)(i)'s kinship custody, affirmed; § 6351(f)'s determinations at the reviews below; the record under 55 Pa. Code § 3130.44(d). Nothing legal failed in this ending. The failure was rhetorical, which in appellate practice is a species of legal failure with better manners.",
+    "WHAT NO STRATEGY CONTROLS — A different advocate might have split the morning the same way and been thanked for it by a different panel. Argument allocation is judgment, and judgment is risk. The guide records the outcome; it does not pretend the choice was costless in either direction."
+   ]
+  },
+  {
+   "id": "end_reversed",
+   "kicker": "Day 100 — Wednesday, November 11, 2026",
+   "dayOffset": 100,
+   "title": "Ending — Vacated: The Argument That Wasn't Made",
+   "body": [
+    "The kinship order is vacated and the case goes back for a new disposition. The twins remain at their grandmother's while the remand proceeds — facts on the ground have their own inertia, and the documented house, the school, the Thursdays are all in the record for the new hearing. The family will likely land somewhere near where it started. It will land there months later, at the price of a second disposition, because an appellate morning was spent on grievances no panel could act on while the defensible order went undefended in the room.",
+    "The record did not fail. The brief contained it. Argument is where records become decisions, and this argument chose a different subject than the case."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHY THIS ENDING — Appellate courts review preserved legal error on the record; they do not review histories, tones, or first workers. An appellant — or a cross-appellant defending an order — who leads with the unreviewable spends the panel's attention and invites exacting review of everything else. The scenario's law (Pa.R.A.P. 903; § 6351(a)(2)(i), (f); 55 Pa. Code § 3130.44(d)) was all present in the file. The framing spent it.",
+    "WHAT REMAINS TRUE — A vacated order on remand is not a lost child. The new disposition will be decided on a record that includes the assessed kinship home and a year of documented childhood, and it will require findings (§ 6351(b)) that can again be appealed — this time, one hopes, argued as a record case. The family's skills survive this ending. Only its time was spent, and in this system time is the children's.",
+    "WHAT NO STRATEGY CONTROLS — The panel might have reached the framework question skeptically in any event; appellate outcomes are not entitlements. What the player controlled was whether the panel met the best version of the case. In this ending, it did not, and the opinion reads accordingly."
+   ]
+  },
+  {
+   "id": "end_quashed",
+   "kicker": "Day 100 — Wednesday, November 11, 2026",
+   "dayOffset": 100,
+   "title": "Ending — The Door That Was Never Opened",
+   "body": [
+    "The kinship placement is affirmed — the agency's appeal failed on the defended record, and the twins' life at their grandmother's continues under settled law. And the afternoons remain two a week, because the instrument that existed to challenge them was never filed. No judge rejected the cross-appeal. No rule defeated it. It simply was never begun, during fourteen days that began with an envelope nobody watched for.",
+    "Of all the endings in this scenario, this is the one where the law was most completely on the family's side and the calendar did the entire damage. The order's flaws — preserved, documented, arguable — aged into unappealable history on a schedule printed in the Rules of Appellate Procedure, available in any law library, mentioned by no one in the courtroom where the order was made."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHY THIS ENDING — A cross-appeal must be filed within fourteen days of service of the first notice of appeal, or within the period otherwise prescribed, whichever expires last (Pa.R.A.P. 903(b)); the mother's own thirty days (903(a)) set the outer limit. An unfiled cross-appeal is not a denied one — the issues it would have carried are simply never before the court, and the trial court's order stands on those points without review. The scenario states no cure for this, because the rules provide none that this family found.",
+    "THE LAW THAT WAS AVAILABLE — The same clocks, the same § 6351(a)(2)(i) order to defend and improve, the same § 3130.44(d) record. The single missing element was a watch on the mailbox calibrated to a fourteen-day fuse.",
+    "WHAT NO STRATEGY CONTROLS — Nothing in this ending reflects on Octavia's merits, the twins, or their grandmother's home — the panel affirmed the home without her help on the points that mattered to her. It reflects on a calendar. The training value of the scenario is precisely that the most consequential appellate skill in the story was a phone tree."
+   ]
+  }
+ ]
+}

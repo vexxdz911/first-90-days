@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 54 — The Assessment Nobody Signed (a fictional composite)",
+  "startDateISO": "2026-10-05",
+  "startNode": "start",
+  "startCash": 230,
+  "tier": "Complex",
+  "summary": "You are Veronica. Your son Otto, six, has been placed for four months, and the agency now recommends moving him to a 'higher level of care' home across the county — based on a scored assessment you have never seen, whose central item contradicts the visit logs you have. Your father's name is Salvatore. He has been at every visit. The assessment has never heard of him. This scenario is about making the court decide on the whole record."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, October 5, 2026",
+   "dayOffset": 0,
+   "title": "The recommendation",
+   "body": [
+    "The agency's review summary is three pages, and its conclusion is one sentence: 'Based on the assessment results, the agency recommends placement in a therapeutic foster home (Level II), Riverton County.' Otto is six. His current foster home is eleven minutes from your apartment. Riverton County is fifty. The word 'assessment' appears four times in the summary. The assessment itself appears zero times.",
+    "Your father Salvatore, who has sat beside you at every supervised visit for four months, reads the summary twice and asks the question that organizes this entire scenario: \"Where is this test, that it knows Otto better than the visits?\""
+   ],
+   "choices": [
+    {
+     "text": "Ask your counsel, Ms. Lindgren, the procedural version of your father's question: \"Can they recommend a move on a document I can't read?\"",
+     "next": "otto_visit",
+     "addHidden": [
+      "assessment-score"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "otto_visit",
+   "kicker": "Day 0 — Monday, October 5, 2026",
+   "dayOffset": 0,
+   "title": "Saturday's visit",
+   "body": [
+    "Otto, at Saturday's visit, is deep in the serious business of being six in a place that is working: he has a reading corner, a foster brother of nine who trades him dinosaur facts at par, and a drawing — produced for you with ceremony — of 'Papou's garden, with the tomatoes I planted with my hands.' Salvatore grew those tomatoes from seed in a windowsill tray, with a six-year-old's supervision, through the whole spring of the placement.",
+    "The agency's summary says the current home is 'adequate.' Adequate is what documents call a life they haven't read. You take a photo of the drawing. Some exhibits are crayon."
+   ],
+   "choices": [
+    {
+     "text": "Ask your counsel the procedural version of your father's question: \"Can they recommend a move on a document I can't read?\"",
+     "next": "counsel54",
+     "addHidden": [
+      "placement-stability"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "counsel54",
+   "kicker": "Day 1 — Tuesday, October 6, 2026",
+   "dayOffset": 1,
+   "title": "Two keys",
+   "body": [
+    "\"Two keys open that document,\" Ms. Lindgren says. \"First, your record right: as a party, you may request the case record in writing — 55 Pa. Code § 3130.44(d) — and the assessment used to justify a placement recommendation is part of the record of your son's case. Second, the rules: under Pa.R.J.C.P. 1340(E), when an assessment is used in a dependency proceeding, it must be made available to all parties in advance of the pre-hearing conference. Our conference is October 22nd. The review is the 29th. Both clocks are ours to use.\"",
+    "\"And if they send it redacted to alphabet soup?\" — \"Then we read 55 Pa. Code § 3130.44(f) together: the confidentiality rules 'shall not be construed as protecting the agency's employees.' Names get complicated. Scores and items don't get to hide at all.\""
+   ],
+   "choices": [
+    {
+     "text": "File the § 3130.44(d) request today, naming the assessment expressly: the full instrument, item responses, and scoring — not the summary.",
+     "next": "current_foster",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "record-request"
+     ],
+     "cash": -9
+    }
+   ]
+  },
+  {
+   "id": "current_foster",
+   "kicker": "Day 2 — Wednesday, October 7, 2026",
+   "dayOffset": 2,
+   "title": "Mrs. Baird",
+   "body": [
+    "Otto's foster mother, Mrs. Baird, calls before you can — foster parents talk to parents in the cases that are working, which is how you know this one is. 'They copied me on nothing,' she says, 'but the worker mentioned Riverton at pickup, in front of Otto, so now I have a six-year-old asking if he's moving to where the dinosaurs can't visit. I am writing the judge a letter. I've had eleven foster children; I have never written a judge a letter.'",
+    "Foster parents get notice of hearings and the right to be heard (42 Pa.C.S. § 6336.1). Mrs. Baird intends to use both, and what she has to say — that Otto is attached, thriving, and eleven minutes from his mother — is the current placement's defense, delivered by its only daily witness."
+   ],
+   "choices": [
+    {
+     "text": "Thank her — and file your own paper: the record request, naming the assessment expressly.",
+     "next": "request54"
+    }
+   ]
+  },
+  {
+   "id": "request54",
+   "kicker": "Day 3 — Thursday, October 8, 2026",
+   "dayOffset": 3,
+   "title": "What arrives",
+   "body": [
+    "What arrives, eleven days later, is the assessment — most of it. The item pages are there: twenty-two scored items, a composite, and a recommendation grid. What is blacked out is instructive: the rater's name and signature line, two narrative paragraphs, and — bizarrely — the header of the scoring page, as if the form's own title were a state secret.",
+    "The redactions are annoying. They are also the least important thing in the packet, because the items are readable, and one of them is wrong in a way you can prove."
+   ],
+   "choices": [
+    {
+     "text": "Go to the item the recommendation rests on. Find it before you fight about ink.",
+     "next": "veronica_program"
+    }
+   ]
+  },
+  {
+   "id": "veronica_program",
+   "kicker": "Day 3 — Thursday, October 8, 2026",
+   "dayOffset": 3,
+   "title": "Your side of the ledger",
+   "body": [
+    "Your own file moves in the background of the assessment fight and matters to it: parenting program completed in August with the facilitator's letter; visitation attendance eleven for eleven; the part-time job at the bakery held for three months now, with a manager who writes 'reliable' in the reference and means it as data.",
+    "Courts read placement fights inside trajectory stories. Whatever the assessment says about ninety days, the trajectory says the placement question is converging on family — which is why a fifty-mile move, this autumn, reads to everyone who knows the file as a step in the wrong direction."
+   ],
+   "choices": [
+    {
+     "text": "The assessment arrives — mostly. Inventory the black ink before you read the numbers.",
+     "next": "redaction_fight"
+    }
+   ]
+  },
+  {
+   "id": "redaction_fight",
+   "kicker": "Day 4 — Friday, October 9, 2026",
+   "dayOffset": 4,
+   "title": "Inventory of black ink",
+   "body": [
+    "You and Ms. Lindgren inventory the redactions on her conference table, itemized like a grocery list of concealments: the rater's name and signature — blacked; two narrative paragraphs — blacked; the scoring page's header — blacked with an enthusiasm that suggests habit rather than judgment. 'Some redactions protect reporters and other families,' she says. 'Those are lawful and we won't fight them. Names of the agency's own employees and the text of the instrument itself are not in that category — § 3130.44(f) says the regulation 'shall not be construed as protecting the agency's employees,' and an assessment a court is asked to rely on is not a confidence.'",
+    "The fight over ink comes after the fight over arithmetic, though. The items are readable, and one of them is wrong in a way you can prove."
+   ],
+   "choices": [
+    {
+     "text": "Go to Item 14 — the item the whole recommendation stands on.",
+     "next": "the_item"
+    }
+   ]
+  },
+  {
+   "id": "the_item",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "Item 14",
+   "body": [
+    "Item 14, 'Supervision incidents during family time (90 days),' is scored 3 — 'multiple incidents' — and the recommendation grid maps a 3 on Item 14 to 'consider Level II placement.' The narrative beside the score says: 'Mother required redirection regarding supervision on three occasions.' Three occasions. You have attended eleven supervised visits in ninety days. The supervisor's logs — signed, dated, kept by the visitation center — are documents you have never been given, because you never asked for them in writing. You ask now.",
+    "One redirection you remember, because it was real: you arrived seven minutes late once, in the rain, and the log will say so. Three is a different number. Three is a placement across the county."
+   ],
+   "choices": [
+    {
+     "text": "Request the visitation center's logs for all eleven visits — your own written request, as a party, added to the record list.",
+     "next": "item_by_item",
+     "setFlags": [
+      "logsRequested"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "item_by_item",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "The other twenty-one",
+   "body": [
+    "Before the logs arrive, you read the whole instrument — all twenty-two items — the way its author apparently didn't. The profile that emerges is not a child in crisis: school readiness strong, health strong, your visitation quality scored well by the same rater on items she could see from the file's cheerful pages. The composite is dragged across the Level II line by a cluster of three items — and Item 14, the 'supervision incidents' score, is the cluster's anchor and its only factual claim about you.",
+    "Assessments fail in two ways: bad instruments, and good instruments filled in from summaries. This one has every sign of the second — which is the kind that corrections, stipulations, and primary records are built to fix."
+   ],
+   "choices": [
+    {
+     "text": "Do the arithmetic the grid does: what happens to the composite if Item 14 is what the logs say it is?",
+     "next": "scoring_page"
+    }
+   ]
+  },
+  {
+   "id": "scoring_page",
+   "kicker": "Day 6 — Sunday, October 11, 2026",
+   "dayOffset": 6,
+   "title": "The grid, recomputed",
+   "body": [
+    "Ms. Lindgren recomputes it on a legal pad while you watch, because arithmetic you watch is arithmetic you can testify about: Item 14 at 3 pulls the composite to 41 — one point over the Level II threshold of 40. Item 14 at 1, which is what a single redirection scores on the instrument's own rubric, puts the composite at 37 — squarely in the 'maintain current placement with services' band. The entire recommendation — a county, a school, a childhood address — is the weight of one misread item, resting on the scale like a thumb.",
+    "'We are not arguing the instrument is wicked,' she says. 'We are arguing it was fed a number its own records contradict. Judges understand thumbs on scales.'"
+   ],
+   "choices": [
+    {
+     "text": "See the alternative with your own eyes before you fight it: tour the Riverton home.",
+     "next": "level2_tour",
+     "addHidden": [
+      "assessment-items"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "level2_tour",
+   "kicker": "Day 7 — Monday, October 12, 2026",
+   "dayOffset": 7,
+   "title": "Riverton, honestly",
+   "body": [
+    "The Riverton home, toured at the agency's invitation, is not a place you can honestly call bad: a patient couple, a quiet street, a therapy room with good light. It is also set up for teenagers — the other two residents are fifteen and sixteen — an hour's drive and two buses from your bakery shifts, and in a school district where Otto would be a mid-year kindergartner with no one who knows his name. The house parents ask, with genuine kindness, why a six-year-old is being sent to a home like theirs. You do not have an answer that survives saying out loud.",
+    "You thank them and mean it. The fight was never with this house. It is with the number that addressed Otto to it."
+   ],
+   "choices": [
+    {
+     "text": "Home again. The visitation logs — the primary records — are the next paper in.",
+     "next": "visit_logs"
+    }
+   ]
+  },
+  {
+   "id": "visit_logs",
+   "kicker": "Day 8 — Tuesday, October 13, 2026",
+   "dayOffset": 8,
+   "title": "Eleven logs",
+   "body": [
+    "The logs arrive as eleven one-page forms, and they are the most beautiful documents in this scenario, because they are boring: arrivals, activities, a supervisor's initials, the small weather of ordinary visits. 'Redirection regarding supervision' appears once — visit three, your late arrival, noted and closed. Two other visits record the supervisor stepping in — both times to assist with a spilled juice and a broken toy truck, both logged as 'environmental,' neither about you.",
+    "Item 14's 'three occasions' appears to have been assembled from one real redirection and two juice spills, the way scores get built when a rater works from a summary of a summary. You do not know that yet. What you know is narrower and stronger: the signed primary records of the visits say one."
+   ],
+   "choices": [
+    {
+     "text": "Take the logs and Item 14 to Ms. Lindgren. \"What do we file, and when?\"",
+     "next": "riverton_distance"
+    }
+   ]
+  },
+  {
+   "id": "riverton_distance",
+   "kicker": "Day 8 — Tuesday, October 13, 2026",
+   "dayOffset": 8,
+   "title": "Two buses, timed",
+   "body": [
+    "Ms. Lindgren's paralegal rides the Riverton route with a stopwatch, the way this firm builds exhibits: door to door from your apartment, one hour and fifty minutes, two transfers, the second at a shelter-less stop on a highway shoulder. From Salvatore's house: two hours and ten. Your Wednesday visits, currently a walk and a short bus, would become expeditions — and the order would still call them 'weekly,' because orders describe intentions and bus schedules describe reality.",
+    "Distance is not an argument in the legal sense. It is something stronger in the human one: it is the medium in which every other provision of the order either lives or dies."
+   ],
+   "choices": [
+    {
+     "text": "Add the timed route to the packet. Then certify the logs — the visitation center's director is waiting to be asked.",
+     "next": "center_director"
+    }
+   ]
+  },
+  {
+   "id": "center_director",
+   "kicker": "Day 9 — Wednesday, October 14, 2026",
+   "dayOffset": 9,
+   "title": "The director certifies",
+   "body": [
+    "The visitation center's director — a woman who has supervised eleven of your visits through a one-way mirror and a sign-in book — provides the certification without being subpoenaed: the logs are contemporaneous, signed per visit by the assigned supervisor, kept in the ordinary course; and her own cover note adds, in the flat style of people who keep records for a living, 'Our center recorded one redirection involving this mother in the period, on the occasion documented. No others appear.'",
+    "Contemporaneous records kept by neutrals are the aristocracy of evidence. You now hold eleven pages of it, with a crown of certification on top."
+   ],
+   "choices": [
+    {
+     "text": "File the correction memorandum: Item 14, the rubric, the certified logs, the grid.",
+     "next": "correction_filing"
+    }
+   ]
+  },
+  {
+   "id": "correction_filing",
+   "kicker": "Day 10 — Thursday, October 15, 2026",
+   "dayOffset": 10,
+   "title": "The correction memorandum",
+   "body": [
+    "\"A correction memorandum, filed before the conference, so the conference has something to confer about,\" she says. \"Rule 1340's structure is our friend: under Rule 1340(A) we file a pre-hearing conference statement summarizing the evidence; under 1340(E) the assessment was to be available to all parties in advance — it was, barely, and redacted; under 1340(F) the conference exists to narrow the issues for the hearing. Our narrowed issue is one item, one number, and eleven logs.\"",
+    "She is equally clear about the frontier: whether Rule 1340's assessment provisions reach the newer standardized assessment instruments the agency used here is a question Pennsylvania's appellate courts have not squarely decided. \"We argue the rule's text — an assessment used in a dependency proceeding. We do not tell the judge it's settled law. Judges forgive frontiers. They do not forgive being told a frontier is a highway.\""
+   ],
+   "choices": [
+    {
+     "text": "File the memorandum: Item 14, the eleven logs, the grid it fed — and a request that the rater be identified and available.",
+     "next": "agency_response54",
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "addHidden": [
+      "item-rebuttal"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "agency_response54",
+   "kicker": "Day 11 — Friday, October 16, 2026",
+   "dayOffset": 11,
+   "title": "The agency answers",
+   "body": [
+    "The agency's response to the correction memorandum is a study in two registers: it does not defend Item 14 — the phrase 'the scoring reflected the information available to the rater' does that quiet work — but it defends the recommendation on 'the composite picture and clinical judgment,' and asks that the rater's identity remain confidential 'for personnel reasons.' Both defenses now have names, which means both can be answered: the composite is arithmetic, and arithmetic can be recomputed; the confidentiality claim has § 3130.44(f) standing in its doorway.",
+    "'They've retreated to exactly the ground conferences exist to narrow,' Ms. Lindgren says. 'October 22nd just became the whole case, conducted early.'"
+   ],
+   "choices": [
+    {
+     "text": "File the memorandum's supplement: the recomputed grid and the (f) argument — and aim both at the conference.",
+     "next": "memo_filed"
+    }
+   ]
+  },
+  {
+   "id": "memo_filed",
+   "kicker": "Day 12 — Saturday, October 17, 2026",
+   "dayOffset": 12,
+   "title": "The rater",
+   "body": [
+    "The rater's identity comes out through the redaction fight, and it is anticlimactic in the way that matters: a caseworker — not yours — who completed the assessment from the file during a staffing crunch, and whose signature the agency shielded as though she were an informant. Section 3130.44(f) exists for exactly this reflex: the regulation 'shall not be construed as protecting the agency's employees,' and once Ms. Lindgren quotes it, the name is produced by stipulation rather than order.",
+    "Whether she attends the hearing is contested. What is no longer contested is that the assessment has an author, the author worked from summaries, and the summaries were wrong about the visits."
+   ],
+   "choices": [
+    {
+     "text": "Before the conference, make the call this scenario has been walking toward since page one: \"Dad. If the move is stopped, the next question is where Otto thrives — not just where he isn't moved from. Will you be studied?\"",
+     "next": "gal_position"
+    }
+   ]
+  },
+  {
+   "id": "gal_position",
+   "kicker": "Day 13 — Sunday, October 18, 2026",
+   "dayOffset": 13,
+   "title": "Otto's own counsel",
+   "body": [
+    "Otto's counsel — appointed for him, as children's counsel is — files a two-page position that changes the hearing's weather: she has visited Otto in his current home and at his grandfather's; she opposes the Riverton move as 'unsupported by the corrected record and disruptive of documented attachments'; and she supports the kinship alternative 'if the court reaches placement.' Children's positions do not decide cases. They do something subtler: they tell the judge which outcome the child's own advocate will defend on appeal, and which will be appealed.",
+    "The room is filling with people whose job is Otto, all reading from the corrected record. The agency's summary is becoming the only document in the case that nobody else will sign."
+   ],
+   "choices": [
+    {
+     "text": "Mrs. Baird's letter is the last voice to collect — the daily witness, in her own words.",
+     "next": "foster_statement54"
+    }
+   ]
+  },
+  {
+   "id": "foster_statement54",
+   "kicker": "Day 14 — Monday, October 19, 2026",
+   "dayOffset": 14,
+   "title": "Mrs. Baird's letter",
+   "body": [
+    "Mrs. Baird's letter to the court is four sentences long and took her, she tells you, eleven drafts: Otto's year-in-four-months — the reading, the nightmares' retreat, the dinosaur economy — her observation that 'his mother's visits are the week's hinge, and his grandfather is the month's,' and her conclusion: 'I am a foster parent. I am supposed to be temporary. Moving this child across the county does not make him safer; it makes him temporary somewhere else, farther away.'",
+    "She will attend the hearing and say it under her § 6336.1 right to be heard. The letter goes in the packet as it was written — foster parents who write judges once in eleven children do not get edited."
+   ],
+   "choices": [
+    {
+     "text": "The packet has its voices. Now the alternative needs its paperwork finished: Salvatore, asked as a plan.",
+     "next": "salvatore_call"
+    }
+   ]
+  },
+  {
+   "id": "salvatore_call",
+   "kicker": "Day 14 — Monday, October 19, 2026",
+   "dayOffset": 14,
+   "title": "Salvatore",
+   "body": [
+    "Your father is seventy-one, a retired tool-and-die man with a house he has owned for forty years, a garden that feeds the street, and a grandson who has spent four months of visits teaching him dinosaurs. He has also been waiting — he tells you now — for someone to ask him as a plan rather than thank him as a visitor. \"I thought the foster home was the plan,\" he says. \"If the plan can be me, then the plan is me.\"",
+    "His written kinship submission goes in the same week: name, address, the spare room that was Otto's father's childhood room, and his request to be studied — filed early enough to be an alternative at the hearing, not an aspiration after it."
+   ],
+   "choices": [
+    {
+     "text": "Salvatore files his written kinship request and begins clearances before the conference.",
+     "next": "salvatore_house",
+     "setFlags": [
+      "kinFiled"
+     ],
+     "addHidden": [
+      "named-kin"
+     ],
+     "cash": -14
+    }
+   ]
+  },
+  {
+   "id": "salvatore_house",
+   "kicker": "Day 15 — Tuesday, October 20, 2026",
+   "dayOffset": 15,
+   "title": "The house, studied by family first",
+   "body": [
+    "You walk Salvatore's house with study eyes before the agency does: the spare room — your brother's childhood room, then a guest room, currently a tomato-seedling nursery that can be a boy's room in a weekend; the garden's fence, sound; the school two blocks away, the same one you attended, where the crossing guard is a woman Salvatore has known for thirty years.",
+    "He endures your inspection with the patience of a man being measured for something he wants. 'Ask the agency to come,' he says. 'I have been ready longer than their form has existed. Let the form catch up.'"
+   ],
+   "choices": [
+    {
+     "text": "His written request goes in this week, clearances started — filed early enough to be an alternative, not an aspiration.",
+     "next": "salvatore_files"
+    }
+   ]
+  },
+  {
+   "id": "salvatore_files",
+   "kicker": "Day 16 — Wednesday, October 21, 2026",
+   "dayOffset": 16,
+   "title": "The conference",
+   "body": [
+    "October 22nd. The pre-hearing conference does what Rule 1340(F) says conferences are for: it narrows. The agency, confronted with its own visitation center's logs, does not defend the number three — it defends the move anyway, on the composite score and 'clinical judgment.' Ms. Lindgren accepts the concession and frames the hearing: the composite embeds Item 14; remove the error and the grid's own logic no longer maps Otto to Level II at all.",
+    "What the conference cannot do is settle it. It settles the shape of the fight: one item, one grid, one alternative with a name and a garden."
+   ],
+   "choices": [
+    {
+     "text": "Ask the conference to record the narrowed issues in its order — including the agency's non-defense of Item 14 as scored.",
+     "next": "clearance_sal",
+     "setFlags": [
+      "issuesNarrowed"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "clearance_sal",
+   "kicker": "Day 16 — Wednesday, October 21, 2026",
+   "dayOffset": 16,
+   "title": "Salvatore's clearances",
+   "body": [
+    "Salvatore's clearances return the way seventy-one years of an unremarkable life suggested they would: clean, quickly, with one phone call to confirm that the Salvatore of the garden is the Salvatore of the form, there having been a second Salvatore in the county database — a cousin, deceased in 2009, whose existence briefly confused a clerk. Identity is this batch's recurring gremlin; here it costs one phone call instead of a winter, because the identifiers were demanded up front, in writing, in the application itself.",
+    "His home study visit is scheduled before the conference. The alternative is becoming a file of its own — which is what alternatives must become to be ordered."
+   ],
+   "choices": [
+    {
+     "text": "October 22nd: the pre-hearing conference. The narrowed fight, in a small room.",
+     "next": "conference_day"
+    }
+   ]
+  },
+  {
+   "id": "conference_day",
+   "kicker": "Day 17 — Thursday, October 22, 2026",
+   "dayOffset": 17,
+   "title": "October 22nd",
+   "body": [
+    "The conference room is too small for the number of folders, which is how you know it is the right room. The agency concedes the logs' authenticity. Your counsel concedes the instrument's general validity — a concession that costs nothing and buys the only thing that matters: credibility for the sentence that follows. 'Then the conference's business,' she says, 'is one item, one rater, and one recommendation the corrected arithmetic no longer reaches.'",
+    "Rule 1340(F)'s conference purposes — narrowing, settlement, order — proceed in that order and stall, honorably, at settlement: the agency will not withdraw the recommendation without a supervisor who is not in the room. Narrowing, though, is fully achieved, and narrowing gets an order."
+   ],
+   "choices": [
+    {
+     "text": "Get the narrowed issues into the conference order — Item 14's status, in the agency's own stipulation.",
+     "next": "narrowed_order"
+    }
+   ]
+  },
+  {
+   "id": "narrowed_order",
+   "kicker": "Day 18 — Friday, October 23, 2026",
+   "dayOffset": 18,
+   "title": "Narrowed, in an order",
+   "body": [
+    "The conference order is two paragraphs, and the second one is the scenario's trophy: 'The parties stipulate that Item 14 of the assessment, as scored, is not supported by the visitation records; the agency's recommendation is otherwise maintained.' Stipulations are the load-bearing walls of hearings — facts no longer requiring proof, agreed by the side that loses by them.",
+    "The agency's remaining position is honest and thin: judgment, gestalt, caution. Against it stands a corrected arithmetic and a grandfather. Ms. Lindgren spends the last week on the only question left."
+   ],
+   "choices": [
+    {
+     "text": "\"Prepare Salvatore to be heard on his qualifications — § 6336.1 gives a potential kinship care resource that right, and the court must then decide his notice going forward.\"",
+     "next": "study_visit54",
+     "setFlags": [
+      "salvatoreReady"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study_visit54",
+   "kicker": "Day 18 — Friday, October 23, 2026",
+   "dayOffset": 18,
+   "title": "Salvatore's study visit",
+   "body": [
+    "Salvatore's home study visit is conducted by a worker who arrives with the corrected file and leaves with a summary that contains no flagged items — a sentence so rare in this batch that Ms. Lindgren reads it twice for typos. The room (seedlings relocated to the windowsill, a boy's bed installed), the fence, the school route walked and timed by the worker herself: two blocks, seven minutes, one crossing guard known by name for thirty years.",
+    "'Your father,' the worker says at the door, in the unofficial register workers use when a home has answered everything, 'has been ready since before there was a form.'"
+   ],
+   "choices": [
+    {
+     "text": "The study is filed. One week to the hearing. The agency's last card is its rater — prepare for her.",
+     "next": "rater_call"
+    }
+   ]
+  },
+  {
+   "id": "rater_call",
+   "kicker": "Day 19 — Saturday, October 24, 2026",
+   "dayOffset": 19,
+   "title": "The rater, reached",
+   "body": [
+    "Through counsel, the rater's account is finally taken, and it is the anticlimax the whole case predicted: a conscientious worker, covering three caseloads in a staffing crunch, who scored the assessment from the prior worker's running summary — a summary that had itself merged the visit notes' categories, counting every 'supervisor intervention' as a redirection of you. She has since read the logs. She will testify, her counsel-relayed position says, 'consistently with the records.'",
+    "No villain, again. A summary of a summary, a threshold crossed by a point, a six-year-old nearly addressed to the wrong county by a clerical avalanche. The system produces these outcomes without a single person intending them — which is precisely why the corrections machinery, and not outrage, is the family's tool."
+   ],
+   "choices": [
+    {
+     "text": "Otto's school writes the last outside letter. Collect it, and the packet is complete.",
+     "next": "otto_school"
+    }
+   ]
+  },
+  {
+   "id": "otto_school",
+   "kicker": "Day 20 — Sunday, October 25, 2026",
+   "dayOffset": 20,
+   "title": "The kindergarten letter",
+   "body": [
+    "Otto's kindergarten teacher writes the school's letter in the vocabulary of early childhood, which translates in courtrooms without loss: Otto 'has settled into the routines that make learning possible'; his 'secure base' in the current home and his weekly rhythm with you and Salvatore are named, by a professional who watches him five days a week, as the visible causes. A mid-year move to a distant district 'would restart a settling process that took four months, in a child for whom settling is the curriculum.'",
+    "It is the third independent institution — center, school, child's counsel — to describe the same child the assessment's Item 14 could not see."
+   ],
+   "choices": [
+    {
+     "text": "The agency makes one more move before the hearing — a re-score offer. Hear it with your counsel.",
+     "next": "agency_concede"
+    }
+   ]
+  },
+  {
+   "id": "agency_concede",
+   "kicker": "Day 20 — Sunday, October 25, 2026",
+   "dayOffset": 20,
+   "title": "The re-score offer",
+   "body": [
+    "The agency offers, through counsel, to withdraw the assessment and re-score it 'administratively' — which would fix the number and quietly dissolve the hearing into a new summary, on the agency's timetable, with the move recommendation 'held in abeyance' rather than decided. It is a genuinely reasonable offer, and Ms. Lindgren's answer is the scenario's last strategic lesson: 'A correction we win by stipulation, in an order, is precedent for every future reader of this file. A correction they make in their office is a rumor by spring. We keep the hearing.'",
+    "She adds the human codicil, because she is good at her job: ' — and we thank them for the offer in writing, because the next family with this worker deserves her having made it.'"
+   ],
+   "choices": [
+    {
+     "text": "Declined, gratefully, in writing. Final packet assembly — then the hearing reads the whole record.",
+     "next": "hearing_prep54"
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep54",
+   "kicker": "Day 21 — Monday, October 26, 2026",
+   "dayOffset": 21,
+   "title": "Preparing a grandfather",
+   "body": [
+    "Preparation, for a man of Salvatore's generation, is mostly wardrobe and one sentence. The sentence is his, arrived at after two evenings of your questions: \"I am not asking the court to reward me. I am asking it to count me — I have been at every visit, and Otto has a room in my house that was ready before this case had a name.\" His clearances are back, clean. His home visit is done and written up without a single flagged item — a fact the agency does not contest.",
+    "The hearing is October 29th. The agency brings its recommendation. You bring the record it was built on, corrected — and the man it never mentioned."
+   ],
+   "choices": [
+    {
+     "text": "Go in.",
+     "next": "packet54"
+    }
+   ]
+  },
+  {
+   "id": "packet54",
+   "kicker": "Day 22 — Tuesday, October 27, 2026",
+   "dayOffset": 22,
+   "title": "The packet, indexed",
+   "body": [
+    "The hearing packet is indexed like a book because judges read like everyone else — front to back, forming the story early: (1) the assessment, complete; (2) Item 14 and the rubric; (3) the certified logs; (4) the recomputed grid; (5) the conference order's stipulation; (6) the school, the foster mother, the child's counsel; (7) the timed bus route; (8) Salvatore — study, clearances, and the sentence from his porch. Forty-one pages, and the argument is finished by page nine; the rest is the world agreeing.",
+    "Your own statement is the packet's last page, and it is the shortest thing in it."
+   ],
+   "choices": [
+    {
+     "text": "Recompute the grid one last time, in your own hand, so the numbers are yours in the courtroom too.",
+     "next": "score_recompute"
+    }
+   ]
+  },
+  {
+   "id": "score_recompute",
+   "kicker": "Day 22 — Tuesday, October 27, 2026",
+   "dayOffset": 22,
+   "title": "Your arithmetic",
+   "body": [
+    "You do the subtraction at the kitchen table the way Ms. Lindgren did it on the legal pad: composite 41 as scored; Item 14 from 3 to 1, per the instrument's own rubric applied to the certified logs; composite 37; the band changes; the recommendation's engine stops. It is the whole case in four operations, and you can now do it from memory, which means in the courtroom — whatever the agency's witness says about clinical judgment — the arithmetic will be sitting beside you, calm as a metronome.",
+    "Salvatore calls during the arithmetic. 'Tomorrow I wear the tie your mother gave me,' he says. 'For luck, and because she would have wanted to see this file.'"
+   ],
+   "choices": [
+    {
+     "text": "Sleep. Tomorrow the record gets read by the only reader who can order from it.",
+     "next": "night_before54"
+    }
+   ]
+  },
+  {
+   "id": "night_before54",
+   "kicker": "Day 23 — Wednesday, October 28, 2026",
+   "dayOffset": 23,
+   "title": "The night before",
+   "body": [
+    "You lay out your statement — one page, rehearsed to the mirror and then deliberately un-rehearsed, because judges can hear varnish. It says: who Otto is at six; what the logs say about the visits, in numbers; what the corrected grid says, in numbers; and what is being asked — that the court decide on the whole record, including the man with the garden, rather than on a summary of a summary.",
+    "It does not mention dinosaurs. Salvatore, reviewing it by phone, insists on one amendment, and you make it, because it is true and because he is right that true things belong in statements: 'Otto has a room ready in my house. It was ready before this case had a name.'"
+   ],
+   "choices": [
+    {
+     "text": "Morning. The courthouse. Your father's tie, your arithmetic, forty-one pages.",
+     "next": "morning54"
+    }
+   ]
+  },
+  {
+   "id": "morning54",
+   "kicker": "Day 24 — Thursday, October 29, 2026",
+   "dayOffset": 24,
+   "title": "The courthouse steps",
+   "body": [
+    "Salvatore arrives twenty minutes early, in the tie, with a paper bag containing two sandwiches 'because hearings run long and lawyers forget lunch' — a theory of litigation no one in the building refutes. Mrs. Baird is already inside, seated, with her letter's eleventh draft folded in her purse like a psalm. Otto's counsel nods at you across the hallway with the compact of people who have read the same forty-one pages.",
+    "The agency's team arrives with the original summary, three pages, in a folder that looks — everyone in the hallway can see it — very thin."
+   ],
+   "choices": [
+    {
+     "text": "Go in. The whole record is about to be read by its intended reader.",
+     "next": "review54"
+    }
+   ]
+  },
+  {
+   "id": "review54",
+   "kicker": "Day 24 — Thursday, October 29, 2026",
+   "dayOffset": 24,
+   "title": "October 29th",
+   "body": [
+    "The agency's witness presents the assessment honestly now: the composite, the grid, the residual judgment. On cross, the stipulation does its silent work — Item 14 falls out of the arithmetic in front of the judge, and the recommendation is left standing on the word 'caution.' Then Salvatore is heard, on his qualifications, as § 6336.1 provides — and a retired man's forty years in one house turn out to be a short, complete answer to 'higher level of care.'",
+    "The judge asks the agency the question the whole scenario built: \"On the corrected record — the whole record — why Riverton County?\""
+   ],
+   "choices": [
+    {
+     "text": "Listen to whether the answer names anything in Otto's actual life.",
+     "next": "outcome54"
+    }
+   ]
+  },
+  {
+   "id": "outcome54",
+   "kicker": "Day 24 — Thursday, October 29, 2026",
+   "dayOffset": 24,
+   "title": "The whole record",
+   "body": [
+    "Recommendations survive on the record beneath them. What this one rests on, today, is a choice the last three weeks made."
+   ],
+   "choices": [
+    {
+     "text": "The correction was stipulated, the item fell out of the grid, and a qualified kinship alternative stood in the room: the court rules on the whole record.",
+     "next": "end_readinfull",
+     "requiresFlags": [
+      "correctionFiled",
+      "issuesNarrowed",
+      "kinFiled"
+     ]
+    },
+    {
+     "text": "The move was defeated on the arithmetic, but no alternative placement was ready to be ordered today.",
+     "next": "end_movethatwasnt"
+    },
+    {
+     "text": "The court heard only the summary — the assessment unread, the logs unrequested, the grandfather unmentioned.",
+     "next": "end_summary"
+    }
+   ]
+  },
+  {
+   "id": "end_readinfull",
+   "kicker": "Day 24 — Thursday, October 29, 2026",
+   "dayOffset": 24,
+   "title": "Ending — Read in Full",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The court declines the Riverton County move, finds the assessment's corrected arithmetic does not support a higher level of care, and orders Otto placed with his grandfather — Salvatore approved on the completed study, the placement to occur this weekend, with your visits expanding into his kitchen, where they apparently already lived. The order's reasoning paragraph does something worth more than the outcome: it directs that the corrected assessment be filed of record, so the next reader of Otto's file inherits the fixed number.",
+    "The toolkit, in sequence: the party's record right (55 Pa. Code § 3130.44(d)) obtained the instrument itself, not the summary of it; § 3130.44(f) stripped the reflex redactions ('shall not be construed as protecting the agency's employees'); Pa.R.J.C.P. 1340(E) supplied the timing — assessment available to all parties in advance of the pre-hearing conference — and 1340(A)/(F) supplied the machinery: a conference statement, a conference that narrowed the case to one stipulated error. The kinship alternative was not a speech but a filed, studied, cleared grandfather, heard on his qualifications under 42 Pa.C.S. § 6336.1. And the frontier stayed labeled: whether Rule 1340's assessment provisions squarely govern the newer standardized instruments is untested in the appellate courts — argued from the rule's text, disclosed as argument, and strong enough on these facts because the agency's own logs did the heavy lifting.",
+    "What no strategy controls: the rater could have been right. If the logs had shown three real redirections, this toolkit produces a fair loss instead of a win — the same memorandum, the same stipulation, the opposite arithmetic. The discipline is not a machine for winning. It is a machine for making the court decide on the true record — which is why it is worth building even when, especially when, you do not know what the record will say."
+   ]
+  },
+  {
+   "id": "end_movethatwasnt",
+   "kicker": "Day 31 — Thursday, November 5, 2026",
+   "dayOffset": 31,
+   "title": "Ending — The Move That Wasn't (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The Riverton County move is denied — the corrected arithmetic saw to that — but the court keeps Otto in his current foster home for now, with Salvatore's kinship approval to be completed and the placement question relisted in thirty days. You leave with the loss converted: no fifty-mile move, no new school, no Level II label settling into his file like sediment. The grandfather question is not answered. It is scheduled.",
+    "Partial endings in assessment fights usually take exactly this shape, because courts separate questions that parents experience as one: 'should he move up a level' is not 'should he move to kin.' Winning the first bought the time and the record for the second. The corrected assessment is filed of record; the stipulated error cannot quietly re-enter the next packet; Salvatore's study completes into a courtroom that has already heard his voice once.",
+    "Thirty days is a short road when the paper is already built. Keep it built: attend everything, log everything, and let the relisted hearing decide about a boy whose file now tells the truth about his visits."
+   ]
+  },
+  {
+   "id": "end_summary",
+   "kicker": "Day 31 — Thursday, November 5, 2026",
+   "dayOffset": 31,
+   "title": "Ending — Decided on a Summary",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Otto is moved to Riverton County on the strength of a three-page summary of a document no party read. The judge, presented with a composite score and an agency's assurance, did what judges do with unopposed arithmetic: accepted it. Your objection — sincere, accurate, and entirely oral — is noted in the order in the passive voice, where objections go to be forgotten.",
+    "Nothing in this ending required the assessment to be right. It required only that it be unexamined. The counterfactual is the scenario: a written record request (§ 3130.44(d)) would have produced the instrument; the instrument would have produced Item 14; the logs would have answered Item 14; the conference machinery (Rule 1340(A), (E), (F)) would have narrowed the hearing to a stipulation. Each step is days of work and dollars of postage. Their combined price is a childhood address — his school's name, his grandfather's street, the eleven minutes between his home and yours.",
+    "If you are reading this from inside it: the move is ordered, not eternal. Placement orders are revisited at every review, and the toolkit remains exactly as available next month as it was in October — heavier now by one exhibit, the move itself, and what it cost a six-year-old. Build the record for the review that follows this one. Summaries rule only the hearings where nobody brings the book."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s54';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

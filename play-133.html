@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 133 — The Three-Chair Table (a fictional composite)",
+  "startDateISO": "2026-01-12",
+  "startNode": "start",
+  "startCash": 185,
+  "tier": "Complex",
+  "summary": "A grandmother approved as kinship caregiver, a mother in services, and an indicated-report appeal — three chairs at one table, three different legal postures, one boy. The win requires all three chairs to pull at once: the grandmother's study, the mother's record, and the appeal filed before its window closes."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 12, 2026",
+   "dayOffset": 0,
+   "title": "Three Chairs",
+   "body": [
+    "Your name is Lorea. Your son Matteo, ten, entered care on Monday, January 12, 2026, after the night the police came to your building for someone else's emergency and found yours: Matteo home alone for forty minutes while you ran to the pharmacy in a snow emergency the file describes in the flat voice it uses for everything.",
+    "He is with his grandmother — your mother — Itziar, whose spare room he has claimed with a completeness only ten-year-olds achieve. And a third chair stands at the table: an indicated report naming you, notice dated Friday, January 30, 2026, with the 90-day window (23 Pa.C.S. § 6341(a)(2)) closing Thursday, April 30, 2026. Three chairs: the kinship study, your services, the appeal. Pull one and the others move. Ignore one and the table tips."
+   ],
+   "choices": [
+    {
+     "text": "Draw the table: three chairs, three clocks, one page — before anything else moves",
+     "next": "table133",
+     "setFlags": [
+      "tableDrawn"
+     ],
+     "addHidden": [
+      "Three-track table drawn with all clocks"
+     ],
+     "note": "The table, drawn. Now it can be worked."
+    },
+    {
+     "text": "Take the files as they come — there's a limit to planning",
+     "next": "table133",
+     "note": "There is also a limit to memory, and April 30 is past it."
+    }
+   ]
+  },
+  {
+   "id": "table133",
+   "kicker": "Day 4 — Friday, January 16, 2026",
+   "dayOffset": 4,
+   "title": "Ms. Kortazar Assigns the Chairs",
+   "body": [
+    "Your lawyer, Ms. Kortazar, assigns each chair its worker: the kinship worker owns Itziar's study; the caseworker owns your services; the Bureau owns the appeal — and you, she says, own the calendar that connects them. Counsel is your right (42 Pa.C.S. § 6337); coordination, in a three-chair case, is your job description.",
+    "'The study and the services are marathons,' she says. 'The appeal is a sprint with a wall at the end of it. Sprint first.'"
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "tb_a",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "tb_a",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "tb_a",
+   "kicker": "Day 5 — Saturday, January 17, 2026",
+   "dayOffset": 5,
+   "title": "Each Chair Gets a Date",
+   "body": [
+    "The study gets its milestones, the services their sessions, the appeal its April wall — and beneath them all, the line the table exists for: what happens if two chairs need you on the same day. The answer is written down too, because it will happen.",
+    "It happens in week three. The written answer handles it. The table begins to earn its wall space."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "tb_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "tb_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "tb_b",
+   "kicker": "Day 6 — Sunday, January 18, 2026",
+   "dayOffset": 6,
+   "title": "Itziar Sees the Table",
+   "body": [
+    "Itziar studies the page the way she studies recipes she intends to improve, and adds one line in her own hand: Matteo's school concert, in May, attendance non-negotiable, all chairs.",
+    "The table accepts the amendment. Cases that forget concerts lose more than concerts."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "appeal133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "appeal133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "appeal133",
+   "kicker": "Day 8 — Tuesday, January 20, 2026",
+   "dayOffset": 8,
+   "title": "The Sprint, Run Early",
+   "body": [
+    "The appeal letter goes out on day 8 of 90, stamped copy filed, deadline retired. It is the same half-page as always — name, report number, amend or expunge — and it feels, as always, too small for its consequences.",
+    "Itziar watches you mail it and says the thing grandmothers say in this library: 'Paper first. Feelings on schedule.' She has started a folder. Of course she has."
+   ],
+   "choices": [
+    {
+     "text": "Mail it and log the Bureau's future clocks on the table page",
+     "next": "sprint_done",
+     "cash": -10,
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "Indicated-report appeal filed in writing on day 8 of 90"
+     ],
+     "note": "The wall is behind you now. The marathons remain, at marathon pace."
+    },
+    {
+     "text": "Give the letter one more week of thought — first impressions matter",
+     "next": "sprint_done",
+     "note": "It went out on day 15, inside the window and unimproved. The wall does not grade drafts."
+    },
+    {
+     "text": "Set the appeal aside until the case settles — one proceeding is enough",
+     "next": "end_registry133",
+     "note": "One proceeding is exactly the problem. The window closes April 30 whether the case has settled or not."
+    }
+   ]
+  },
+  {
+   "id": "sprint_done",
+   "kicker": "Day 14 — Monday, January 26, 2026",
+   "dayOffset": 14,
+   "title": "Itziar's Study, Itemized",
+   "body": [
+    "The kinship study's list is the familiar constellation: clearances for every adult in the house, references, the home visit, the training module, Matteo's room. Itziar's house passes inspection the way her kitchen passes holidays: completely, with documentation.",
+    "One item snags: a clearance for your brother, who stays over 'sometimes' — sometimes being a word studies do not accept. He gets the form, or the couch gets a rule. The study must be able to say which, in writing."
+   ],
+   "choices": [
+    {
+     "text": "Itemize the study in writing with the kinship worker, item by item, dates attached",
+     "next": "st_a",
+     "cash": -5,
+     "setFlags": [
+      "studyList"
+     ],
+     "addHidden": [
+      "Kinship study itemized in writing with dates"
+     ],
+     "note": "A checklist instead of a cloud. The brother question gets a written answer."
+    },
+    {
+     "text": "Let the study find its own pace — Itziar's house speaks for itself",
+     "next": "st_a",
+     "note": "Her house does. Studies speak paper, and the sometimes-couch is exactly what they speak about."
+    }
+   ]
+  },
+  {
+   "id": "st_a",
+   "kicker": "Day 16 — Wednesday, January 28, 2026",
+   "dayOffset": 16,
+   "title": "The Study's First Visit",
+   "body": [
+    "The kinship worker's first visit is a study in competence meeting competence: Itziar's house, Matteo's room, the forms produced from a folder labeled in marker with the boy's name and a star.",
+    "The worker's notes, later visible in the record, use the word 'prepared' — the study's first exhibit, written by its examiner."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "st_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "st_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "st_b",
+   "kicker": "Day 18 — Friday, January 30, 2026",
+   "dayOffset": 18,
+   "title": "The Brother Question, Answered in Ink",
+   "body": [
+    "Your brother signs his clearance form at Itziar's table and accepts the couch rule in the same sitting — family governance conducted at the speed of love and documented at the speed of paper.",
+    "The study's only snag is retired in week three, in writing, with a signature. The table notes it and moves on."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "study_items",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "study_items",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "study_items",
+   "kicker": "Day 21 — Monday, February 2, 2026",
+   "dayOffset": 21,
+   "title": "Your Services, On the Second Chair",
+   "body": [
+    "Your plan: a parenting course, a safety-planning series, and the overnight-work problem — you clean offices at night, which is how the forty minutes happened. The plan's answer is a documented coverage roster: Itziar, your sister, the neighbor with the signed letter, a phone tree on paper.",
+    "Coverage rosters are the plan's least believed document when they are verbal and its most believed when three signatures deep. Collect the signatures like the plan's life depends on them, because at the review, it will."
+   ],
+   "choices": [
+    {
+     "text": "Build the roster on paper: three names, three signatures, filed with the plan",
+     "next": "roster",
+     "cash": -5,
+     "setFlags": [
+      "rosterSigned"
+     ],
+     "addHidden": [
+      "Childcare coverage roster signed and filed with the service plan"
+     ],
+     "note": "Three signatures deep. The forty minutes now have a documented answer."
+    },
+    {
+     "text": "The roster is real — your family knows the arrangement",
+     "next": "roster",
+     "note": "Real and undocumented is the plan's saddest genre. Sign it."
+    }
+   ]
+  },
+  {
+   "id": "roster",
+   "kicker": "Day 29 — Tuesday, February 10, 2026",
+   "dayOffset": 29,
+   "title": "The Record, Requested for the Whole Table",
+   "body": [
+    "You request the case record in writing (55 Pa. Code § 3130.44(d)) — and, because the study is a file too, Itziar requests what she may of her own study record, so both marathons run with mirrors. Redactions under (f) black out the neighbors' names, as the rule provides.",
+    "The packet shows the investigation's account of the pharmacy night — and the ER's timestamped receipt you gave the investigator, placing the round trip at thirty-eight minutes. The indicated summary says 'extended period.' Receipts say thirty-eight minutes. Both are now in the appeal's future."
+   ],
+   "choices": [
+    {
+     "text": "File the receipt and a one-page timeline in both the case record and the appeal packet",
+     "next": "winter_roster",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record requested under § 3130.44(d); pharmacy receipt and timeline filed in both tracks"
+     ],
+     "note": "Thirty-eight minutes, timestamped, in both files. Adjectives lose to receipts."
+    },
+    {
+     "text": "Keep the receipt for the appeal hearing — it's the best surprise",
+     "next": "winter_roster",
+     "note": "Surprises are for birthdays. Filed receipts are for hearings — in both tracks."
+    }
+   ]
+  },
+  {
+   "id": "winter_roster",
+   "kicker": "Day 36 — Tuesday, February 17, 2026",
+   "dayOffset": 36,
+   "title": "The Roster's Quiet Weeks",
+   "body": [
+    "February and March pass without a roster event, which is the roster working as designed: coverage so ordinary it generates no paper, the plan's least visible success. You log the ordinary weeks anyway, one line each, because the file cannot tell the difference between a quiet month and a missing one.",
+    "Itziar, reading over your shoulder, approves the method: 'Even nothing, dated.' The family is converging on a philosophy."
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "receipt_filed",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "receipt_filed",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "receipt_filed",
+   "kicker": "Day 43 — Tuesday, February 24, 2026",
+   "dayOffset": 43,
+   "title": "The Appeal's Evidence Packet",
+   "body": [
+    "The scheduling order triggers the agency's duty: all evidence gathered in the investigation relevant to the determination, including the potentially exculpatory, within ten days (23 Pa.C.S. § 6341(c.2)(4)). Their packet includes the building's incident report — which records that the police entry, the reason anyone was in your home at all, concerned the unit across the hall.",
+    "Context is not an excuse; it is worse for the agency than an excuse. It is the file admitting the investigation began inside someone else's emergency and summarized yours from the doorway."
+   ],
+   "choices": [
+    {
+     "text": "Build the appeal exhibits: receipt, timeline, incident report, the neighbor's signed statement",
+     "next": "ev_a",
+     "cash": -5,
+     "setFlags": [
+      "evidenceReceived"
+     ],
+     "addHidden": [
+      "Appeal evidence obtained under § 6341(c.2)(4) and indexed"
+     ],
+     "note": "The doorway summary, answered by documents from inside the apartment."
+    },
+    {
+     "text": "Argue the context yourself at the hearing — you lived it",
+     "next": "ev_a",
+     "note": "You did. The incident report lived it too, in writing, without cross-examination."
+    }
+   ]
+  },
+  {
+   "id": "ev_a",
+   "kicker": "Day 47 — Saturday, February 28, 2026",
+   "dayOffset": 47,
+   "title": "The Timeline, One Page",
+   "body": [
+    "The timeline of the pharmacy night fits one page because timestamps are mercifully short: the call, the departure, the receipt, the police entry for the neighbor's unit, the return. Five lines, five times, no adjectives.",
+    "Adjectives are where timelines go to be argued with. This one declines."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "ev_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "ev_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "ev_b",
+   "kicker": "Day 51 — Wednesday, March 4, 2026",
+   "dayOffset": 51,
+   "title": "Both Tracks, Same Page",
+   "body": [
+    "The timeline is filed in the dependency record and the appeal packet on the same day, with the same cover note — the corridor walked deliberately, so neither building can later claim it summarized the other.",
+    "Identical paper in two buildings is this family's answer to the summary problem: refuse to be summarized."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "exhibits133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "exhibits133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "exhibits133",
+   "kicker": "Day 57 — Tuesday, March 10, 2026",
+   "dayOffset": 57,
+   "title": "The Study's Last Item",
+   "body": [
+    "The study's last item is the training module, which Itziar completes with the air of a woman defusing a formality — and one question the trainer flags kindly: Itziar's plan for the nights you work, when Matteo stays with her, needs to be written into the study as the standing arrangement it already is.",
+    "The kinship worker adds the page. The study, in its final form, describes the family as it actually functions — the description being, in the end, what studies are for."
+   ],
+   "choices": [
+    {
+     "text": "Get the standing-arrangement page added and the study's completion in writing",
+     "next": "prep_a133",
+     "setFlags": [
+      "studyDone"
+     ],
+     "addHidden": [
+      "Kinship study completed with the standing arrangement documented"
+     ],
+     "note": "Complete, written, dated. Chair one is pulled fully in."
+    },
+    {
+     "text": "Verbal confirmation is enough — the study is clearly done",
+     "next": "prep_a133",
+     "note": "'Clearly' is not a status the review can cite. Get the writing."
+    }
+   ]
+  },
+  {
+   "id": "prep_a133",
+   "kicker": "Day 60 — Friday, March 13, 2026",
+   "dayOffset": 60,
+   "title": "The Officer's Likely Questions",
+   "body": [
+    "Preparation turns to the hearing officer's likely questions, each answered by a document before it is answered by a voice: how long, who else was home, what the building's emergency actually was. The answers exist. They are exhibits.",
+    "Ms. Kortazar's rule for the room: never say in June what a page can say from March."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "prep_b133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "The chain holds because every link is dated."
+    }
+   ]
+  },
+  {
+   "id": "prep_b133",
+   "kicker": "Day 65 — Wednesday, March 18, 2026",
+   "dayOffset": 65,
+   "title": "The Neighbor's Statement, Signed",
+   "body": [
+    "The neighbor across the hall — the one whose emergency opened your door to the police — signs her statement: the entry was for her unit, the boy was found asleep, the officer asked about the pharmacy and she heard 'twenty minutes, maybe.' Her maybe is honest. Your receipt is exact. Together they are devastating.",
+    "She signs in Itziar's kitchen, over coffee, like a person returning something borrowed."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "prep_c133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "The chain holds because every link is dated."
+    }
+   ]
+  },
+  {
+   "id": "prep_c133",
+   "kicker": "Day 68 — Saturday, March 21, 2026",
+   "dayOffset": 68,
+   "title": "The Packet, Numbered",
+   "body": [
+    "The appeal packet is numbered the way exhibits prefer: receipt first, incident report second, statement third, timeline as the cover — four pages that tell the night in the order it happened, which is the order summaries never use.",
+    "Numbered, copied, filed. June is now a reading, and readings favor the prepared."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "study_done133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "The chain holds because every link is dated."
+    }
+   ]
+  },
+  {
+   "id": "study_done133",
+   "kicker": "Day 71 — Tuesday, March 24, 2026",
+   "dayOffset": 71,
+   "title": "The Course and the Roster, Tested",
+   "body": [
+    "Spring tests the second chair: the course completes (certificate filed), and the roster gets its unplanned examination when your shift runs long in April and the phone tree executes exactly as documented — sister by 9, Itziar by 9:20, Matteo asleep at his grandmother's with his homework done, the caseworker's check-in note recording the roster working as written.",
+    "A plan that survives its test becomes the file's favorite kind of fact: the kind with a witness."
+   ],
+   "choices": [
+    {
+     "text": "File the check-in note and the course certificate together — the plan, tested and passed",
+     "next": "spr_a",
+     "setFlags": [
+      "servicesDone"
+     ],
+     "addHidden": [
+      "Services completed; coverage roster tested and documented as working"
+     ],
+     "note": "Tested, passed, filed. Chair two is in."
+    },
+    {
+     "text": "One good note doesn't need filing — don't gloat on paper",
+     "next": "spr_a",
+     "note": "Filing is not gloating. It is how good notes survive staff rotations."
+    }
+   ]
+  },
+  {
+   "id": "spr_a",
+   "kicker": "Day 76 — Sunday, March 29, 2026",
+   "dayOffset": 76,
+   "title": "The Course's Middle Weeks",
+   "body": [
+    "The parenting course's middle weeks are unglamorous and documented: attendance perfect, the workbook's exercises done in the handwriting of a person taking the thing seriously because the file will.",
+    "The instructor's mid-course note says 'engaged.' It is filed without embellishment. Mid-course notes are the review's appetizer."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "spr_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "spr_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "spr_b",
+   "kicker": "Day 82 — Saturday, April 4, 2026",
+   "dayOffset": 82,
+   "title": "The Shift Problem, Engineered",
+   "body": [
+    "Your employer's letter — the office-cleaning schedule adjusted so your late runs end by nine — joins the roster in the plan file, converting the plan's weakest paragraph into its most documented one.",
+    "Problems that are engineered on paper stay solved longer than problems that are promised away in meetings."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "spr_c",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "spr_c",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "spr_c",
+   "kicker": "Day 87 — Thursday, April 9, 2026",
+   "dayOffset": 87,
+   "title": "The Test Nobody Scheduled",
+   "body": [
+    "The April night the roster executes is written up by the caseworker in the ordinary course — she does not know she is writing the review's favorite paragraph, which is exactly why it will be.",
+    "Documents written without an audience are the only ones hearings fully trust. This family keeps producing them on schedule."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "review_prep133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "review_prep133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "review_prep133",
+   "kicker": "Day 92 — Tuesday, April 14, 2026",
+   "dayOffset": 92,
+   "title": "The Spring Review",
+   "body": [
+    "The spring review hears the three chairs in sequence: the study (approved, complete, the standing arrangement written in), the services (complete, the roster tested in the wild), and the appeal (pending at the Bureau, hearing set for June — its own building, its own clock).",
+    "The judge's sentence is the one the table was built to earn: 'This family has organized itself around the plan. The plan should now organize itself around the family.' What remains is sequencing the ending so the appeal's decision and the case's return do not trip over each other."
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "appeal_hearing133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "appeal_hearing133",
+     "note": "Conversations end. The file keeps what it was given."
+    },
+    {
+     "text": "Consolidate everything into the appeal now and let the study and the roster coast",
+     "next": "end_tipped",
+     "note": "Coasting is how chairs fall. The study's last items and the roster's signatures were the case the appeal was supposed to be beside."
+    }
+   ]
+  },
+  {
+   "id": "appeal_hearing133",
+   "kicker": "Day 158 — Friday, June 19, 2026",
+   "dayOffset": 158,
+   "title": "The Bureau Hearing",
+   "body": [
+    "Friday, June 19, 2026. The agency carries its burden — substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)) — and its summary meets the exhibits: thirty-eight minutes by timestamp, an investigation opened inside a neighbor's emergency, a coverage roster now signed and tested, a study approved.",
+    "The hearing officer returns twice to the receipt. Paper that times a night beats adjectives that stretch it; 'extended period' does not survive cross-examination by a timestamp."
+   ],
+   "choices": [
+    {
+     "text": "Close on the receipt and the burden: their standard, their summary, your timestamps",
+     "next": "hr_a",
+     "note": "The shortest closing in the library: a receipt, read aloud."
+    },
+    {
+     "text": "Close on Itziar and the year the family has had",
+     "next": "hr_a",
+     "note": "Moving, true, and not the standard the officer must apply."
+    }
+   ]
+  },
+  {
+   "id": "hr_a",
+   "kicker": "Day 163 — Wednesday, June 24, 2026",
+   "dayOffset": 163,
+   "title": "The Wait, Used",
+   "body": [
+    "The weeks between hearing and decision are used the table's way: the trial-return proposal drafted, Itziar's respite language drafted, the endgame drawn in pencil beneath the table's ink — prepared endings being this family's final discipline.",
+    "When the decision comes, the case will not need to improvise its response to good news."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "hr_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "hr_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "hr_b",
+   "kicker": "Day 169 — Tuesday, June 30, 2026",
+   "dayOffset": 169,
+   "title": "Itziar's Folder, Closed and Open",
+   "body": [
+    "Itziar closes her study folder and immediately opens a respite folder — same marker, same star — because the family's paper, like the family, plans past the verdict.",
+    "The gesture is small and total: the kinship door, once opened by documents, stays open by documents."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "decision133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "decision133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "decision133",
+   "kicker": "Day 176 — Tuesday, July 7, 2026",
+   "dayOffset": 176,
+   "title": "Expunged — Chair Three",
+   "body": [
+    "The decision arrives inside the 45-day window (23 Pa.C.S. § 6341(c.3)): the report is amended to unfounded. Chair three is pulled in. What remains is pure sequencing: the case's own permanency path, with Matteo's fifteenth month far off (entry January 12, 2026 → April 12, 2027) and the court's spring sentence still warm.",
+    "Ms. Kortazar draws the endgame on the table page: trial return in the fall, with Itziar's placement converting to the family's standing respite — the kinship door held open by its own study — and the case to close at the new year if the trial reads the way the roster did."
+   ],
+   "choices": [
+    {
+     "text": "File the expungement in the dependency record and propose the dated endgame",
+     "next": "carry_a133",
+     "setFlags": [
+      "expungementFiled"
+     ],
+     "addHidden": [
+      "Expungement order filed in the dependency case; dated endgame proposed"
+     ],
+     "note": "The corridor walked again, order in hand. Sequencing is the last skill."
+    },
+    {
+     "text": "The court knows about the expungement by now",
+     "next": "carry_a133",
+     "note": "Courts know what is filed. File it."
+    }
+   ]
+  },
+  {
+   "id": "carry_a133",
+   "kicker": "Day 185 — Thursday, July 16, 2026",
+   "dayOffset": 185,
+   "title": "The Order, Carried",
+   "body": [
+    "The expungement order is copied for the dependency file the same week it arrives — not because the court asked, but because paper does not walk between buildings, and this family has appointed itself the corridor in three cases now.",
+    "The clerk stamps it. The dependency file's next reader will meet the registry's answer before forming the registry's assumption."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "carry_b133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "The chain holds because every link is dated."
+    }
+   ]
+  },
+  {
+   "id": "carry_b133",
+   "kicker": "Day 205 — Wednesday, August 5, 2026",
+   "dayOffset": 205,
+   "title": "The Endgame, Proposed on Paper",
+   "body": [
+    "The endgame proposal goes in as a document, not a hope: trial return in the fall, respite in writing, closure at the new year — three dates with a family's whole table behind them.",
+    "Proposals on paper get answered on paper. The agency's response, when it comes, concurs in a paragraph — the system's way of applauding."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "endgame133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "The chain holds because every link is dated."
+    }
+   ]
+  },
+  {
+   "id": "endgame133",
+   "kicker": "Day 238 — Monday, September 7, 2026",
+   "dayOffset": 238,
+   "title": "The Trial, Run Like the Roster",
+   "body": [
+    "The fall trial runs the way the roster did: overnights becoming weeks, the phone tree retiring into an ordinary family's ordinary arrangements, Itziar's spare room reverting to a grandson's room with a standing invitation rather than a placement order.",
+    "The new-year review is eleven minutes. The file the judge reads is the table, completed: study, services, appeal — three chairs, three checkmarks, one boy home."
+   ],
+   "choices": [
+    {
+     "text": "Ask for closure with the respite written into the final order — Itziar's door, in ink",
+     "next": "fall_a133",
+     "requiresFlags": [
+      "recordsRequested",
+      "appealFiled",
+      "studyDone",
+      "rosterSigned"
+     ],
+     "note": "Closed, with the door held open on paper. The table stands."
+    },
+    {
+     "text": "Ask for closure today without the respite language",
+     "next": "end_trial133",
+     "note": "Closure either way, likely — but the respite in ink is the family's insurance, and insurance is written or it isn't."
+    },
+    {
+     "text": "Let the review close the case on its own momentum",
+     "next": "end_trial133",
+     "note": "Momentum closes cases eventually. Orders close them completely."
+    }
+   ]
+  },
+  {
+   "id": "fall_a133",
+   "kicker": "Day 246 — Tuesday, September 15, 2026",
+   "dayOffset": 246,
+   "title": "The Trial's First Fortnight",
+   "body": [
+    "Matteo's trial begins with the choreography already rehearsed at Itziar's table: school nights at home, the spare room kept as his by right rather than by order, the phone tree retired to a refrigerator magnet.",
+    "The caseworker's first trial note is two lines long. Two-line notes are the sound of a plan working."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "fall_b133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "fall_b133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "fall_b133",
+   "kicker": "Day 254 — Wednesday, September 23, 2026",
+   "dayOffset": 254,
+   "title": "The Ordinary Weeks, Logged",
+   "body": [
+    "The fall runs ordinary: homework, the concert's sequel, one roster revival for a late shift that executes exactly as its signatures promised — documented by habit now, the habit being the year's deepest change.",
+    "Ordinary weeks are the trial's evidence. This family logs them like verdicts."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "fall_c133",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "fall_c133",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "fall_c133",
+   "kicker": "Day 261 — Wednesday, September 30, 2026",
+   "dayOffset": 261,
+   "title": "The Final Order, Drafted",
+   "body": [
+    "The final order is drafted before the review that will adopt it: closure, the respite clause, the study's standing noted — the family's whole table converted into the court's stationery, ready for a signature.",
+    "Drafted orders get signed. Undrafted outcomes get continued."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "end_three_chairs",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "end_three_chairs",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "end_three_chairs",
+   "kicker": "Day 365 — Tuesday, January 12, 2027",
+   "dayOffset": 365,
+   "title": "Ending — All Three Chairs",
+   "body": [
+    "The case closes in January with Matteo home, the registry clear, and Itziar's spare room holding a respite clause and a grandson's spare toothbrush — the two artifacts of the year, one legal and one not, both earned.",
+    "State it the debrief way: the win was not any single chair. Studies complete every week in this system, and services complete, and appeals are won — by different families, in different cases. The capstone was the coordination: sprint first, marathons in parallel, every document carried across the table to the chair that needed it, until all three could be pulled in at once."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE TABLE'S LAW, CHAIR BY CHAIR — Appeal: notified January 30, 2026; 90 days → Thursday, April 30, 2026 (23 Pa.C.S. § 6341(a)(2)); evidence under (c.2)(4); the agency's burden under (c.2)(5); decision within (c.3)'s 45 days. Kinship: the study completed with the standing arrangement written into it — the placement's paper form, and the factual basis for the relative-care posture within 42 U.S.C. § 675(5)(E). Case: services completed and the coverage roster tested and documented; records under 55 Pa. Code § 3130.44(d) supplied the timestamped receipt that decided the appeal; counsel (42 Pa.C.S. § 6337) coordinated the three postures.",
+    "WHY THIS IS A FULL WIN — Rare for a capstone: every track resolves completely — registry expunged, case closed, child home, kinship preserved as respite. It is full because the situation allowed it: one child, an early kinship placement, a short factual dispute (thirty-eight minutes) that documents could settle outright. The guide labels it full and notes the allowance honestly — most marathon cases end partial because their facts, not their paperwork, are heavier.",
+    "WHAT NO STRATEGY CONTROLS — The hearing officer's weighing, the study's queue, the neighbor's emergency that started it. The route controlled the table: sequence, signatures, and the carrying of paper between chairs. In a three-chair case, coordination is not administration. It is the strategy."
+   ]
+  },
+  {
+   "id": "end_trial133",
+   "kicker": "Day 365 — Tuesday, January 12, 2027",
+   "dayOffset": 365,
+   "title": "Ending — Home, Two Chairs Pulled",
+   "body": [
+    "Matteo comes home on the trial schedule and the case closes a season later than the best ending — the respite unwritten, the file's final order thinner than the family's actual arrangements. The appeal is expunged; the study stands; the services are complete. Only the sequencing frayed at the end.",
+    "It is a good ending wearing the ordinary cost of the system's slowest habit: outcomes that everyone agrees on, arriving at the pace of whoever failed to propose them in writing."
+   ],
+   "ending": true,
+   "debrief": [
+    "A PARTIAL WIN, NAMED HONESTLY — Everything resolved; only the timing and the ink suffered. The gated route required **recordsRequested**, **appealFiled**, **studyDone**, and **rosterSigned** arriving together at the final ask — the roster's signatures and the study's completion letter being the two papers most often left verbal in real three-chair cases.",
+    "WHAT NO STRATEGY CONTROLS — The last review's judge and calendar. A family that has pulled all three chairs in will be home either way; the strategy's claim is about the season, and about whether the grandmother's door is held open by an order or by a habit."
+   ]
+  },
+  {
+   "id": "end_tipped",
+   "kicker": "Day 365 — Tuesday, January 12, 2027",
+   "dayOffset": 365,
+   "title": "Ending — The Tipped Table",
+   "body": [
+    "In this branch, one chair was ignored until it fell: the appeal polished past April 30, or the study left to speak for itself until its items hardened into findings, or the roster left unsigned until the night it was needed and doubted.",
+    "A three-chair table does not collapse all at once. It tips toward the neglected chair, and the case's center of gravity moves with it — the registry shadowing the mother's work, or the placement questioned, or the plan read as paper over a gap. Recovery is possible from any one tip. It costs the season the coordination would have saved."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE NEGLECTED CHAIR, ITEMIZED — The appeal's window (23 Pa.C.S. § 6341(a)(2)) is the only chair with a wall behind it; the study's items and the roster's signatures are the two most commonly left verbal. Each failure mode is a paperwork failure before it is anything else — which is the capstone's whole curriculum: at three chairs, the binding constraint is not effort but coordination.",
+    "WHAT NO STRATEGY CONTROLS — Very little in this ending was weather. That is its function in the library: the control case that proves the table was the strategy."
+   ]
+  },
+  {
+   "id": "end_registry133",
+   "kicker": "Day 176 — Tuesday, July 7, 2026",
+   "dayOffset": 176,
+   "title": "Ending — Cleared Case, Standing Word",
+   "body": [
+    "The dependency case closes beautifully — study, services, trial, home — and the registry keeps its word anyway, because the appeal's window closed on April 30 while the marathons were being run, and no one ran the sprint.",
+    "The entry surfaces where entries surface: the school-district volunteer form, the home-health aide application Lorea had planned for the spring. The case is a success story with a footnote that outlives it — which is why the sprint is run first in every guide in this library, including this one."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE SPRINT THAT WASN'T — Notified Friday, January 30, 2026; 90 days → Thursday, April 30, 2026 (23 Pa.C.S. § 6341(a)(2)). Every other chair in this scenario can be recovered, continued, re-studied, re-signed. The appeal window cannot. Its loss does not defeat the case — the dependency court never asked the registry's permission — but it permanently taxes the mother's working life.",
+    "WHAT NO STRATEGY CONTROLS — Nothing failed here except a date. The marathons were run well. The lesson is carved on the table itself: in multi-track cases, do the perishable thing first, especially when it is small."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s133';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

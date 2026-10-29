@@ -1,0 +1,523 @@
+# THE FIRST 90 DAYS — Scenario 64: “Fifteen Months of Paper”
+
+*Human-readable script. This document and `scenario-64.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a mother in month 10 of her daughter's foster-care placement, building the written record of services that were ordered but not provided, ahead of the federal 15-of-22-months filing date. It is told through letters, chronologies, and reviews. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, August 31, 2026. Day offsets are days since the scenario's start date. Tier: Complex.
+
+## [start] Month Ten, Quietly
+*Day 0 — Monday, August 31, 2026 — Monday, August 31, 2026 (dayOffset 0)*
+
+Your daughter Amara is five. She was placed on Monday, November 3, 2025, and she has lived since then with a foster family whose porch she can describe better than yours. You are Katrina, her mother. Your visits are kept, your screens are clean, and the parenting and recovery program the court ordered — the one you waited to enter, then finished late but finished — is behind you, with a certificate in a folder that is getting thick.
+
+This morning there is no letter, no hearing, no crisis. There is only a calendar on the refrigerator and the quiet math you have started doing without deciding to: Amara has been placed ten months. Somewhere in the case there is a date the calendar is walking toward, whether anyone mentions it or not.
+
+Your lawyer, Mr. Sandoval, has asked you to come in this week. Not because anything happened, he said on the phone. Because of when it is.
+
+**Choices:**
+- Go to the appointment — and bring the folder, as always → **folder_inventory**
+  - NOTE (shown after choosing): He keeps a second calendar on his desk, with one date circled in pencil. You have never asked whose date it is.
+
+## [folder_inventory] The Folder, Inventoried
+*Day 2 — Wednesday, September 2, 2026 — Wednesday, September 2, 2026 (dayOffset 2)*
+
+Before the appointment, the folder gets its autumn inventory on the kitchen table: the disposition order with its three services underlined in a hand less steady than your current one; the program certificate; visit notes in a rising stack; screen results, filed by date, because you file everything by date now.
+
+What the inventory shows, laid out, is a record with a shape: your side of it is thick and current. The other side — what was provided, when, and what happened in between — is present mostly as references to documents you have never held. An inventory cannot fix that. It can, and does, tell you exactly what to ask a lawyer about.
+
+**Choices:**
+- Take the inventoried folder to Mr. Sandoval's office → **counsel_meet**
+  - NOTE (shown after choosing): A folder with a known shape. The appointment is about to give the shape a date.
+
+## [counsel_meet] The Date in Pencil
+*Day 4 — Friday, September 4, 2026 — Friday, September 4, 2026 (dayOffset 4)*
+
+Mr. Sandoval is your lawyer in this case, as the law provides for a parent (42 Pa.C.S. § 6337). He turns his desk calendar around so you can read the circled date yourself: Wednesday, February 3, 2027.
+
+“Amara was placed on Monday, November 3, 2025. When a child has been in care for fifteen of the most recent twenty-two months, the federal law generally presses the agency to file a petition to end parental rights. Fifteen months from her placement is Wednesday, February 3, 2027 — Wednesday, February 3, 2027 in this story's counting, one hundred fifty-six days from the morning this chapter opened.”
+
+“Generally,” he says, “is doing real work in that sentence. There are exceptions, and one of them is about you — or rather, about what was done for you. Sit down. This is the meeting where we talk about paper.”
+
+**Choices:**
+- Sit down, and ask him to say the exception slowly → **exception_explained**  _(HIDDEN + Counsel meeting — ASFA date Wednesday, February 3, 2027 named; services exception explained)_
+  - NOTE (shown after choosing): He writes three numbered lines on a legal pad before he says another word.
+
+## [exception_explained] Three Lines on a Legal Pad
+*Day 7 — Monday, September 7, 2026 — Monday, September 7, 2026 (dayOffset 7)*
+
+“At fifteen of the most recent twenty-two months, the agency is generally to file — unless an exception is documented (42 U.S.C. § 675(5)(E)). The child is being cared for by a relative. Or there is a documented compelling reason that filing would not serve the child. Or — line three, ours — the agency has not provided the services it identified as necessary for the child's safe return.”
+
+“Now hear the discipline of it,” he says, “because this is where people fool themselves. The exception is record-dependent. It is an argument that exists only to the extent the file documents services that were identified and then not provided. It speaks to the filing decision — whether a petition gets filed at all. If a petition is filed anyway, the agency would still have to prove it by clear and convincing evidence at a hearing, and no one in this room is deciding that hearing today. Our whole job between now and Wednesday, February 3, 2027 is the file.”
+
+“So,” he says. “Tell me about the services. Not what you remember. What the paper says.”
+
+**Choices:**
+- Start where he starts: ask what the file itself says about each service → **records_beat**
+  - NOTE (shown after choosing): He nods like you have just said the first correct sentence of the autumn.
+
+## [records_beat] Asking for the File
+*Day 11 — Friday, September 11, 2026 — Friday, September 11, 2026 (dayOffset 11)*
+
+There is a right that does not depend on any hearing: a parent may request the case record from the county agency, and under the regulation the material “shall be released upon request” (55 Pa. Code § 3130.44(d)). Mr. Sandoval drafts the request on his letterhead while you watch — the full chronology, the service plan, the referral records, all of it.
+
+“We are not accusing anyone of anything,” he says. “We are reading. What the chronology says about the program, the therapy, and the housing list is either our argument or our answer. Either way, we need the agency's own words, not our memories of them.”
+
+**Choices:**
+- Sign the written request for the complete record this week → **file_review**  _(cash −6; FLAG: recordsRequested; HIDDEN + Case record requested in writing under 55 Pa. Code § 3130.44(d))_
+  - NOTE (shown after choosing): Signed, dated, copied. The request itself is now a page in the file it asks about.
+- Wait until after the next review — one fight at a time → **summary_only**
+  - NOTE (shown after choosing): Understandable. The chronology will be written this autumn either way. It will simply be written without your reading it.
+
+## [file_review] Reading the Chronology
+*Day 16 — Wednesday, September 16, 2026 — Wednesday, September 16, 2026 (dayOffset 16)*
+
+The record arrives: thick, partly blacked out, and readable. You and Mr. Sandoval go through it at his conference table with three highlighters, one per service, and the file's own story of your case is plainer than you feared and stranger than you remembered.
+
+The parenting and recovery program: the chronology says “referred” in the second month of the case, and then says nothing at all for eight weeks, and then says “parent enrolled.” The waitlist you lived — the eight weeks between the referral and the door opening — is present in the file only as a silence between two verbs.
+
+Therapy: “referral sent,” one line, one date. Six weeks later, a second line: “referral re-sent.” Nothing between them explains the gap. Housing: your applications are noted, complete, dated. The list, the chronology agrees with everyone, is the list.
+
+**Choices:**
+- Mark the three gaps and ask what proof could fill each one → **chronology_gaps**  _(HIDDEN + Agency chronology read with counsel — program gap, therapy gap, housing status identified)_
+  - NOTE (shown after choosing): “Documents,” he says. “Each gap either gets a document or it stays a memory. Let's go find out which.”
+
+## [summary_only] Working from Summaries
+*Day 16 — Wednesday, September 16, 2026 — Wednesday, September 16, 2026 (dayOffset 16)*
+
+Without the record, you work from the review reports — which are fair, and warm about your visits, and summaries all the same. A summary tells you what its writer thought mattered. It does not show you the chronology's silences: the eight weeks between “referred” and “enrolled,” or the six weeks between a referral sent and a referral re-sent.
+
+Mr. Sandoval is blunt, kindly: “We can still do the archaeology. We will be doing it from other people's paper — the program's, the provider's, your own folder — instead of the agency's. It is more work, and some of it we may not be able to check. Start with what the providers kept.”
+
+**Choices:**
+- Start the archaeology with the providers' own paper → **chronology_gaps**
+  - NOTE (shown after choosing): The gaps are real either way. The question the autumn asks is whether they are documented.
+
+## [chronology_gaps] Three Gaps, Three Questions
+*Day 20 — Sunday, September 20, 2026 — Sunday, September 20, 2026 (dayOffset 20)*
+
+On the legal pad, under the three exception lines, Mr. Sandoval writes three questions. One: was the program's eight-week waitlist ever put in writing by the program — a letter, a notice, anything with a date? Two: why was the therapy referral re-sent six weeks after it was sent — and does the provider have paper that says why? Three: housing — is there dated proof your applications were complete, so the file cannot quietly re-describe the list as your delay?
+
+“Your completions are real,” he says. “Clean screens, kept visits, a finished program. Nobody is building those. What we are building is the other half of the story: what the system owed, when it owed it, and what actually happened. Both halves have to be in the file. Right now only one of them is.”
+
+**Choices:**
+- Begin with the program — the waitlist letter, if it exists → **binder_begins**
+  - NOTE (shown after choosing): Eight weeks, in the second month of a fifteen-month case. In this arithmetic, eight weeks is not a detail.
+
+## [binder_begins] A Thin Binder, Labeled in Pencil
+*Day 22 — Tuesday, September 22, 2026 — Tuesday, September 22, 2026 (dayOffset 22)*
+
+Mr. Sandoval opens a new binder — thin, at first, as binders for unbuilt arguments are — and labels it in pencil with the February date. Three tabs go in: PROGRAM, THERAPY, HOUSING. “Every document we find goes behind its tab,” he says. “Every document we don't find gets a page too — a page that says what we asked for, when, and what we were told. An honest binder shows its gaps. Dishonest ones are just scrapbooks.”
+
+It is a small ceremony, and you understand it completely: from today, the autumn has a container, and containers, in this system, are what arguments are carried in.
+
+**Choices:**
+- Begin with tab one — the program → **prog_beat**
+  - NOTE (shown after choosing): Tab one is empty. The program's office, and its printing habits, are next.
+
+## [prog_beat] The Program Remembers Differently
+*Day 25 — Friday, September 25, 2026 — Friday, September 25, 2026 (dayOffset 25)*
+
+The parenting and recovery program's office keeps a front desk, a sign-in archive, and — the intake coordinator tells you, looking at her screen — a standard waitlist notice that went out to everyone referred that season. “We sent those to the agency and to the parent,” she says. “Yours would have said the list was running about eight weeks.”
+
+You do not remember receiving it. That happens, in the second month of a case like this, to mail that arrives between a removal and everything that follows a removal. The coordinator can reprint it — with your name, your referral date, and the eight-week estimate on it — if you ask. Asking, as ever in this system, is the whole mechanism.
+
+**Choices:**
+- Ask, in writing, for a reprint of the waitlist notice with your dates on it → **prog_letter**  _(cash −4; FLAG: waitlistDoc; HIDDEN + Program waitlist — 8-week wait at month 2, confirmed by the program in writing)_
+  - NOTE (shown after choosing): She prints it while you wait. Eight weeks, with your name on it, in the program's own letterhead.
+- Trust your memory — you know you waited; everyone knows you waited → **prog_letter**
+  - NOTE (shown after choosing): Everyone may well know it. The file, which is the only audience in February, knows what it is shown.
+
+## [prog_letter] Eight Weeks, on Letterhead
+*Day 31 — Thursday, October 1, 2026 — Thursday, October 1, 2026 (dayOffset 31)*
+
+Whether it arrived as a reprint or not at all, the waitlist is now a dated fact in your folder or a dated memory in your head — and the difference between those two will matter in a room you have not entered yet.
+
+Mr. Sandoval files the copy, if there is a copy, behind tab one of a thin new binder he labels, in pencil, with the February date. “One service,” he says. “Documented or not. Two to go. Therapy next — and for therapy, we ask the provider, not the agency. The answer to a re-sent referral lives at the address it was sent to.”
+
+**Choices:**
+- Go to the therapy provider and ask about the first referral → **bus_home64**
+  - NOTE (shown after choosing): The provider's office is across town. The bus ride is the cheapest research in this case.
+
+## [bus_home64] The Bus Home, Thinking in Dates
+*Day 34 — Sunday, October 4, 2026 — Sunday, October 4, 2026 (dayOffset 34)*
+
+The bus home crosses the river in the late light, and you do the arithmetic the case has taught you: eight weeks of waitlist in a case that will be fifteen months old in February is not a footnote. It is more than a tenth of Amara's placement, spent at a door that had not opened, through no decision of yours that any document records.
+
+Arithmetic like that is either a grievance or an exhibit, depending on whether it is written down with its documents attached. You write it down on the bus, on the back of the reprint envelope or on a scrap you will copy out tonight, because that is what you do now.
+
+**Choices:**
+- Copy the note into the folder at home, dated → **therapy_beat**
+  - NOTE (shown after choosing): Tab one's story, in your hand, with its letter behind it or its absence noted beside it.
+
+## [therapy_beat] The Referral That Went Nowhere
+*Day 37 — Wednesday, October 7, 2026 — Wednesday, October 7, 2026 (dayOffset 37)*
+
+The therapy provider's intake office is small and unhurried. The coordinator pulls your name, frowns at the screen, and tells you the story in the order it happened to her: the first referral arrived while their intake was closed — a staffing gap, since filled — and was returned. A second referral arrived six weeks later. That one she acted on. Your therapy began from the second referral, and you completed it, and her file says so.
+
+“We sent a letter about the closure,” she says. “To the agency. It would be in our file here too, if you need it.” She says it the way people say things that are simply true and simply available — which, in this system, is exactly what makes them easy to walk past.
+
+**Choices:**
+- Ask for a copy of the closed-intake letter, with its date → **therapy_letter**  _(cash −4; FLAG: therapyDoc; HIDDEN + Therapy referral — first referral sent to a provider whose intake was closed; re-sent six weeks later; closure letter obtained)_
+  - NOTE (shown after choosing): One page: the closure, the dates, the provider's own signature. The six weeks now have an author, and it is not you.
+- Thank her and go — her word is clear, and you were told not to make waves → **therapy_letter**
+  - NOTE (shown after choosing): Her word is clear. Words, in February, will be weighed against paper, and hers is not in the file unless someone puts it there.
+
+## [therapy_letter] Six Weeks, with an Author
+*Day 43 — Tuesday, October 13, 2026 — Tuesday, October 13, 2026 (dayOffset 43)*
+
+Tab two of the thin binder. Mr. Sandoval reads the closure letter, if you brought it, twice. “Notice what this is not,” he says. “It is not anyone's fault worth naming. A provider closed an intake; an agency re-sent a referral six weeks later. Nobody in this story is a villain. It is arithmetic. But arithmetic is what the exception is made of: a service identified as necessary, and not provided, for six documented weeks.”
+
+If the letter stayed at the provider's office, he writes the visit up from your account and marks the page, in pencil, with the word he has used all autumn: memory. “We proceed,” he says. “Housing next. Yours is the strangest of the three, because on housing, you did everything and the answer is still a list.”
+
+**Choices:**
+- Turn to housing — and your own applications → **housing_beat**
+  - NOTE (shown after choosing): Your folder holds the receipts for this one. It has held them all along.
+
+## [housing_beat] The List Is the List
+*Day 49 — Monday, October 19, 2026 — Monday, October 19, 2026 (dayOffset 49)*
+
+Housing was ordered at disposition, as it so often is, in the form the system can order it: apply, document, wait. You applied — completely, early, and more than once — and the waiting list has moved at the speed waiting lists move, which is to say at its own speed and no one else's.
+
+Ms. Yoder, your worker, does not pretend otherwise when you meet. “Your applications are complete,” she says. “I have said so in every report. The list is the list.” It is an honest sentence, and it is already in the file in summary form. What is not in the file, yet, is the dated proof underneath it: the stamped application copies, with the dates you filed them, in a row.
+
+**Choices:**
+- Assemble the dated application copies into one stamped set for the file → **housing_docs**  _(cash −5; FLAG: housingDoc; HIDDEN + Housing — dated, complete applications assembled; delay attributable to the waiting list)_
+  - NOTE (shown after choosing): Three applications, three stamps, one page of dates. Nobody can re-describe this as a late start.
+- Rely on Ms. Yoder's reports — she has always described them fairly → **housing_docs**
+  - NOTE (shown after choosing): She has. Summaries describe; stamps prove. February is a month that prefers proof.
+
+## [housing_docs] Tab Three
+*Day 55 — Sunday, October 25, 2026 — Sunday, October 25, 2026 (dayOffset 55)*
+
+Tab three. The binder is less thin now. Mr. Sandoval turns the pages slowly: a waitlist with a letterhead, a referral with a closure letter, a list with stamped dates — or, in the places where the autumn's asking did not happen, your own clear recollection, written in your hand, which he does not mock and does not overvalue.
+
+“Housing is different from the other two,” he says, “and we will say so, because accuracy is our whole argument. You were provided the service the plan identified — the application process — and it is the list that is slow. That is not the exception. The exception lives in tabs one and two. Tab three is there so that no one can move the delay from tabs one and two onto you.”
+
+**Choices:**
+- Ask what the binder becomes next → **sandoval_call**
+  - NOTE (shown after choosing): “A log,” he says. “Yours. Dated. Built from documents, so that anyone who reads it can check it.”
+
+## [sandoval_call] The Call About Tab Three
+*Day 58 — Wednesday, October 28, 2026 — Wednesday, October 28, 2026 (dayOffset 58)*
+
+Mr. Sandoval calls in the evening, between your shift and Amara's bedtime story hour at the foster home, which you know by heart and are not part of, and which you do not let yourself picture for long. His question is narrow: “If a stranger read tab three cold, could she tell the difference between a mother who applied late and a list that moves slowly?”
+
+The answer, after the autumn's assembling, is yes — the stamps say it. “Good,” he says. “Then tab three's job is done. It doesn't make the exception. It protects the exception from being answered with your name.”
+
+**Choices:**
+- Ask what the three tabs become, together → **gaplog_beat**
+  - NOTE (shown after choosing): “A single document, in your voice, with dates,” he says. “Your log.”
+
+## [gaplog_beat] The Log, in Your Hand
+*Day 62 — Sunday, November 1, 2026 — Sunday, November 1, 2026 (dayOffset 62)*
+
+The gap log is a single document, and it is yours: a running, dated list of every services gap in the case, each entry built from a document — the service identified at disposition, the date it was supposed to begin, what actually happened, and the paper that proves it. Program: referred, eight-week waitlist, letter attached. Therapy: referral sent to a closed intake, re-sent six weeks later, letter attached. Housing: applications complete and dated; list pending; no gap claimed.
+
+Built from documents, it is an exhibit. Built from memory, it is a claim. Mr. Sandoval will not file the second kind, and he tells you so plainly, because a log that overclaims by one entry loses the entries that were true.
+
+**Choices:**
+- Build the log from the documents only — every entry checkable → **screens_beat**  _(cash −6; FLAG: gapLog; HIDDEN + Parent's dated services-gap log assembled from documents)_
+  - NOTE (shown after choosing): Shorter than your memory of the year. Stronger, for exactly that reason.
+- Write the log from memory — faster, and you lived every week of it → **screens_beat**
+  - NOTE (shown after choosing): You did live it. The log will now be weighed as testimony, not as an exhibit, and February weighs those differently.
+
+## [screens_beat] The Rest of the Plan, Kept
+*Day 68 — Saturday, November 7, 2026 — Saturday, November 7, 2026 (dayOffset 68)*
+
+Meanwhile — and this word does a great deal of work in a case at month eleven — the rest of the plan runs on. Screens, clean, on schedule. Visits, kept, every one, including the one in the rain and the one the week the bus route changed. Your shift supervisor signs your schedule accommodation without being asked twice, which is its own kind of document.
+
+This matters to the February argument more than it may appear to. The exception is not a claim that you were failed at everything. It is a claim about two services, made by a parent whose own lines in the file are clean enough that no one can answer the claim by pointing at her. Both halves. In the file. That was the assignment.
+
+**Choices:**
+- File the updated screen results and visit record with Mr. Sandoval's office → **work_beat64**  _(HIDDEN + Parent's own compliance current — screens clean, visits kept, program completed)_
+  - NOTE (shown after choosing): Your half of the story, current to the week, in the same binder as the system's half.
+
+## [work_beat64] The Shift Supervisor's Signature
+*Day 71 — Tuesday, November 10, 2026 — Tuesday, November 10, 2026 (dayOffset 71)*
+
+Parallel pressure, because this scenario believes a case is never the only thing happening: your employer rotates the Saturday shift, and the visit — the visit, of all things — hangs for one afternoon on a supervisor's willingness to swap two names on a schedule. She swaps them, and signs the schedule, and you keep a copy, because a signed schedule is the difference between a visit kept by luck and a visit kept by arrangement.
+
+Ms. Yoder notes the kept visit in her report without mentioning the schedule. Reports rarely do. The folder remembers what reports omit; that, increasingly, is the folder's whole job description.
+
+**Choices:**
+- File the signed schedule with the visit note → **review12_notice**  _(HIDDEN + Saturday visit protected by signed work-schedule swap; copy kept)_
+  - NOTE (shown after choosing): Kept visits are your half of the February argument. This one is kept on paper twice over.
+
+## [review12_notice] The Month-Twelve Review Approaches
+*Day 75 — Saturday, November 14, 2026 — Saturday, November 14, 2026 (dayOffset 75)*
+
+The notice arrives for the month-twelve permanency review. Twelve months is a number the system notices: reviews take stock, reports are written fresh, and the word permanency starts appearing in letters where the word progress used to live.
+
+Ms. Yoder's report, when the draft reaches Mr. Sandoval, is fair. Your progress is reported as it happened — program completed, therapy completed, housing pending on a list, visits warm and consistent. The exception is not mentioned. It has not been raised yet, by anyone, anywhere. Mr. Sandoval reads the draft twice and says the thing he has been saying since September, in a new tense: “Not yet is still a choice. After February, it stops being one.”
+
+**Choices:**
+- Go to the review with the folder, and the binder inside it → **review12**
+  - NOTE (shown after choosing): The binder comes. Whether it speaks today is a decision you and Mr. Sandoval make in the hallway.
+
+## [review12] Month Twelve, on the Record
+*Day 82 — Saturday, November 21, 2026 — Saturday, November 21, 2026 (dayOffset 82)*
+
+The month-twelve review is orderly, and almost gentle. Placement continues — that was never really in question today. Your progress is reported fairly, by the agency's own witness, in words close to the ones in the draft. The court sets the next review and turns to dates, and for one sentence the February date is in the room: the court notes the case's age and the federal timeline that runs with it, the way a court notes weather it can see coming.
+
+The exception is not raised. Not by the agency, which has not reached its decision; not by you, because the packet is a filing, not a speech, and filings have their own week. You walk out with Amara still placed, your progress on the record, and a binder that has not yet been asked to do its work.
+
+**Choices:**
+- Ask Mr. Sandoval, in the hallway, what happens between now and February → **amara_visit**
+  - NOTE (shown after choosing): “A letter, most likely,” he says. “Theirs first. Then ours.”
+
+## [amara_visit] Saturday, Month Twelve
+*Day 89 — Saturday, November 28, 2026 — Saturday, November 28, 2026 (dayOffset 89)*
+
+Saturday's visit is at the foster family's home this month, and Amara shows you the reading corner she has arranged for herself, with the seriousness of a person giving a tour of a house she expects to live in for a while, because she does, because she is five and a while is the size of her planning.
+
+She asks whether your house has a reading corner yet. You tell her the truth at her size: grown-ups are still working out the timing, a judge helps decide, and your job right now is the visits and the paperwork. She accepts this with the completeness children accept things, and assigns you a book to read so you can discuss it.
+
+On the bus home you think about the binder. It is not a reading corner. It is the paperwork version of one: a place prepared, in advance, for a day whose date you know.
+
+**Choices:**
+- Write the visit up in your folder that night, dated → **folder_night64**
+  - NOTE (shown after choosing): Contemporaneous, as ever: written while it is true in detail.
+
+## [folder_night64] The Folder, the Night Before the Letter
+*Day 93 — Wednesday, December 2, 2026 — Wednesday, December 2, 2026 (dayOffset 93)*
+
+The night before the agency's letter arrives — though you do not know it is the night before — the folder gets its monthly straightening: new pages behind their tabs, dates checked, the binder's pencil label darkened in ink, because February no longer feels hypothetical.
+
+Straightening a folder is not hope, exactly. It is the form hope takes in a case run on paper: the belief, enacted with a hole punch, that being read carefully is possible, and that it is worth being ready to be read.
+
+**Choices:**
+- Put the folder by the door, and sleep → **agency_letter**
+  - NOTE (shown after choosing): The mail arrives in the morning. Envelopes from agencies have a weight you can identify before you open them.
+
+## [agency_letter] The Letter
+*Day 97 — Sunday, December 6, 2026 — Sunday, December 6, 2026 (dayOffset 97)*
+
+The agency's letter arrives on agency letterhead, and it is exactly the letter Mr. Sandoval predicted, which does not make it smaller. The agency writes that, as the case approaches fifteen months in care, it will weigh whether to file a petition to terminate parental rights at the fifteen-month date — Wednesday, February 3, 2027 — and that its decision will be made on the case record.
+
+“On the case record,” Mr. Sandoval says, reading it over your shoulder in his office. “That phrase is the whole autumn, in their words this time. The record currently contains your progress, fairly reported, and our binder, unfiled. A decision made on the record can only use what the record holds.”
+
+**Choices:**
+- Ask him to lay out the packet decision, all three ways, honestly → **counsel_packet**
+  - NOTE (shown after choosing): He takes out a fresh legal pad. He has been waiting, you realize, for the letter to make this meeting necessary.
+
+## [counsel_packet] The Packet Decision
+*Day 103 — Saturday, December 12, 2026 — Saturday, December 12, 2026 (dayOffset 103)*
+
+“Three ways,” Mr. Sandoval says. “One: we assemble the services-exception packet — the gap log, the waitlist letter, the closure letter, the housing dates, your compliance record — and we file it, in writing, with the agency and the court, before the February date. The exception then exists in the file the decision is made on. Two: we raise it orally at the next review — your voice, my voice, the court reporter's record of two voices, and no exhibits. Three: we wait, keep your record clean, and trust that the agency's own file carries the gaps.”
+
+“You have seen their file,” he says, or, on the autumn where the file was never requested, “you have seen their summaries. You know what their chronology does with a gap. It leaves a silence between two verbs, and silences get read as the parent's.”
+
+“My advice is the packet. It is also, in the end, your case and your decision.”
+
+**Choices:**
+- Decide together, this week, while deciding is still early → **packet_decision**
+  - NOTE (shown after choosing): February does not move. Everything else in this meeting can.
+
+## [packet_decision] Three Ways, One Chosen
+*Day 109 — Friday, December 18, 2026 — Friday, December 18, 2026 (dayOffset 109)*
+
+The packet, if it is filed, must be filed whole: the log, the letters, the dates, and a short covering statement from Mr. Sandoval that says what the packet is and is not. It is not an accusation. It does not argue anyone failed on purpose. It documents that two services the plan identified as necessary for Amara's safe return were not provided for documented weeks, and it asks that the exception be documented when the filing decision is made.
+
+Raising it orally costs nothing and exhibits nothing. Waiting costs nothing and risks everything the chronology's silences can do. The choice, like most choices in this system, is not between a good option and a bad one. It is between paper and its absence, made by a person who has learned what paper is for.
+
+**Choices:**
+- Assemble and file the written services-exception packet with counsel → **packet_filed_scene**  _(cash −10; FLAG: packetFiled; HIDDEN + Written services-exception packet filed with counsel before the 15-month date; REQUIRES: gapLog, recordsRequested)_
+  - NOTE (shown after choosing): Filed, stamped, copied — the exception now exists in the file the decision will be made on.
+- Raise the exception orally at the next review instead → **oral_scene**  _(FLAG: oralRaised)_
+  - NOTE (shown after choosing): Your voice and Mr. Sandoval's, on the review record. The exhibits stay in the binder, in his office.
+- Wait — keep your record clean and trust the agency's file → **wait_scene**
+  - NOTE (shown after choosing): A clean record and an unfiled binder. February will decide what that combination is worth.
+
+## [packet_filed_scene] Filed, Stamped, Copied
+*Day 115 — Thursday, December 24, 2026 — Thursday, December 24, 2026 (dayOffset 115)*
+
+The packet goes in on a weekday morning, with a stamp and a copy for your folder, and the ordinary anticlimax of important paper: a clerk, a receipt, a binder that is now a filing. Mr. Sandoval's covering statement is two pages, and its last paragraph is the discipline of the whole scenario in one sentence: the exception speaks to the filing decision, and nothing in the packet asks anyone to decide anything else.
+
+Ms. Yoder, at your next check-in, mentions it without edge: “I saw the packet. The dates are the dates.” It is not agreement. It is something the system values almost as much: an acknowledgment, from the other side of the table, that the paper says what it says.
+
+**Choices:**
+- Keep the visits, the screens, and the routine exactly as they are → **month13_work**
+  - NOTE (shown after choosing): The packet is filed. The case, meanwhile, is still a child's ordinary weeks, and you keep them.
+
+## [oral_scene] Saved for the Review
+*Day 115 — Thursday, December 24, 2026 — Thursday, December 24, 2026 (dayOffset 115)*
+
+The decision is made and noted in Mr. Sandoval's file: the exception will be raised orally at the month-fourteen review. The binder stays in his office, its tabs in order, its letters unfiled. “We will say it clearly,” he says. “I want you to understand what clearly means in a system that decides from files. It means two people said a true thing in a room, and a transcript exists. Transcripts are read. Exhibits are weighed.”
+
+You keep the visits, the screens, the routine. Your half of the file stays clean. The other half stays, for now, a silence between two verbs, with a speech scheduled to answer it.
+
+**Choices:**
+- Prepare the oral statement with Mr. Sandoval, word by word → **month13_work**
+  - NOTE (shown after choosing): If the record will hold only words, the words will at least be exact.
+
+## [wait_scene] The Clean Record Strategy
+*Day 115 — Thursday, December 24, 2026 — Thursday, December 24, 2026 (dayOffset 115)*
+
+The decision is made and noted: wait. Your record is clean, your progress is fairly reported, and the agency's own people know about the waitlist and the referral — you have heard them say so, in rooms, in words. Mr. Sandoval does not argue; he has given his advice, and he writes yours down beside it, because that too is what lawyers are for.
+
+“One thing, then,” he says. “If we are trusting their file, understand what their file is. It is a chronology with silences in it. In February, someone will read those silences. I hope, for Amara's sake and yours, they read them kindly.”
+
+**Choices:**
+- Keep everything clean, and let the autumn finish quietly → **month13_work**
+  - NOTE (shown after choosing): Quiet is also a strategy. February will grade it.
+
+## [month13_work] Month Thirteen, at Work
+*Day 122 — Thursday, December 31, 2026 — Thursday, December 31, 2026 (dayOffset 122)*
+
+Month thirteen is mostly logistics, which is to say it is mostly the case. A shift change at work that threatens the Saturday visit, solved with a supervisor's signature. A screen rescheduled by the provider, documented by you the same day, in writing, because you document things now the way other people breathe.
+
+Amara's foster mother mentions, kindly, that the agency has asked about “schedules in February.” She does not know more than that, and says so. February is acquiring a shape in other people's calendars too. Yours has held its shape since September: a date, circled in pencil, with a binder underneath it.
+
+**Choices:**
+- Confirm the February dates in writing with everyone who needs them → **foster_call**
+  - NOTE (shown after choosing): One more week where the paper and the life agree with each other.
+
+## [foster_call] A Call from the Foster Home
+*Day 126 — Monday, January 4, 2027 — Monday, January 4, 2027 (dayOffset 126)*
+
+Amara's foster mother calls about a practical matter — a school form, a signature, the ordinary plumbing of a placed child's week — and handles it with the practiced kindness of a woman who has learned which parts of a case are hers to carry. The form gets signed. The week gets plumbed.
+
+“She asked the reading corner question again,” she says, at the end, not unkindly. “I told her what you told her. Timing, and grown-ups working.” Two households, one sentence, agreed across a case file: some coordination in this system happens entirely without forms, and works.
+
+**Choices:**
+- Note the call and the form in the folder, dated → **review14_notice**
+  - NOTE (shown after choosing): Even the un-formal parts get a dated line now. The habit no longer feels like a habit; it feels like the case's other language.
+
+## [review14_notice] The Month-Fourteen Review Approaches
+*Day 130 — Friday, January 8, 2027 — Friday, January 8, 2027 (dayOffset 130)*
+
+The notice for the month-fourteen review arrives with a sentence that was not in the month-twelve notice: the court will also hear the agency's position on the approaching fifteen-month date. The review has become, in part, a preview of February.
+
+Mr. Sandoval prepares you the way he prepares for everything: from the file outward. What the file holds depends, now, on decisions already made — a packet filed, a speech prepared, or a clean record and a hope. “Whatever February does,” he says, “it will do it from paper. Our remaining work is to make sure the paper in the room is the paper we chose.”
+
+**Choices:**
+- Go to the month-fourteen review → **review14**
+  - NOTE (shown after choosing): Fourteen months. The date in pencil is now weeks, not months, away.
+
+## [review14] Month Fourteen, on the Record
+*Day 137 — Friday, January 15, 2027 — Friday, January 15, 2027 (dayOffset 137)*
+
+The month-fourteen review is longer than the last one, and the February date is named in it plainly, by the judge, on the record: Wednesday, February 3, 2027, fifteen months. The agency states that its filing decision will be made and documented by that date. Your progress is reported, fairly again. Placement continues.
+
+If the packet was filed, it is referenced by exhibit, the way filed things are — briefly, and with its dates undisputed. If the exception is raised orally here, it is said clearly, by Mr. Sandoval, in full sentences, and the court reporter takes it down, and what the record holds afterward is a transcript of a claim and no exhibits beneath it. If nothing is raised, the review is warm, brief, and silent on the only question February asks.
+
+**Choices:**
+- Ask, before you leave, exactly what remains between here and the date → **supervisor_change**  _(HIDDEN + Month-14 review — 15-month date named on the record; filing decision announced for Wednesday, February 3, 2027)_
+  - NOTE (shown after choosing): “Weeks of ordinary life,” Mr. Sandoval says. “And one personnel change I just heard about.”
+
+## [supervisor_change] A New Supervisor Reads Cold
+*Day 144 — Friday, January 22, 2027 — Friday, January 22, 2027 (dayOffset 144)*
+
+Personnel changes are weather in this system, and this month the weather turns: Ms. Yoder's supervisor — the person who will sign the filing decision — is new, and reviews the file cold, the way new supervisors do, knowing no one in it and remembering nothing about it that the file does not say.
+
+This is the moment the whole design of the autumn was quietly about. A cold reader cannot be told what everyone in the case happens to know. She can only read. If the packet is in the file, she reads letters with dates on them. If it is not, she reads a chronology with silences in it, and a transcript, perhaps, of two voices claiming what the silences mean.
+
+“Files outlive the people who remember the case,” Mr. Sandoval says. “We have known that since September. February's reader just proved it in November's clothing.”
+
+**Choices:**
+- Ask whether anything can still be added to the file before the date → **filing_eve**
+  - NOTE (shown after choosing): “Very little, and nothing new,” he says. “What is filed is filed. That was always the point.”
+
+## [filing_eve] The Week Before
+*Day 151 — Friday, January 29, 2027 — Friday, January 29, 2027 (dayOffset 151)*
+
+The last week runs on rails laid months ago. A visit, kept. A screen, clean. Amara's book, read, ready to discuss. The binder — filed or unfiled — sits where it sits. There is nothing left to build, which is itself the lesson this scenario has been teaching since the refrigerator calendar: by the week before a date like this, the case is the record, and the record is finished being written by everyone.
+
+Mr. Sandoval calls the night before. “Whatever tomorrow documents,” he says, “remember what it is. A filing decision. Not a verdict on you, not a hearing, not an ending of anything except a question about a petition. Amara's case goes on either way, and so do you.”
+
+**Choices:**
+- Sleep, as well as a person can, and go to his office in the morning → **morning_of**
+  - NOTE (shown after choosing): Wednesday, February 3, 2027. Fifteen months, to the day the count runs from.
+
+## [morning_of] Two Days Out
+*Day 154 — Monday, February 1, 2027 — Monday, February 1, 2027 (dayOffset 154)*
+
+Two days before the date, the case performs its smallest and truest scene: a visit, kept, with a book discussed as promised — Amara's review of it is thorough and not entirely favorable to the author — and a goodbye conducted with the practiced choreography of month fifteen, which neither of you invented and both of you perform.
+
+Nothing about the visit will appear in any filing document. It is included here because it is the thing the filing documents are about, and because a scenario that forgot that would be teaching the wrong subject.
+
+**Choices:**
+- Go home, and let the date come → **filing_day**
+  - NOTE (shown after choosing): The binder is filed or unfiled. The record is written. The date, as ever, does not negotiate.
+
+## [filing_day] The Fifteenth Month
+*Day 156 — Wednesday, February 3, 2027 — Wednesday, February 3, 2027 (dayOffset 156)*
+
+Wednesday, February 3, 2027 — computed in this story as it is computed in the law: fifteen months from the Monday Amara was placed, Monday, November 3, 2025. The agency's filing decision is documented today, on the record the autumn built.
+
+There is no courtroom drama in this scene, because filing decisions rarely have any. There is a file, a cold reader's review of it, a decision, and a document that records the decision and its reasons. What those reasons can honestly be depends — as Mr. Sandoval said in September, as the agency's own letter said in its own words — on what the record holds.
+
+**Choices:**
+- The decision rests on the filed packet — the exception, documented, with its letters and dates → **end_notfiled**  _(REQUIRES: packetFiled, waitlistDoc, therapyDoc)_
+  - NOTE (shown after choosing): The file answers February in the file's own language.
+- The decision rests on the packet as filed — filed in writing, on a thinner documentary base → **end_filed_complete**  _(REQUIRES: packetFiled; REQUIRES-NOT: waitlistDoc)_
+  - NOTE (shown after choosing): Paper was filed. February will weigh exactly the paper there is.
+- The decision rests on the packet as filed — filed, with the referral letter but not the waitlist letter → **end_filed_complete**  _(REQUIRES: packetFiled, therapyDoc; REQUIRES-NOT: waitlistDoc)_
+  - NOTE (shown after choosing): Paper was filed. February will weigh exactly the paper there is.
+- The decision rests on the packet as filed — filed, with the waitlist letter but not the therapy record → **end_filed_complete**  _(REQUIRES: packetFiled, waitlistDoc; REQUIRES-NOT: therapyDoc)_
+  - NOTE (shown after choosing): Paper was filed. February will weigh exactly the paper there is.
+- The decision rests on the oral record — the exception, argued from memory and transcript → **end_thin**  _(REQUIRES: oralRaised)_
+  - NOTE (shown after choosing): Two voices, clearly heard, with no exhibits beneath them.
+- The decision rests on the record as it stands — progress, fairly reported, and nothing else filed → **end_date**  _(REQUIRES-NOT: packetFiled, oralRaised)_
+  - NOTE (shown after choosing): The date arrives at a file that was never asked to answer it.
+
+## [end_notfiled] Ending — Not Filed: The Exception, Documented
+*Day 163 — Wednesday, February 10, 2027 — Wednesday, February 10, 2027 (dayOffset 163)*
+
+The agency's documented decision, a week after the date: it will not file a petition at this time. The decision document names the reason in the statute's own shape — services the plan identified as necessary for Amara's safe return were not provided for documented periods — and attaches, by reference, your packet: the waitlist letter, the closure letter, the dated log. The exception is documented. That is the sentence the whole autumn was built to make possible.
+
+The same document orders the next thing, and the next thing is not a return — it is a transition plan toward home, with steps, dates, and a review. Amara is still placed at this scenario's curtain. She sleeps tonight where she slept last night. What changed is the direction of the paperwork, and in this system, direction is not nothing. Direction is most of it.
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE RECORD HELD (the hidden record, revealed): A two-half file. Your half: screens clean, visits kept, the ordered program finished — late, and finished. The system's half, documented by your autumn's asking: an eight-week program waitlist at month two, on the program's own letterhead; a therapy referral sent to a provider whose intake had closed, re-sent six weeks later, with the closure letter to prove it; housing applications complete and dated, with no gap claimed where no gap existed. Assembled into a dated gap log and filed, with counsel, as a written packet before the date — while a new supervisor, reading cold, could find every word of it in the file.
+- THE LAW UNDER THIS PATH: At 15 of the most recent 22 months, the agency is generally to file a termination petition UNLESS an exception is documented: (i) the child is being cared for by a relative, (ii) a documented compelling reason that filing would not serve the child, or (iii) the agency has not provided services it identified as necessary for the child's safe return (42 U.S.C. § 675(5)(E)). The services exception is record-dependent: it exists as an argument only to the extent the file documents identified-but-not-provided services, and it speaks to the filing decision — which is all that was decided here. No petition exists, so nothing about grounds was decided, and no hearing on grounds was held or depicted. Your route to the file began with the record released on request (55 Pa. Code § 3130.44(d)) and counsel's work throughout (42 Pa.C.S. § 6337). This ending is labeled PARTIAL plainly: Amara is still placed; a transition plan toward home is ordered; the case continues.
+- THE HONEST PART: This outcome was not produced by effort alone, and it is not a verdict on your worth as a parent. A different supervisor could have read the same packet and filed anyway, forcing the exception to be argued in a harder room; a waitlist letter never printed, or a closure letter never kept, would have thinned the argument to memory. Workers, supervisors, judges, and the plain luck of which offices keep their letters all hold pieces of this ending. What your choices controlled was narrower and real: whether the gaps everyone agreed happened were documented in the file the decision was made on — dated, checkable, and already there when a stranger read it cold.
+
+## [end_filed_complete] Ending — Filed, With the Record Complete
+*Day 163 — Wednesday, February 10, 2027 — Wednesday, February 10, 2027 (dayOffset 163)*
+
+The agency's documented decision, a week after the date: a petition is filed. The decision document does not pretend your packet does not exist — it engages it, disputes the weight of the documented gaps against Amara's time in care, and files anyway. The exception is documented in the file. The filing happened despite it.
+
+Mr. Sandoval reads the decision twice and says the truest available sentence: “This is now a different kind of case, and it starts from a better record than it would have. A petition is an allegation with a burden attached. The burden is theirs, and it is clear and convincing, and the hearing that would test it has not happened and is not this scenario's to depict.”
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE RECORD HELD (the hidden record, revealed): A filed packet, on a thinner documentary base than the autumn offered — some of the gaps documented by letter, some carried by your log and your account. It was enough to be engaged, answered, and preserved in the agency's own decision document. It was not enough, on this reader, to stop the filing. Both of those facts are the record working exactly as records work: paper does not compel a reader; it constrains what an honest reader can say.
+- THE LAW UNDER THIS PATH: The services exception (42 U.S.C. § 675(5)(E)) speaks to the filing decision; it does not forbid a filing, and it decided nothing here beyond being documented and answered. A petition, once filed, must still be proven by clear and convincing evidence at a hearing — a hearing this scenario does not depict and whose outcome no part of this game predicts. Nothing about grounds has been decided. Your counsel remains your right (42 Pa.C.S. § 6337), and the record you built began with its release on request (55 Pa. Code § 3130.44(d)). This ending is partial: Amara is still placed, the case continues on a new track, and your documented exception travels with it into every later room.
+- THE HONEST PART: A filing is a serious turn, and this debrief does not soften it into a win. It is also not a verdict on you: it is one documented decision, by one cold reader, weighing a child's fifteen months against documented gaps and coming down on the side of asking a court. A different reader could have come down the other way on this same paper — that is not a flaw in the scenario; it is the scenario. What your choices bought was that the argument was made from documents, engaged on its merits, and preserved — instead of arriving, if it arrived at all, as a parent's memory against a chronology's silence.
+
+## [end_thin] Ending — Filed, Over a Thin File
+*Day 160 — Sunday, February 7, 2027 — Sunday, February 7, 2027 (dayOffset 160)*
+
+The agency's documented decision: a petition is filed. Its reasoning is short, and its shortness is the story. The exception was raised, the decision notes — orally, at review — and the file, the decision continues, does not document services identified and not provided. The waitlist you lived and the referral you waited on are present in the decision only as claims, weighed as claims are weighed: sincerely noted, and set aside for want of paper.
+
+In Mr. Sandoval's office, the binder sits on the conference table, its tabs in order, its letters — the ones that were obtained — still inside it. “Everything in that binder is true,” he says. “True was never the test. Filed was the test.”
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE RECORD HELD (the hidden record, revealed): A warm review record, a clean compliance file, a transcript in which the exception was argued clearly and in full sentences — and, beneath the transcript, no exhibits: the waitlist carried as memory, the referral gap carried as an account, the packet never assembled or filed. The chronology's silences were answered by voices, and a filing decision made on a file cannot be carried by voices, however true.
+- THE LAW UNDER THIS PATH: The services exception (42 U.S.C. § 675(5)(E)) is record-dependent — an argument that exists only to the extent the file documents identified-but-not-provided services — and it speaks to the filing decision, which is the decision that was just made against you. A petition is not a termination: if the agency proceeds, it must prove its case by clear and convincing evidence at a hearing this scenario does not depict, and the gaps, if they can still be documented, can still be documented — the provider's letter exists whether or not it was in February's file. Counsel remains your right (42 Pa.C.S. § 6337); your own record remains yours on request (55 Pa. Code § 3130.44(d)).
+- THE HONEST PART: This ending is not a judgment that you failed Amara; your completions were real, your visits were kept, and everyone in the case knew about the waitlist. It is a judgment about the medium: this system decides from files, and a fact that lives only in memory enters the file as a claim about a fact. A kinder reader, a warmer supervisor, a worker who put the letters in herself — any of them could have changed this ending without your changing a thing. Workers, supervisors, and luck hold their pieces here too. Yours was the asking, in writing, in the autumn, when asking could still become paper.
+
+## [end_date] Ending — The Date Arrives Anyway
+*Day 158 — Friday, February 5, 2027 — Friday, February 5, 2027 (dayOffset 158)*
+
+The agency's documented decision arrives by mail, and it is brief in the way of decisions that were never really contested: the child has been in care fifteen of the most recent twenty-two months; the agency will file. Your progress is noted, fairly, in a paragraph. The services are listed as provided, in the chronology's grammar — referred, enrolled; sent, re-sent — with the silences between the verbs left exactly as silent as they were in September.
+
+Nothing in the decision is cruel, and no one in it is a villain. It is a date, doing what dates do to files that were never asked to answer them.
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE RECORD HELD (the hidden record, revealed): Your progress, fairly reported, and nothing else: no record request that surfaced the chronology, no letters obtained from the program or the provider, no gap log, no packet. The eight-week waitlist and the six-week referral gap happened — they are in this debrief because they were in your life — but they never entered the file as documents, and a filing decision made on the file could not see them. The date did not defeat an argument. It arrived where no argument had been filed.
+- THE LAW UNDER THIS PATH: At 15 of the most recent 22 months, the filing the federal law generally directs (42 U.S.C. § 675(5)(E)) proceeded, with none of its three documented exceptions established in the record — not relative care, not a documented compelling reason, and not the services exception, which is record-dependent and was never documented. A petition is still only a petition: the agency would have to prove it by clear and convincing evidence at a hearing this scenario does not depict, and counsel (42 Pa.C.S. § 6337) and your own record, released on request (55 Pa. Code § 3130.44(d)), remain available for the case that now follows. Nothing about grounds has been decided by anyone.
+- THE HONEST PART: Dates do not grade effort, and this ending must not be read as one: your screens were clean, your visits were kept, your program was finished, and none of that was enough, because the question February asked was never ‘did she do her part’ — it was ‘what does the file document.’ A worker who filed the letters herself, a supervisor who asked about the gaps, a lawyer who pressed in September instead of advising in October — the same luck and people run through every ending of this scenario. The difference here is only that the autumn's asking never happened, and paper, unlike memory, cannot be filed retroactively.

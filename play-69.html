@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "startCash": 140,
+  "startDateISO": "2026-11-09",
+  "startNode": "start",
+  "subtitle": "Scenario 69 — Answer the Question Asked (a fictional composite)",
+  "summary": "Three days before adjudication, a mother learns that the agency must prove its case, that her lawyer can impeach a date from the agency's own notes, and that on cross-examination the most powerful answer is the one that stops.",
+  "tier": "Hard",
+  "title": "The First 90 Days"
+ },
+ "nodes": [
+  {
+   "body": [
+    "Your name is Ingrid Sorensen. Your son Finn is eleven. He has been living with a foster family since Monday, October 19, 2026 — that placement happened before this story begins, and nothing in these three days changes where he sleeps tonight.",
+    "It started at school: bruises from a fall at recess became a report, the report became a petition, and the petition alleges inadequate supervision and a chaotic home. The hearing that decides whether those allegations are proven — the adjudication — is Thursday, November 12, 2026.",
+    "Your instinct, honest and complete, is to tell the judge everything. Everything you know about Finn, about that week, about yourself. Your lawyer, Ms. Nakamura, has asked you to come to her office tomorrow before you decide how much telling helps."
+   ],
+   "choices": [
+    {
+     "next": "petition_paper",
+     "note": "Three days is not much time. It is enough time to learn the shape of the room you are walking into.",
+     "text": "Go to Ms. Nakamura's office tomorrow and hear her out before you decide anything"
+    },
+    {
+     "next": "petition_paper",
+     "note": "The pages are heartfelt and long. You bring them with you. What Ms. Nakamura does with them surprises you.",
+     "text": "Spend tonight writing out everything you want the judge to know, in your own words"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "start",
+   "kicker": "Day 0 — Monday, November 9, 2026",
+   "title": "Three Days Out"
+  },
+  {
+   "body": [
+    "At home you read the petition the slow way, with a pencil. Two allegations carry the whole case: that Finn was inadequately supervised, and that the home was chaotic. The bruises are described in one paragraph. The recess fall Finn described to the school nurse is not described at all.",
+    "A petition is a list of things the county agency says it can prove. It is not proof itself. Until Thursday, every sentence in it is only a claim waiting for evidence — and the evidence, not the claim, is what the judge is allowed to use."
+   ],
+   "choices": [
+    {
+     "next": "lawyer_prep",
+     "note": "By the last page the margin is full of the same question. That question is, more or less, the hearing.",
+     "text": "Mark every sentence that is a claim, and write 'evidence?' in the margin beside it"
+    },
+    {
+     "next": "lawyer_prep",
+     "note": "Understandable. Unfair and unproven are different words, though, and Thursday only runs on one of them.",
+     "text": "Mark the sentences that feel unfairest, so you can answer those first"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "petition_paper",
+   "kicker": "Day 0 — Monday, November 9, 2026",
+   "title": "The Petition, Line by Line"
+  },
+  {
+   "body": [
+    "Ms. Nakamura clears her desk except for one chair, which she turns to face her own. \"That is the witness chair,\" she says. \"If you testify Thursday, the agency's lawyer gets to ask you questions in it. There are three rules. Listen to the whole question. Answer that question — the one that was asked. Then stop.\"",
+    "\"Stopping is the hard one,\" she says. \"Every extra sentence is a gift to the other side. Not because you are hiding anything. Because a volunteered sentence can become their evidence, in your voice, and they do not have to prove it anymore.\"",
+    "She offers to practice, question by question, until stopping feels less like silence and more like a skill."
+   ],
+   "choices": [
+    {
+     "cash": 0,
+     "next": "prep_rules",
+     "note": "It takes an hour. Twice you explain past the answer; twice she raises one finger. By the end, the stopping is yours.",
+     "setFlags": [
+      "preppedWitness"
+     ],
+     "text": "Practice with counsel — run the hard questions until listen, answer, stop becomes a habit"
+    },
+    {
+     "next": "prep_rules",
+     "note": "Honesty matters enormously. It is also not, by itself, a strategy for cross-examination — a truthful answer and a volunteered extra fact can leave the chair in the same sentence.",
+     "text": "\"I'll just be honest, that's enough\" — honesty, you feel, should not need rehearsing"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "lawyer_prep",
+   "kicker": "Day 1 — Tuesday, November 10, 2026",
+   "title": "The Three Rules of the Witness Chair"
+  },
+  {
+   "body": [
+    "\"Now the part parents find hardest to believe,\" Ms. Nakamura says. \"Thursday is not your day to prove you are a good mother. At adjudication, the court may find a child dependent only from clear and convincing evidence — and the agency is the side that has to produce it. (42 Pa.C.S. § 6341(c)) If an allegation is not proven to that standard, the court cannot use it. If the petition is not proven, it is dismissed and the child is discharged. (42 Pa.C.S. § 6341(a))\"",
+    "\"You do not have to prove innocence or fitness to win,\" she says. \"They have to prove dependency. The burden starts on their side of the room, and it stays there unless the evidence moves it. Your job — if you testify at all — is to not carry their evidence in for them.\""
+   ],
+   "choices": [
+    {
+     "next": "record_choice",
+     "note": "\"Clear and convincing, and it is theirs.\" You will read it in the hallway on Thursday, more than once.",
+     "text": "Ask her to say the burden sentence once more, and write it on the inside cover of your folder"
+    },
+    {
+     "next": "record_choice",
+     "note": "\"Judges watch credibility, including yours,\" she says. \"But liking is not the standard. Proof is. That protects you more than charm ever could.\"",
+     "text": "Ask what happens if the judge seems to like you — does that count for anything?"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "prep_rules",
+   "kicker": "Day 1 — Tuesday, November 10, 2026",
+   "title": "Whose Job Thursday Is"
+  },
+  {
+   "body": [
+    "Ms. Nakamura turns to the caseworker's evidence. \"Mr. Petrov will testify about his home visit. His notes are in the agency's file. The agency's record shall be released upon request. (55 Pa. Code § 3130.44(d)) I want that request in writing, today, for his visit notes specifically — what Petrov wrote at the time is worth more than what he remembers on Thursday.\"",
+    "\"The alternative,\" she says, \"is that I work from the summary of his visit that is already in the court report, and we trust it. Summaries are written by the side that wrote the petition.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "File — home-visit notes released on written request (§ 3130.44(d))"
+     ],
+     "next": "notes_arrive_records",
+     "note": "One signed page, dated Tuesday, November 10, 2026. What it brings back tomorrow is a date nobody expected to argue about.",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "text": "Sign the written request for the agency record, including Mr. Petrov's home-visit notes"
+    },
+    {
+     "next": "notes_arrive_summary",
+     "note": "Ms. Nakamura notes the decision without arguing. The summary says what it says. What the notes themselves say, no one on your side will know.",
+     "text": "Rely on counsel's summary of the visit — the request feels like it might antagonize the agency"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "record_choice",
+   "kicker": "Day 1 — Tuesday, November 10, 2026",
+   "title": "Ask for the File, in Writing"
+  },
+  {
+   "body": [
+    "The packet arrives Wednesday morning: Mr. Petrov's home-visit notes, released on your written request. Ms. Nakamura reads them twice, then turns the page around so you can see it.",
+    "The notes are dated Wednesday, October 21, 2026 — and they describe the visit in detail, in Petrov's own hand. That matters for a plain reason: the petition, with its description of your home already written into it, was drafted before October 21. And in the court report, Petrov's visit is described as having happened a week earlier, on October 14.",
+    "\"He may testify to October 14 on Thursday,\" Ms. Nakamura says quietly. \"His own notes say October 21. A witness corrected by his own handwriting is a different witness. We do not have to call him careless or worse. We just have to hold up the page.\""
+   ],
+   "choices": [
+    {
+     "next": "summary_choice",
+     "note": "The page goes into the folder with a tab on it. It is, Ms. Nakamura says, the best kind of evidence: theirs.",
+     "setFlags": [
+      "notesDateKnown"
+     ],
+     "text": "Ask counsel to build Thursday's cross-examination of Petrov around his own dated notes"
+    },
+    {
+     "next": "summary_choice",
+     "note": "Copy made, tab placed. Whether Thursday uses it will still depend on the questions counsel chooses to ask.",
+     "text": "Make a clean copy of the dated page for your own folder, and let counsel decide how to use it"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "notes_arrive_records",
+   "kicker": "Day 2 — Wednesday, November 11, 2026",
+   "title": "October 21, in His Own Hand"
+  },
+  {
+   "body": [
+    "Without the written request, Wednesday brings only what was already in the court report: a short paragraph summarizing Mr. Petrov's home visit, dated October 14 in the report, describing a cluttered kitchen and a mother who seemed overwhelmed.",
+    "It may be accurate in every particular. It may not. From your side of the table there is no way to check it, because the underlying notes — what Petrov wrote at the time, with the date he wrote at the top — are still inside a file nobody asked for in writing.",
+    "\"We work with what we have,\" Ms. Nakamura says. \"On Thursday, his memory will be the only version of that visit in the room.\""
+   ],
+   "choices": [
+    {
+     "next": "summary_choice",
+     "note": "No surprises is worth something. It is not the same as something to cross-examine with.",
+     "text": "Read the summary paragraph three times, so at least its claims will not surprise you on Thursday"
+    },
+    {
+     "next": "summary_choice",
+     "note": "She is right about the calendar, which is exactly why the request mattered on Tuesday. The hearing is tomorrow.",
+     "text": "Ask counsel one more time whether it is too late to request the notes — and accept her answer that Thursday will not wait"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "notes_arrive_summary",
+   "kicker": "Day 2 — Wednesday, November 11, 2026",
+   "title": "The Summary Will Have to Do"
+  },
+  {
+   "body": [
+    "The last pages of the court report hold the scored summary — a scored assessment form, filled in from the file, that the judge will likely read before anyone speaks on Thursday. On supervision it says one word: \"unclear.\" Under it, two factual statements support the rating, and both are wrong in checkable ways: a neighbor who watches Finn after school is listed as \"no identified caregiver,\" and a single missed check-in call is listed as a pattern.",
+    "Ms. Nakamura explains the argument counsel can make: under Pa.R.J.C.P. 1340(E) a party may present evidence and argument to rebut a provision, and under Rule 1340(F) factual errors may be challenged. She is equally plain about the limit: whether Rule 1340 reaches a scored assessment summary has NOT been tested in a published opinion — it is an argument counsel makes, not a settled right.",
+    "\"Untested is not the same as useless,\" she says. \"A short written rebuttal, filed through me, with the two facts and their dates, gives the judge a reason to read that word 'unclear' with care. Leaving it alone leaves it standing as the first thing the judge learns about you.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Rebuttal — two factual errors in the scored summary answered in writing (Rule 1340(E)/(F) — untested)"
+     ],
+     "next": "eve_prep",
+     "note": "Filed Wednesday, November 11, 2026, with the untested flag stated in counsel's own filing. The word 'unclear' now has company in the report.",
+     "setFlags": [
+      "rebuttalFiled"
+     ],
+     "text": "File the one-page written rebuttal through counsel, answering the two factual errors with dates"
+    },
+    {
+     "next": "eve_prep",
+     "note": "The caution is real, and the cost is quiet: the summary goes to the judge exactly as written, unanswered, first.",
+     "text": "Leave the summary alone — an untested argument feels like a risk you do not need"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "summary_choice",
+   "kicker": "Day 2 — Wednesday, November 11, 2026",
+   "title": "Supervision: Unclear"
+  },
+  {
+   "body": [
+    "Wednesday evening is logistics, not law: clothes laid out, the folder by the door, the bus route checked twice. Ms. Nakamura's last instruction by phone is not about evidence at all. \"Eat something. Sleep if you can. Judges watch credibility, and credibility starts with a witness who is present, not performing.\"",
+    "You practice the three rules once, out loud, to the empty kitchen: listen; answer that question; stop. The stopping still feels strange. It also, for the first time, feels possible."
+   ],
+   "choices": [
+    {
+     "next": "call_finn",
+     "note": "Preparation, at this point, is mostly a quiet house and a charged phone.",
+     "text": "Set the alarm early, put the folder by the door, and get what sleep you can"
+    },
+    {
+     "next": "call_finn",
+     "note": "By midnight the words are familiar, which was the point. Sleep, when it comes, is thinner than counsel advised.",
+     "text": "Stay up re-reading the petition until the allegations have lost their power to startle you"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "eve_prep",
+   "kicker": "Day 2 — Wednesday, November 11, 2026",
+   "title": "The Night Before"
+  },
+  {
+   "body": [
+    "The scheduled call lasts twelve minutes. Finn tells you about a spelling test, a loose tooth that is not loose yet, and the foster family's cat, who sleeps on the laundry and is, Finn reports, \"in charge.\"",
+    "He asks when he is coming home. You tell him the truth in the size an eleven-year-old can carry: grown-ups are meeting tomorrow to talk about it, his teacher will be there, and you will tell him what happens as soon as you know. You do not promise him an outcome no one has promised you.",
+    "Afterward the house is very quiet. Tomorrow, strangers will argue about your home in a room built for arguing. Tonight it is just a home with his shoes still by the door."
+   ],
+   "choices": [
+    {
+     "next": "court_morning",
+     "note": "Dated, in your hand, before the hearing — not a memory reconstructed after it.",
+     "text": "Write down what Finn said about school and the recess fall, with tonight's date, and add it to the folder"
+    },
+    {
+     "next": "court_morning",
+     "note": "True enough. The folder by the door is already heavier than it was on Monday.",
+     "text": "Leave the folder closed tonight; tomorrow will add enough paper on its own"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "call_finn",
+   "kicker": "Day 2 — Wednesday, November 11, 2026",
+   "title": "A Phone Call, Supervised and Short"
+  },
+  {
+   "body": [
+    "Thursday, November 12, 2026. The courthouse hallway smells of floor cleaner and other people's worst days. Mr. Petrov arrives with a file box. Finn's teacher arrives alone, early, holding a folder of her own and looking like she would rather be in her classroom — which, Ms. Nakamura murmurs, is usually what an honest witness looks like.",
+    "Ms. Nakamura reviews the order of battle: the agency goes first, because the burden is theirs. Petrov, then the teacher. Then your side decides whether you testify. \"Nothing about today requires you to fill a silence,\" she says. \"Remember whose job the proving is.\""
+   ],
+   "choices": [
+    {
+     "cash": -6,
+     "next": "adjud_open",
+     "note": "Early, seated, breathing. Credibility, Ms. Nakamura says, starts before the first question.",
+     "text": "Take the early bus in, arrive with time to spare, and read the burden sentence in the hallway"
+    },
+    {
+     "cash": -12,
+     "next": "adjud_open",
+     "note": "The allegations are no more proven in the parking garage than they were at your kitchen table. The hearing will decide that, not the rereading.",
+     "text": "Drive in and pay for parking, rereading the petition in the car until the doors open"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "court_morning",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "The Hallway Outside the Courtroom"
+  },
+  {
+   "body": [
+    "The judge opens the adjudication plainly, the way judges do when they know a parent in the room has never heard it: this hearing decides whether the agency has proven, by clear and convincing evidence, that Finn is a dependent child. (42 Pa.C.S. § 6341(c)) Allegations alone are not evidence. Witnesses and admitted documents are.",
+    "The judge's eyes move around the room as she speaks — to the agency's lawyer, to Petrov, to you. Ms. Nakamura had told you: this judge watches credibility more than paper. Watching the judge watch the room, you understand that paper and credibility are about to become the same thing — a date on a page, a witness who stands by it or does not."
+   ],
+   "choices": [
+    {
+     "next": "agency_case",
+     "note": "It changes how the morning sounds. Claims arrive labeled, in your ear, as claims.",
+     "text": "Listen for the burden in every question the agency asks — whose proof is this, and is it clear and convincing?"
+    },
+    {
+     "next": "agency_case",
+     "note": "What she cares about, visibly, is whether witnesses say only what they actually know. Noted.",
+     "text": "Watch the judge's face during the openings, to learn what she seems to care about"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "adjud_open",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "The Judge States the Standard"
+  },
+  {
+   "body": [
+    "The agency calls Mr. Petrov first. He is not a villain in the telling and you should not need him to be: he is a caseworker with a full caseload, testifying from memory and a file, about a visit he made weeks ago.",
+    "He describes your kitchen on the day of his home visit — dishes, laundry, a tired mother — and he dates the visit, with the confidence of a man reading it off an internal page: \"That was October 14.\" On supervision, he says Finn's after-school arrangements were \"never clear to me,\" and the scored summary's word — unclear — enters the record in a human voice.",
+    "What he does not offer is any direct evidence that Finn was left alone and unsupervised. Listening for it, burden in your ear, you notice its absence the way you would notice a missing step on a stair."
+   ],
+   "choices": [
+    {
+     "next": "petrov_cross_choice",
+     "note": "She does not nod. Lawyers in hearings rarely do. But her pen moves to the tabbed page in the folder.",
+     "text": "Pass Ms. Nakamura a note with one word on it: the date"
+    },
+    {
+     "next": "petrov_cross_choice",
+     "note": "Also a discipline. The cross that follows is hers to build — from whatever material your side actually holds.",
+     "text": "Sit on your hands and let counsel run her own cross-examination her own way"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "agency_case",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Mr. Petrov Testifies"
+  },
+  {
+   "body": [
+    "Ms. Nakamura stands for cross-examination. This is the hinge the whole week built: what can she actually put in front of this witness?",
+    "If your side holds Petrov's own notes, she can do the quietest, strongest thing in a courtroom — hand a witness his own handwriting and ask him to read the date at the top. If your side holds only the report's summary, October 14 stands unchallenged, because there is nothing in your folder to challenge it with.",
+    "She looks at the folder, and chooses."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — caseworker's visit date corrected on cross-examination (October 21, not October 14)"
+     ],
+     "next": "petrov_crossed",
+     "note": "No raised voice. One page, one date, read aloud by the man who wrote it. The judge writes something down.",
+     "requiresFlags": [
+      "recordsRequested"
+     ],
+     "text": "Cross on the date — hand Petrov his own notes and ask him to read the date he wrote: October 21, not October 14"
+    },
+    {
+     "next": "petrov_uncrossed",
+     "note": "Fair questions, and he answers them steadily. The description of the kitchen survives cross intact.",
+     "text": "Cross on the visit itself — what he saw, how long he stayed, what Finn was doing"
+    },
+    {
+     "next": "petrov_uncrossed",
+     "note": "Petrov steps down with every sentence he arrived with, including the date, exactly as he delivered it.",
+     "text": "Ask nothing — save counsel's energy for the teacher and the closing"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "petrov_cross_choice",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Cross-Examination: The Date"
+  },
+  {
+   "body": [
+    "\"Mr. Petrov, your notes of that visit — the notes you wrote — are dated what day?\" A pause that fills the room. \"October 21.\" \"Not October 14?\" \"The notes say October 21. I must have misspoken.\"",
+    "Ms. Nakamura asks one more question and no more: whether the petition's description of the home was already drafted before October 21. Petrov looks at his file, and agrees that it was. She sits down.",
+    "Nothing dramatic has happened, and something important has: the agency's central witness has been corrected, on the record, by his own contemporaneous notes, on a fact the petition was built around. The judge watched the correction happen. Credibility, in this room, just moved — and it did not move because anyone called Petrov a liar. It moved because a date was a date."
+   ],
+   "choices": [
+    {
+     "next": "teacher_node",
+     "note": "Stillness, here, is testimony of a kind too: a mother who lets the record speak.",
+     "text": "Keep your face still and your eyes on the judge — let the moment stay the size counsel made it"
+    },
+    {
+     "next": "teacher_node",
+     "note": "Your own record, made the same way his was: at the time, in writing.",
+     "text": "Write 'Oct 21 — his notes' in your folder, dated and timed, while the words are fresh"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "petrov_crossed",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Corrected by His Own Handwriting"
+  },
+  {
+   "body": [
+    "The cross-examination ends without the date ever moving. Petrov's account — the visit on October 14, the kitchen as he described it, supervision 'never clear' — stands in the transcript exactly as he delivered it.",
+    "Ms. Nakamura is not careless and neither are you; there was simply nothing in your side's folder to put against his memory. A cross-examination cannot invent its material. It can only use what was gathered before the hearing, in writing, on time.",
+    "The agency's case is not stronger than it was an hour ago. It is exactly as strong as it was — which, with the date uncorrected, may be strong enough for part of it."
+   ],
+   "choices": [
+    {
+     "next": "teacher_node",
+     "note": "A hard sentence to learn at a counsel table. It will not be the last hearing this lesson is true at.",
+     "text": "Take the lesson in the form it arrived: paper gathered before a hearing is the hearing"
+    },
+    {
+     "next": "teacher_node",
+     "note": "True. An honest, limited witness cuts in the direction of whatever the limits are.",
+     "text": "Focus forward — the teacher is next, and her testimony has limits of its own"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "petrov_uncrossed",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "October 14 Stands"
+  },
+  {
+   "body": [
+    "Finn's teacher testifies the way Ms. Nakamura predicted an honest witness would: carefully, and only about what she knows. The bruises, she says, were consistent with what Finn and two classmates described — a fall off the climbing structure at recess, witnessed, logged by the school nurse the same day. She reported what procedure required her to report. She has never been in your home. She knows nothing about Finn's supervision after school, in either direction.",
+    "She also says, because it is true and she was asked, that Finn is a settled, funny, well-kept child in her classroom, whose mother has never missed a school meeting.",
+    "The agency's second witness, examined honestly, has proven the recess fall and very little else. The supervision allegation still has no direct witness. It has a word in a summary — unclear — and a caseworker's impression."
+   ],
+   "choices": [
+    {
+     "next": "agency_rests",
+     "note": "Three short questions. The teacher agrees with all of them, because they are simply what she already said, arranged.",
+     "text": "Have counsel cross gently, to lock in the recess account and the limits: nurse's log, same day, no home knowledge"
+    },
+    {
+     "next": "agency_rests",
+     "note": "Also defensible: nothing she said needs rescuing, and a grateful silence can be its own cross-examination.",
+     "text": "Ask the teacher nothing — she has helped by being exactly as limited as she is"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "teacher_node",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "The Teacher, Honest and Limited"
+  },
+  {
+   "body": [
+    "\"The agency rests.\" Four words, and the shape of the case is suddenly measurable. What the agency has proven, and what it has only alleged, are now two different piles on the table — and everyone in the room, including the judge, can see the size of each.",
+    "The bruises: explained by a recess fall, on the agency's own witness. The home: described by one witness, on a visit whose date may or may not still be standing. Supervision: a word — unclear — and no witness who saw Finn left alone. Clear and convincing is a high pile to build. Whether theirs reaches it is the judge's call, after closings.",
+    "First, one decision remains, and it is yours: whether to testify."
+   ],
+   "choices": [
+    {
+     "next": "testify_choice",
+     "note": "\"You don't need to testify to win,\" she says. \"If you do, the cross is the price. Decide about the price, not about whether you have something to say. You always have something to say.\"",
+     "text": "Talk it through with Ms. Nakamura in the hallway before you decide — five minutes, honestly used"
+    },
+    {
+     "next": "testify_choice",
+     "note": "Measured against the two piles on the table, the decision looks different than it did in the hallway this morning.",
+     "text": "Decide from the counsel table, on what the agency's case actually turned out to be"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "agency_rests",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "The Agency Rests"
+  },
+  {
+   "body": [
+    "Ms. Nakamura lays out the fork without decoration. If you testify, your account goes on the record in your own voice — Finn's after-school neighbor, the school meetings, the ordinary order of your home — and then the agency's lawyer cross-examines you, and every word you say, including every extra word, becomes evidence anyone may use.",
+    "If you rest, your side stands on the agency's evidence and the burden: they had to prove it, and the argument is that they did not. Resting is not surrender. It is a position about whose job Thursday was.",
+    "There is no choice here that a good mother makes and a bad mother does not. There is only the choice whose mechanics you understand."
+   ],
+   "choices": [
+    {
+     "next": "testify_direct",
+     "note": "You walk to the chair you practiced facing. It is smaller than it looked from counsel's desk. Most important chairs are.",
+     "text": "Testify — give your account on direct, and take the cross-examination at its price"
+    },
+    {
+     "next": "closing_main",
+     "note": "A principled position, held by many lawyers in many rooms. The transcript of your case will contain no sentence in your voice — for better and for worse.",
+     "text": "Rest on the agency's evidence — the burden was theirs, and your side will argue it was not carried"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "testify_choice",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Whether to Take the Chair"
+  },
+  {
+   "body": [
+    "Ms. Nakamura's direct examination is the practiced one: short questions, your short answers. The neighbor, named, who has Finn after school until you are home. The school meetings, all of them. The recess fall, as Finn told it to you that night, ice pack and all. The ordinary, unglamorous order of a home that contains an eleven-year-old and a working mother.",
+    "You sound, to your own ears, almost too plain. That, counsel had said, is what credible sounds like from the inside. The judge is listening the way she listened to Petrov — for the edges of what a witness actually knows.",
+    "Then direct ends, and the agency's lawyer stands up with a legal pad and a different tone, and the real test of Tuesday's practice begins."
+   ],
+   "choices": [
+    {
+     "next": "cross_exam",
+     "note": "Listen. Answer that question. Stop. The rules fit on an index card. Living them is the hearing.",
+     "text": "Take a breath, find the judge's clock on the wall, and listen for the first whole question before answering anything"
+    },
+    {
+     "next": "cross_exam",
+     "note": "Love brought you to this chair. Whether love helps here depends entirely on whether it can stop talking when the answer is done.",
+     "text": "Remind yourself why you are in this chair: Finn, and nothing else, in either direction"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "testify_direct",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Direct Examination: Your Voice, Arranged"
+  },
+  {
+   "body": [
+    "The agency's lawyer is polite, which is the dangerous kind. The questions come in a rhythm designed to loosen a witness: yes-or-no questions with a story tucked inside them. \"You'd agree Finn needs watching at all times?\" \"And there were evenings this fall when your schedule was tight?\" \"And you're the kind of mother who would tell this court everything, isn't that right?\"",
+    "Twenty-one questions, if anyone counts them later. Each one can be answered truly, briefly, and completely — the question that was asked, and nothing volunteered around it. Or a witness can do the most natural thing in the world for a mother in that chair: explain. Explain everything, all at once, so the judge will finally KNOW her.",
+    "The trap in this room is not foolishness. It is love, talking past the end of an answer."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — parent testified; answered twenty-one questions; volunteered nothing"
+     ],
+     "next": "cross_done",
+     "note": "It feels, each time, like leaving something unsaid. That feeling is the price — and the whole point — of Tuesday's practice.",
+     "requiresFlags": [
+      "preppedWitness"
+     ],
+     "setFlags": [
+      "answerDiscipline"
+     ],
+     "text": "Answer each question asked — truly, briefly — and then stop, twenty-one times in a row"
+    },
+    {
+     "next": "rambled_node",
+     "note": "Nothing you say is untrue. Much of it was not asked. The judge listens to all of it, and so does the transcript.",
+     "text": "Answer honestly but at length, explaining the context around each question so nothing is misunderstood"
+    },
+    {
+     "next": "volunteered_node",
+     "note": "You mean it as honesty, and as love. Hear, as it leaves you, what it is in this room: the supervision allegation's first direct support, supplied by the only witness who had it.",
+     "text": "Volunteer the full explanation: \"I only left him once, and that was the night the car—\" — tell them everything, so they finally know you"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "cross_exam",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Cross-Examination: Answer the Question Asked"
+  },
+  {
+   "body": [
+    "\"No further questions.\" The agency's lawyer sits down with a legal pad that has not gained the page he was hoping for.",
+    "Your testimony stands in the transcript the way counsel built it on Tuesday: an account, given plainly, cross-examined fully — and not one volunteered sentence for the agency to carry into its closing. The supervision allegation still has no direct witness. It has a summary word and an impression, and now it has your sworn, specific account of the neighbor arrangement standing against them, unexploded by any extra fact.",
+    "Ms. Nakamura, gathering her notes for closing, says the quiet part at counsel-table volume: \"Now we argue about what they proved. Not about what you are.\""
+   ],
+   "choices": [
+    {
+     "next": "closing_main",
+     "note": "She was always going to. Now the record lets the argument land at its full weight.",
+     "text": "Ask counsel to close exactly there — on the burden, and on the elements that were never proven"
+    },
+    {
+     "next": "closing_main",
+     "note": "Your part of the record is finished. That it is finished — that it stops where you stopped — is its strength.",
+     "text": "Sit down, drink the water, and let the hearing become lawyers talking about a record you helped keep clean"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "cross_done",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Twenty-One Questions, Nothing Volunteered"
+  },
+  {
+   "body": [
+    "It started as the most honest sentence in the room: you only left him once. You were explaining — the car, the night, the neighbor who was supposed to be home, how it was forty minutes and never again and how you have thought about it every day since.",
+    "Every word of it may be true, and all of its context may matter, and none of that changes what just happened mechanically: before that sentence, no witness had directly supported the claim that Finn was left unsupervised. The agency's lawyer had asked about schedules in the abstract because the abstract was all he had. Now he has a specific night, a specific duration, and a specific admission — in the transcript, in your voice, requiring no further proof from anyone.",
+    "Ms. Nakamura does not look angry. She looks like a lawyer watching a burden quietly change hands in the middle of a sentence, and doing the arithmetic of what a closing can still honestly say."
+   ],
+   "choices": [
+    {
+     "next": "closing_loss",
+     "note": "What is said is said. The closing will be about what one night, admitted and explained, should and should not carry.",
+     "text": "Finish the answer as truthfully as it began, and do not compound it by arguing with the next question"
+    },
+    {
+     "next": "closing_loss",
+     "note": "The attempt is heartfelt and adds two more sentences to the same page of the transcript. Context, in a record, rarely subtracts.",
+     "text": "Try, on the next question, to take the explanation back into context all at once"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "volunteered_node",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "The Sentence That Kept Going"
+  },
+  {
+   "body": [
+    "Your cross-examination was honest in every sentence and disciplined in almost none of them. Answers wandered into context, context wandered into other weeks, other weeks wandered into explanations of people who were not in the room. Nothing you said admitted the supervision allegation outright — but the account that was so plain on direct is now tangled, in the transcript, with weeks nobody asked about.",
+    "The judge, who watches credibility more than paper, watched a witness who could not seem to find the end of an answer. That is not a finding. It is an impression, and impressions are the weather in which findings get made.",
+    "One allegation — the chaotic home, as Petrov described it — now feels, to the room, easier to credit than it did an hour ago. The supervision allegation still lacks a direct witness. Both of those things will matter in the closing, in opposite directions."
+   ],
+   "choices": [
+    {
+     "next": "closing_main",
+     "note": "It is the strongest argument left, and it is a real one — the agency's proof did not grow just because your answers did.",
+     "text": "Let counsel use the closing to pull the record back to the burden and the unproven elements"
+    },
+    {
+     "next": "closing_main",
+     "note": "\"Complicated, not decided,\" she says. \"Closings exist for complicated.\" It is not comfort. It is accurate, which is her form of it.",
+     "text": "Ask counsel, quietly, whether your testimony hurt — and accept her honest answer that it complicated things"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "rambled_node",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "True, Long, and Everywhere"
+  },
+  {
+   "body": [
+    "Closing argument is where counsel tells the judge what the record — the whole record, and nothing outside it — adds up to. Ms. Nakamura has two closings available to her, and they are not the same speech.",
+    "One closing walks the standard: the agency had to prove dependency by clear and convincing evidence (42 Pa.C.S. § 6341(c)); element by element, here is what was proven, here is what was only alleged, here is a witness corrected by his own notes, here is an allegation with no direct witness at all. If the petition is not proven to that standard, it is dismissed. (42 Pa.C.S. § 6341(a))",
+    "The other closing argues fairness: a good mother, a hard fall at recess, a system that moved too fast. It is all true, and Ms. Nakamura says it to you plainly in the hallway of this decision: \"Fairness is not the standard, Ingrid. The burden is. Fairness asks the judge to feel something. The burden requires the other side to have done something — and lets us count, precisely, whether they did.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Order — petition dismissed; no findings made against the parent"
+     ],
+     "next": "end_win",
+     "note": "Every premise of this closing was built before it was spoken: a request on Tuesday, a practice hour, a tabbed page, twenty-one stopped answers.",
+     "requiresFlags": [
+      "recordsRequested",
+      "preppedWitness",
+      "answerDiscipline"
+     ],
+     "text": "Close on the burden — element by element, the corrected date, the unproven supervision allegation, nothing volunteered to fill the gaps"
+    },
+    {
+     "next": "end_partial",
+     "note": "A sound argument on a thinner record. The judge will weigh it against everything that survived cross-examination uncorrected.",
+     "text": "Close on the burden generally — the agency's proof, as it stands, does not reach clear and convincing on the whole petition"
+    },
+    {
+     "next": "end_partial",
+     "note": "The judge hears it, and is not unmoved. Moved, however, is a feeling. The ruling will be written in the language of proof.",
+     "text": "Close on fairness — the judge should hear what kind of mother you are, and how this case began"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "closing_main",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Closing: The Burden, or Fairness"
+  },
+  {
+   "body": [
+    "Ms. Nakamura closes as well as this record allows anyone to close. She walks the burden faithfully: clear and convincing evidence, element by element (42 Pa.C.S. § 6341(c)). She is careful, and she is honest, and at the supervision element she has to spend her time where no closing wants to spend it — arguing about the weight of a fact rather than its absence.",
+    "Because the fact is no longer absent. It is in the transcript in your own voice, explained and contextualized and entirely real, and the agency's closing needs only to read it back. Their lawyer does, once, without embellishment. He does not have to embellish it.",
+    "The judge thanks both counsel, looks once at you — not unkindly — and takes the matter under advisement for the ruling."
+   ],
+   "choices": [
+    {
+     "next": "end_loss",
+     "note": "Listen; answer that question; stop. The rules were never about hiding. They were about whose evidence your voice becomes.",
+     "text": "Hear the agency's closing read your own sentence back, and understand exactly what Tuesday's third rule was for"
+    },
+    {
+     "next": "end_loss",
+     "note": "Counsel argued exactly that, well. Weight arguments matter. They start, though, from a fact the other side no longer has to prove.",
+     "text": "Hold on to what is also true: one admitted night was explained, contextualized, and never repeated — and closings can argue weight"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "closing_loss",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Closing After the Admission"
+  },
+  {
+   "body": [
+    "The order arrives Friday, November 13, 2026, and it is short in the way rulings are short when the reasoning was done in the hearing: the agency did not prove the petition by clear and convincing evidence. The supervision allegation had no direct witness and, against it, a specific sworn account. The home-visit evidence was materially weakened when the caseworker's own notes corrected his date. The petition is dismissed. (42 Pa.C.S. § 6341(a))",
+    "No findings are made against you. Finn comes home that day — home, not on conditions, not under a plan, because there is no adjudication to build a disposition on. His shoes go back by the door, next to yours, in a house the record now describes the way Thursday left it: alleged, examined, and not proven."
+   ],
+   "dayOffset": 4,
+   "debrief": [
+    "WHAT THE FILE SAID — The hidden record on this route: the home-visit notes were released on written request (55 Pa. Code § 3130.44(d)) and showed October 21, not the October 14 the court report carried; Mr. Petrov was corrected by that date on cross-examination, on the transcript; the scored summary's \"supervision: unclear\" rating was answered in writing, its two factual errors named with dates; and the parent's own testimony ran to twenty-one cross-examination questions with nothing volunteered. The order that ended it — petition dismissed, no findings made against the parent — was built out of those four pieces of paper and restraint, in that order.",
+    "THE LAW THAT CONTROLLED IT — At adjudication the court may find a child dependent only from clear and convincing evidence, and that burden is the agency's: the parent does not have to prove innocence or fitness to win. (42 Pa.C.S. § 6341(c)) Where the petition is not proven to that standard, it is dismissed and the child is discharged. (42 Pa.C.S. § 6341(a)) The agency record that supplied the impeachment was released on written request. (55 Pa. Code § 3130.44(d)) The written rebuttal of the scored summary was argued under Pa.R.J.C.P. 1340(E) and (F) — an argument whose reach to a scored assessment summary has NOT been tested in a published opinion, and which helped here, at most, as careful reading, not as a settled right.",
+    "THE HONEST PART — This ending turned on a date in a caseworker's own notes, a practice hour, and a mother who could stop talking in a chair built to make mothers talk. A different judge might have weighed Petrov's correction less heavily; a different caseworker might have written a different date, or none; the recess fall had an honest teacher and a nurse's log, which is luck as much as anything. Dismissal is not a verdict that you are a perfect parent, and the other endings are not verdicts that you are a bad one. Outcomes here turn on workers, judges, resources, and luck — this one also turned on the burden staying exactly where the law put it, because nobody carried the other side's evidence across the room for them."
+   ],
+   "ending": true,
+   "id": "end_win",
+   "kicker": "Day 4 — Friday, November 13, 2026",
+   "title": "Not Proven — The Burden Stayed Where It Belongs"
+  },
+  {
+   "body": [
+    "The ruling comes from the bench, in two halves. One allegation — the condition of the home as the caseworker described it, on a visit date that stood as he gave it, or against a record thinned by unfocused testimony — is found proven by clear and convincing evidence. The supervision allegation, with no direct witness behind it, is not proven, and the court says so.",
+    "One proven allegation is enough for dependency, and Finn is adjudicated dependent. Then the case moves, the same day, to what follows from that finding — and here the second half of the ruling matters: Finn is returned to your home, subject to conditions and supervision by the agency, rather than remaining in placement while services run. You leave the courthouse with your son, a list of conditions, and a case that is still open — a real outcome, and a partial one, and both halves of that sentence are true at once."
+   ],
+   "dayOffset": 3,
+   "debrief": [
+    "WHAT THE FILE SAID — The hidden record on this route was thinner, and the ruling maps it exactly: the caseworker's October 14 date and kitchen description stood uncorrected if the visit notes were never requested in writing; the scored summary's \"supervision: unclear\" stood unanswered if no written rebuttal was filed; and testimony that rambled, or a decision to rest, left less in the transcript to set against the agency's account. What saved the second half of this ending was what also survived: the supervision allegation never gained a direct witness — no volunteered admission supplied it — and the teacher's honest, limited testimony proved a recess fall, not a chaotic home.",
+    "THE LAW THAT CONTROLLED IT — Dependency requires clear and convincing evidence (42 Pa.C.S. § 6341(c)), allegation by allegation: an allegation not proven to that standard cannot be used, and here the supervision allegation was not proven — but one proven allegation sufficed for adjudication. At disposition, among the options available to the court is allowing the child to remain with the parent subject to supervision and to conditions the court prescribes. (42 Pa.C.S. § 6351(a)(1)) That is this ending's legal shape: dependent, but home. The rebuttal argument under Pa.R.J.C.P. 1340(E) and (F), where it was made, remains what it always was — NOT tested in a published opinion as applied to a scored assessment summary.",
+    "THE HONEST PART — A partial outcome is not a grade halfway between good mother and bad mother. It is a map of a record: which pieces of paper existed on Thursday, which corrections were in the folder, how a particular judge weighed a caseworker's uncorrected memory. A different worker's notes, a different judge's credibility call, a bus that ran late on the morning a request had to be filed — the same mother lands elsewhere. What a parent controls is narrower and real: ask for the record in writing, practice stopping, and let the agency carry its own burden. The rest turns on workers, judges, and luck."
+   ],
+   "ending": true,
+   "id": "end_partial",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Dependent, But Home"
+  },
+  {
+   "body": [
+    "The ruling is careful, and it quotes you. On supervision — the allegation the agency had supported, all morning, with a word in a summary and a caseworker's impression — the court now has direct evidence: your own testimony, given fully and honestly, about the one night you left Finn, and the court finds that allegation proven by clear and convincing evidence, substantially on your words. With it, the home-condition allegation is credited as well.",
+    "Finn is adjudicated dependent, and his placement with the foster family continues, with services and a plan and dates to work toward. Nothing about you has been found monstrous, or even unusual. The order reads, in its quiet way, like what it is: a case the agency had not finished proving, finished — in the transcript, in a mother's voice, by a mother trying to be fully known.",
+    "Ms. Nakamura walks you out. \"Their case did not get better today, Ingrid,\" she says, finally. \"The transcript did. That is a different thing, and it is the thing we practiced against.\""
+   ],
+   "dayOffset": 3,
+   "debrief": [
+    "WHAT THE FILE SAID — The decisive hidden item on this route is a single transcript page: on cross-examination, the parent volunteered — beyond any question asked — the one night Finn was left alone, supplying the supervision allegation's only direct support. Everything else in the file stayed as it was: the caseworker's testimony, corrected on his visit date or not; the scored summary rating supervision \"unclear\"; the teacher's recess-fall account. None of that, by itself, was the agency's strongest evidence. The volunteered admission was, because an admitted fact needs no further proof, and a parent's own words are counted twice in a courtroom — once as testimony, and once as a concession the other side never had to earn.",
+    "THE LAW THAT CONTROLLED IT — The burden never moved in law: at adjudication the agency must prove dependency by clear and convincing evidence, and the parent does not have to prove innocence or fitness. (42 Pa.C.S. § 6341(c)) What moved was the evidence available to carry that burden — testimony is evidence, volunteered testimony emphatically included, and a court finding dependency on proven allegations proceeds to disposition, where continued placement is among the outcomes the court may order. The agency record, where it was requested, was released on request (55 Pa. Code § 3130.44(d)); the Rule 1340(E)/(F) rebuttal of the scored summary, where it was filed, remains an argument NOT tested in a published opinion. None of those rules failed here. A sentence simply joined the agency's side of the ledger.",
+    "THE HONEST PART — Hear this the way the scenario means it: the volunteered sentence was not foolish, and it was not a lie, and it was not bad parenting in the telling — it was a mother trying to be fully honest in a chair that punishes extra honesty with permanence. The trap is structural, not moral. It is also not the whole future: adjudication is not termination, placement continues under a plan with hearings ahead, and parental rights, if they are ever challenged, would likewise have to be proven by clear and convincing evidence. Outcomes turn on workers, judges, and luck — and, on this route, on one true sentence that a different kind of love, the practiced kind, would have left for the agency to try to prove on its own."
+   ],
+   "ending": true,
+   "id": "end_loss",
+   "kicker": "Day 3 — Thursday, November 12, 2026",
+   "title": "Dependent — Every Word Counted Twice"
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s69';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

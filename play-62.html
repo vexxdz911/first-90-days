@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 62 — The Visit Notes (a fictional composite)",
+  "startDateISO": "2026-07-06",
+  "startNode": "start",
+  "startCash": 110,
+  "tier": "Hard",
+  "summary": "The visit notes are the case's memory — and two entries in them are quietly becoming findings."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, July 6, 2026",
+   "dayOffset": 0,
+   "title": "The Visit Routine",
+   "body": [
+    "Your name is Felicia. Your son Ezra is six, and he is living in foster care — placed before this story opens, in a part of the case this story does not retell. What this story covers is the part that happens twice a week, in a visit room with a clock on the wall: your supervised visits.",
+    "Ms. Goss, the visit supervisor, sits to the side with a notebook. Mr. Henley, your caseworker, is rarely in the room, but he reads what the room produces. Because that is the quiet fact of supervised visits: someone is always writing. The notes Ms. Goss takes — what Ezra did, what you did, the words each of you used — go into the case file, and the file is the case's memory. Reviews you will never sit in will be written from it.",
+    "You cannot write the notes. What you can do — what this scenario is about — is learn what they say, and answer them on paper, in time for the paper to matter."
+   ],
+   "choices": [
+    {
+     "text": "Go to this week's first visit — and pay attention to the notebook, not just to Ezra",
+     "next": "flat_visit",
+     "note": "Twice a week, an hour at a time, a woman with a notebook decides what the summer will be remembered as. You cannot see the notebook. Yet."
+    }
+   ]
+  },
+  {
+   "id": "flat_visit",
+   "kicker": "Day 3 — Thursday, July 9, 2026",
+   "dayOffset": 3,
+   "title": "The Word ‘Flat’",
+   "body": [
+    "Thursday, July 9, 2026's visit comes at the end of a double shift. You came straight from work, in your work shoes, with Ezra's snack in your bag and four hours of sleep in you. You play the game he picks. You read the book. But you are running on the flat, tired edge of yourself, and some part of you knows how it must look from the chair by the wall.",
+    "Ms. Goss writes, now and then, without looking up. You will not see today's note for weeks. When you finally do, one word in it will have travelled further than any other word in your file."
+   ],
+   "choices": [
+    {
+     "text": "Tell Ms. Goss plainly, before the visit starts: ‘I worked a double. I'm tired — I'm not checked out.’",
+     "next": "that_night",
+     "addHidden": [
+      "Visit context — mother told the supervisor she had worked a double shift and was tired"
+     ],
+     "note": "Said out loud, in the room, where the notebook is. Whether it lands in the note is her call. That you said it is yours."
+    },
+    {
+     "text": "Push through and say nothing — tired is not a thing you want in writing",
+     "next": "that_night",
+     "note": "Understandable. Also: the tiredness will be in writing anyway. The only question is whose sentence carries it."
+    }
+   ]
+  },
+  {
+   "id": "that_night",
+   "kicker": "Day 3 — Thursday, July 9, 2026",
+   "dayOffset": 3,
+   "title": "That Night, at the Kitchen Table",
+   "body": [
+    "Home, after. The visit replays the way visits do — the good minutes first, then the notebook you couldn't see. You know what happened in the room today. You also know that knowing is a substance with a shelf life, and that the file's version is being written by someone else, in ink, tonight.",
+    "There is a notebook at the store by the bus stop. There is also your memory, which feels — tonight, honestly — like enough."
+   ],
+   "choices": [
+    {
+     "text": "Buy the notebook and write today's visit down tonight — date, times, what was said, the double shift",
+     "next": "notebook_started",
+     "cash": -4,
+     "setFlags": [
+      "ownNotes"
+     ],
+     "addHidden": [
+      "Parent's same-day visit notes — begun the night of the 'flat' visit"
+     ],
+     "note": "Three pages, in your handwriting, written while the day is still warm. Contemporaneous is a cold word for a warm practice."
+    },
+    {
+     "text": "Trust your memory — you will remember a day like this one",
+     "next": "memory_trust",
+     "note": "You will remember most of it. The parts that fade first are dates and exact words — which are, not coincidentally, the parts reviews run on."
+    }
+   ]
+  },
+  {
+   "id": "notebook_started",
+   "kicker": "Day 4 — Friday, July 10, 2026",
+   "dayOffset": 4,
+   "title": "Three Pages, Dated",
+   "body": [
+    "The notebook's first entry is not literature. It is better than literature: it is dated. The shift, the snack, the game, the book, the sentence you said to Ms. Goss before the visit started, Ezra's joke about the clock. What you felt goes in too, in one line: ‘Tired. Not checked out.’",
+    "You close it understanding something the system rarely says out loud: from tonight, this case has two memories. One of them is yours, and it is being written the same day things happen."
+   ],
+   "choices": [
+    {
+     "text": "Keep the habit — write every visit the same day, before sleep",
+     "next": "good_visit",
+     "note": "A page a visit. It takes ten minutes. It compounds like interest."
+    }
+   ]
+  },
+  {
+   "id": "memory_trust",
+   "kicker": "Day 4 — Friday, July 10, 2026",
+   "dayOffset": 4,
+   "title": "Memory, Kept Warm",
+   "body": [
+    "You decide your memory is enough, and tonight it is: the whole visit sits in you complete — the game, the book, the tiredness, the clock. Memory is a wonderful instrument. Its one flaw is that it cannot be attached to anything. It cannot be handed across a table at a review, or filed, or quoted back by a stranger in September.",
+    "The file's memory, meanwhile, is being written tonight too — by Ms. Goss, from her notebook, in the words she chose in the room."
+   ],
+   "choices": [
+    {
+     "text": "Go on with the visits — twice a week, the way the plan runs",
+     "next": "good_visit",
+     "note": "Twice a week, the room. Twice a week, the notebook by the wall. Your version lives where it lives."
+    }
+   ]
+  },
+  {
+   "id": "good_visit",
+   "kicker": "Day 7 — Monday, July 13, 2026",
+   "dayOffset": 7,
+   "title": "A Good Visit, in Full",
+   "body": [
+    "Monday, July 13, 2026's visit is the other kind: rested, early, Ezra at the door of the room before you are. He has drawn the two of you at a table with an enormous clock, and he explains the drawing the way artists do, without embarrassment. The visit runs its full length. The goodbye is the ordinary hard kind — a sleeve held a moment longer than the schedule, then released.",
+    "Ms. Goss writes at the good parts too. Notes are not accusations; they are simply the file's eyes. What this scenario keeps asking is narrower: when the eyes mis-see, what corrects them?"
+   ],
+   "choices": [
+    {
+     "text": "Go home and handle the day the way you have chosen to handle days like this",
+     "next": "fall_visit",
+     "addHidden": [
+      "Visit — full-length visit; Ezra's drawing of the visit-room clock"
+     ],
+     "note": "The good visits go in the file too. Files remember everything with the same flat voice — which is why the exceptions matter so much."
+    }
+   ]
+  },
+  {
+   "id": "fall_visit",
+   "kicker": "Day 10 — Thursday, July 16, 2026",
+   "dayOffset": 10,
+   "title": "The Climbing Frame",
+   "body": [
+    "Thursday's visit, the play corner. Ezra goes up the visit-room climbing frame the way six-year-olds do — competently, until he doesn't. He slips near the bottom, lands sitting, and comes up holding his arm, more startled than hurt: a scraped arm, a red mark where his sleeve rode up.",
+    "You are there before the sound finishes. You tell Ms. Goss immediately — what happened, where, how far he fell, which is not far — and you hold the sleeve up and sit with him until the startle passes and he is negotiating for a bandage with a picture on it. The visit resumes, smaller and closer. He rides the rest of it out against your side."
+   ],
+   "choices": [
+    {
+     "text": "Stay with him until he is ready to play again — and make sure Ms. Goss saw the whole of it",
+     "next": "fall_aftermath",
+     "addHidden": [
+      "Visit incident — fall from low on the climbing frame; mother reported it immediately and comforted the child; scraped arm"
+     ],
+     "note": "Reported by you, at once, in the room. That is the lived version. The written version is being composed a few feet away."
+    }
+   ]
+  },
+  {
+   "id": "fall_aftermath",
+   "kicker": "Day 13 — Sunday, July 19, 2026",
+   "dayOffset": 13,
+   "title": "The Note, As Read to You",
+   "body": [
+    "Sunday, a call from Mr. Henley, following up the way the plan says someone should. Ezra is fine; the mark is fading; the foster home reports nothing but a story told twice at dinner. Then Mr. Henley reads you the line from the visit note, because you ask what it says: ‘Bruise observed on child's arm; mother offered no explanation initially.’",
+    "‘Initially,’ you say. ‘I explained it before it happened, almost. I was the one who told her.’ He is quiet a moment, in the way of a man reading a sentence he did not write. ‘That's what the note says,’ he says. It is not unkind. It is worse than unkind: it is final-sounding."
+   ],
+   "choices": [
+    {
+     "text": "Ask him to note your objection — and write the date of this call down when you hang up",
+     "next": "weeks_pass",
+     "note": "An objection, noted by the person who read you the line, on the day he read it. It is a start. It is not yet an answer in the file."
+    }
+   ]
+  },
+  {
+   "id": "weeks_pass",
+   "kicker": "Day 24 — Thursday, July 30, 2026",
+   "dayOffset": 24,
+   "title": "The Weeks Between",
+   "body": [
+    "The visits go on, twice a week, and most of them are good in the unremarkable way that is the whole point of visits. Ezra grows a fraction. The clock drawing acquires a second clock. Your shifts settle into a pattern you can almost sleep inside.",
+    "Somewhere offstage, in an office, the file grows too. A review summary is being drafted from the notes — summaries always are — and in it, sentences are being carried from one document into the next, the way sentences in this system travel: quoted, shortened, and ever so slightly re-pointed at each stop."
+   ],
+   "choices": [
+    {
+     "text": "Keep visiting — and keep whatever record you are keeping",
+     "next": "quote_upgrade",
+     "note": "The summary is being written from the notes. The notes were written from the room. You were in the room. The chain has a weak link, and it isn't you."
+    }
+   ]
+  },
+  {
+   "id": "quote_upgrade",
+   "kicker": "Day 31 — Thursday, August 6, 2026",
+   "dayOffset": 31,
+   "title": "Quoted, Upgraded",
+   "body": [
+    "The draft review summary reaches your lawyer, and your lawyer reaches you. Most of it is fair. But there, in the concerns paragraph, is a sentence with a familiar skeleton: the Thursday, July 9, 2026 visit at which you were — the note's word was ‘flat’ — is now described as a visit raising a ‘possible impairment concern.’",
+    "Flat was a word about a double shift. Somewhere between the notebook and the summary, it put on a uniform. Nobody in the chain, most likely, meant to promote it. Promotions like that do not require intent. They require only that the original word sit alone in a file, unanswered, while people who never met you quote it to each other."
+   ],
+   "choices": [
+    {
+     "text": "Call your lawyer and ask what can actually be done about a word",
+     "next": "lawyer_beat",
+     "addHidden": [
+      "Review summary — 'flat' quoted and upgraded to 'possible impairment concern'"
+     ],
+     "note": "‘Done about a word’ is, it turns out, a real legal specialty. It is called the record."
+    }
+   ]
+  },
+  {
+   "id": "lawyer_beat",
+   "kicker": "Day 34 — Sunday, August 9, 2026",
+   "dayOffset": 34,
+   "title": "What Paper Answers a Word",
+   "body": [
+    "Your lawyer — counsel is your right in this case, as the law provides (42 Pa.C.S. § 6337) — listens to the whole biography of the word ‘flat,’ and then she does the thing lawyers in this series always do: she asks what paper answers it.",
+    "‘The visit notes are in the agency's case record,’ she says. ‘You may request the record, and the regulation says it “shall be released upon request” (55 Pa. Code § 3130.44(d)). Not the summary of the notes. The notes. Until you've read them, every argument about them is two people describing a page neither has open.’"
+   ],
+   "choices": [
+    {
+     "text": "Sign the written request for the record — visit notes, all of them, in writing",
+     "next": "request_sent",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "note": "Signed, dated, copied. Whatever the notes say, you will soon be able to quote them instead of remembering them."
+    },
+    {
+     "text": "Wait — the word is ugly, but the review is the fight; don't open a second one",
+     "next": "request_deferred",
+     "note": "Understandable, and the summary will still be quoted at the review. It will simply be quoted by people who have read the notes, to a person who hasn't."
+    }
+   ]
+  },
+  {
+   "id": "request_sent",
+   "kicker": "Day 38 — Thursday, August 13, 2026",
+   "dayOffset": 38,
+   "title": "The Stamp",
+   "body": [
+    "The request goes in the way requests in this system should always go in: on paper, dated, with a copy kept. Then the ordinary wait, during which the visits continue and the summary with the promoted word in it continues to circulate to everyone except, for a little longer, you."
+   ],
+   "choices": [
+    {
+     "text": "Wait for the packet — and keep visiting, twice a week, in the meantime",
+     "next": "packet_redacted",
+     "note": "Paper moves at the speed of offices. Visits move at the speed of a six-year-old. You keep both appointments."
+    }
+   ]
+  },
+  {
+   "id": "request_deferred",
+   "kicker": "Day 38 — Thursday, August 13, 2026",
+   "dayOffset": 38,
+   "title": "Working from the Summary",
+   "body": [
+    "Without the notes, your preparation is a hall of mirrors: the summary quotes the notes, the report will quote the summary, and you can answer only the version of the words that has already been through two retellings. Your lawyer works with what exists — your account, the draft summary, the date of Mr. Henley's call.",
+    "It is not nothing. It is simply not the page itself, and this case, like every case in this series, will eventually be decided by people reading pages."
+   ],
+   "choices": [
+    {
+     "text": "Prepare anyway — you know what happened in that room",
+     "next": "no_packet",
+     "note": "You do. The review will ask a narrower question: what can be shown, and where does it live?"
+    }
+   ]
+  },
+  {
+   "id": "packet_redacted",
+   "kicker": "Day 45 — Thursday, August 20, 2026",
+   "dayOffset": 45,
+   "title": "Black Lines",
+   "body": [
+    "The packet arrives: the visit notes, months of them, in Ms. Goss's even hand — and page after page interrupted by black marker. The observations about you and Ezra are mostly there. What is gone, again and again, is the supervisor's own observational writing around them, blacked out under a stamped reason: ‘staff privacy.’",
+    "You read what is visible twice. Even blacked, the notes are a revelation — the case's memory, in the original hand. But the black bars cover some of the very sentences the summary was built from, and a correction you cannot fully read is a correction half-built."
+   ],
+   "choices": [
+    {
+     "text": "Read the visible parts again, slowly — then decide about the black lines",
+     "next": "f_beat",
+     "addHidden": [
+      "Records — visit notes released in part; supervisor's observations redacted as 'staff privacy'"
+     ],
+     "note": "The packet is the first document in this case that you and its readers now hold in common. Almost."
+    }
+   ]
+  },
+  {
+   "id": "no_packet",
+   "kicker": "Day 45 — Thursday, August 20, 2026",
+   "dayOffset": 45,
+   "title": "The Version You Have",
+   "body": [
+    "What you have, preparing, is the draft summary, Mr. Henley's phone reading of one line, and your own account of two visits. The summary's promoted word — ‘possible impairment concern’ — sits in the open, unanswered by any document of yours.",
+    "There is still one paper move available, and it does not require the packet: a written response, filed into the record, answering the two entries as best you can describe them. Written late and from partial knowledge is weaker than written from the page. It is not the same as unwritten."
+   ],
+   "choices": [
+    {
+     "text": "Decide how to answer — on paper, or out loud",
+     "next": "correction_beat",
+     "note": "A response built from memory and a summary is a lesser instrument. The ladder has many rungs; the mistake is standing on none of them."
+    }
+   ]
+  },
+  {
+   "id": "f_beat",
+   "kicker": "Day 48 — Sunday, August 23, 2026",
+   "dayOffset": 48,
+   "title": "The Answer to Black Lines",
+   "body": [
+    "Your lawyer reads the stamped reason and shakes her head once, precisely. ‘The release rule has a limit for other people's privacy,’ she says, ‘but the same provision says the rule is not to be read to protect agency employees' privacy (55 Pa. Code § 3130.44(f)). A supervisor's observations of a visit are the agency's work about your family — not her private life. That distinction is worth one short letter.’",
+    "The letter is available to be written: short, dated, addressed to the redactions specifically, asking that the supervisor's visit observations be released. Or the black lines can simply be accepted, and your energy saved for the correction itself."
+   ],
+   "choices": [
+    {
+     "text": "Send the short written response on the redactions, citing the provision",
+     "next": "read_file",
+     "setFlags": [
+      "redactionAnswered"
+     ],
+     "addHidden": [
+      "Redactions — parent responded in writing; supervisor's observations requested under 55 Pa. Code § 3130.44(f)"
+     ],
+     "note": "One page. It does not shout. It cites. What it produces will arrive as paper, the only currency this system mints."
+    },
+    {
+     "text": "Accept the black lines — save your fight for the two entries themselves",
+     "next": "read_file",
+     "note": "A reasonable allocation of a tired person's energy. The blacked sentences stay black, and whatever they say will reach the review unexamined."
+    }
+   ]
+  },
+  {
+   "id": "read_file",
+   "kicker": "Day 52 — Thursday, August 27, 2026",
+   "dayOffset": 52,
+   "title": "What the File Actually Holds",
+   "body": [
+    "With the fuller notes in hand, you sit with the whole file at last. Two entries matter. The bruise line, exactly as Mr. Henley read it: ‘Bruise observed on child's arm; mother offered no explanation initially.’ And now you can see the note's next page too, where Ms. Goss recorded, two paragraphs later, your account of the fall in detail. The summary that travelled quoted the first sentence. It did not quote the second page.",
+    "And a plainer error, the kind paper exists to catch: the visit of Thursday, July 23, 2026 is marked ‘missed — mother did not attend.’ You were there. You remember the rain, the bus, Ezra's wet shoes by the door. If your notebook exists, it remembers them in ink, with the date on the page. If it doesn't, correcting that date will rest on your word against the file's — which is the whole argument of this scenario, in one line."
+   ],
+   "choices": [
+    {
+     "text": "Take both entries to your lawyer — it is time to answer them in the same medium they live in",
+     "next": "correction_beat",
+     "addHidden": [
+      "Visit notes as held — bruise line, with mother's account on the following page; one attended visit marked missed"
+     ],
+     "note": "The file, read whole, is less frightening and more answerable than the summary of it. That is usually true. It is why summaries fear files."
+    }
+   ]
+  },
+  {
+   "id": "correction_beat",
+   "kicker": "Day 55 — Sunday, August 30, 2026",
+   "dayOffset": 55,
+   "title": "Answer in Writing, or Out Loud",
+   "body": [
+    "Your lawyer lays out the last fork of the summer plainly. The two entries — the bruise line and, behind it, the promoted word ‘flat’ — can be answered by a short written response filed into the record: what happened, in order, with any same-day notes you kept attached, so that the file forever after holds each entry and its answer side by side.",
+    "Or they can be answered out loud at the review, by you, in the room — sincerely, probably persuasively, and entirely dependent on whether the person writing the next summary chooses to carry your sentences forward the way they carried ‘flat.’"
+   ],
+   "choices": [
+    {
+     "text": "File the written response — both entries answered, your notes (if you kept them) attached",
+     "next": "correction_filed_node",
+     "cash": -6,
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "note": "Dated, copied, filed. From today, anyone who quotes an entry from the file will find its answer in the same folder, at the same stop."
+    },
+    {
+     "text": "Raise it orally at the review — say it to the room, where people can hear you mean it",
+     "next": "correction_oral_node",
+     "note": "They will hear you mean it. Meaning it has never been the scarce resource in this case. Paper is."
+    }
+   ]
+  },
+  {
+   "id": "correction_filed_node",
+   "kicker": "Day 56 — Monday, August 31, 2026",
+   "dayOffset": 56,
+   "title": "Filed, Beside Them",
+   "body": [
+    "The response is two pages and no adjectives worth mentioning: the fall, in sequence; the explanation, given immediately and recorded on the note's own second page; the word ‘flat,’ with its double shift attached; the missed visit that wasn't, with its date corrected. Where your notebook exists, its pages ride along as attachments, and the clerk's stamp lands on the whole packet at once.",
+    "Nothing about the filing is dramatic. That is rather the point. The file now contains two versions, and — this is the part that matters — it contains them together, where every future quoter will meet them together."
+   ],
+   "choices": [
+    {
+     "text": "Go on visiting — the review is next, and the file going into it is no longer one-handed",
+     "next": "review_prep",
+     "note": "Entries travel. From now on, yours travel with company."
+    }
+   ]
+  },
+  {
+   "id": "correction_oral_node",
+   "kicker": "Day 56 — Monday, August 31, 2026",
+   "dayOffset": 56,
+   "title": "Rehearsed, Unfiled",
+   "body": [
+    "You rehearse the answer with your lawyer until it is tight: the fall, the immediate report, the double shift behind ‘flat.’ It is true, it is ordered, and it exists in exactly one place — your voice, on a Thursday, in a room where summaries are written afterward by other people.",
+    "‘Say it well,’ your lawyer says. ‘Then understand that what survives of it is whatever the next summary decides to carry — the same process that promoted “flat” will now be in charge of your answer to it.’"
+   ],
+   "choices": [
+    {
+     "text": "Go to the review ready to say it — clearly, and in order",
+     "next": "review_prep",
+     "note": "A good speech, prepared. The file it will land in is written by listeners."
+    }
+   ]
+  },
+  {
+   "id": "review_prep",
+   "kicker": "Day 66 — Thursday, September 10, 2026",
+   "dayOffset": 66,
+   "title": "The Packet, in Date Order",
+   "body": [
+    "The week before the review, your lawyer assembles the packet the way this series has taught you everything is assembled: in date order. The notes. The redactions, answered or accepted. Your response, filed or rehearsed. The summary that promoted a word, next to the page the word came from.",
+    "Ezra, meanwhile, has opinions about the review only insofar as it touches visits. It does not, directly. It touches what every future reader of his file will believe about his mother in July. He will never read the packet. He will live downstream of it."
+   ],
+   "choices": [
+    {
+     "text": "Read the review notice when it comes — date, room, and the report that will be on the table",
+     "next": "review_notice",
+     "note": "Date order. The summer, testified to by its own paperwork."
+    }
+   ]
+  },
+  {
+   "id": "review_notice",
+   "kicker": "Day 69 — Sunday, September 13, 2026",
+   "dayOffset": 69,
+   "title": "The Report on the Table",
+   "body": [
+    "The review report arrives, and it is the draft summary grown up: fair about the visits in general, specific about the two entries in particular. ‘Possible impairment concern’ is there, in the concerns paragraph, with the bruise line beneath it as support — two quotations, holding each other up, neither of them yet met by an answer in the same document.",
+    "Whether that changes on review day depends, with a precision this scenario has been honest about since its first scene, on what your summer put into the file before the hearing — and on which lead your lawyer can honestly open with."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review",
+     "next": "review",
+     "note": "Small room, enormous job: deciding what the file will say about the summer."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 73 — Thursday, September 17, 2026",
+   "dayOffset": 73,
+   "title": "The Review",
+   "body": [
+    "The review is a small room doing an enormous job: deciding what the file will say about the summer, and therefore what the plan will ask of the autumn. Mr. Henley presents. The report's two entries are read aloud in the flat voice people use for other people's paper. Then it is your side's turn, and your lawyer looks at the packet — at what is actually in it — and chooses her lead."
+   ],
+   "choices": [
+    {
+     "text": "Open with the filed correction — your same-day notes attached, the redactions answered, both entries met on the record",
+     "next": "end_answered",
+     "requiresFlags": [
+      "ownNotes",
+      "recordsRequested",
+      "correctionFiled",
+      "redactionAnswered"
+     ],
+     "note": "This lead exists only because every piece of it was built before today: the notebook, the request, the letter, the filing. The room is just where they are spent."
+    },
+    {
+     "text": "Open with the filed correction alone — your version, in writing, beside theirs",
+     "next": "end_two_versions",
+     "requiresFlags": [
+      "correctionFiled"
+     ],
+     "note": "A real answer, on paper, in the file. What it lacks is the same-day paper behind it — and the room will feel the difference."
+    },
+    {
+     "text": "Answer out loud — tell the room the fall, and the double shift, in order",
+     "next": "end_two_versions",
+     "requiresNoFlags": [
+      "correctionFiled"
+     ],
+     "note": "Sincere, specific, and spoken. What survives of it will be decided by the next summary, as 'flat' was decided by the last one."
+    },
+    {
+     "text": "Let the report stand and talk about how the visits are going now",
+     "next": "end_flat",
+     "note": "The visits are going well. The report is not about how the visits are going. It is about what the file says — and the file has just been read aloud, unanswered."
+    }
+   ]
+  },
+  {
+   "id": "end_answered",
+   "kicker": "Day 80 — Thursday, September 24, 2026",
+   "dayOffset": 80,
+   "title": "Ending — The Note, Answered",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Both entries, and both answers, in the same folder. The bruise line — answered by the note's own second page, which recorded your explanation in detail, and by your filed correction, which quoted it. The word ‘flat’ — re-anchored to the double shift by your same-day notebook page, written the night it happened. The attended visit marked missed — corrected, with the notebook's dated page beside it. And the supervisor's observations — released after your written response, because the release rule is not to be read to protect agency employees' privacy (55 Pa. Code § 3130.44(f)). At the review, the concerns paragraph was rewritten: the entries stand, with their answers attached, and ‘possible impairment concern’ came out — replaced by what the record, read whole, actually shows.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): The notes reached you because agency records ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)) — exercised in writing, so the asking itself is provable. The redactions yielded to the same regulation's own limit on its limit, § 3130.44(f), used exactly as far as it goes: a supervisor's visit observations are the agency's work about your family, not her private life. Counsel (42 Pa.C.S. § 6337) assembled, attached, and filed. Say plainly what was won: Ezra is still placed, visits are still supervised, and no order today ends this case. What changed is the record every future decision will be read from — answered, dated, and no longer quotable in halves.",
+    "THE HONEST PART: A different supervisor might have written the fall note whole the first time, and none of this would have been necessary; a different reviewer could have kept the concern language even against the full packet, and some do. Ms. Goss's caseload, Mr. Henley's habits, the reviewer, and plain luck all hold pieces of this outcome alongside your work. This ending is not a verdict on you as a mother — the facts were always on your side here; what your choices changed is that the file finally knows them, in ink, beside the entries that misstated them. In this system, that is what an answer is."
+   ]
+  },
+  {
+   "id": "end_two_versions",
+   "kicker": "Day 80 — Thursday, September 24, 2026",
+   "dayOffset": 80,
+   "title": "Ending — Two Versions, One File",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Two versions, sharing one file, neither fully displacing the other. Your account of the fall and of the word ‘flat’ exists in the record — filed, or spoken at the review and partly carried into its summary — but it arrived late, or thin, or without the same-day paper behind it, and the review treated the two entries as contested rather than corrected. The concern language softened; it did not come out. The missed-visit date may or may not have moved, depending on what could be shown for it. Future readers will meet both versions and will have to choose, file in hand, which one the surrounding paper supports.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): Every tool that built the best ending was available on this path too, and the ones used here did real work: a response filed into the record is durable in a way a speech is not, and counsel (42 Pa.C.S. § 6337) could present it because it existed. What limited it is the same mechanism, run in reverse: the notes themselves are released on request (55 Pa. Code § 3130.44(d)), and a correction built from the actual pages — including the note's own second page, and the supervisor's observations answerable under § 3130.44(f) — answers quotations with quotations. A version built from memory answers them with sincerity. Reviews price the difference, because reviews can only price what is in front of them.",
+    "THE HONEST PART: Contested is not nothing. Against a draft that began as an unanswered ‘possible impairment concern,’ a file that now argues with itself is movement — and at the next review, a fuller record can still be built, starting from the version you planted here. Judges and reviewers differ in how much weight they give a parent's late paper against a file's early sentences, and this one split the difference, as many do. Workers, supervisors, and luck are in this ending too. What your choices controlled was whether the file's memory of this summer would be the only memory in the room. It wasn't. It just wasn't the only one that arrived with dates on it."
+   ]
+  },
+  {
+   "id": "end_flat",
+   "kicker": "Day 80 — Thursday, September 24, 2026",
+   "dayOffset": 80,
+   "title": "Ending — Flat, As Recorded",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): One version, unanswered. The word ‘flat,’ promoted by quotation into a ‘possible impairment concern,’ now sits in the review's findings, with the bruise line beneath it as support — its second page, the one recording your explanation, unquoted, because no one put it in front of the room. The attended visit marked missed still reads as missed. None of this was found against you after a contest. It hardened by default, the way unopposed sentences do: each document quoted the last, and the quotations agreed with each other because they were the same sentence travelling.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): The instruments all existed, unused or used too late: the visit notes were yours on written request — they ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)); the blacked-out observations were answerable under the same provision's rule that it is not to be read to protect agency employees' privacy (§ 3130.44(f)); and counsel (42 Pa.C.S. § 6337) was there to file the correction that would have travelled with the entries. None of that is gone: a record can be answered at the next review too, and a folder begun late is worth more than this paragraph's regret. But the findings written today are the findings the next summary will quote, and quotations, as this scenario has shown from its first scene, are how words get promoted.",
+    "THE HONEST PART: Let this debrief be as fair as the file wasn't: you reported the fall immediately, in the room, before anyone asked; you were tired because you had worked a double shift to keep the household this case is measuring; and Ezra's visits, in the lived sense, went well. The failure in this ending is not a failure of parenting or even of effort. It is a failure of answer — nobody handed the system the exchange rate between living a fact and filing it until the findings were already written. A fuller first note, a smaller caseload, a supervisor who quoted her own second page — any of those lucks change this ending without you changing at all. Outcomes here turn on workers, reviewers, and luck. Your share, next time, is the notebook, the request, and the filing — the three unglamorous objects that decide what a word becomes."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s62';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

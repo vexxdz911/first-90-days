@@ -1,0 +1,804 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 116 — The Summary Line (a fictional composite)",
+  "startDateISO": "2026-10-02",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "Month 14 of Leona's placement: one summary phrase — ‘unresolved financial instability’ — built from three money entries, each documented wrong or lagging in the file's own paper, stalls a case that was moving toward home."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Friday, October 2, 2026",
+   "dayOffset": 0,
+   "title": "Month Fourteen",
+   "body": [
+    "Your name is Althea. Your daughter Leona is eleven, and she has been in care since before this story opens — long enough that her life has a second geography now: a foster home, a school run, a bedroom that is hers in every way except the way that is being decided. Your case is in its fourteenth month. Your compliance, in the file's own recent summaries, has been described as steady: treatment completed, visits kept, work steady, the plan's goals met or moving.",
+    "A permanency review is approaching, and the talk around it — your worker's, your lawyer's — has been the talk of a case preparing to move toward home. Then the pre-review summary arrives, and in its middle, in the level grammar summaries use, sits one phrase that stops the whole direction of the case cold.",
+    "‘Unresolved financial instability.’ Four words, built — the summary's own sourcing shows, if you read it the way your lawyer reads — from three money entries in the file. This story is an audit of those three entries, one by one, on paper. It is also a race against a date the summary does not mention."
+   ],
+   "choices": [
+    {
+     "text": "Read the phrase the way your lawyer will: as a claim with sources",
+     "next": "summary_line",
+     "note": "Claims with sources can be audited. That is either the worst news in this story or the best, and the next fifty-seven days will decide which."
+    }
+   ]
+  },
+  {
+   "id": "summary_line",
+   "kicker": "Day 2 — Sunday, October 4, 2026",
+   "dayOffset": 2,
+   "title": "One Phrase, Three Entries",
+   "body": [
+    "Your lawyer spreads the summary on her table and does the thing she does with every document in this case: she finds its footnotes. ‘Unresolved financial instability’ has three. A support arrearage, accrued over two months. A missed payment, recorded on a date in the spring. And a benefits gap — a stretch where a benefit the plan counted simply was not there.",
+    "Three entries. Read cold, as a judge will read them, they sketch a mother whose money is a problem she has not solved. Read by the woman who lived those months, each one has a biography the file never recorded. “Summaries are conclusions,” your lawyer says. “Entries are claims. We audit claims. One at a time, on paper, with the file's own pages where the file has them.” You have counsel because the law provides for it (42 Pa.C.S. § 6337). For the next eight weeks, her job and yours is an audit."
+   ],
+   "choices": [
+    {
+     "text": "Ask her to name the other clock first — the one the summary does not mention",
+     "next": "counsel_meet",
+     "note": "She turns her desk calendar around. One date is already circled, in pencil, in a hand that circled it months ago."
+    }
+   ]
+  },
+  {
+   "id": "counsel_meet",
+   "kicker": "Day 5 — Wednesday, October 7, 2026",
+   "dayOffset": 5,
+   "title": "The Date in Pencil",
+   "body": [
+    "Your lawyer states the arithmetic slowly, the way it must be stated to be believed. Leona entered care on Monday, September 1, 2025. Fifteen calendar months from that entry is Tuesday, December 1, 2026 — Monday, September 1, 2025 plus fifteen calendar months, computed month by month, landing on Tuesday, December 1, 2026, which is day 60 of this story. When a child has been in care for fifteen of the most recent twenty-two months, the federal law generally presses the agency to file a petition to end parental rights, unless an exception is documented (42 U.S.C. § 675(5)(E)).",
+    "“Generally, and unless,” she says, “are the two most important words in this case, and both of them run on paper. Our audit is the argument for the review. The exception packet is the backstop if the date arrives first. We build both, in that order, starting now — because a summary line corrected entry by entry is a case moving home, and a summary line left standing is the agency's Exhibit A for why the date should decide everything.”"
+   ],
+   "choices": [
+    {
+     "text": "Begin the audit where she begins: with the file itself, not your memory of it",
+     "next": "three_entries",
+     "addHidden": [
+      "Counsel meeting — ASFA 15-month date computed from the entry date and named; audit and exception backstop planned"
+     ],
+     "note": "Two builds, one deadline. The audit first — because a truthful file is the argument everything else stands on."
+    }
+   ]
+  },
+  {
+   "id": "three_entries",
+   "kicker": "Day 8 — Saturday, October 10, 2026",
+   "dayOffset": 8,
+   "title": "Three Tabs in a Binder",
+   "body": [
+    "The binder gets three tabs, labeled in counsel's hand: ARREARAGE. PAYMENT. GAP. Under each, the audit's question is written in the same words, because the discipline of an audit is that every entry gets the same question: what does the paper say happened, and what paper would prove it?",
+    "Your side of the paper is a folder you have kept the whole case — receipts, letters, the plan itself, with its notes in the margins in three different pens. The file's side is in a building across town. An audit that reads only one side is a memoir. An audit that reads both is an exhibit. Getting the second side is, as ever in this system, a written act with a citation."
+   ],
+   "choices": [
+    {
+     "text": "Open your folder on the table and take the inventory honestly",
+     "next": "folder_beat",
+     "note": "Receipts, letters, the plan with its margin notes. Somewhere in this folder are two of the three answers. The third is in their file, on their own page."
+    }
+   ]
+  },
+  {
+   "id": "folder_beat",
+   "kicker": "Day 10 — Monday, October 12, 2026",
+   "dayOffset": 10,
+   "title": "The Folder, Inventoried",
+   "body": [
+    "The inventory is encouraging and incomplete in the specific way that decides cases. The plan is here — all of it, including the page your whole first entry will turn on. A payment receipt is here, folded into a visit envelope, dated, legible, exactly where you put it in the spring and have not thought about since. The treatment records are here, with their admission and discharge dates in a discharge summary's brisk paragraphs.",
+    "What is not here is the agency's own paperwork about your money: the arrearage ledger as they keep it, the posting record as their system kept it, the closure letter as their file received it back. Your folder proves your life. Their file is what the summary was built from. The audit needs both, in the same binder, before it argues anything."
+   ],
+   "choices": [
+    {
+     "text": "Ask counsel how the file's side is obtained — in writing, by right",
+     "next": "records_learn",
+     "note": "“There is a regulation,” she says, and is already reaching for her card. “It is the most useful sentence in this entire case, and it is eleven words long.”"
+    }
+   ]
+  },
+  {
+   "id": "records_learn",
+   "kicker": "Day 12 — Wednesday, October 14, 2026",
+   "dayOffset": 12,
+   "title": "Shall Be Released",
+   "body": [
+    "The citation goes on the back of her card: 55 Pa. Code § 3130.44(d). The case record is to be released upon request — and your audit names its pages precisely: the family service plan with its notes, the support ledger entries for the two months in question, the payment posting record for the spring date, and the benefits correspondence, including the closure letter and the address it was sent to.",
+    "“Notice whose paper does the proving in this audit,” counsel says. “The plan's pause note is the agency's own page. The posting record is their own system. The closure letter's address is their own envelope. We are not asking the review to believe you against the file. We are asking it to read the whole file — including the pages the summary didn't.”"
+   ],
+   "choices": [
+    {
+     "text": "Decide this week — the audit's pages take time to arrive, and the calendar does not wait",
+     "next": "records_fork",
+     "note": "The packet will take days to arrive. Tuesday, December 1, 2026 will not move for it. In this story, those two facts are the whole schedule."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 14 — Friday, October 16, 2026",
+   "dayOffset": 14,
+   "title": "Ask for the Audit's Pages",
+   "body": [
+    "The written request names the pages, one by one, the way the binder's tabs name them. It goes in dated and copied, with the copy going behind a fourth tab counsel labels, in pencil, REQUEST — because in this system the asking itself is evidence, dated, that the reader of the file once asked to see the file.",
+    "Or the audit can run on your folder and your memory alone: strong on your life, silent on theirs, and incapable of the one move this case turns on — showing the review the agency's own page that contradicts the agency's own summary."
+   ],
+   "choices": [
+    {
+     "text": "Put the request in writing — plan, support ledger, posting record, benefits correspondence — and keep a copy",
+     "next": "packet_arrives",
+     "cash": -6,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record requested in writing under 55 Pa. Code § 3130.44(d) — plan, support ledger, posting record, and benefits correspondence named"
+     ],
+     "note": "Six dollars of copies and postage. The request names the pages. Named pages, in this system, arrive; unnamed files arrive as summaries."
+    },
+    {
+     "text": "Audit from your folder alone — it is complete about your life, and your life is the subject",
+     "next": "summary_only",
+     "cash": -6,
+     "note": "Six dollars across the week's errands either way. Your folder is complete about your life. The summary was not built from your folder, and it will not be corrected by it alone."
+    }
+   ]
+  },
+  {
+   "id": "packet_arrives",
+   "kicker": "Day 18 — Tuesday, October 20, 2026",
+   "dayOffset": 18,
+   "title": "The File's Side, on the Table",
+   "body": [
+    "The packet arrives redacted in the ordinary places and complete in the decisive ones. The plan is here, with the note the audit came for, in the agency's own hand on the agency's own page. The support ledger is here, month by month. The posting record is here, with its two dates — the date a thing is paid and the date a system posts it, sitting in adjacent columns like strangers. And the benefits correspondence is here, closure letter and envelope data together.",
+    "Counsel reads it through once, in silence, and then says the sentence the whole audit was built to earn: “All three entries are auditable from their own paper. Now we audit them. Tab one.”"
+   ],
+   "choices": [
+    {
+     "text": "Open tab one — the arrearage",
+     "next": "audit_plan",
+     "addHidden": [
+      "Agency packet received — plan note, support ledger, posting record, and benefits correspondence all present"
+     ],
+     "note": "Three entries, three tabs, one method: the paper says what happened, or it does not, and either way the audit writes it down."
+    }
+   ]
+  },
+  {
+   "id": "summary_only",
+   "kicker": "Day 18 — Tuesday, October 20, 2026",
+   "dayOffset": 18,
+   "title": "Auditing Blind",
+   "body": [
+    "Without the packet, the audit works from the short side of the table. Your folder's plan copy is here — if the pause note is on your copy, it can be argued; the support ledger's own lines cannot be quoted; the posting record's second date cannot be shown; the closure letter's envelope cannot be produced. You would be telling the review, accurately and in detail, what the agency's own pages say, without the pages.",
+    "Counsel is plain about the arithmetic of that: “We proceed. We document what we can from your side, in writing, while it is still true in detail. But understand the price: every entry we cannot answer from their paper, we answer from yours — and a summary is never corrected by the folder it ignored. It is corrected by the file it came from.”"
+   ],
+   "choices": [
+    {
+     "text": "Proceed with the folder's audit, documenting your side while it is still detailed",
+     "next": "audit_plan",
+     "note": "The audit proceeds. Its binder will have your paper in all three tabs and their silence in all three, which the review will price precisely."
+    }
+   ]
+  },
+  {
+   "id": "audit_plan",
+   "kicker": "Day 21 — Friday, October 23, 2026",
+   "dayOffset": 21,
+   "title": "The Method, Stated Once",
+   "body": [
+    "The method is stated once, on the binder's first page, and never varied: for each entry, the summary's claim; the document that tests it; the result, in one sentence, with the document attached. No adjectives. No argument about anyone's intentions. An arrearage either accrued while the plan said paused, or it did not. A payment either posted late, or it did not. A letter either went to the old address, or it did not.",
+    "“Reviews can argue with mothers,” counsel says. “They have had practice. They cannot argue with their own ledger, their own plan page, and their own envelope, laid in a row. Tab one. The two months.”"
+   ],
+   "choices": [
+    {
+     "text": "Open the arrearage entry — the two months at the start of the year of this case",
+     "next": "binder_check",
+     "note": "Two months in which the file recorded money owed and nothing else. Your memory of those months is a hospital ward. The file's memory is a column."
+    }
+   ]
+  },
+  {
+   "id": "binder_check",
+   "kicker": "Day 22 — Saturday, October 24, 2026",
+   "dayOffset": 22,
+   "title": "The Binder, Checked Against the Summary",
+   "body": [
+    "Before tab one is opened, counsel performs the audit's control test: she reads the summary's three entries against the packet's table of contents, line by line, checking that each entry's testing document actually exists in the pages received. Arrearage: the plan and the ledger, both present. Payment: the posting record, present, with both its date columns. Gap: the correspondence, present, letter and mailing record together.",
+    "“An audit is only an argument if its exhibits exist,” she says. “Summaries skip that step, which is how phrases get built from pages nobody opened. We do not skip it. Every claim we make at the review will have a page number in this binder, or it will not be made.” It is a small, cold ceremony, and it is the reason the rest of this story can be warm."
+   ],
+   "choices": [
+    {
+     "text": "Open tab one, with the control test passed",
+     "next": "entry1_setup",
+     "note": "Every testing document exists. The audit can now afford to be exact, entry by entry, in the file's own pages."
+    }
+   ]
+  },
+  {
+   "id": "entry1_setup",
+   "kicker": "Day 24 — Monday, October 26, 2026",
+   "dayOffset": 24,
+   "title": "Entry One: The Paused Months",
+   "body": [
+    "Entry one, as the summary's source shows it: a support arrearage, accrued across two months, listed in the ledger in the ordinary way — amount growing, no payments recorded, a parent's obligation silently compounding. Read cold, it is the summary's strongest entry. It looks like a debt ignored.",
+    "What the ledger does not say is where you were for those two months: in inpatient treatment, admitted on one date and discharged on another, in a program the plan itself had ordered. And the plan — the agency's own plan, on the agency's own page — recorded the fact in its own words at the time: the relevant goal was noted as paused for the treatment period. A paused goal and an accruing arrearage sat in the same file, in different sections, never introduced to each other. The summary met only one of them."
+   ],
+   "choices": [
+    {
+     "text": "Ask what paper proves the pause — the plan page, and the treatment dates",
+     "next": "entry1_doc",
+     "note": "“Two documents,” counsel says. “Their plan page, with their note. And the treatment record, with its dates. Together they are the whole entry.”"
+    }
+   ]
+  },
+  {
+   "id": "entry1_doc",
+   "kicker": "Day 26 — Wednesday, October 28, 2026",
+   "dayOffset": 26,
+   "title": "The Plan's Own Page",
+   "body": [
+    "The plan page is the audit's first exhibit, and it is beautiful in the way only bureaucracy can be: the goal, the note beside it in the worker's hand recording the pause for the treatment period, the date of the note. Nobody backdated anything. Nobody wrote it for this audit. It was written at the time, for the file's own use, and then the summary was written later by someone who did not turn to this page.",
+    "The treatment dates are the second document, and they can be obtained the way such records are obtained: a written request to the program, in its own process, for the admission and discharge summary you are entitled to ask them for — paper you partly hold already, in your folder's discharge summary, waiting to be copied, dated, and put behind tab one."
+   ],
+   "choices": [
+    {
+     "text": "Assemble entry one in writing — the plan page, the pause note, and the treatment admission and discharge dates",
+     "next": "treatment_dates",
+     "cash": -4,
+     "setFlags": [
+      "entry1Doc"
+     ],
+     "addHidden": [
+      "Entry one documented — arrearage accrued during inpatient treatment while the plan's own note recorded the goal as paused; treatment dates attached"
+     ],
+     "note": "Four dollars of copies. Tab one now holds a complete sentence: the debt accrued, in the months the plan itself had paused, while its author was in the treatment the plan itself had ordered."
+    },
+    {
+     "text": "Carry entry one on your account — you were there, and the ward's dates are in your memory exactly",
+     "next": "treatment_dates",
+     "cash": -4,
+     "note": "Four dollars across the week's errands either way. Your memory of the ward is exact. At the review, exact memory will be weighed against a printed ledger — the audit's first lesson, learned at the first tab."
+    }
+   ]
+  },
+  {
+   "id": "treatment_dates",
+   "kicker": "Day 28 — Friday, October 30, 2026",
+   "dayOffset": 28,
+   "title": "Two Months, with Dates on Them",
+   "body": [
+    "Tab one, closed or open depending on the paper in it, tells the same two months in two grammars. The ledger's grammar: an obligation, accruing. The assembled grammar: a mother in ordered treatment, a goal paused by the plan's own note, an arrearage that is the arithmetic residue of a pause nobody carried across the file from the plan section to the money section.",
+    "“Notice what we are not claiming,” counsel says. “We are not claiming the money was not owed, or that ledgers should stop for treatment. We are claiming the summary's word — instability — cannot be built from a paused goal's residue without saying it was paused. The document says paused. The summary said nothing. Silence, in summaries, is a conclusion.” Tab two is a smaller story with the same shape: a date, and another date, and a summary that read only the first."
+   ],
+   "choices": [
+    {
+     "text": "Open tab two — the missed payment",
+     "next": "ledger_page",
+     "note": "One payment, two dates. The whole entry lives in the distance between them, which is five days wide and one summary deep."
+    }
+   ]
+  },
+  {
+   "id": "ledger_page",
+   "kicker": "Day 29 — Saturday, October 31, 2026",
+   "dayOffset": 29,
+   "title": "The Ledger's Own Lines",
+   "body": [
+    "One more look at entry one before it closes, because the ledger deserves to be read as carefully as the summary read it carelessly: its lines for the two treatment months show the obligation growing in the ordinary monthly entries, each dated, each correct as arithmetic. Nothing in the ledger is false. That is the audit's most important finding about it, and counsel writes it on the binder's first page in so many words.",
+    "“We are not accusing their ledger of lying,” she says. “A ledger that accrues during a pause is doing its job. The summary's job was to read the ledger beside the plan. It read one book of a two-book story and reviewed the wrong one — as your daughter will put it, when she is told. Tab two.”"
+   ],
+   "choices": [
+    {
+     "text": "Open tab two — the missed payment",
+     "next": "entry2_setup",
+     "note": "The ledger: accurate, incomplete, and innocent. The summary: the only document in the case that read it alone."
+    }
+   ]
+  },
+  {
+   "id": "entry2_setup",
+   "kicker": "Day 30 — Sunday, November 1, 2026",
+   "dayOffset": 30,
+   "title": "Entry Two: The Missed Payment",
+   "body": [
+    "Entry two, as the summary's source shows it: a payment recorded as missed, on a date in the spring — the date it was due, by the file's reckoning, with no payment beside it. In the summary's parade it is the middle entry, the one that turns one money problem into a pattern: arrearage, missed payment, gap. Patterns are what summaries are for. Patterns are also what audits are for, because a pattern built from three entries falls one audited entry at a time.",
+    "You remember the spring payment the way you remember all your payments in this case: made, on time, with a receipt. Your folder holds the receipt, folded into a visit envelope since the spring. What your folder cannot show is the other half of the entry — what the receiving system did with the payment after you made it. That half lives in the posting record, in its two adjacent columns."
+   ],
+   "choices": [
+    {
+     "text": "Take the receipt out of the visit envelope and lay it beside the posting record",
+     "next": "entry2_doc",
+     "note": "The receipt has been waiting in an envelope for months, patient as only paper can be. It is about to become the audit's smallest and cleanest exhibit."
+    }
+   ]
+  },
+  {
+   "id": "entry2_doc",
+   "kicker": "Day 32 — Tuesday, November 3, 2026",
+   "dayOffset": 32,
+   "title": "Paid on One Date, Posted on Another",
+   "body": [
+    "The two papers, adjacent, tell the whole entry without either of them raising its voice. Your receipt: the payment, made on its date, in the ordinary way, receipted at the time. The posting record: the same payment, entered into the system's ledger on a date five days later — a posting lag, the ordinary delay between a payment arriving and a payment being posted, recorded in the system's own two columns for anyone who reads both of them.",
+    "The summary read one column. Between the due date and the posting date, the entry wore the clothes of a missed payment — and a lag, summarized, becomes a failure, and a failure, listed between an arrearage and a gap, becomes ‘instability.’ Assembled in writing, the entry corrects itself: the receipt and the posting record, copied, dated, and put behind tab two as one exhibit with two dates."
+   ],
+   "choices": [
+    {
+     "text": "Assemble entry two in writing — the receipt and the posting record, copied as one two-date exhibit",
+     "next": "posting_office",
+     "cash": -4,
+     "setFlags": [
+      "entry2Doc"
+     ],
+     "addHidden": [
+      "Entry two documented — ‘missed payment’ was a posting lag; receipt and the system's own posting record assembled as one exhibit"
+     ],
+     "note": "Four dollars of copies. Tab two holds two dates now, and the distance between them has an author, and the author is a queue."
+    },
+    {
+     "text": "Keep the receipt in the folder — the review can ask the system about its own posting",
+     "next": "posting_office",
+     "cash": -4,
+     "note": "Four dollars across the week's errands either way. Reviews rarely ask systems about themselves. They read summaries of systems, written from one column."
+    }
+   ]
+  },
+  {
+   "id": "posting_office",
+   "kicker": "Day 34 — Thursday, November 5, 2026",
+   "dayOffset": 34,
+   "title": "Five Days, Explained by Nobody",
+   "body": [
+    "Counsel closes tab two with the audit's driest sentence so far: “Nobody did anything wrong in entry two. A payment was made, a queue was slow, a column was read alone. That is worth saying at the review, in exactly those words — because it teaches the room how the summary was built, and a room that understands how its summary was built reads the third entry differently.”",
+    "Tab three is the entry with the longest shadow, because it is the one that looks most like character: a benefits gap, weeks long, in a plan that counted on the benefit being there. It is also — the audit already suspects, from the packet's envelope data — the entry with the most familiar cause in this entire library of stories: a letter, an address, and a file that recorded a silence as a choice."
+   ],
+   "choices": [
+    {
+     "text": "Open tab three — the gap",
+     "next": "queue_explain",
+     "note": "A closure, a prior address, and a pattern this project has met before — now read, by a summary, as a mother's character."
+    }
+   ]
+  },
+  {
+   "id": "queue_explain",
+   "kicker": "Day 35 — Friday, November 6, 2026",
+   "dayOffset": 35,
+   "title": "The Queue, in Plain Words",
+   "body": [
+    "For the binder's completeness, counsel has the posting office's ordinary explanation added to tab two in writing: payments are entered in the order they are processed, and in busy weeks the entry can follow the payment by days — a queue, described by the people who run it, in the flattest prose in the entire binder. Nobody apologizes in it. Nobody needs to. It simply establishes that the distance between tab two's two dates is a known, ordinary feature of the system that posted it.",
+    "“File the flat prose first,” counsel says, “and the receipt second. By the time the room reaches the receipt, it will already know what a five-day gap between paying and posting is. Sequence is half of every argument ever made from paper.”"
+   ],
+   "choices": [
+    {
+     "text": "Open tab three — the gap",
+     "next": "entry3_setup",
+     "note": "A queue, explained by its keepers, filed ahead of the receipt it explains. Tab three is the longest shadow in the binder, and it opens next."
+    }
+   ]
+  },
+  {
+   "id": "entry3_setup",
+   "kicker": "Day 36 — Saturday, November 7, 2026",
+   "dayOffset": 36,
+   "title": "Entry Three: The Gap",
+   "body": [
+    "Entry three, as the summary's source shows it: a benefit the plan counted on was closed, and stayed closed for a stretch of weeks, before it was restored. The file records the closure and the gap. What the file's summary does not record is the closure's own first step: a letter, mailed by the system that closed it, asking the recipient to act by a date printed on its face — and mailed, the packet's correspondence shows, to your prior address. The address you had moved from. The address the agency's own file elsewhere records you leaving, with a new address given in its place.",
+    "So the gap's biography is: a letter to a place you no longer lived; a deadline on its face, expiring in an empty room; a closure for non-response; weeks of absence, summarized upward into ‘instability.’ You have seen this exact shape before, in the stories this library tells — a mailing read as a mother. The audit's job is to make the review see it too, from the file's own envelope."
+   ],
+   "choices": [
+    {
+     "text": "Ask what paper proves the address — the letter's mailing record, and your update in their own file",
+     "next": "entry3_doc",
+     "note": "“Their envelope and their file,” counsel says. “Tab three is their handwriting from start to finish. We just have to assemble it in the order it happened.”"
+    }
+   ]
+  },
+  {
+   "id": "entry3_doc",
+   "kicker": "Day 38 — Monday, November 9, 2026",
+   "dayOffset": 38,
+   "title": "The Envelope in the File",
+   "body": [
+    "The assembled exhibit for tab three has three pages, all of them the system's own. The closure letter, with the action it asked for stated on its face and the date it set. The mailing record, showing the address it was sent to: the prior address. And the agency file's own record of your move — the new address, given and noted, dated before the letter was mailed. Three pages, in date order, and the gap stops being a fact about your finances and becomes a fact about a mailing, which is what it always was.",
+    "Assembled in writing, copied, and put behind tab three, the entry completes the audit's pattern: three entries, three documents, three silences in a summary — a pause never carried across the file, a lag never read in its second column, a letter never traced to its address."
+   ],
+   "choices": [
+    {
+     "text": "Assemble entry three in writing — closure letter, mailing record, and the file's own record of the move, in date order",
+     "next": "address_proof",
+     "cash": -5,
+     "setFlags": [
+      "entry3Doc"
+     ],
+     "addHidden": [
+      "Entry three documented — benefits gap caused by a closure letter mailed to the prior address after the move was on file"
+     ],
+     "note": "Five dollars of copies. Tab three is the system's own paper, in the order it happened. The audit is now three tabs deep, and every tab is checkable."
+    },
+    {
+     "text": "Carry entry three on your account — the move, the empty apartment, the weeks, in order",
+     "next": "address_proof",
+     "cash": -5,
+     "note": "Five dollars across the week's errands either way. Your account is in perfect order. Order, unaccompanied, is the currency summaries are never paid in."
+    }
+   ]
+  },
+  {
+   "id": "address_proof",
+   "kicker": "Day 40 — Wednesday, November 11, 2026",
+   "dayOffset": 40,
+   "title": "Three Tabs, Closed",
+   "body": [
+    "The binder closes with a sound like a small book ending. Counsel turns its pages once, slowly, in the manner of a person checking a proof: tab one, a paused goal's residue, documented from the plan's own page; tab two, a lag, documented from two dates in the system's own record; tab three, a mailing, documented from the system's own envelope. Underneath all three, the summary's phrase, still standing in its paragraph, waiting for the review to decide whether it describes anything.",
+    "“Now the second build,” counsel says. “Because the audit corrects the file at the review — and the review is ours to prepare for. But the date does not attend reviews. While we prepare the correction, we file the backstop: the exception packet, documented, so that if the calendar reaches fifteen months before the file is truthful, the filing decision still has to reckon with a record — relative care if it applies, a documented compelling reason, or services identified and not provided — instead of with a phrase.”"
+   ],
+   "choices": [
+    {
+     "text": "Visit Leona first — the binder can wait one Saturday",
+     "next": "summary_draft116",
+     "note": "The audit is about a file. The file is about a girl who has opinions about binders, and she delivers them on Saturdays."
+    }
+   ]
+  },
+  {
+   "id": "summary_draft116",
+   "kicker": "Day 41 — Thursday, November 12, 2026",
+   "dayOffset": 41,
+   "title": "The Phrase, Sighted Again",
+   "body": [
+    "Word comes through counsel, in the ordinary way of such word, that the summary's phrase is already being quoted — a draft report for the review repeats ‘unresolved financial instability’ as the case's settled description of its mother, citing the summary that coined it, which cited the entries nobody audited. Phrases reproduce exactly like this: document to document, each quotation laundering the last one's doubt, until the phrase has the one property the entries never had — it looks established.",
+    "“This is why the correction has to happen on the record, in the room, entry by entry,” counsel says. “A phrase corrected in a filing can still be quoted out of the old summary. A phrase corrected on the record, by the court, entry by entry, gets corrected in the transcript every future report has to reckon with. We are not just fixing a line. We are fixing what the next ten documents will say.”"
+   ],
+   "choices": [
+    {
+     "text": "Take Saturday's visit first — the phrase will keep until the packet answers it",
+     "next": "leona_visit",
+     "note": "The phrase is reproducing. The packet is about to be its first reader with a red pen and the authority to use it."
+    }
+   ]
+  },
+  {
+   "id": "leona_visit",
+   "kicker": "Day 42 — Friday, November 13, 2026",
+   "dayOffset": 42,
+   "title": "Leona, on Saturday",
+   "body": [
+    "Saturday's visit is the audit's only scene without paper in its hands, and the scenario insists on it for the record. Leona, at eleven, has reached the age of auditing adults: she wants to know what the phrase in the summary means, having heard it in the partial way children hear everything, completely. You tell her the truth at her size: grown-ups wrote a sentence about money that left some pages out, and you and your lawyer are putting the pages back, in order, with dates.",
+    "She considers this with the seriousness of a fair judge. “So it's like a book report on the wrong book,” she says. You tell her that is exactly what it is, and that the review is where the right book gets read. She assigns you, as homework, to make sure they read the whole thing. On the bus home you write the visit up in the folder, dated, because that is what your hands do now — and because the whole-thing, in this case, includes a girl who grades summaries."
+   ],
+   "choices": [
+    {
+     "text": "Go home and assemble the correction packet with counsel",
+     "next": "assembly116",
+     "note": "Homework accepted. The packet is the whole thing, in date order, with tabs — the right book, bound."
+    }
+   ]
+  },
+  {
+   "id": "assembly116",
+   "kicker": "Day 44 — Sunday, November 15, 2026",
+   "dayOffset": 44,
+   "title": "Assemble the Packet, Raise It Aloud, or Wait",
+   "body": [
+    "Three ways, laid out with the binder between them. One: assemble the entry-by-entry correction packet — the three tabs, the plan page, the receipt and posting record, the letter and its envelope, with a short covering statement from counsel that asks the review to correct the summary line entry by entry on the record before it makes its determinations — and file it, in writing, before the review. Two: raise the audit orally at the review — three true stories, told clearly, with the exhibits in a binder in counsel's office. Three: wait for the review and trust that a phrase built from one column of three records will be questioned by the room that printed it.",
+    "The packet, if it is filed, goes in whole: partial paper, this scenario promises, will partially work, and the phrase needs only one surviving entry to survive."
+   ],
+   "choices": [
+    {
+     "text": "Assemble and file the entry-by-entry correction packet with counsel",
+     "next": "filed116",
+     "cash": -8,
+     "setFlags": [
+      "auditPacket"
+     ],
+     "requiresFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Entry-by-entry correction packet filed with counsel before the permanency review"
+     ],
+     "note": "Filed, stamped, copied. The summary line now has, in its own file, a dated answer with three tabs."
+    },
+    {
+     "text": "Raise the audit orally at the review instead",
+     "next": "oral116",
+     "setFlags": [
+      "oralRaised"
+     ],
+     "note": "Three stories, clearly told, on a transcript — with the binder's documents unfiled beneath them, in counsel's office."
+    },
+    {
+     "text": "Wait — the review printed the phrase; the review can question it",
+     "next": "wait116",
+     "note": "Rooms do sometimes question their own phrases. They do it, in this library's experience, when paper gives them a reason. Waiting declines to provide one."
+    }
+   ]
+  },
+  {
+   "id": "filed116",
+   "kicker": "Day 46 — Tuesday, November 17, 2026",
+   "dayOffset": 46,
+   "title": "Filed, Entry by Entry",
+   "body": [
+    "The filing takes a morning and changes the case's geography: the audit is now where decisions are made from. Your worker, at the next check-in, mentions it in the tone workers use for paper that will be read by judges: “I saw the packet. The plan note — I wrote that note. I didn't connect it to the ledger.” It is not an apology. It is the audit's whole thesis, confessed by the file's own author, in advance of the room: the pages were all there. They were never introduced.",
+    "The summary line still stands in its paragraph. Summaries are not rewritten by packets; they are corrected by rooms, on dates, on the record. Two dates now approach at once: the review, and the fifteenth month. The backstop is next, and it is filed in the shadow of the second one."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the backstop — the exception packet, before the date arrives",
+     "next": "exception_beat",
+     "note": "The correction is filed. The calendar, unimpressed, continues. Backstops are for calendars."
+    }
+   ]
+  },
+  {
+   "id": "oral116",
+   "kicker": "Day 46 — Tuesday, November 17, 2026",
+   "dayOffset": 46,
+   "title": "Saved for the Review",
+   "body": [
+    "The decision is made and noted in counsel's file: the audit will be raised orally at the review. The binder stays assembled, its tabs in order, its documents unfiled. “We will say each entry clearly,” counsel says. “Understand the exchange rate. A filed exhibit is weighed. A spoken correction is heard, noted as ‘mother's counsel stated,’ and filed in a transcript nobody summarizes. The phrase, meanwhile, sits in a summary everybody reads.”",
+    "You keep the visits, the work, the steady weeks the file itself calls steady. The binder waits for its morning. Whether a morning is enough for three tabs of other people's paper is the question the review is about to price."
+   ],
+   "choices": [
+    {
+     "text": "Prepare the three accounts with counsel, entry by entry, word by word",
+     "next": "exception_beat",
+     "note": "If the record will hold only words, the words will at least be exact — a pause, a lag, an envelope, in that order."
+    }
+   ]
+  },
+  {
+   "id": "wait116",
+   "kicker": "Day 46 — Tuesday, November 17, 2026",
+   "dayOffset": 46,
+   "title": "The Phrase, Undisturbed",
+   "body": [
+    "The decision is made and noted: wait. The audit exists — in a binder, in counsel's office, in the folder's receipts — and the summary exists in the file the review will read, and the two documents have never been introduced. Counsel does not argue; she has given her advice, and she writes yours down beside it, because that too is what lawyers are for.",
+    "“One thing, then,” she says. “A phrase like this does not stand still while we wait. It gets quoted. Every week it stands, it becomes the file's settled description of your money, and settled descriptions are what filing decisions are made from. The date is coming either way. Waiting chooses what it will find.”"
+   ],
+   "choices": [
+    {
+     "text": "Keep the steady weeks, and let the calendar run",
+     "next": "exception_beat",
+     "note": "Steady weeks, an unfiled audit, and a date that does not negotiate. The backstop decision is the last one the calendar leaves open."
+    }
+   ]
+  },
+  {
+   "id": "exception_beat",
+   "kicker": "Day 49 — Friday, November 20, 2026",
+   "dayOffset": 49,
+   "title": "The Backstop: A Packet for the Date",
+   "body": [
+    "The exception packet is a different document from the correction packet, and counsel keeps the difference sharp. The correction packet speaks to the review: fix the line, entry by entry, on the record. The exception packet speaks to Tuesday, December 1, 2026: if the fifteenth month arrives before the file is truthful, the agency's filing duty is generally pressed — unless an exception is documented (42 U.S.C. § 675(5)(E)): Leona cared for by a relative, or a documented compelling reason that filing would not serve her, or services the agency identified as necessary for her safe return that were not provided. Exceptions are not hopes. They are documents, filed before the date they answer.",
+    "The packet assembles what the record supports — the audit's documented entries, your completed services, the visit record — and asks that an exception, if the record supports one, be documented in the file before the date. Filed, it is a backstop: the correction may win first, and the packet will simply never be needed. Unfiled, it is one more true thing that exists outside the file the date will read."
+   ],
+   "choices": [
+    {
+     "text": "Build and file the written exception packet with counsel, before the fifteen-month date",
+     "next": "cold_read",
+     "cash": -6,
+     "setFlags": [
+      "exceptionPacket"
+     ],
+     "addHidden": [
+      "Documented-exception packet filed in writing before the fifteen-month date, as backstop"
+     ],
+     "note": "Stamped, filed, dated before the date. Whatever the review does, the filing decision will now have to reckon with a document."
+    },
+    {
+     "text": "Rely on the correction alone — the review comes first, and it will fix the line",
+     "next": "cold_read",
+     "cash": -6,
+     "note": "Six dollars across the week's errands either way. Reviews do come first — when their dates hold, and when rooms correct whole lines. Backstops exist for the other kind of month."
+    }
+   ]
+  },
+  {
+   "id": "cold_read",
+   "kicker": "Day 51 — Sunday, November 22, 2026",
+   "dayOffset": 51,
+   "title": "A New Reader, Reading Cold",
+   "body": [
+    "Personnel are weather in this system, and this month the weather turns in the audit's favor or against it, depending entirely on paper: the supervisor who will sign any filing decision is new, and reads the file cold — knowing no one in it, remembering nothing about it that the file does not say. A cold reader cannot be told what everyone in the case happens to know: that the arrearage was a pause, the miss was a lag, the gap was an envelope. She can only read.",
+    "If the packets are in the file, she reads the plan's own note, two dates in adjacent columns, an envelope with the wrong address, and a dated exception packet. If they are not, she reads a summary with a phrase in it. “Files outlive the people who remember the case,” counsel says. “We have known it since the first tab. The fifteenth month just gives the lesson a deadline.”"
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the review, entry by entry, one last time",
+     "next": "review_prep116",
+     "note": "The packets are filed or they are not. What remains is a room, a line, and three tabs — in whichever posture the autumn built them."
+    }
+   ]
+  },
+  {
+   "id": "review_prep116",
+   "kicker": "Day 53 — Tuesday, November 24, 2026",
+   "dayOffset": 53,
+   "title": "Entry by Entry, with Counsel",
+   "body": [
+    "Preparation is the audit read aloud, in the order the review will need it. At a permanency review, counsel reminds you, the court makes its determinations on the record before it — the determinations the law lists for reviews (42 Pa.C.S. § 6351(f)), including how long Leona has been in care — and the record before it will either contain the correction packet or contain only the phrase the packet answers.",
+    "“We are not asking the room to find that you are stable,” counsel says. “We are asking it to correct three entries from their own documents, in order, on the record — and then make its determinations from a file that tells the truth. A truthful file is not a favor to you. It is the court's working material. Judges correct working material, when the corrections are exhibits. They adopt summaries, when they aren't.”"
+   ],
+   "choices": [
+    {
+     "text": "Face the calendar choice — the review's date, or the easier later slot",
+     "next": "calendar_choice",
+     "note": "One slot sits before the fifteenth month. One sits after it. The system offers both in the same polite letter, and does not say what the difference costs."
+    }
+   ]
+  },
+  {
+   "id": "calendar_choice",
+   "kicker": "Day 54 — Wednesday, November 25, 2026",
+   "dayOffset": 54,
+   "title": "Two Slots in One Letter",
+   "body": [
+    "The court's letter offers two review dates in the same courteous typeface. The first is Monday, November 30, 2026 — before the fifteenth month, close, demanding, and exactly what the autumn was built for. The second is weeks later, calmer for everyone's schedule — and after Tuesday, December 1, 2026, when the filing question will already have been answered by whoever read the file on the date, in whatever state the file was in on the date.",
+    "“Reviews can be rescheduled,” counsel says. “Filing dates are not reviews. Take the first slot and the correction is argued while the file can still change what the date does. Take the second and we will attend a review about a case the date has already rewritten.”"
+   ],
+   "choices": [
+    {
+     "text": "Take the first slot — the review before the fifteenth month",
+     "next": "morning116",
+     "note": "Ready or not, the audit is what it is — three tabs, two packets, one phrase. That, in the end, is what audits are for."
+    },
+    {
+     "text": "Take the later, calmer slot — work is impossible that first week",
+     "next": "end_date",
+     "note": "The confirmation letter is polite and routine. So is the other letter it will eventually cross in the mail."
+    }
+   ]
+  },
+  {
+   "id": "morning116",
+   "kicker": "Day 59 — Monday, November 30, 2026",
+   "dayOffset": 59,
+   "title": "The Morning of the Review",
+   "body": [
+    "The morning of the review has the stillness of mornings that were prepared for in the autumn-in-miniature of the last eight weeks: the binder is in counsel's bag, the packets are in the file, the fare is in your coat, and Leona's homework — make sure they read the whole thing — is in your head, where homework lives. Nothing is left to assemble. Assembly was the autumn's work; this morning's work is only presence.",
+    "On the way in, counsel says the last preparatory sentence of the scenario: “Whatever the room does with the line, it will do it in front of the whole file for the first time. That has never happened before in this case. It is happening today because you requested the file, audited it, and filed the audit. Remember which part was yours, whatever happens.”"
+   ],
+   "choices": [
+    {
+     "text": "Enter the review",
+     "next": "review116",
+     "note": "The whole file, in one room, for the first time in fourteen months. The phrase is about to meet its sources."
+    }
+   ]
+  },
+  {
+   "id": "review116",
+   "kicker": "Day 59 — Monday, November 30, 2026",
+   "dayOffset": 59,
+   "title": "The Permanency Review",
+   "body": [
+    "The review on Monday, November 30, 2026 is longer than the last one, because this time the file is at issue, not just the family. The summary is read, and its phrase is read with it, in the room's level voice: ‘unresolved financial instability,’ built from an arrearage, a missed payment, and a gap. The room begins, in the ordinary way, to treat the phrase as a fact about the mother in the chair.",
+    "Then counsel asks that the line be corrected entry by entry, from the file's own documents, before the court makes its determinations on this record. What happens next depends, with a precision this scenario has been honest about since the first tab, on what your choices actually filed."
+   ],
+   "choices": [
+    {
+     "text": "Correct the line entry by entry — the plan's pause note, the two posting dates, the letter's own envelope, with the exception packet already on file",
+     "next": "end_corrected116",
+     "requiresFlags": [
+      "recordsRequested",
+      "entry1Doc",
+      "entry2Doc",
+      "entry3Doc",
+      "auditPacket",
+      "exceptionPacket"
+     ],
+     "note": "Three entries, three exhibits, all of them the file's own paper. The room does the corrections itself, out loud, which is where corrections become the record."
+    },
+    {
+     "text": "Correct the line from the filed packet — the packet without the plan page behind tab one",
+     "next": "end_one_entry",
+     "requiresFlags": [
+      "auditPacket"
+     ],
+     "requiresNoFlags": [
+      "entry1Doc"
+     ],
+     "note": "Two tabs documented, one carried by account. The room is about to price exactly that ratio."
+    },
+    {
+     "text": "Correct the line from the filed packet — tab one documented, the receipt never assembled behind tab two",
+     "next": "end_one_entry",
+     "requiresFlags": [
+      "auditPacket",
+      "entry1Doc"
+     ],
+     "requiresNoFlags": [
+      "entry2Doc"
+     ],
+     "note": "Two tabs documented, one carried by a receipt in a visit envelope, at home. The room prices paper by its presence."
+    },
+    {
+     "text": "Correct the line from the filed packet — two tabs documented, the envelope never assembled behind tab three",
+     "next": "end_one_entry",
+     "requiresFlags": [
+      "auditPacket",
+      "entry1Doc",
+      "entry2Doc"
+     ],
+     "requiresNoFlags": [
+      "entry3Doc"
+     ],
+     "note": "The gap stands on the file's shortest grammar, because its longest document — the system's own envelope — is not in the room."
+    },
+    {
+     "text": "Ask the room to take your word for the three entries",
+     "next": "end_stands116",
+     "note": "Your word is accurate in every particular: a pause, a lag, an envelope. The phrase, printed and already read, is the room's starting point — and starting points are where summaries live."
+    }
+   ]
+  },
+  {
+   "id": "end_corrected116",
+   "kicker": "Day 66 — Monday, December 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — Corrected, Entry by Entry",
+   "body": [
+    "The correction takes the length of the audit, entry by entry, and the room does it in the only way corrections ever become real: out loud, on the record, from documents. Entry one: the arrearage is re-entered as accrued during the two months the plan's own note recorded the goal as paused, while its author was in the treatment the plan itself ordered — a pause's residue, documented as such. Entry two: the missed payment is corrected to a payment made on its date and posted five days later, receipt and posting record read together, as they should have been read the first time. Entry three: the gap is re-entered as caused by a closure letter mailed to the prior address after the move was on file — a mailing, documented as such.",
+    "With the three entries corrected, the summary line cannot stand, and the court strikes it: ‘unresolved financial instability’ is removed from the record's description of this mother, replaced by the three corrected entries in their true shapes. On the truthful file that remains — treatment completed, visits kept, work steady, every money entry explained by the system's own paper — the court does what the case had been preparing to do before the phrase stalled it: it orders Leona's return home on a short transition schedule, with the exception packet left on file, unneeded, as the backstop it was built to be."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): A summary phrase built from three entries, each documented wrong or lagging in the file's own paper. The arrearage accrued during two months of inpatient treatment while the plan's own note recorded the goal as paused. The ‘missed payment’ was a posting lag — receipt in the mother's folder, posting five days later in the system's own record. The benefits gap was caused by a closure letter mailed to her prior address after her move was on file. The audit assembled all three from the file's own documents — obtained on written request (55 Pa. Code § 3130.44(d)) — filed them entry by entry before the review, and filed a documented-exception packet as backstop before the fifteen-month date of Tuesday, December 1, 2026 (entry Monday, September 1, 2025 plus fifteen calendar months, day 60 of this story).",
+    "THE LAW UNDER THIS PATH: At the permanency review, counsel asked the court to correct each entry from the file's own documents before making the determinations a review court makes on the record before it (42 Pa.C.S. § 6351(f), including the placement-duration determination) — and a record whose three load-bearing entries were corrected could not carry the phrase built from them. The backstop was built on the federal filing rule's own discipline: at fifteen of the most recent twenty-two months the agency is generally to file unless an exception is documented (42 U.S.C. § 675(5)(E)) — relative care, a documented compelling reason, or services identified but not provided — and the exception is record-dependent, speaking to the filing decision only. It was never needed here, because the correction came first, at a review taken before the date. Counsel's role throughout is the verified one (42 Pa.C.S. § 6337). This ending is the scenario's win, labeled plainly: the line corrected entry by entry on the record, and reunification ordered on the corrected file — the record earned it, because every other element of the case (treatment, visits, work) was already documented as complete, and the only obstacle was three entries the file itself refuted.",
+    "THE HONEST PART: The win is a corrected file and a transition home, not a verdict that the system worked. The pause was never carried across the file by the people who wrote both sections; the lag was nobody's fault and everybody's summary; the letter went to an empty apartment in a pattern this library has met before. A colder room could have corrected two entries and kept the phrase on the third; a later review slot would have let the date decide first; a supervisor reading a thinner file would have signed a different paper. Workers, judges, queues, and luck held pieces of this outcome. What your choices controlled was narrower and decisive: every entry was audited from documents, the audit was filed before the room that owned the phrase, and the backstop was filed before the date that owned the calendar."
+   ]
+  },
+  {
+   "id": "end_one_entry",
+   "kicker": "Day 66 — Monday, December 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — The Phrase Survives on One Entry",
+   "body": [
+    "The review corrects what the packet documents, and the packet — for all its tabs — documents two entries completely and carries the third on account. The corrected entries fall cleanly: their exhibits are read, the corrections entered, the room nodding at paper it cannot argue with. Then the audit reaches the un-audited entry, and the room's temperature changes by exactly the temperature of missing paper. Counsel states it clearly. The summary states it in print. Print wins the tie it always wins.",
+    "So the line is narrowed, not struck: re-entered in a shorter, surviving form, resting on the one entry that still wears its summarized shape. The case proceeds — toward home, on a longer road, with a review set to revisit the surviving entry — because partial paper partially works, in exact proportion. Two-thirds of a correction is a real correction. It is also a phrase, standing, in a file, being quoted while you read this."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): An audit with one tab carried by memory. The two documented entries were corrected on the record from the file's own paper — the room read the exhibits and entered the corrections itself. The third entry, true in every particular the mother could state, had no assembled document behind it: no plan page, no two-date exhibit, no envelope, depending on which tab was left unbuilt. The summary's phrase, deprived of two of its three sources, re-formed itself around the survivor, the way phrases do: shorter, weaker, and still the file's description of the mother's money.",
+    "THE LAW UNDER THIS PATH: The instruments are the verified ones, and their use was simply incomplete. The file's pages were available on written request (55 Pa. Code § 3130.44(d)); counsel (42 Pa.C.S. § 6337) filed what was assembled and stated the rest, and a review court making its determinations on the record before it (42 Pa.C.S. § 6351(f)) corrected the entries the record documented and retained the one it did not. The documented-exception packet, if filed, still stands as backstop toward the fifteen-month date (42 U.S.C. § 675(5)(E)) — record-dependent, filing-decision only — but a corrected line was the stronger argument, and it needed all three tabs. Partial paper partially works; this ending is that sentence with its arithmetic shown.",
+    "THE HONEST PART: Nothing here was lost by effort or by truth — the un-audited entry was as true as the other two, and its author can still assemble its document and file it for the next review, where the correction can be completed. What was lost was simultaneity: a phrase struck whole, at one review, on a truthful file, moves a case; a phrase narrowed keeps a foothold in every summary until it is finally dislodged. A room less patient with exhibits, or a worker who had carried her own pause note across her own file, changes this ending without the mother changing anything. It records the state of an audit — two tabs of documents, one tab of testimony — not the stability of a mother."
+   ]
+  },
+  {
+   "id": "end_stands116",
+   "kicker": "Day 66 — Monday, December 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — The Phrase Stands Whole",
+   "body": [
+    "The review adopts the summary line the way reviews adopt most summary lines: without heat, without inquiry, as the ground on which the next determinations stand. ‘Unresolved financial instability’ remains the file's description of the mother's money — an arrearage, a missed payment, and a gap, listed in a row, unexamined — and the case that was preparing to move toward home is re-described, in the room's orders, as a case that will continue in placement while the ‘instability’ is ‘addressed,’ a word that now has to be lived under by a woman whose three money problems were a pause, a queue, and an envelope.",
+    "Your accounts of the three entries were heard in order, in detail, in your own voice and counsel's. They were believed the way unaccompanied accounts are believed — personally, and set aside professionally — because the binder that would have proven them was never filed into the record the room was reading, in whatever posture it waits tonight: assembled in an office, or still scattered between a folder, a visit envelope, and a file across town."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): One phrase and its three unexamined entries. The arrearage without the plan's pause note beside it. The missed payment without the posting record's second column. The gap without the closure letter's envelope. Each refuting document existed — the pause note in the agency's own plan, the lag in its own posting record, the wrong address in its own mailing record — and none of them was in front of the room, because the audit that would have assembled them was never filed, or never built from the record it needed. The fifteen-month date, Tuesday, December 1, 2026, now approaches a file whose settled description of the mother is the phrase itself.",
+    "THE LAW UNDER THIS PATH: Every instrument that would have answered the phrase existed and is verified. The record — plan, ledger, posting record, correspondence — was available on written request (55 Pa. Code § 3130.44(d)). Counsel (42 Pa.C.S. § 6337) can assemble and file whatever paper exists. A review court's determinations are made on the record before it (42 Pa.C.S. § 6351(f)); a record that contains only a summary yields determinations that rest on the summary. And the federal date rewards documented exceptions only (42 U.S.C. § 675(5)(E)): an unfiled audit is not one. Defaults rule wherever documentation does not — that sentence, not any fact about this mother's money, is this ending.",
+    "THE HONEST PART: Be clear, because the summary was not: the three entries were a treatment pause the plan itself recorded, a five-day posting queue, and a letter mailed to an apartment its own file knew she had left. Her finances, in the months this case actually examined, were the finances of a woman in ordered treatment who kept working, kept visiting, and kept receipts in a visit envelope. A worker who had read her own plan note beside her own ledger, a summary writer who read both columns — any of them changes this ending without her changing anything. It records a phrase's survival, not a mother's instability. And the binder can still be built tonight: paper assembled late corrects later reviews, slower and harder, but the plan page, the posting record, and the envelope have not stopped existing, and neither has the right to request them."
+   ]
+  },
+  {
+   "id": "end_date",
+   "kicker": "Day 66 — Monday, December 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — The Date Strikes First",
+   "body": [
+    "The later slot was calmer for everyone's schedule. That part was true. The rest arrives by mail, in the order the calendar always intended. First, the notice from the agency: Leona has now been in care for fifteen of the most recent twenty-two months — the date was Tuesday, December 1, 2026 — and the agency has filed the petition the federal timeline points it toward, on the file as the date found it: a summary whose central phrase describes unresolved financial instability, three entries deep, uncorrected. A petition is not a termination; the agency would still have to prove its grounds clearly and convincingly at a hearing. But the weather of the case has changed, permanently, while the correction was still waiting for its calmer morning.",
+    "Second, the audit itself — assembled or not, filed or not — now travels into a harder proceeding as an exhibit in a case about grounds, instead of doing its quieter, stronger work: correcting a summary at a review, before the date could read the summary as settled. Two clocks ran through this whole story. Only one of them was ever waiting for a convenient week."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, MAPPED — Review track: no review was held before the date; the correction of the summary line (flags: auditPacket, entry1Doc, entry2Doc, entry3Doc, if built) remains available for the proceedings ahead, intact and unspent. Placement track: Leona remained placed throughout, and her case acquired, on Tuesday, December 1, 2026 — computed as entry Monday, September 1, 2025 plus fifteen calendar months — a termination petition that will now run on its own track, whether or not the audit later corrects every entry it was built from. ASFA track: struck on schedule at fifteen of the most recent twenty-two months (42 U.S.C. § 675(5)(E)); whether a documented exception was in the file (flag: exceptionPacket) is now the first argument in the case below, instead of the backstop it was filed to be.",
+    "THE LAW UNDER THIS PATH: The exception framework is record-dependent in exactly the way this ending demonstrates: at the fifteen-month point, the filing decision is made from the file as it stands on the date — documented exceptions (relative care, a documented compelling reason, services identified but not provided) can answer it; undocumented truths, however complete in a binder across town, cannot. A petition, if filed, must still be proven by clear and convincing evidence at a hearing, and the audit's three corrections — the plan's pause note (the record itself being available on request, 55 Pa. Code § 3130.44(d)), the posting record, the mailing record — remain powerful paper in that proceeding, with counsel (42 Pa.C.S. § 6337) to carry them. Nothing about grounds has been decided. What was decided, by a calendar choice, was which proceeding the audit would debut in.",
+    "THE HONEST PART: The later slot was offered by the system, in the same letter, in the same typeface, with no warning attached — the choice was real, and it was made inside a trap the letter did not label. Work that week was genuinely impossible; lives do not consult court calendars, and this debrief does not pretend otherwise. Judges' schedules, agencies' filings, and the date's indifference were never the mother's to control. What was hers was only the knowledge — delivered in this story on its fifth day, in pencil, on a desk calendar — of what the date would cost. This ending is not a judgment on a mother. It is a collision between two clocks, only one of which ever claimed to be waiting for her."
+   ]
+  }
+ ]
+}

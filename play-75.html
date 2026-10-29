@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "startCash": 200,
+  "startDateISO": "2026-11-16",
+  "startNode": "start",
+  "subtitle": "Scenario 75 — Two Experts, One Child (a fictional composite)",
+  "summary": "At a permanency review, the agency's case rests on one psychologist's word — 'attenuated' — and Vernon's answer is built the way all answers in this system are built: out of paper, requested early and read closely.",
+  "tier": "Complex",
+  "title": "The First 90 Days"
+ },
+ "nodes": [
+  {
+   "body": [
+    "Your name is Vernon Quill. Your daughter Paloma is six. She has been placed with a foster family since Monday, March 16, 2026 — placed after the spring you do not make excuses for anymore: the DUI, the adjudication, the court taking the case the way courts do when a parent is drinking and driving with his life coming apart in the passenger seat.",
+    "That was then. You finished treatment. You have been sober eight months — meetings, screens, a sponsor who answers on the second ring. Paloma's permanency review is set for Wednesday, December 2, 2026, and today the court packet arrives: the agency's report, the plan update, and, near the back, an evaluation.",
+    "One word in it stops you the way a step missing in a staircase stops you. Dr. Marsh, a psychologist, evaluated your bond with Paloma and concluded it is \"attenuated.\" Return home, the evaluation says, is \"not recommended.\""
+   ],
+   "choices": [
+    {
+     "next": "packet_detail",
+     "note": "Second readings are where reports stop being verdicts and start being documents — with authors, dates, and page counts.",
+     "text": "Read the evaluation again, slowly, pencil in hand"
+    },
+    {
+     "next": "packet_detail",
+     "note": "She answers on the fourth ring. \"Bring the packet Thursday,\" she says. \"All of it. Especially the parts that scare you.\"",
+     "text": "Call your lawyer before you read another line"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "start",
+   "kicker": "Day 0 — Monday, November 16, 2026",
+   "title": "The Word in the Packet"
+  },
+  {
+   "body": [
+    "The pencil finds the method section, because there is one, and it is short. Dr. Marsh observed you and Paloma together twice — two sessions, forty-five minutes each, in a visit room at the agency office. Ninety minutes, total, on two afternoons in October. The rest of the evaluation is a review of records: the agency file, the spring's reports, the history.",
+    "Nowhere in it does Dr. Marsh describe watching Paloma with her foster parents, for comparison. Nowhere does it mention Ms. Ferro — the therapist who has seen Paloma every week for fourteen months — except as a name in a list of providers. And the records it leans on hardest are the oldest ones in the file: the ones from before treatment, before the eight months.",
+    "Ninety minutes and a stale file produced a word — attenuated — that is now sitting in a court packet like a stone in a shoe. The question this scenario asks is not whether the word is fair. It is whether the word gets examined, or just repeated."
+   ],
+   "choices": [
+    {
+     "next": "counsel_meet",
+     "note": "Three questions. They look small in pencil. In a courtroom, asked at the right moment, they are the whole case.",
+     "text": "Write your questions in the margin: how long, compared to what, based on which records"
+    },
+    {
+     "next": "counsel_meet",
+     "note": "Your sister texts back one line: \"Attenuated is an adjective, Vernon. Not a sentence.\" She is righter than she knows.",
+     "text": "Take a photograph of the conclusion page for your sister, then put the packet in your folder"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "packet_detail",
+   "kicker": "Day 0 — Monday, November 16, 2026",
+   "title": "Two Forty-Five-Minute Visits"
+  },
+  {
+   "body": [
+    "Your lawyer, Ms. Voss, reads the evaluation the way she reads everything: method first, conclusion last. \"Understand what this is,\" she says. \"An expert opinion is an input. It has a method, and the method can be examined. No rule requires a formal bonding evaluation at all — the agency chose to get one, and now it has to stand behind how it was made.\"",
+    "\"And understand what the hearing is. At a permanency hearing the court — not Dr. Marsh, not the agency — has to determine the continuing necessity of placement, your compliance with the permanency plan, your progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan. (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) Those findings belong to the judge, on all the evidence. The people who see Paloma every week are witnesses too. A therapist of fourteen months is not a footnote to a psychologist of ninety minutes — unless we let the packet arrange it that way.\"",
+    "\"So the next two weeks are about arrangement. First: we cannot cross-examine a report we have only read once, in a packet, the week it landed. We need the evaluation's whole file — her notes, her scoring sheets, everything under the conclusion. There is a way to ask for that, and it starts today, not at the hearing.\""
+   ],
+   "choices": [
+    {
+     "next": "request_choice",
+     "note": "\"In writing,\" she says. \"Everything in this case that matters will turn out to have been in writing.\"",
+     "text": "Ask her to show you exactly what to request, and how"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "counsel_meet",
+   "kicker": "Day 3 — Thursday, November 19, 2026",
+   "title": "An Opinion Is an Input"
+  },
+  {
+   "body": [
+    "Ms. Voss drafts it on her letterhead while you watch: a written request for the complete agency record — and, named separately so it cannot be overlooked, the complete evaluation file: Dr. Marsh's raw session notes, her scoring sheets, and the list of records she reviewed. The agency's record \"shall be released upon request\" (55 Pa. Code § 3130.44(d)), and the rule is not to be read to protect agency employees' privacy as a basis for withholding (55 Pa. Code § 3130.44(f)).",
+    "She is plain about the alternative. At disposition, the law states the principle outright: written reports may be examined and controverted, and the people who made them may be cross-examined. (42 Pa.C.S. § 6341(d)(2)) A permanency review runs on the same paper logic — but only for a report whose maker can actually be questioned, which means only for a report you have actually read, down to the notes. Getting the file costs copying and postage. Not getting it costs the cross-examination.",
+    "The envelope is addressed. The hearing is thirteen days away. Envelopes, unlike hearings, can move today."
+   ],
+   "choices": [
+    {
+     "cash": -20,
+     "next": "request_filed",
+     "note": "Stamped, copied, dated. Whatever Dr. Marsh wrote in that visit room, in her own hand, is now on its way to being read by the person it describes.",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "text": "Send the written request today — full agency record plus the complete evaluation file, named item by item"
+    },
+    {
+     "next": "request_skipped",
+     "note": "She says she'll look into it, kindly, in a hallway. Hallway requests have no date on them, and this case runs on dates.",
+     "text": "Ask the caseworker informally to pass the evaluation along when she gets a chance"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "request_choice",
+   "kicker": "Day 3 — Thursday, November 19, 2026",
+   "title": "Ask for the Whole File"
+  },
+  {
+   "body": [
+    "The request goes out with a certificate of mailing, and Ms. Voss calendars the response the way other people calendar birthdays. \"If the notes exist,\" she says, \"they will say what she actually saw, in the room, before the conclusion was workshopped into an adjective. Notes are written for the file. Conclusions are written for the reader. I want the file version.\"",
+    "You go home and do the unglamorous arithmetic of the next two weeks: visits on Saturdays, meetings on Tuesdays and Fridays, work in between, and a hearing at the end of it that will be decided — Ms. Voss has now said it three ways — by what is in the record when the judge opens it."
+   ],
+   "choices": [
+    {
+     "next": "waiting_week",
+     "note": "Sobriety at eight months is mostly this: ordinary machinery, maintained, on days when nobody is watching. The file will note that too.",
+     "text": "Keep the week's ordinary machinery running — visits, meetings, work — while the file travels"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "request_filed",
+   "kicker": "Day 3 — Thursday, November 19, 2026",
+   "title": "The Request, in Writing"
+  },
+  {
+   "body": [
+    "The caseworker is pleasant about it. Of course, she'll see what can be shared; the evaluation is in the packet, after all — you've seen the conclusion, haven't you? What you have seen, you realize on the drive home, is four pages: a summary, a method paragraph, and a recommendation. Whatever Dr. Marsh's own notes say about those two afternoons — what Paloma actually did in that room — is in a file you have now asked about, out loud, to a person who wrote nothing down.",
+    "Ms. Voss does not scold you. She just moves the word \"attenuated\" to the top of her legal pad and underlines it once. \"Then we prepare against the four pages,\" she says, \"and we hope the notes, if we ever see them, agree with them.\""
+   ],
+   "choices": [
+    {
+     "next": "waiting_week",
+     "note": "The visits still happen. The logs still get written. Some of the record is being made whether you requested the rest of it or not.",
+     "text": "Keep the week's ordinary machinery running — visits, meetings, work"
+    }
+   ],
+   "dayOffset": 3,
+   "id": "request_skipped",
+   "kicker": "Day 3 — Thursday, November 19, 2026",
+   "title": "The Packet Is What You Have"
+  },
+  {
+   "body": [
+    "Saturday's visit: Paloma teaches you a card game she is inventing as she goes, with rules that favor her, and you let them. Ms. T., the visit supervisor, sits where she always sits, kind and quiet, writing in the logbook she keeps for every visit. Thirty visits since spring, give or take. Thirty entries.",
+    "Sunday, Ms. Voss calls — not about the file, which hasn't arrived, but about December 2. \"Dr. Marsh will testify,\" she says. \"Agency counsel will walk her through her conclusion. Then it will be my turn, and my turn is only as good as its preparation. There are two ways to spend this week. I can build the cross-examination now — a one-page method memo, every question sourced to a page — or we can plan to lean on Ms. Ferro's letter and improvise the rest. Improvisation is what the other side is counting on.\""
+   ],
+   "choices": [
+    {
+     "next": "memo_choice",
+     "note": "A cross-examination is not an argument. It is a staircase, built in advance, that a witness walks down one fact at a time.",
+     "text": "Spend the week building the one-page method memo with Ms. Voss — question by question, page by page"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "waiting_week",
+   "kicker": "Day 6 — Sunday, November 22, 2026",
+   "title": "Visits, Meetings, Ordinary Days"
+  },
+  {
+   "body": [
+    "The memo practically writes its own outline from the method section: How many minutes did you observe, Doctor? Ninety. Did you observe Paloma with her foster parents, for comparison? You did not. Which records did you review — and do the heaviest ones predate Mr. Quill's treatment? They do. What have you never seen? The last five months of visits.",
+    "Building it properly costs you an unpaid afternoon at Ms. Voss's office and the patience to read the packet a fourth time. The alternative is real, and many parents choose it: Ms. Ferro has already written a warm, thorough letter. Letters, though, cannot be asked follow-up questions, and neither can they ask any. A memo can do the asking — if it exists before the witness is sworn, not during."
+   ],
+   "choices": [
+    {
+     "cash": -15,
+     "next": "memo_built",
+     "note": "One page. Four questions, each with a document under it. Ms. Voss puts it in the hearing folder, on top.",
+     "setFlags": [
+      "crossReady"
+     ],
+     "text": "Build the method memo — every question tied to a page, the staircase built in advance"
+    },
+    {
+     "next": "memo_skipped",
+     "note": "The letter is genuinely good. It will sit in the packet being genuinely good at whatever reader picks it up. It will not cross-examine anyone.",
+     "text": "Rely on Ms. Ferro's letter and the strength of your progress — save the afternoon"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "memo_choice",
+   "kicker": "Day 6 — Sunday, November 22, 2026",
+   "title": "Build the Cross Before You Need It"
+  },
+  {
+   "body": [
+    "The memo is done by dark. It does not call Dr. Marsh unqualified — she is qualified, and the memo is careful never to pretend otherwise, because judges can smell a credential fight and it bores them. It goes after the only soft thing in the evaluation: its method. Ninety minutes. No comparison observation. Records that end where your sobriety begins. Five months of visits, unseen.",
+    "\"If her file ever reaches us,\" Ms. Voss says, tapping the last line of the memo, \"there may be a fifth question. Her own notes. Witnesses are hardest to argue with when the argument is their own handwriting.\""
+   ],
+   "choices": [
+    {
+     "next": "notes_day",
+     "note": "Waiting is also a strategy, when the mailbox is doing the work.",
+     "text": "Go home and wait for Wednesday — the file, if it is coming, is due"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "memo_built",
+   "kicker": "Day 6 — Sunday, November 22, 2026",
+   "title": "Ninety Minutes, on One Page"
+  },
+  {
+   "body": [
+    "Ms. Voss reads Ms. Ferro's letter once more and sets it down gently. \"Fourteen months of work, summarized by the person who did it, in two pages. A judge can read this in ninety seconds — which, you'll notice, is the same unit of attention Dr. Marsh gave your daughter's bond. The difference is that Ms. Ferro earned her summary.\"",
+    "\"We'll offer the letter and argue from your progress,\" she says. \"But hear me: when agency counsel says 'attenuated' for the fourth time, the letter will not stand up and answer. Paper doesn't interrupt. Only a prepared lawyer, or a live witness, does that.\""
+   ],
+   "choices": [
+    {
+     "next": "notes_day",
+     "note": "The week moves the way weeks in this case move: at the speed of other people's offices.",
+     "text": "Go home and wait for Wednesday — whatever the mailbox holds"
+    }
+   ],
+   "dayOffset": 6,
+   "id": "memo_skipped",
+   "kicker": "Day 6 — Sunday, November 22, 2026",
+   "title": "The Letter Will Have to Do"
+  },
+  {
+   "body": [
+    "Wednesday. Ms. Voss calls you into her office for the last full working day before the holiday, and what is on her desk depends — as so much in this case depends — on a decision made on day 3, in an envelope, for the price of postage.",
+    "If the written request went out, the agency's production has arrived: the full record, and inside it, clipped together, the evaluation file — Dr. Marsh's raw session notes and scoring sheets, the pages under the conclusion. If it didn't, her desk holds the same four packet pages you have already read, and a caseworker's hallway assurance, still unwritten, still warm, still useless."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "File — evaluation raw notes released on written request (§ 3130.44(d)): 'sought father's lap repeatedly'"
+     ],
+     "next": "notes_read",
+     "note": "Her handwriting is small and unhurried. What it says is about to change the temperature of December 2.",
+     "requiresFlags": [
+      "recordsRequested"
+     ],
+     "text": "Open the evaluation file and read Dr. Marsh's own session notes, line by line, with Ms. Voss"
+    },
+    {
+     "next": "notes_absent",
+     "note": "You cannot miss what you never saw. That is precisely the problem, and it has a date on it: day 3, an envelope, unsent.",
+     "requiresNoFlags": [
+      "recordsRequested"
+     ],
+     "text": "There are no notes to open — prepare from the four pages you have"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "notes_day",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "Day Nine: What the Envelope Holds"
+  },
+  {
+   "body": [
+    "Session one, in Dr. Marsh's own hand: \"Child sought father's lap repeatedly. Proximity-seeking consistent throughout.\" Session two: \"Separation protest strong at session end; child asked when father returns.\" The scoring sheets tally their items. And then the conclusion, four pages later, in type: attenuated.",
+    "Ms. Voss sits back. \"Her observations and her adjective are in tension,\" she says. \"That happens in evaluations more often than anyone admits — the notes are written in the room, and the conclusion is written for the referral question, weeks later, out of a file that mostly predates your treatment. A judge should get to hear both. Now the judge can — because on December 2, I can hand Dr. Marsh her own notes and ask her to read the lap line out loud.\"",
+    "She adds a fifth question to the folder. \"This,\" she says, \"is what a records request is for. Not the paper. The tension inside the paper.\""
+   ],
+   "choices": [
+    {
+     "next": "therapist_choice",
+     "note": "One witness's notes are now evidence. The other witness is still a scheduling question with a deadline of today.",
+     "text": "Turn to the other witness decision — Ms. Ferro, and whether she will be in the room"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "notes_read",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "'Sought Father's Lap Repeatedly'"
+  },
+  {
+   "body": [
+    "You read the conclusion a fifth time. It does not change. Conclusions never do — that is what notes are for, and the notes are in a file across town, unrequested in any form the agency had to answer.",
+    "\"For all we know,\" Ms. Voss says, \"her session notes describe a warm, attached child, and the conclusion was assembled from the old file. For all we know, they describe exactly what she concluded. We will go into a hearing about your bond with your daughter not knowing what the only person who watched you together, in a professional capacity, wrote down while she watched. Sit with whose choice that was. It wasn't hers.\"",
+    "She is not cruel about it. She is a lawyer marking the exact size of a hole, because on December 2 she will have to argue around it."
+   ],
+   "choices": [
+    {
+     "next": "therapist_choice",
+     "note": "Whatever else is missing, this one is still makable. Today is the last day it is.",
+     "text": "Turn to the other witness decision — Ms. Ferro, and whether she will be in the room"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "notes_absent",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "Reading a Report With No Notes Under It"
+  },
+  {
+   "body": [
+    "Ms. Ferro has treated Paloma for fourteen months — weekly sessions, the slow repair work of a six-year-old learning that her father went away to get well and kept his promise to come back to the visiting room. She knows things about this family that exist nowhere else: what Paloma says about you when you are not there, in the third person, to the dollhouse.",
+    "She has already written her letter. But Ms. Voss is blunt: \"A letter is a summary a judge skims. Testimony is a person the judge watches being questioned — and surviving it. Ms. Ferro will come and testify live if she is asked properly, with her session records subpoenaed so she can speak from them. But therapists arrange their Wednesdays weeks out. She has to be asked by today, or she is not there, and on December 2 the letter testifies alone.\" The subpoena and record copies cost money. The asking costs a phone call made on time."
+   ],
+   "choices": [
+    {
+     "cash": -35,
+     "next": "therapist_confirmed",
+     "note": "Fourteen months of Thursdays, sworn, in the room, where the judge can watch her answer questions. That is a different object than two pages in a packet.",
+     "setFlags": [
+      "therapistLive"
+     ],
+     "text": "Ask today — Ms. Voss confirms Ms. Ferro's live appearance and subpoenas her session records"
+    },
+    {
+     "next": "therapist_letter_sent",
+     "note": "The letter will be in the judge's packet. Whether it will be in the judge's mind at the moment of decision is a question letters cannot answer.",
+     "text": "Let the letter speak for her — she wrote it carefully, and the packet already has it"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "therapist_choice",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "A Witness or a Letter"
+  },
+  {
+   "body": [
+    "Ms. Ferro agrees on the phone, in the tone of a person who has been waiting to be asked correctly. Her records will be certified and brought with her. \"Tell Mr. Quill,\" she says, \"that I will answer whatever they ask me. Including the hard questions. Especially the hard questions — the work holds up under them. That's rather the point of the work.\"",
+    "Ms. Voss writes her name on the witness list in ink. \"Now December 2 has a shape,\" she says. \"Their ninety minutes, crossed. Our fourteen months, live. And the visit logs, if we handle Saturday right.\""
+   ],
+   "choices": [
+    {
+     "next": "visit_day",
+     "note": "Thirty visits of logbook have been written by somebody else's hand. Saturday, you finally pay attention to the logbook itself.",
+     "text": "Go to Saturday's visit — the last one before the hearing"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "therapist_confirmed",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "Ms. Ferro Will Be There"
+  },
+  {
+   "body": [
+    "The letter goes into the packet: two pages, careful, warm, specific about the repair work and Paloma's words. Ms. Voss reads it a final time and files it without complaint. \"It says everything right,\" she says. \"It just says it at the speed of reading, to a judge with a stack of packets, and it cannot raise its hand when agency counsel misquotes it.\"",
+    "\"If the judge asks me why the treating therapist isn't here,\" she adds, \"I will say she was not called. Judges notice who a side didn't call. They notice it in the direction you'd expect.\""
+   ],
+   "choices": [
+    {
+     "next": "visit_day",
+     "note": "One record is still being written in real time, in a logbook, by a neutral hand. Saturday matters more than it looks.",
+     "text": "Go to Saturday's visit — the last one before the hearing"
+    }
+   ],
+   "dayOffset": 9,
+   "id": "therapist_letter_sent",
+   "kicker": "Day 9 — Wednesday, November 25, 2026",
+   "title": "Two Pages, Signed"
+  },
+  {
+   "body": [
+    "Paloma arrives at the visit room door at a run — she does this, Ms. T. mentions, every week; it is in the logs — and the hour unspools the way the good hours do: the invented card game, a drawing of a house with two doors \"so nobody gets locked out of coming back,\" the goodbye that she has learned to do in stages, like landings.",
+    "Afterward, in the hallway, you finally ask Ms. T. about the logbook. Thirty visits, each one logged by the supervisor who sat in the corner: arrivals, departures, and the small behaviors in between — who Paloma ran to, how she settled, how she left. It is the longest continuous record of your bond with your daughter that exists. It was never an evaluation. It was never trying to be. That may be exactly why a judge would trust it."
+   ],
+   "choices": [
+    {
+     "next": "visit_summary_choice",
+     "note": "\"Filed, summarized, and offered,\" she says. \"Or left sitting in a file the judge may never open. Guess which version exists at a hearing.\"",
+     "text": "Ask Ms. Voss what can be done with thirty visits of logs before Wednesday"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "visit_day",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "The Visit Room, Saturday"
+  },
+  {
+   "body": [
+    "The logs are in the released agency record. Ms. Voss can prepare a short written summary — thirty visits, dates, Paloma's approach behavior at the door, the settling, the goodbyes — and file it through counsel as an exhibit for the review, so the judge meets the pattern on paper before anyone argues about it. Copying and filing cost a little money and an afternoon.",
+    "Or the logs can stay where they are: accurate, complete, and functionally invisible, one more true thing in a thick file that no one is obliged to read aloud. Hearings run on what is offered. Files run on what is in them. The two systems overlap less than anyone outside a courtroom believes."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Exhibit — visit supervisor logs: 30 visits, child's approach behavior documented"
+     ],
+     "cash": -10,
+     "next": "visit_filed",
+     "note": "Thirty Saturdays, condensed by the person whose job was only to watch. It goes into the judge's packet with a tab on it.",
+     "setFlags": [
+      "visitRecordFiled"
+     ],
+     "text": "File the written summary of the supervisor's logs through counsel, as an exhibit for the review"
+    },
+    {
+     "next": "visit_unfiled",
+     "note": "Judges find what is handed to them, cited to them, and argued to them. The rest is furniture in a room they walk through quickly.",
+     "text": "Leave the logs in the file — if they matter, the judge will find them"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "visit_summary_choice",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "Thirty Visits, in a Logbook"
+  },
+  {
+   "body": [
+    "The summary is four pages and almost aggressively plain: dates in a column, behaviors in another, no adjectives of its own anywhere. Thirty visits. Zero missed. A six-year-old's running start, documented by a neutral witness who was never asked to have an opinion about it.",
+    "\"Notice the difference in kind,\" Ms. Voss says. \"Dr. Marsh offers a conclusion about the bond. This offers the bond, in installments, with dates. Courts are allowed to prefer evidence to conclusions. Let's give this one the chance.\""
+   ],
+   "choices": [
+    {
+     "next": "scored_summary",
+     "note": "One document in the packet has been quietly quoting Dr. Marsh all along, without naming her.",
+     "text": "Turn to the last paper problem — the scored summary in the court packet"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "visit_filed",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "The Logs, Filed as an Exhibit"
+  },
+  {
+   "body": [
+    "The logbook closes on Saturday's entry and goes back into the file. Everything in it is true. Almost none of it, Ms. Voss warns, will be in the courtroom in any usable form — a judge cannot credit a pattern nobody put in front of her, and agency counsel is under no obligation to summarize the other side's best evidence.",
+    "\"If I mention the logs in argument,\" she says, \"the judge will ask where they are. 'In the agency's file, Your Honor' is an answer. It is not a good one. It sounds like what it is: a thing we knew about and did not bring.\""
+   ],
+   "choices": [
+    {
+     "next": "scored_summary",
+     "note": "The packet still has one more quiet mechanism in it, and it has been working since day 0.",
+     "text": "Turn to the last paper problem — the scored summary in the court packet"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "visit_unfiled",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "In the File, Unfiled"
+  },
+  {
+   "body": [
+    "The last document in the court packet is the scored summary — a scored assessment form, filled in by the agency, that sorts Paloma's case into items and scores. On the line about the parental bond, it does not describe anything anyone observed. It imports a word: attenuated. Dr. Marsh's conclusion, copied into the agency's own form, where it now sits wearing the agency's authority instead of hers.",
+    "This is how conclusions travel in this system: an expert writes an adjective, a form absorbs it, a report cites the form, and by the time a judge reads it, the word has three institutional voices and no visible author. Nobody lied at any step. The steps are the problem.",
+    "Ms. Voss turns the summary over. \"There's an argument for answering this in writing before the hearing — and I mean an argument, in both senses. We'll talk about exactly how solid its ground is, because I won't file anything I can't describe honestly to you.\""
+   ],
+   "choices": [
+    {
+     "next": "rebuttal_choice",
+     "note": "\"It would say: this line is not an observation, it's a quotation — and the thing quoted doesn't survive its own notes. As for what it stands on—\" She opens the rule book.",
+     "text": "Hear her out — what would a written rebuttal say, and what would it stand on"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "scored_summary",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "The Adjective Travels"
+  },
+  {
+   "body": [
+    "The argument runs through Pa.R.J.C.P. 1340: subsection (E), that a party may present evidence and argument to rebut a provision, and subsection (F), that factual errors may be challenged. A written rebuttal would do both: it would identify the bond line as an imported conclusion rather than a scored observation, attach the session-note language and the visit pattern, and ask that the line be corrected or disregarded.",
+    "And here is Ms. Voss, honest as promised: \"Whether Rule 1340 reaches a scored assessment summary in this posture has not been tested in a published opinion. It is an argument counsel makes, not a settled right. Filing it costs a little money and an afternoon. Not filing it costs nothing today — and leaves 'attenuated' standing in the agency's own document, unanswered, where findings get drafted from. Judges' findings borrow language. I would rather they not borrow that word unopposed.\""
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Rebuttal — scored summary's imported adjective answered in writing (Rule 1340(E)/(F) — untested)"
+     ],
+     "cash": -10,
+     "next": "rebuttal_filed",
+     "note": "It goes in flagged for exactly what it is: an untested argument, made carefully, on the record, where unanswered words used to live alone.",
+     "setFlags": [
+      "summaryRebutted"
+     ],
+     "text": "File the written rebuttal — the imported adjective answered, with the notes and logs attached"
+    },
+    {
+     "next": "rebuttal_skipped",
+     "note": "Oral argument evaporates at the courtroom door. The summary will still be in the packet on the day findings are written. So will its adjective.",
+     "text": "Leave the summary unanswered — argue it orally at the hearing if it comes up"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "rebuttal_choice",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "Answer It in Writing"
+  },
+  {
+   "body": [
+    "The rebuttal is three pages and makes no claim it cannot carry. It does not say the summary is fraudulent. It says the bond line is a quotation wearing a score's clothing; that the quoted source observed ninety minutes and wrote 'sought father's lap repeatedly' in her own notes; and that thirty supervised visits, logged by a neutral witness, are also evidence about a bond. It asks for correction, or disregard, under Rule 1340(E) and (F) — and says, in its own footnote, that the rule's reach to a scored summary is untested. Honesty, filed as a feature.",
+    "Whatever the judge does with it, the packet no longer speaks with one voice. That, Ms. Voss says, is sometimes the whole job."
+   ],
+   "choices": [
+    {
+     "next": "eve_prep",
+     "note": "Evidence is half the hearing. The other half is knowing exactly what you're asking the judge to write.",
+     "text": "Spend Monday — the eve of the hearing — on the ask itself"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "rebuttal_filed",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "A Rebuttal on the Record"
+  },
+  {
+   "body": [
+    "The scored summary stays as it is. Ms. Voss shrugs the shrug of a lawyer conserving fights. \"Maybe the judge discounts it on her own. Judges sometimes do — they know what these forms are. And sometimes a findings draft lifts the packet's language wholesale, because findings are written at 4:40 p.m. by tired people, and 'attenuated' will be right there, spelled correctly, in the agency's own document.\"",
+    "\"We've chosen to find out which kind of afternoon December 2 is,\" she says, \"rather than spend ten dollars and an afternoon making the word fight for its place. Noted. Let's go build the ask.\""
+   ],
+   "choices": [
+    {
+     "next": "eve_prep",
+     "note": "What remains is the shape of the request: the words the judge would have to use to give you what you want.",
+     "text": "Spend Monday — the eve of the hearing — on the ask itself"
+    }
+   ],
+   "dayOffset": 12,
+   "id": "rebuttal_skipped",
+   "kicker": "Day 12 — Saturday, November 28, 2026",
+   "title": "Unanswered, by Default"
+  },
+  {
+   "body": [
+    "Ms. Voss's office, Monday evening, the whiteboard doing its work. She writes the four determinations the court must make at the review — continuing necessity of placement; compliance with the permanency plan; progress toward alleviating the circumstances that caused placement; reasonable efforts to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) — and under them, the outcomes the court may order, which include return to a parent. (42 Pa.C.S. § 6351(f.1))",
+    "\"One clock is not today's fight,\" she says. \"Paloma is at eight months in placement. The fifteen-of-twenty-two-months determination — whether the agency has filed a termination petition, and the exceptions to that — is a later hearing's question. (42 Pa.C.S. § 6351(f)(9)) Today is simpler and harder: whose account of the bond does the court credit, and what follows from the crediting.\"",
+    "Then she erases the board and writes one sentence: THE ASK. \"Judges grant requests they can picture as orders. Tomorrow we either hand her one, or we ask her to invent one while three lawyers watch.\""
+   ],
+   "choices": [
+    {
+     "next": "findings_choice",
+     "note": "An ask with findings language, steps, and dates is a draft order wearing a request's clothes. Judges recognize the tailoring.",
+     "text": "Draft the ask with her, in findings language"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "eve_prep",
+   "kicker": "Day 14 — Monday, November 30, 2026",
+   "title": "The Night Before the Review"
+  },
+  {
+   "body": [
+    "The drafted ask takes an hour and fits on one page. Findings: progress under § 6351(f)(3) — treatment completed, eight months sober, thirty visits kept, the circumstances that caused placement alleviated by the work itself. Order: a stepped return — expanded unsupervised visits now, overnights on a schedule, and return home by the next review if the steps hold, with Ms. Ferro's treatment continuing through the transition.",
+    "And a fallback, drafted just as carefully, in case the court wants more evaluation before it moves: then let the question be a focused one — the bond as it stands now, after treatment — put to an evaluator who must observe current visits and review current records. Not the same instrument, run again, over the same stale file.",
+    "The alternative is the ask most parents walk in with, through no fault of their own: please, just send her home. It is the truest sentence in the building. It is also, as an instrument of decision, nearly empty — it gives the judge nothing to sign."
+   ],
+   "choices": [
+    {
+     "next": "findings_drafted",
+     "note": "One page. If the court credits your witnesses tomorrow, the order she needs is already written, in her own findings' grammar.",
+     "setFlags": [
+      "steppedAsk"
+     ],
+     "text": "Go in with the drafted ask — findings, stepped return, and the focused-question fallback"
+    },
+    {
+     "next": "findings_generic",
+     "note": "She will hear a father either way; he'll be sworn. What she won't have, if the evidence breaks your way, is a draft of what to do about it.",
+     "text": "Go in with the plain plea — the judge has children too; let her hear a father, not a filing"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "findings_choice",
+   "kicker": "Day 14 — Monday, November 30, 2026",
+   "title": "Ask in Findings Language"
+  },
+  {
+   "body": [
+    "You read the page twice. It asks for less than everything and more than nothing, in the exact grammar of the statute the judge will be applying while everyone is still seated. It also does something subtler: it tells the judge what your side thinks the evidence will show, in advance, so that tomorrow, every witness who performs as expected is a promise kept.",
+    "\"Sleep,\" Ms. Voss says, in the tone of a professional instruction. \"Tomorrow is a listening contest. Dr. Marsh talks first. Then the record talks. Then, if we've done this right, the judge talks last, in findings.\""
+   ],
+   "choices": [
+    {
+     "next": "hearing_open",
+     "note": "Sixteen days of envelopes, memos, subpoenas, and logbooks, all of it aimed at one morning.",
+     "text": "Sleep — and walk into the review with a folder that knows its own contents"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "findings_drafted",
+   "kicker": "Day 14 — Monday, November 30, 2026",
+   "title": "Progress, Stepped Return, a Focused Question"
+  },
+  {
+   "body": [
+    "Ms. Voss doesn't argue. \"It's your case and your daughter,\" she says. \"I'll argue the evidence as hard as it can be argued. But understand the mechanics: if the judge credits our side and wants to move Paloma home in steps, she will have to construct the steps herself, at the bench, in a crowded list — or continue the case to construct them later. Momentum is a physical property in courtrooms. A drafted ask has it. A plea asks the judge to manufacture it.\"",
+    "You sleep the way people sleep before hearings: in installments, like the visits, with the goodbye parts too long."
+   ],
+   "choices": [
+    {
+     "next": "hearing_open",
+     "note": "Whatever the folder holds — or doesn't — the morning is here, and mornings in this system do not reschedule for readiness.",
+     "text": "Walk into the review"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "findings_generic",
+   "kicker": "Day 14 — Monday, November 30, 2026",
+   "title": "'Just Send Her Home'"
+  },
+  {
+   "body": [
+    "The courtroom is smaller than the size of what happens in it. The judge opens the review the way the statute opens it: this is a permanency hearing, held within six months of the last one (42 Pa.C.S. § 6351(e)(3)(i)), and the court will determine the continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan. (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1))",
+    "The agency's report is received. Your progress is reported — treatment, sobriety, visits — largely without dispute; the caseworker's own account of your compliance is, to her credit, fair. The agency's position rests, in the end, on one pillar, and agency counsel says so with admirable clarity: \"The evaluation, Your Honor. Dr. Marsh is here.\"",
+    "Everything the agency has comes down to ninety minutes and an adjective. Everything you have comes down to what the last sixteen days put in the folder. The judge calls the witness."
+   ],
+   "choices": [
+    {
+     "next": "marsh_direct",
+     "note": "She takes the stand with the confidence of a person whose report has never yet been read back to her. That may be about to change. Or not — it depends on the folder.",
+     "text": "Listen to Dr. Marsh the way Ms. Voss taught you: method first, conclusion last"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "hearing_open",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "The Permanency Review Opens"
+  },
+  {
+   "body": [
+    "Direct examination is smooth the way rehearsed things are smooth. Credentials: impeccable. Experience: long. The two observed sessions are described in warm, general terms. The records review is summarized. And then the conclusion, delivered to the judge in the level tone of a person reading weather: the father-daughter bond is attenuated; the child's attachment needs would, in her opinion, be better served by permanency in the current placement; return home is not recommended.",
+    "Agency counsel sits down well pleased. The word has now been said under oath, by a doctor, in a courtroom — three more institutional voices added to its collection. It hangs in the air of the room, waiting to find out whether anyone in the next twenty minutes is going to ask it a single question about how it was made.",
+    "The judge looks at Ms. Voss. \"Your witness, counsel.\""
+   ],
+   "choices": [
+    {
+     "next": "cross_choice",
+     "note": "What happens next was decided on days 3, 6, and 9 — in an envelope, a memo, and a set of notes. Courtrooms only reveal preparation; they do not create it.",
+     "text": "Rise for cross-examination"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "marsh_direct",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Dr. Marsh Testifies"
+  },
+  {
+   "body": [
+    "Cross-examination is a choice of target. There are three available, and they are not equal. The witness's credentials are gleaming — a fight there is a fight on her strongest ground, in front of a judge who has qualified a hundred experts and likes approximately none of the lawyers who waste her time pretending a résumé is a method. The witness's conclusion is unmovable — experts do not recant conclusions on cross, ever. And the witness's method — the ninety minutes, the missing comparison, the stale file, and whatever her own notes say — is simply a set of facts she has already admitted in writing, waiting to be asked about in order.",
+    "Ms. Voss stands with whatever the last sixteen days actually built. A prepared cross exists only if the memo was built and the file was obtained. An improvised one exists in every courtroom, every day, and the witness has survived a hundred of them."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — cross-examination: 90 minutes observed; no comparison observation; records pre-dated treatment"
+     ],
+     "next": "cross_method",
+     "note": "Question one is the gentlest sentence in the room: \"Doctor, let's start with what you actually saw.\"",
+     "requiresFlags": [
+      "crossReady",
+      "recordsRequested"
+     ],
+     "setFlags": [
+      "methodCrossDone"
+     ],
+     "text": "Cross on the method — the memo, the notes, the staircase: ninety minutes, no comparison, stale records, her own words read back"
+    },
+    {
+     "next": "cross_credentials",
+     "note": "She is qualified, and everyone in the room including the judge is about to be reminded of it, at length, by her.",
+     "text": "Cross on the credentials — challenge whether Dr. Marsh is qualified to judge this family at all"
+    },
+    {
+     "next": "cross_none",
+     "note": "The report does speak for itself. That is the difficulty. It will now do so, uninterrupted, for the rest of the hearing.",
+     "text": "Waive cross — the report speaks for itself, and attacking a doctor may backfire"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "cross_choice",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Your Cross-Examination"
+  },
+  {
+   "body": [
+    "It is not dramatic. That is why it works. \"You observed Mr. Quill and Paloma together for how long, in total?\" Ninety minutes, Doctor. \"Two sessions of forty-five minutes.\" Yes. \"You never observed Paloma with her foster parents, for comparison?\" That was not part of the referral. \"The records you reviewed — the ones your report cites most heavily — were written before Mr. Quill entered treatment, correct?\" They were the records provided. \"You have not seen the visit logs for the last five months?\" No.",
+    "Then the notes. Ms. Voss hands the witness her own session notes — obtained on written request, marked, admitted — and asks her to read the highlighted line aloud. Dr. Marsh reads: \"Child sought father's lap repeatedly.\" A pause. \"And at the end of session two, Doctor — your handwriting again.\" \"Separation protest strong.\" \"Thank you. Nothing further.\"",
+    "Dr. Marsh does not recant; experts never do. She says observations and conclusions are different things, which is true, and the judge writes something down — which is the whole game. The conclusion now has a visible seam in it, and the seam is the witness's own handwriting."
+   ],
+   "choices": [
+    {
+     "next": "evidence_turn",
+     "note": "The adjective is still in the record. It is no longer alone in it, and it is no longer unquestioned. Those are different accomplishments; both matter.",
+     "text": "Sit down. The other witnesses are next"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "cross_method",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Ninety Minutes"
+  },
+  {
+   "body": [
+    "The credential cross goes the way credential crosses go against qualified experts: each question becomes an occasion for the witness to recite another qualification. Board certifications. Years. Hundreds of evaluations. Two courts' worth of prior testimony, which the judge — who has heard Dr. Marsh before, it emerges — receives with a small nod of recognition.",
+    "By the time Ms. Voss sits down, the evaluation's conclusion has not been dented, and its author has been burnished for twenty minutes at your side's expense. The judge's one interjection lands where it lands: \"Counsel, I take it the doctor's qualifications are not really your point. If you have a point about the work itself, the court will hear it at argument.\" The work itself — the ninety minutes, the notes — was the soft part. It remains, largely, unpressed.",
+    "Not a catastrophe. A tax: credibility spent on the witness's strongest ground buys nothing on her weakest."
+   ],
+   "choices": [
+    {
+     "next": "evidence_turn",
+     "note": "Cases are rarely lost in one cross-examination. They are, however, priced there.",
+     "text": "Move on — the other witnesses are next, and they are yours"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "cross_credentials",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "The Wrong Fight"
+  },
+  {
+   "body": [
+    "\"No questions, Your Honor.\" It takes two seconds. Dr. Marsh steps down having said, under oath and without interruption, exactly what her report said — the conclusion now indistinguishable, in the record, from a fact. There were things that could have been asked. How many minutes. Compared to what. Which records, from when. What her own notes recorded, in the room, before the conclusion was written. None of it was asked, because the preparation for asking it — the file, the memo — was the part of the case that happened, or didn't, on days 3, 6, and 9, far from any courtroom.",
+    "Agency counsel, in the corridor of the hearing's middle, is already saying the word again. Attenuated. It will be in their closing. It will be in the proposed findings they hand up. Unopposed words usually are."
+   ],
+   "choices": [
+    {
+     "next": "evidence_turn",
+     "note": "What remains is what remains: a therapist, a logbook, and a father. Whether they are in the room is a different question than whether they exist.",
+     "text": "Move on — your side of the evidence is next"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "cross_none",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "The Report Stands"
+  },
+  {
+   "body": [
+    "Your case, Ms. Voss announces, calls the treating therapist. Or it doesn't — because a witness who was never confirmed cannot be called, only described, and the letter in the packet will be offered and read the way letters are read: silently, at the speed of the stack, by a judge who has already heard a live expert hold the room for forty minutes.",
+    "Ms. Voss looks at the witness door, and then at you, and what happens in the next ten minutes is the second thing the last sixteen days decided."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — treating therapist testified live: fourteen months of sessions"
+     ],
+     "next": "ferro_live_node",
+     "note": "She comes through the door the way she comes into sessions: unhurried, prepared, and entirely unafraid of the questions.",
+     "requiresFlags": [
+      "therapistLive"
+     ],
+     "text": "Call Ms. Ferro — live, sworn, with fourteen months of session records in her hands"
+    },
+    {
+     "next": "ferro_letter_node",
+     "note": "The clerk marks it. The judge reads it in the time it takes agency counsel to find a page in the evaluation. Both documents are now 'in evidence.' They are not the same size in the room.",
+     "text": "Offer Ms. Ferro's letter and ask the court to give it the weight it deserves"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "evidence_turn",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "The Other Witnesses"
+  },
+  {
+   "body": [
+    "Ms. Ferro testifies the way she therapists: precisely, and without performing. Fourteen months of weekly sessions. The early Paloma, who drew her father small and at the edge of the page. The repair work, session by session — the apologies made in the visit room and what a six-year-old does with an apology that turns out to be true. The recent Paloma, who drew the house with two doors and explained, to the dollhouse, that her father \"went to get fixed and then he stayed fixed.\"",
+    "Agency counsel crosses her — fairly, and she survives it the way she promised: yes, she is the treating therapist, not a neutral evaluator; no, that is not a defect, it is a different vantage; ninety minutes is a photograph, fourteen months is a film, and the court is welcome to weigh both for exactly what they are.",
+    "The judge asks two questions of her own — about the transition plan, about what Paloma needs if visits expand — the kind of questions judges ask witnesses they are building findings on. You learn to hear the difference. It sounds like carpentry."
+   ],
+   "choices": [
+    {
+     "next": "judge_question",
+     "note": "The judge turns to you with the expression of a person saving the simplest question for last. It is not simple.",
+     "text": "Rest your evidence — one witness remains, and he is not an expert"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "ferro_live_node",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Fourteen Months, Live"
+  },
+  {
+   "body": [
+    "The letter is received. The judge reads it — you watch her read it, both pages, which is more than many letters get — and sets it with the packet. It says everything right, at the speed of reading, with no voice attached, and when agency counsel says, at argument, \"the therapist's letter, Your Honor, is a treatment summary, not an evaluation,\" there is no one in the room who can stand up and answer: I know the difference; I have watched this child for fourteen months; ask me anything.",
+    "Ms. Voss argues the letter as hard as paper can be argued. But the asymmetry is now the architecture of the hearing: their witness was a person; yours is a document. Judges are readers by profession, and even they remember voices longer than pages."
+   ],
+   "choices": [
+    {
+     "next": "judge_question",
+     "note": "The judge turns to you. Whatever your side lacked in paper, this part will not lack in candor — or it will lack everything.",
+     "text": "Rest your evidence — one witness remains, and he is not an expert"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "ferro_letter_node",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Read Into the Record"
+  },
+  {
+   "body": [
+    "You testify last, briefly — Ms. Voss walks you through the compliance record: treatment, the screens, the meetings, the visits, the work. Then the judge leans forward, and the room changes temperature. \"Mr. Quill. I have read about the spring. I want to hear from you: what was happening, the night of the arrest — and what is different, specifically, now?\"",
+    "Every person in the room knows what this question is. It is not about the evaluation. It is the judge deciding, in real time, whether the man in front of her is the author of his own progress or the audience of it. There is a version of the answer that treats the spring like weather that happened to you. And there is the version you have practiced in a hundred meetings, one honest sentence at a time."
+   ],
+   "choices": [
+    {
+     "next": "closing_choice",
+     "note": "The judge's pen moves through the whole answer. Some testimony is weighed. Some is simply believed. The difference is audible.",
+     "setFlags": [
+      "answeredStraight"
+     ],
+     "text": "Answer it straight — the drinking, the driving, the arrest, and then the specific, dated, unglamorous machinery of the eight months since"
+    },
+    {
+     "next": "closing_choice",
+     "note": "Every word is defensible. None of it is evidence. The judge's pen, you notice, does not move.",
+     "text": "Keep it brief and safe — that year was a hard time, mistakes were made, you're doing better now"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "judge_question",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "The Judge Asks About the DUI Year"
+  },
+  {
+   "body": [
+    "Closing argument is accounting. Agency counsel counts what the agency has: a qualified expert, a conclusion, a scored summary that agrees with it, and the word — said now, under oath and in print, more times than you have counted. \"The evaluation is the only professional assessment of the bond before this court, and it does not recommend return.\"",
+    "Ms. Voss rises to count what you have — and what she can count depends, with total precision, on the last sixteen days. A cross that happened or didn't. A therapist who testified or wrote. Logs that were filed or left. A rebuttal that answered the adjective or let it stand. A drafted ask, in findings language, or a plea. The judge is not grading effort, or love, or suffering. She is deciding what this record can carry, and then she will write it down in findings under § 6351(f) — where, as ever, it will become the case."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Order — findings credit the treating witnesses; stepped return ordered"
+     ],
+     "next": "end_win",
+     "note": "Every element of this argument exists because of a specific day in November. The judge has the draft order in front of her before the words are finished.",
+     "requiresFlags": [
+      "therapistLive",
+      "crossReady",
+      "recordsRequested",
+      "visitRecordFiled",
+      "summaryRebutted",
+      "methodCrossDone"
+     ],
+     "text": "Argue the whole record — the crossed method, the live therapist, the filed logs, the answered adjective — and hand up the drafted ask: stepped return under § 6351(f)(3) and (f.1)"
+    },
+    {
+     "next": "end_partial",
+     "note": "A prepared cross bought this much: the conclusion is no longer comfortable enough to simply adopt. The ask matches the doubt — a better question, put properly, this time.",
+     "requiresFlags": [
+      "crossReady"
+     ],
+     "text": "Argue the method doubt — whatever the court does about return, it should not rest on ninety minutes; ask for a focused re-evaluation of the post-treatment bond"
+    },
+    {
+     "next": "end_partial",
+     "note": "The treating witness gave the court a second vantage it cannot un-hear. It is enough to stop the evaluation's momentum, if not yet to reverse it.",
+     "requiresFlags": [
+      "therapistLive"
+     ],
+     "text": "Argue the therapist's evidence — fourteen months against ninety minutes — and ask for the focused re-evaluation with expanded visits meanwhile"
+    },
+    {
+     "next": "end_loss",
+     "note": "The progress is real, and the judge honors it — aloud. But an unexamined expert conclusion is still standing across the room from it, and real progress, unaccompanied, is about to be weighed against a word nobody questioned.",
+     "requiresNoFlags": [
+      "crossReady",
+      "therapistLive"
+     ],
+     "text": "Rest on the progress record — treatment, sobriety, visits — and ask the court to weigh it against the evaluation"
+    }
+   ],
+   "dayOffset": 16,
+   "id": "closing_choice",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Closing: What the Record Can Carry"
+  },
+  {
+   "body": [
+    "The findings come down from the bench on Wednesday and the written order follows on Thursday, and the sentence in it that matters is not about you. It is about the evidence. The court credits the treating therapist and the visit record over the evaluation's conclusion: the evaluation, the court finds, rested on limited observation and a record that substantially predated the father's treatment, and its own session notes did not support the weight its conclusion was asked to carry.",
+    "Findings under 42 Pa.C.S. § 6351(f)(3) are entered for you — progress toward alleviating the circumstances that caused placement, proven by the work itself. The order is a stepped return: expanded unsupervised visits now, overnights on the drafted schedule, and return home by the next review if the steps hold, with Ms. Ferro's treatment continuing through the transition. Paloma is told in words for a six-year-old: more sleeps at Dad's are coming, on a calendar she can see, with the second door on the house she drew.",
+    "Dr. Marsh's report stays in the file, where reports live. It just no longer lives there as a verdict — because somewhere along the way, a father and his lawyer treated it as what it was: an opinion, with a method, that a judge was free to weigh and free to set down."
+   ],
+   "dayOffset": 17,
+   "debrief": [
+    "WHAT THE FILE SAID — The hidden record told the real story: the evaluation's own raw notes, released on written request under 55 Pa. Code § 3130.44(d), recorded a child who 'sought father's lap repeatedly,' in tension with the conclusion's adjective; the cross-examination transcript fixed the method at ninety minutes observed, no comparison observation, and records that pre-dated treatment; the treating therapist testified live from fourteen months of sessions; the visit supervisor's logs documented thirty visits and the child's approach behavior; a written rebuttal answered the scored summary's imported adjective; and the final order credited the treating witnesses and ordered the stepped return. Sixteen days of paper became one afternoon of findings.",
+    "THE LAW THAT CONTROLLED IT — A permanency hearing belongs to the court: at it, the court must determine the continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)), and its options include return to a parent (42 Pa.C.S. § 6351(f.1)). No rule required the evaluation, and none made its conclusion binding — it was evidence, weighed against other evidence. The agency record was released on request (55 Pa. Code § 3130.44(d)); the posture toward the report — examine it, controvert it, cross-examine its maker — is the principle stated for disposition at 42 Pa.C.S. § 6341(d)(2). The rebuttal of the scored summary argued Pa.R.J.C.P. 1340(E) and (F), whose reach to a scored assessment summary has not been tested in a published opinion.",
+    "THE HONEST PART — This ending was not a verdict that Vernon is a good father, and the other endings are not verdicts that he is a bad one. The same man, the same eight months sober, the same daughter running to the same door, can land in any of the three endings depending on envelopes mailed in November, a therapist's Wednesday calendar, and a judge's weighing of two professionals on a given afternoon. Outcomes here turn on workers, judges, resources, and luck as much as on any parent. What the route controlled was narrower and real: when the weighing happened, there was something on both sides of the scale."
+   ],
+   "ending": true,
+   "id": "end_win",
+   "kicker": "Day 17 — Thursday, December 3, 2026",
+   "title": "The Evaluator Is Not the Judge"
+  },
+  {
+   "body": [
+    "The court splits it, the way courts split things they are not done thinking about. The order, issued Thursday, does not return Paloma — the evaluation's recommendation is not adopted, but neither is it discarded, and the court says the honest version of why: on this record, it cannot fully credit a conclusion whose foundations were shown to be thinner than its confidence, and it will not end a placement on a doubt, either.",
+    "So the court orders the question asked again, properly: a focused re-evaluation, limited to the bond as it stands after treatment, with the evaluator required to observe current visits and review current records — the stale file is named in the order as the problem it was. Meanwhile, visits expand. Ms. Ferro's work continues. The next review is set, and it will open with a better question than this one did.",
+    "It is not the ending Vernon asked for. It is also not the ending the packet had written for him on day 0, in which one word, unexamined, simply became the plan."
+   ],
+   "dayOffset": 17,
+   "debrief": [
+    "WHAT THE FILE SAID — Some of the record got built and some didn't, and the order is an exact map of which. Where the evaluation was actually pressed — a prepared cross on its method, or a treating therapist testifying live from fourteen months of sessions — the court balked at adopting its conclusion. Where the record stayed thin — a letter instead of a witness, a credential fight instead of a method cross, an adjective in the scored summary that no written rebuttal answered — the court's doubt had nothing further to stand on, and doubt alone does not end a placement. The remedy reflects the gap precisely: the same question, re-asked with current observations and current records.",
+    "THE LAW THAT CONTROLLED IT — The determinations at a permanency hearing are the court's to make on all the evidence (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)), and its options include return to a parent (42 Pa.C.S. § 6351(f.1)) — which this record did not yet carry it to. The agency record is released on written request (55 Pa. Code § 3130.44(d)); reports may be examined and controverted and their makers cross-examined, the principle stated for disposition at 42 Pa.C.S. § 6341(d)(2); and a rebuttal aimed at the scored summary rests on Pa.R.J.C.P. 1340(E) and (F), whose reach to a scored assessment summary has not been tested in a published opinion. An expert's recommendation, it turns out, is the beginning of the court's analysis when somebody makes it one — and the end of it when nobody does.",
+    "THE HONEST PART — A partial ending measures a record, not a father. The same sobriety, the same visits, the same daughter drew a different order here because one or two November decisions went the other way — an envelope, an afternoon, a phone call not made by a Wednesday deadline. A different judge might have returned Paloma on this record, or adopted the evaluation outright; workers, judges, and luck hold pieces of every outcome in this system. What is durable here is the order's own instruction: the next evaluation will observe the present, not inherit the past. The question got better because somebody made the court look at it twice."
+   ],
+   "ending": true,
+   "id": "end_partial",
+   "kicker": "Day 17 — Thursday, December 3, 2026",
+   "title": "Two Reports, One More Question"
+  },
+  {
+   "body": [
+    "The hearing is not long. Your progress is reported and credited — the judge thanks you for it, sincerely, the way one thanks a man for weather he cannot use. Then agency counsel rises and does the simplest thing available to her: she asks the court to adopt the evaluation's recommendation, and she uses its word three times in the goal discussion. Attenuated. Attenuated. Attenuated. No one in the room has ever asked the word a question, so the word never has to become anything smaller than a finding.",
+    "The court adopts the recommendation nearly verbatim. Placement continues. The goal discussion moves, in the evaluation's own vocabulary, toward permanency in the current placement. Paloma's next visit is Saturday, in the room with the logbook, and the hour will be a good hour — the file will simply never know what it meant, because the parts of the record that could have told it were never requested, never built, never called.",
+    "Somewhere across town, in an unopened file, a psychologist's session notes say a little girl sought her father's lap repeatedly, in two forty-five-minute sessions, while a conclusion was being prepared that she would never read."
+   ],
+   "dayOffset": 16,
+   "debrief": [
+    "WHAT THE FILE SAID — The record the court weighed was the packet as it arrived on day 0: an evaluation received late in the preparation, read for its conclusion, and never crossed on its method; a scored summary carrying the word 'attenuated' as an agency data line, unanswered in writing. What the file never contained was the counter-record: the evaluator's raw session notes — which described proximity-seeking and strong separation protest, in tension with the conclusion, and which a written request under 55 Pa. Code § 3130.44(d) would have produced in November — the treating therapist's live testimony, and a filed summary of thirty supervised visits. The adjective was contradicted the whole time. It was contradicted in a file nobody requested.",
+    "THE LAW THAT CONTROLLED IT — The permanency determinations were still the court's to make (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)), and return to a parent was still among its options (42 Pa.C.S. § 6351(f.1)); nothing in the law required the court to adopt the evaluation — and nothing in the law required it to doubt a conclusion no one had examined. The tools existed and were not used: the record released on request (55 Pa. Code § 3130.44(d)); reports examined and controverted, their makers cross-examined, as stated for disposition at 42 Pa.C.S. § 6341(d)(2); a rebuttal of the scored summary under Pa.R.J.C.P. 1340(E) and (F) — untested, as any such argument must honestly be labeled, but unmade entirely here.",
+    "THE HONEST PART — This ending is not a finding that Vernon loves his daughter less, or parented her worse, than in the other endings. He did the treatment. He kept the visits. He stayed sober. What he did not do was mail an envelope, build a memo, and make a phone call by three November deadlines — logistics and record mechanics, not virtue — and a different judge, a different evaluator, or a caseworker who volunteered the notes could have changed the afternoon entirely. Outcomes in this system turn on workers, judges, and luck. The bleakest sentence in this debrief is also the most useful one: the notes said what they said the whole time, and the case was lost in the distance between a file that existed and a file that was asked for."
+   ],
+   "ending": true,
+   "id": "end_loss",
+   "kicker": "Day 16 — Wednesday, December 2, 2026",
+   "title": "Forty-Five Minutes"
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s75';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

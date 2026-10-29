@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  #app h2{font-size:1.65rem;line-height:1.18;letter-spacing:-.01em;margin:0 0 10px;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);margin:0 0 7px;}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--ink);margin:0 0 10px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);line-height:1.62;
+    padding:16px 18px 8px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 11px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:30px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-27px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:4px 14px 3px;font-size:.78rem;font-weight:800;letter-spacing:.22em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: no-preference){
+    .plate, .captionbox{animation:sceneIn .28s ease-out;}
+    @keyframes sceneIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- ============================================================================
+  THE FIRST 90 DAYS — COMIC KIT v2 (fragment)
+  Paste ALL of this INSIDE the existing <defs> block in play-comic.html,
+  after the v1 plates and before </defs>. Order inside this fragment matters:
+  gradients/patterns first, then figures, then plates, then overlays.
+  v1 idiom preserved: viewBox 0 0 120 240 figures / 0 0 400 225 plates,
+  body fill = currentColor, ONE held prop per figure in paper #f7ead0 with
+  ink #0d1520 stroke 2-4, every plate ends with the halftone overlay rect.
+  No text in any art. No faces. At most 2 figures per plate.
+  ============================================================================ -->
+
+<!-- ===== v2 gradients & patterns ===== -->
+<radialGradient id="gradDawn" cx="0.18" cy="0.95" r="0.95">
+  <stop offset="0" stop-color="#f7ead0" stop-opacity=".6"/>
+  <stop offset=".45" stop-color="#e8b04b" stop-opacity=".28"/>
+  <stop offset="1" stop-color="#e8b04b" stop-opacity="0"/>
+</radialGradient>
+<pattern id="rain" width="14" height="14" patternUnits="userSpaceOnUse">
+  <line x1="3" y1="-2" x2="7" y2="10" stroke="#0d1520" stroke-width="2"/>
+</pattern>
+
+<!-- ===== Cast v2 (viewBox 0 0 120 240; body = currentColor; one paper prop) ===== -->
+<!-- fig-caseworker2: bob hair with side mass (not hair-back), narrow body.
+     Prop: shoulder bag — paper rect on an ink strap line. -->
+<symbol id="fig-caseworker2" viewBox="0 0 120 240">
+  <rect x="42" y="30" width="7" height="26"/><rect x="71" y="30" width="7" height="26"/>
+  <path d="M43 44 A17 17 0 0 1 77 44 L77 50 L43 50 Z"/>
+  <circle cx="60" cy="44" r="14"/>
+  <path d="M38 68 L82 68 L86 156 L34 156 Z"/>
+  <rect x="40" y="156" width="14" height="76"/><rect x="66" y="156" width="14" height="76"/>
+  <line x1="76" y1="72" x2="92" y2="118" stroke="#0d1520" stroke-width="3"/>
+  <rect x="84" y="116" width="28" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-mother2: long hair mass past the shoulders (not a bun), wider skirt line.
+     Prop: tote bag — paper rect with an ink handle arc. -->
+<symbol id="fig-mother2" viewBox="0 0 120 240">
+  <path d="M38 30 Q60 12 82 30 L86 112 L34 112 Z"/>
+  <circle cx="60" cy="38" r="14"/>
+  <path d="M36 66 Q60 56 84 66 L94 156 L26 156 Z"/>
+  <rect x="39" y="156" width="14" height="76"/><rect x="67" y="156" width="14" height="76"/>
+  <path d="M90 112 Q99 100 108 112" fill="none" stroke="#0d1520" stroke-width="3"/>
+  <rect x="86" y="112" width="27" height="32" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-kin: glasses = two paper-stroke circles + bridge (silhouette distinction,
+     as the doctor's paper-stroke stethoscope in v1); cardigan V in paper stroke
+     (clothing, as the attorney's paper tie in v1). Prop: framed photo. -->
+<symbol id="fig-kin" viewBox="0 0 120 240">
+  <path d="M44 32 A16 14 0 0 1 76 32 L76 38 L44 38 Z"/>
+  <circle cx="60" cy="42" r="13"/>
+  <circle cx="52" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <circle cx="68" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <line x1="58" y1="42" x2="62" y2="42" stroke="#f7ead0" stroke-width="2.5"/>
+  <path d="M34 64 Q60 54 86 64 L92 154 L28 154 Z"/>
+  <path d="M50 66 L60 96 L70 66" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="40" y="154" width="14" height="78"/><rect x="66" y="154" width="14" height="78"/>
+  <rect x="88" y="98" width="24" height="30" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="94" y="104" width="12" height="12" fill="none" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-supervisor: flat short hair, wide blazer with paper lapel lines.
+     Prop: coffee cup — small paper rect with a lid line. -->
+<symbol id="fig-supervisor" viewBox="0 0 120 240">
+  <rect x="44" y="20" width="32" height="9"/>
+  <circle cx="60" cy="40" r="14"/>
+  <path d="M31 60 L89 60 L93 154 L27 154 Z"/>
+  <path d="M51 62 L60 92 L69 62" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="38" y="154" width="15" height="78"/><rect x="67" y="154" width="15" height="78"/>
+  <rect x="89" y="100" width="17" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="87" y="95" width="21" height="6" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-toddler: internal height ~102 units (child = ~147, adult = ~200+);
+     head proportion deliberately larger. Prop: stuffed toy — paper blob + ears.
+     Cast only in v2 plates: never placed in a plate in this kit. -->
+<symbol id="fig-toddler" viewBox="0 0 120 240">
+  <circle cx="58" cy="146" r="15"/>
+  <path d="M42 168 L74 168 L78 204 L38 204 Z"/>
+  <rect x="44" y="204" width="11" height="28"/><rect x="62" y="204" width="11" height="28"/>
+  <circle cx="86" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="100" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="93" cy="170" r="11" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-child2: older child — internal height ~191 units, slimmer than fig-child.
+     Prop: book held at chest — paper rect with an ink centre line. -->
+<symbol id="fig-child2" viewBox="0 0 120 240">
+  <path d="M46 52 A14 12 0 0 1 74 52 L74 56 L46 56 Z"/>
+  <circle cx="60" cy="56" r="13"/>
+  <path d="M45 76 L75 76 L78 172 L42 172 Z"/>
+  <rect x="46" y="172" width="11" height="60"/><rect x="63" y="172" width="11" height="60"/>
+  <rect x="43" y="102" width="34" height="25" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="60" y1="102" x2="60" y2="127" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+
+<!-- ===== Plates v2 (viewBox 0 0 400 225) ===== -->
+<!-- plate-waiting — Agency Waiting Room (COLD). Bolted chairs in two rows,
+     ticket/counter window with the supervisor behind it, ink wall clock,
+     fluorescent bars. Figures: supervisor (behind counter), mother. -->
+<symbol id="plate-waiting" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="52" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="238" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <circle cx="200" cy="46" r="16" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="200" y2="35" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="208" y2="50" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-supervisor" x="292" y="42" width="54" height="108" color="#0d1520"/>
+  <rect x="262" y="118" width="122" height="76" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="274" y="82" width="98" height="36" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <rect x="286" y="130" width="34" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="30" y="58" width="60" height="122" color="#c98f2b"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2">
+    <rect x="112" y="142" width="34" height="26"/><rect x="154" y="142" width="34" height="26"/>
+    <rect x="196" y="142" width="34" height="26"/>
+  </g>
+  <rect x="108" y="170" width="126" height="8" fill="#0d1520"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2" opacity=".75">
+    <rect x="126" y="188" width="30" height="20"/><rect x="164" y="188" width="30" height="20"/>
+    <rect x="202" y="188" width="30" height="20"/>
+  </g>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-courtsteps — Courthouse Steps (COLD, exterior). Facade + columns
+     above, wide steps descending toward the viewer, mother + attorney small
+     at the foot. One warm accent only: the lit doorway. -->
+<symbol id="plate-courtsteps" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <path d="M62 30 L200 6 L338 30 Z" fill="#0d1520"/>
+  <rect x="62" y="30" width="276" height="66" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="182" y="50" width="36" height="46" fill="#e8b04b" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#1f3a5c" stroke="#0d1520" stroke-width="2">
+    <rect x="82" y="38" width="15" height="58"/><rect x="122" y="38" width="15" height="58"/>
+    <rect x="243" y="38" width="15" height="58"/><rect x="283" y="38" width="15" height="58"/>
+  </g>
+  <rect x="52" y="96" width="296" height="11" fill="#0d1520"/>
+  <rect x="38" y="112" width="324" height="11" fill="#0d1520" opacity=".85"/>
+  <rect x="24" y="128" width="352" height="11" fill="#0d1520" opacity=".7"/>
+  <rect x="10" y="144" width="380" height="11" fill="#0d1520" opacity=".55"/>
+  <use href="#fig-mother" x="148" y="140" width="42" height="84" color="#c98f2b"/>
+  <use href="#fig-attorney" x="202" y="140" width="42" height="84" color="#0d1520"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-schooloffice — School Office (MIXED: warm room, cold cabinets).
+     Desk with a blank nameplate block, filing cabinets, small flag, wall
+     chairs. Figures: mother, child (plain, standing beside her at the desk). -->
+<symbol id="plate-schooloffice" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="14" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="94" x2="70" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="136" x2="70" y2="136" stroke="#0d1520" stroke-width="3"/>
+  <rect x="330" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="116" x2="386" y2="116" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="14" width="3" height="34" fill="#0d1520"/>
+  <rect x="309" y="14" width="26" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="86" width="26" height="20" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="106" width="26" height="7" fill="#0d1520"/>
+  <use href="#fig-mother" x="118" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="272" y="92" width="44" height="88" color="#16283f"/>
+  <rect x="96" y="156" width="208" height="13" fill="#0d1520"/>
+  <rect x="108" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="282" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="168" y="140" width="42" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-workplace — Warehouse / Workplace (COLD-neutral). Racking grids,
+     pallet stacks, high window band, wall time-clock block (ink dial, blank).
+     Figure: mother2 (tote reads as a work bag; no costume props). -->
+<symbol id="plate-workplace" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="24" y="14" width="352" height="26" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <line x1="112" y1="14" x2="112" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="14" x2="200" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="288" y1="14" x2="288" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <rect x="18" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="18" y1="104" x2="122" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="18" y1="150" x2="122" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="70" y1="58" x2="70" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="26" y="76" width="34" height="22" fill="#e8b04b" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="78" y="120" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="278" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="278" y1="104" x2="382" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="278" y1="150" x2="382" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="58" x2="330" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="338" y="76" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="182" y="60" width="36" height="44" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="200" cy="76" r="9" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="190" y="90" width="20" height="6" fill="#f7ead0"/>
+  <use href="#fig-mother2" x="168" y="76" width="64" height="130" color="#c98f2b"/>
+  <rect x="132" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="132" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect x="220" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="220" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-busstop — Bus Stop (COLD dusk). Sign pole with a blank round sign,
+     shelter frame + bench, street band, apartment silhouettes with lit
+     windows behind. One warm element only: the streetlamp glow.
+     No figures — a place alone, as plate-exterior in v1. -->
+<symbol id="plate-busstop" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="8" y="52" width="86" height="140" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="38" width="86" height="154" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="22" y="68" width="20" height="16" fill="#e8b04b" opacity=".8"/>
+  <rect x="56" y="68" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="22" y="104" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="56" width="20" height="16" fill="#e8b04b"/>
+  <rect x="354" y="56" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="92" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <ellipse cx="128" cy="58" rx="34" ry="20" fill="#e8b04b" opacity=".3"/>
+  <rect x="125" y="52" width="5" height="140" fill="#0d1520"/>
+  <circle cx="128" cy="48" r="7" fill="#e8b04b"/>
+  <rect x="158" y="66" width="5" height="126" fill="#0d1520"/>
+  <circle cx="160" cy="54" r="13" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="196" y="86" width="104" height="8" fill="#0d1520"/>
+  <rect x="200" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="290" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="208" y="146" width="80" height="10" fill="#0d1520"/>
+  <rect x="216" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect x="273" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect y="192" width="400" height="33" fill="#0d1520"/>
+  <rect x="36" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="182" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="328" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-laundromat — Laundromat (WARM-neutral). Round-front washer doors
+     (circles in rects), folding counter with a laundry basket block, folded
+     stacks on a shelf. Figure: mother. (Child optional in the brief — omitted
+     deliberately: the row is the subject, and the plate stays uncrowded.) -->
+<symbol id="plate-laundromat" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="20" y="20" width="150" height="10" fill="#0d1520"/>
+  <rect x="28" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="34" width="36" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="112" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#f7ead0" stroke="#0d1520" stroke-width="3">
+    <rect x="16" y="66" width="72" height="106"/><rect x="96" y="66" width="72" height="106"/>
+    <rect x="176" y="66" width="72" height="106"/>
+  </g>
+  <circle cx="52" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="132" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="212" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="52" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="132" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="212" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <rect x="28" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="108" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="188" y="76" width="48" height="8" fill="#0d1520"/>
+  <use href="#fig-mother" x="316" y="52" width="62" height="126" color="#c98f2b"/>
+  <rect x="256" y="150" width="96" height="11" fill="#0d1520"/>
+  <rect x="264" y="161" width="9" height="42" fill="#0d1520"/>
+  <path d="M272 128 L316 128 L310 148 L278 148 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="282" y1="134" x2="306" y2="134" stroke="#0d1520" stroke-width="2"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-program — Program / Parenting-Class Room (WARM-neutral). A ring of
+     chairs suggested by backs at the edges, blank flip-chart easel, low table.
+     Figures: kin (with the framed photo), mother. -->
+<symbol id="plate-program" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="172" y="30" width="56" height="66" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="186" y="24" width="28" height="9" fill="#0d1520"/>
+  <line x1="182" y1="96" x2="168" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <line x1="218" y1="96" x2="232" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#c98f2b" stroke="#0d1520" stroke-width="2" opacity=".8">
+    <rect x="86" y="56" width="26" height="20"/><rect x="288" y="56" width="26" height="20"/>
+    <rect x="56" y="104" width="26" height="20"/><rect x="318" y="104" width="26" height="20"/>
+  </g>
+  <use href="#fig-kin" x="112" y="54" width="60" height="122" color="#16283f"/>
+  <use href="#fig-mother" x="238" y="54" width="60" height="122" color="#c98f2b"/>
+  <ellipse cx="200" cy="158" rx="56" ry="11" fill="#0d1520"/>
+  <rect x="188" y="166" width="24" height="8" fill="#0d1520"/>
+  <rect x="158" y="140" width="30" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#0d1520">
+    <rect x="36" y="182" width="52" height="34"/><rect x="312" y="182" width="52" height="34"/>
+  </g>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+
+<!-- ===== Time / weather overlays (viewBox 0 0 400 225) =====
+     Instance AFTER the plate <use> in the same <svg> — see v2-design-spec.md
+     section 2. Exactly one overlay per plate, ever. Subtle by design: an
+     overlay tints a scene, it never re-lights it. -->
+<!-- ov-dawn: warm glow low-left (gradDawn) + one soft glow ellipse. -->
+<symbol id="ov-dawn" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradDawn)"/>
+  <ellipse cx="62" cy="205" rx="110" ry="42" fill="#e8b04b" opacity=".22"/>
+</symbol>
+<!-- ov-dusk: deepening navy wash + halftone at .18 (plate standard is .13/.15). -->
+<symbol id="ov-dusk" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".22"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".18"/>
+</symbol>
+<!-- ov-night: navy wash at .30 + a small crescent (two circles) top-right. -->
+<symbol id="ov-night" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#0d1520" opacity=".30"/>
+  <circle cx="350" cy="36" r="13" fill="#f7ead0"/>
+  <circle cx="358" cy="31" r="11" fill="#16283f"/>
+  <circle cx="306" cy="24" r="2" fill="#f7ead0"/>
+  <circle cx="330" cy="58" r="2" fill="#f7ead0"/>
+</symbol>
+<!-- ov-rain: darker wash + the rain pattern at low opacity. Exterior only. -->
+<symbol id="ov-rain" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".18"/>
+  <rect width="400" height="225" fill="url(#rain)" opacity=".35"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 122 — Excused, Absent, Unexcused (a fictional composite)",
+  "startDateISO": "2027-02-08",
+  "startNode": "start",
+  "startCash": 140,
+  "tier": "Complex",
+  "summary": "You are Bernadette Farrow. The dependency petition says your son Oren, ten, missed 23 days of school unexcused — educational neglect, in the agency's words. You count nine. Between your number and theirs stands a school office, a software migration, and a box of un-scanned excuse notes."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, February 8, 2027",
+   "dayOffset": 0,
+   "title": "Twenty-three",
+   "body": [
+    "The petition is served at the laundromat where you work, which is how you come to read the worst paragraph of your life with a customer's towels rotating behind you. Paragraph four: *During the fall term, the child accumulated twenty-three (23) unexcused absences from school, evidencing a pattern of educational neglect.* Twenty-three. The number is typeset with the confidence of a thing that has been printed before, in other files, about other mothers.",
+    "Oren has asthma — real asthma, clinic asthma, a nebulizer shaped like a dragon that he has named. You count the fall on your fingers twice before your shift ends: sick days and clinic days, yes; days you kept him home on a whim, no. You count nine that were nobody's fault but the illness and two bad mornings. You cannot get to twenty-three without counting days you drove him to the clinic with a note in his backpack."
+   ],
+   "choices": [
+    {
+     "text": "Read the whole petition at the kitchen table tonight — every paragraph, not just the loud one.",
+     "next": "petition_read"
+    }
+   ]
+  },
+  {
+   "id": "petition_read",
+   "kicker": "Day 0 — Monday, February 8, 2027",
+   "dayOffset": 0,
+   "title": "Paragraph nine",
+   "body": [
+    "The rest of the petition is thinner than paragraph four's confidence suggests. There is the fall attendance. There is a paragraph about a missed well-child visit in the spring, already cured. And there is paragraph nine, written smaller, the way true things sometimes are in petitions: *In November, the child missed two scheduled asthma follow-up appointments; the mother reports transportation failure.*",
+    "Paragraph nine is true. The car died on a Tuesday; the second appointment died with it, and though you called the clinic both times — you remember the hold music — the petition's version ends at *missed*. Your case, read whole, is one inflated number and one honest paragraph. They will require opposite handling, and confusing the two is how parents lose both."
+   ],
+   "choices": [
+    {
+     "text": "Count again, slowly, from the wall calendar — the one with the clinic stickers.",
+     "next": "lucinda_count"
+    }
+   ]
+  },
+  {
+   "id": "lucinda_count",
+   "kicker": "Day 0 — Monday, February 8, 2027",
+   "dayOffset": 0,
+   "title": "Nine, maybe ten",
+   "body": [
+    "The wall calendar is the family's true archive: clinic stickers on appointment days, your shift marks, the dragon drawings Oren adds to any square he considers under-decorated. Counting from it: fourteen days that were clinic or illness-with-a-note — notes you wrote, signed, and put in the backpack yourself. Nine unexcused, by your own honest count, including two in September when the bus route changed and you mismanaged a week you have never pretended was well managed.",
+    "Fourteen plus nine is twenty-three. The petition's number is not invented — it is *converted*. Somewhere between the school office and the agency's word processor, excused stopped being a category your son was allowed."
+   ],
+   "choices": [
+    {
+     "text": "Call the lawyer the court appoints — Mr. Keller — before you call anyone else. Numbers this wrong need a strategy, not a phone manner.",
+     "next": "lawyer122"
+    }
+   ]
+  },
+  {
+   "id": "lawyer122",
+   "kicker": "Day 1 — Tuesday, February 9, 2027",
+   "dayOffset": 1,
+   "title": "Two rooms",
+   "body": [
+    "Mr. Keller teaches the case as architecture: two rooms, different rules. Room one is adjudication — did the agency prove its allegations? — and the burden there is the agency's, at the law's highest civil setting: a child may be found dependent only from clear and convincing evidence. (42 Pa.C.S. § 6341(c)) What is not proven is dismissed, and the child discharged on that allegation. (§ 6341(a))",
+    "Room two is disposition — what happens next — where the rules relax: written reports and all evidence helpful to the determination may be received there, and the people who made the reports may be examined and cross-examined about them. (§ 6341(d)(1), (2)) \"The school's summary page,\" Keller says, \"is a room-two document dressed for room one. Our whole case is documents: the school's *detail* — not its summary — the clinic's records, and your calendar. We get them in writing, we get them early, and we make the agency's exhibit testify against itself.\""
+   ],
+   "choices": [
+    {
+     "text": "Start where the number was manufactured: the school office, and the file behind the summary.",
+     "next": "truancy_letter"
+    }
+   ]
+  },
+  {
+   "id": "truancy_letter",
+   "kicker": "Day 2 — Wednesday, February 10, 2027",
+   "dayOffset": 2,
+   "title": "The October letter",
+   "body": [
+    "In the drawer where school papers go, under the lunch menus, is the letter the number arrived in first: an automated truancy warning from October, generated when Oren's absences crossed a threshold — it cites the count, offers a meeting, and bears no human signature at all. You remember reading it with the specific dread of a parent who cannot tell whether she is in trouble. You filed it. You did not answer it, because it did not read as answerable; it read as weather.",
+    "Keller, shown the letter later, will say the sentence that organizes this case: \"Weather is what unexamined systems call their own output. We're going to examine it.\""
+   ],
+   "choices": [
+    {
+     "text": "Take the letter, the calendar, and a written request to the school office.",
+     "next": "school_office"
+    }
+   ]
+  },
+  {
+   "id": "school_office",
+   "kicker": "Day 3 — Thursday, February 11, 2027",
+   "dayOffset": 3,
+   "title": "The summary and the screen",
+   "body": [
+    "The school office produces, first, exactly what the agency has: the one-page summary — *23 unexcused*. It is only when you ask, in the words Keller gave you, for the *complete attendance detail with excuse coding and the note log* that the visit changes register. Ms. Baranski, the attendance clerk, turns her monitor — an act of minor institutional courage — and the detail tells a longer story: absence rows with code histories, and against fourteen of them a small flag from an older system: *note rcvd*.",
+    "\"We migrated attendance software in October,\" she says, quietly. \"The notes stopped being scanned in September — staffing. The flags came across. The *meanings*—\" she touches the flag with one fingertip, \"—didn't, in every column. I have raised this. It is being reviewed at the district level, which is a speed, I grant you, but not a fast one.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask for the detail in writing: the full printout, the code history, the note log — a formal request, dated, with a copy for your lawyer.",
+     "next": "oren_voice",
+     "setFlags": [
+      "schoolFile"
+     ],
+     "addHidden": [
+      "School records — attendance detail with code history requested in writing"
+     ]
+    },
+    {
+     "text": "Ask her to just tell you which days were excused, and write them down yourself at the counter.",
+     "next": "summary_only"
+    }
+   ]
+  },
+  {
+   "id": "summary_only",
+   "kicker": "Day 4 — Friday, February 12, 2027",
+   "dayOffset": 4,
+   "title": "Counter notes",
+   "body": [
+    "Ms. Baranski is willing, and the counter conversation is genuinely informative — and completely unusable. Your handwritten list of her verbal account has no stamp, no signature, no system's authority; it is a mother's notes about a clerk's memory, and it will be weighed exactly that way. She watches you write and arrives, visibly, at the same conclusion.",
+    "\"Do the written request,\" she says. \"I'll print it myself. Paper from me counts. Paper about me doesn't.\""
+   ],
+   "choices": [
+    {
+     "text": "Do the written request. Full detail, code history, note log, for counsel.",
+     "next": "oren_voice",
+     "setFlags": [
+      "schoolFile"
+     ],
+     "addHidden": [
+      "School records — attendance detail requested in writing after verbal account proved unusable"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "oren_voice",
+   "kicker": "Day 5 — Saturday, February 13, 2027",
+   "dayOffset": 5,
+   "title": "The dragon",
+   "body": [
+    "Oren's evidence is offered at the kitchen table, unprompted, while demonstrating the nebulizer: \"The dragon days aren't school days. You can't do math when the dragon is loud. The nurse lady knows — she has my plan in her drawer.\" The school nurse holds his asthma action plan. The school, in one of its drawers, has always known exactly why those fourteen days happened; the knowledge simply lived in a different column than the counting.",
+    "You write his sentence down in the notebook — not because a ten-year-old's testimony decides adjudications, but because the file will otherwise contain no trace of the person the numbers describe."
+   ],
+   "choices": [
+    {
+     "text": "Take the detail printout to Keller, and then go where the other half of the truth lives: the clinic.",
+     "next": "clerk_honesty"
+    }
+   ]
+  },
+  {
+   "id": "clerk_honesty",
+   "kicker": "Day 6 — Sunday, February 14, 2027",
+   "dayOffset": 6,
+   "title": "Printed and initialed",
+   "body": [
+    "Ms. Baranski prints the detail — eleven pages — and does the thing that separates a witness from a bystander: she initials every page and dates the set. The code history is now legible to a lay reader: fourteen rows where a received note was mapped, by the migration, into *unexcused*; the original flag preserved in a legacy column, like a word in a dead language that the new system prints but no longer speaks.",
+    "She cannot correct the codes herself — that authority sits with the principal, on review. \"But this—\" the initialed pages go into your folder, \"—is what a correction would be correcting *to*. There's a difference between a parent saying the record is wrong and a parent carrying the record that proves it. You are now carrying it.\""
+   ],
+   "choices": [
+    {
+     "text": "Next: the clinic's half of the torn page.",
+     "next": "dube_visit"
+    }
+   ]
+  },
+  {
+   "id": "dube_visit",
+   "kicker": "Day 7 — Monday, February 15, 2027",
+   "dayOffset": 7,
+   "title": "The caseworker at the wall",
+   "body": [
+    "Ms. Fontana's home visit is routine in every way but one: she stands in front of the wall calendar for a long moment — clinic stickers, shift marks, dragons — and asks, with the neutrality of a woman photographing something with her eyes, whether the calendar covers the fall term. It does. She notes the visit in her tablet in the usual phrases. Whether the calendar enters the agency's thinking is a question her face declines to answer.",
+    "The petition, you reflect after she leaves, was assembled from a summary page and a phone call. Your kitchen wall knows more about Oren's fall than his case file does. The project of the next month is to move the wall's knowledge into the file — in forms a court can weigh."
+   ],
+   "choices": [
+    {
+     "text": "The clinic, then — Dr. Mbeki's office, where fourteen of the twenty-three days are appointments with timestamps.",
+     "next": "clinic_visit"
+    }
+   ]
+  },
+  {
+   "id": "clinic_visit",
+   "kicker": "Day 8 — Tuesday, February 16, 2027",
+   "dayOffset": 8,
+   "title": "Dr. Mbeki's front desk",
+   "body": [
+    "The clinic's front desk runs on its own paper religion, and it is a stricter one than the school's: appointment histories print with timestamps, cancellations carry reason codes, and the desk clerk finds, without being asked twice, the two November entries — both marked *mother called same day; car trouble; rescheduled by clinic*. The petition's paragraph nine, in the clinic's hand, has a second half.",
+    "Fourteen fall visits match the absence detail, date for date, like two halves of a torn page. What remains is to make the clinic's half into evidence — which means asking for it the way evidence is asked for."
+   ],
+   "choices": [
+    {
+     "text": "Sign the release and request the complete appointment history in writing, stamped by the clinic.",
+     "next": "neighbor_note",
+     "setFlags": [
+      "clinicRecords"
+     ],
+     "addHidden": [
+      "Medical records — clinic appointment history requested in writing, matching school absence dates"
+     ]
+    },
+    {
+     "text": "Take the desk clerk's verbal rundown — she has told you the dates; surely Keller can use your notes.",
+     "next": "neighbor_note"
+    }
+   ]
+  },
+  {
+   "id": "neighbor_note",
+   "kicker": "Day 9 — Wednesday, February 17, 2027",
+   "dayOffset": 9,
+   "title": "The rides",
+   "body": [
+    "Twice in the fall, when the car was dead in its earlier, warning stages, your neighbor drove you and Oren to the clinic. She writes it down without being asked twice — dates, the dragon in his lap, the stickers — and signs it. It is a small exhibit. It corroborates the calendar, which corroborates the clinic, which corroborates the school's own flags. Cases like this are not won by a document. They are won by documents that agree with each other in front of a judge.",
+    "Keller, receiving the growing folder, has begun using a word lawyers ration: *coherent*. \"The agency's story is one page. Ours is a system. Systems beat pages, given a judge who reads.\""
+   ],
+   "choices": [
+    {
+     "text": "Now the agency's own file — request it, and read what the petition was built from.",
+     "next": "clinic_records"
+    }
+   ]
+  },
+  {
+   "id": "clinic_records",
+   "kicker": "Day 10 — Thursday, February 18, 2027",
+   "dayOffset": 10,
+   "title": "Stamped",
+   "body": [
+    "The clinic's printout arrives stamped and complete: fourteen fall appointments with timestamps; the November pair with their same-day-call annotations; the well-child visit, rescheduled and kept. It is the single most boring document in the case and, Keller says, holding it the way jewelers hold stones, quite possibly the most valuable.",
+    "\"Petitions are written from summaries. Hearings are decided by alignments. Your son's fall, aligned: the school's flags, the clinic's stamps, a neighbor's rides, a mother's calendar — four independent records, one story. The agency has a number. Numbers without provenance are just typography.\""
+   ],
+   "choices": [
+    {
+     "text": "Request the agency record — the file the petition came out of — in writing.",
+     "next": "records122"
+    }
+   ]
+  },
+  {
+   "id": "records122",
+   "kicker": "Day 12 — Saturday, February 20, 2027",
+   "dayOffset": 12,
+   "title": "What the petition was built from",
+   "body": [
+    "The agency's record is releasable on request (55 Pa. Code § 3130.44(d)), and what it holds is the anatomy of paragraph four: the school's summary page, the October truancy printout, and — three pages deeper — a caseworker note from November that you read standing up: *Mother states absences were medical/clinic-related; school to verify coding.* The verification has no follow-up entry. The petition was drafted in January from the summary, by a process that never walked back to its own November doubt.",
+    "Keller tabs the note with the gentleness of a man handling the other side's gift. \"We don't have to call anyone careless,\" he says. \"The file calls itself unfinished. We just ask the court to finish it.\""
+   ],
+   "choices": [
+    {
+     "text": "File the request's copy, the tabbed note, and the clinic printout at the front of the hearing packet.",
+     "next": "oren_school_day",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -12,
+     "addHidden": [
+      "Record — agency record requested; file shows verification of absence coding was noted as pending and never completed"
+     ]
+    },
+    {
+     "text": "The packet is heavy enough. Save the postage and the point.",
+     "next": "oren_school_day"
+    }
+   ]
+  },
+  {
+   "id": "oren_school_day",
+   "kicker": "Day 13 — Sunday, February 21, 2027",
+   "dayOffset": 13,
+   "title": "The nurse's drawer",
+   "body": [
+    "One more internal contradiction surfaces, through Oren's teacher, who mentions it as the most ordinary thing in the world: the school nurse's asthma action plan — signed by Dr. Mbeki's office in September, filed at school, known to everyone who supervises Oren's breathing. The institution that generated *23 unexcused* also held, the whole time, a clinical document explaining the absences' likeliest cause. Institutions are not minds. They do not know what their drawers know — until a hearing introduces the drawers to each other.",
+    "Keller adds the action plan to the alignment: a fifth record, the school's own, agreeing with the other four."
+   ],
+   "choices": [
+    {
+     "text": "Read the agency note once more. Then decide what to do about paragraph nine — the true one.",
+     "next": "agency_note"
+    }
+   ]
+  },
+  {
+   "id": "agency_note",
+   "kicker": "Day 14 — Monday, February 22, 2027",
+   "dayOffset": 14,
+   "title": "To verify",
+   "body": [
+    "*To verify.* The two words sit in the file like an unmailed letter. Everything in this case — the petition, the number, the dread at the laundromat — descends from a verification that was assigned, in writing, by the agency to itself, and never performed. Keller is careful here, and the care is the lesson: \"We do not say they lied. We say the work is unfinished, the allegation is unproven until it is proven, and the burden never moved. (42 Pa.C.S. § 6341(c)) Unfinished work is not evidence. It is a to-do list with a caption.\"",
+    "Your own November — the dead car, the two missed follow-ups, the calls you made — remains in the case, uncorrected by any of this. Strategy for a true paragraph is different from strategy for a false one: you do not rebut it. You own it, with its second half attached, and you fix its cause in writing."
+   ],
+   "choices": [
+    {
+     "text": "Build your side of paragraph nine: the calendar, the clinic's annotations, and a transport plan that survives a dead car.",
+     "next": "mother_calendar"
+    }
+   ]
+  },
+  {
+   "id": "mother_calendar",
+   "kicker": "Day 16 — Wednesday, February 24, 2027",
+   "dayOffset": 16,
+   "title": "The wall, copied",
+   "body": [
+    "The wall calendar comes down for copying with the ceremony of a flag being retired: photographed whole, then page by page, the clinic stickers and shift marks and dragons intact. Annotated, in your hand, only where annotation is undeniable — the bus-route change week in September, which you mark *my fault, fixed* without being asked, because a calendar that admits one bad week is believed about the other twenty.",
+    "Keller adds it to the packet as what it is: a contemporaneous record, made before anyone knew there would be a case, which is the only kind of credibility money cannot buy and advocacy cannot fake."
+   ],
+   "choices": [
+    {
+     "text": "Send the annotated copy to counsel — and then face the meeting the agency has called.",
+     "next": "agency_conference",
+     "setFlags": [
+      "motherNotes"
+     ]
+    },
+    {
+     "text": "Keep the calendar at home. Some things are the family's, and the file has enough.",
+     "next": "agency_conference"
+    }
+   ]
+  },
+  {
+   "id": "agency_conference",
+   "kicker": "Day 17 — Thursday, February 25, 2027",
+   "dayOffset": 17,
+   "title": "The offer",
+   "body": [
+    "The pre-hearing conference has coffee, a long table, and an offer — the system's standard instrument for making files like this one go away efficiently. Stipulate: agree that Oren is dependent on the attendance allegation, accept services and supervision, and the agency will recommend he remain at home. No hearing, no cross-examination, no correction of the school's record. The number 23 would stand in the adjudication as an admitted fact — with your signature under its neighborhood.",
+    "It is not a villainous offer. It is a *priced* one, and the price is the truth of the fall term, permanently. Keller lets the silence after it run a full five seconds before he looks at you. The decision is yours in a way few decisions in this system are."
+   ],
+   "choices": [
+    {
+     "text": "Decline the stipulation. The attendance allegation is false in its operative number, and falsehoods admitted in March are quoted in September.",
+     "next": "correction_ask"
+    },
+    {
+     "text": "Accept the stipulation. Oren stays home, services begin, and the fight ends today — the number be damned.",
+     "next": "stipulated",
+     "setFlags": [
+      "stipulatedFlag"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stipulated",
+   "kicker": "Day 18 — Friday, February 26, 2027",
+   "dayOffset": 18,
+   "title": "The bargain",
+   "body": [
+    "The stipulation is signed in the conference room, in triplicate, with the coffee going cold. Dependency is admitted on the attendance allegation as written — twenty-three unexcused absences, a pattern of educational neglect, your name beside the words. Disposition is set for March 25, where the agency has signaled it will recommend what it promised: Oren home, under supervision, with services.",
+    "Keller walks you out with the folder suddenly light. \"You bought certainty,\" he says. \"It is a real currency, and parents spend it for real reasons. I only note what was in the price, because the price is permanent: the school's record was never corrected, the clinic's alignment was never heard, and the number is now a fact you agreed to. It will be quoted back — in reviews, in reports — as an admission, not an error.\""
+   ],
+   "choices": [
+    {
+     "text": "Go to disposition with the bargain kept and the file unbuilt.",
+     "next": "disposition_day"
+    }
+   ]
+  },
+  {
+   "id": "correction_ask",
+   "kicker": "Day 19 — Saturday, February 27, 2027",
+   "dayOffset": 19,
+   "title": "The principal",
+   "body": [
+    "The written request to Principal Truman is three pages: the initialed detail printout, the code history, the clinic alignment, and one ask — review the migrated coding for Oren's fall record, correct it if the review bears the detail out, and answer in writing. It is addressed to the only person in the school building who can make a correction outlive a conversation.",
+    "What it is not is a demand. Keller's drafting principle: *write the letter the recipient can say yes to without confessing to anything.* The migration was the district's; the correction can be the principal's pride instead of his apology."
+   ],
+   "choices": [
+    {
+     "text": "Attach the initialed detail — the correction needs its target printed and initialed, not described.",
+     "next": "keller_second",
+     "requiresFlags": [
+      "schoolFile"
+     ]
+    },
+    {
+     "text": "Write from the clinic alignment alone, without the school's own detail printout to anchor it.",
+     "next": "no_audit"
+    }
+   ]
+  },
+  {
+   "id": "keller_second",
+   "kicker": "Day 21 — Monday, March 1, 2027",
+   "dayOffset": 21,
+   "title": "Owning paragraph nine",
+   "body": [
+    "Keller's second session is about the paragraph you cannot rebut. \"We win paragraph four with documents,\" he says. \"We survive paragraph nine with candor and a repair. The calls are in the clinic's own annotations — good. The cause was a dead car — fixable, and we fix it visibly: the clinic runs a transport van for established patients; you enroll, in writing, this week. A judge reading a true allegation next to its documented repair reads a different mother than the petition describes.\"",
+    "He writes the disposition theory on the pad: if — if — dependency is found on the narrow ground, the disposition the law offers includes the child remaining with the parent, subject to supervision and conditions the court prescribes. (42 Pa.C.S. § 6351(a)(1)) Home, with a case, is the honest best this petition can produce — and it is produced by winning the big paragraph and owning the small one."
+   ],
+   "choices": [
+    {
+     "text": "Enroll in the clinic transport program and keep the confirmation — in writing, in the folder.",
+     "next": "audit_wait",
+     "setFlags": [
+      "narrowPlan"
+     ],
+     "cash": -6
+    }
+   ]
+  },
+  {
+   "id": "no_audit",
+   "kicker": "Day 24 — Thursday, March 4, 2027",
+   "dayOffset": 24,
+   "title": "Reviewed as presented",
+   "body": [
+    "The principal's reply is prompt, courteous, and final in the way of decisions made on incomplete paper: the attendance record 'as it stands in the system of record' reflects the codes the system carries; individual coding histories are a district-level matter; the school 'cannot undertake case-by-case recoding on parental submission alone.' Your clinic printout is acknowledged as 'helpful context for the future.'",
+    "The future is not where adjudications happen. Without the school's own detail — its flags, its legacy column, its clerk's initials — the correction had no skeleton to grow on, and an uncorrected official record walks into March as the fact of the case."
+   ],
+   "choices": [
+    {
+     "text": "Build the hearing packet around what exists: the clinic's alignment, the calendar, the agency's own unfinished note.",
+     "next": "hearing_prep122"
+    }
+   ]
+  },
+  {
+   "id": "audit_wait",
+   "kicker": "Day 24 — Thursday, March 4, 2027",
+   "dayOffset": 24,
+   "title": "The audit",
+   "body": [
+    "Truman's office confirms the review is underway — an audit of the migrated codes for Oren's record, with the district's data office involved. It will take weeks. Adjudication is March 18. The agency files its exhibit list in the meantime, and it is exactly one page long: the fall attendance summary, offered as a school record, plus the petition's other paragraphs trailing behind it like a tail.",
+    "Keller studies the list with open contentment. \"They are bringing a summary to a documents fight. A summary is a conclusion wearing a table's clothes — and conclusions, at adjudication, are the one thing the burden of proof exists to cross-examine.\""
+   ],
+   "choices": [
+    {
+     "text": "While the audit runs, follow the migration's trail — other families, other files, one district memo.",
+     "next": "foster_shadow"
+    }
+   ]
+  },
+  {
+   "id": "foster_shadow",
+   "kicker": "Day 26 — Saturday, March 6, 2027",
+   "dayOffset": 26,
+   "title": "What placement would mean",
+   "body": [
+    "The stakes, stated once and plainly, because strategy without stakes is bookkeeping: if the attendance allegation is proven as written, disposition could remove Oren — to a foster home, a new school, a nurse who does not have his plan in her drawer, a nebulizer routine in strangers' hands. The asthma that generated the absences would then be managed by the system that miscounted it. Everyone in the case knows this arithmetic. It is why the number matters, and why a stipulation priced at 'home' tempts, and why the correction — not sympathy, the correction — is the whole ballgame.",
+    "You attend the next clinic visit by the new transport van, and the driver signs your trip slip, and the slip goes in the folder. Systems, again. Fossils of reliability, accumulating."
+   ],
+   "choices": [
+    {
+     "text": "The migration memo surfaces. Read it the way Keller reads everything: for what it admits.",
+     "next": "school_board"
+    }
+   ]
+  },
+  {
+   "id": "school_board",
+   "kicker": "Day 28 — Monday, March 8, 2027",
+   "dayOffset": 28,
+   "title": "Known issue",
+   "body": [
+    "The district's data office memo — obtained as an addendum to the school's production — is two paragraphs of bureaucratic prose with a live coal in the second: the October migration's handling of legacy absence flags was a *known issue* affecting 'a subset of records,' identified in November, with recoding 'to be completed as resources permit.' November: the same month the agency's file noted *to verify* and moved on. The district knew its counts were suspect while the agency was drafting a petition from one of them.",
+    "No one conspires in this story. That is the story. Two institutions' unfinished work, multiplied by each other, became a mother's alleged neglect — and the only actor in the entire chain who finished her paperwork was the mother."
+   ],
+   "choices": [
+    {
+     "text": "Keller's evidence session: how the two rooms receive all of this.",
+     "next": "keller_evidence"
+    }
+   ]
+  },
+  {
+   "id": "keller_evidence",
+   "kicker": "Day 29 — Tuesday, March 9, 2027",
+   "dayOffset": 29,
+   "title": "Two rooms, again",
+   "body": [
+    "Keller marks the exhibits and rehearses the law's division of labor until you can recite it. Adjudication: the agency's burden, clear and convincing (42 Pa.C.S. § 6341(c)) — the summary must be *proven*, and its provenance is its weakness: a migrated count, from unverified coding, contradicted by the district's own detail and its own memo. What fails that standard is dismissed. (§ 6341(a))",
+    "Disposition is the second room, and only if we reach it: there, written reports may be received freely — *and* examined and controverted, their makers cross-examined. (§ 6341(d)(1), (2)) \"In room one, we attack the number's birth certificate. In room two, we present the repair. Never confuse the rooms — parents do, lawyers do, and petitions count on it.\""
+   ],
+   "choices": [
+    {
+     "text": "The audit's answer is due. Everything now depends on whether it lands before March 18.",
+     "next": "correction_letter"
+    }
+   ]
+  },
+  {
+   "id": "correction_letter",
+   "kicker": "Day 31 — Thursday, March 11, 2027",
+   "dayOffset": 31,
+   "title": "The correction",
+   "body": [
+    "Principal Truman's letter arrives on school letterhead, and it is the document this scenario exists to produce. The audit is complete. Oren's fall record is corrected in the system of record: **nine unexcused absences; fourteen excused — medical, with notes received**; the migration's mapping error is stated plainly, with the district memo cited; the corrected summary is attached, and the letter closes with the institutional sentence that matters most, because it can be quoted: *The previously issued summary should not be relied upon.*",
+    "Keller reads it twice and puts it, without ceremony, at the front of the packet — ahead of the petition's own first page. \"Adjudication is a reading,\" he says. \"We have just changed what gets read first.\""
+   ],
+   "choices": [
+    {
+     "text": "Final preparation: the cross of the summary's maker, and the narrow paragraph's repair, in that order.",
+     "next": "expert_call",
+     "setFlags": [
+      "codingLetter"
+     ],
+     "addHidden": [
+      "School records — attendance record corrected in writing by the school: 9 unexcused, 14 excused-medical"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "expert_call",
+   "kicker": "Day 33 — Saturday, March 13, 2027",
+   "dayOffset": 33,
+   "title": "Who made this page",
+   "body": [
+    "The cross-examination rehearses itself in Keller's office in four questions, addressed to whoever the agency produces to sponsor its summary: Who generated this page? From what system? With what verification of the coding? Are you aware the issuing institution has withdrawn it? The questions are short because the record is long — the alignment does the arguing: school flags, clinic stamps, a neighbor's rides, a mother's calendar, a district's confession, an agency note that says *to verify*.",
+    "\"At disposition, if we get there, reports can be examined and their makers questioned — that is the statute's own design (§ 6341(d)(2)),\" Keller says. \"At adjudication we need less: only the burden, doing its ordinary work on an extraordinary number.\""
+   ],
+   "choices": [
+    {
+     "text": "One last piece of disposition paper: the clinic van's confirmation, printed.",
+     "next": "clinic_van"
+    }
+   ]
+  },
+  {
+   "id": "clinic_van",
+   "kicker": "Day 34 — Sunday, March 14, 2027",
+   "dayOffset": 34,
+   "title": "The van, confirmed",
+   "body": [
+    "The transport program's confirmation letter lists Oren as an established rider: pickup protocol, the clinic's address, your phone number, the backup arrangement for van failures. Paragraph nine's cause — a dead car — now has a documented, redundant system standing where a single point of failure stood in November.",
+    "It is a one-page letter about a van. At disposition, it will be the difference between a mother who missed appointments and a mother who missed appointments, diagnosed why, and rebuilt the road. Courts do not grade intentions. They read repairs."
+   ],
+   "choices": [
+    {
+     "text": "Assemble the final packet: petition, detail, correction, alignment, repair — in that order.",
+     "next": "hearing_prep122"
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep122",
+   "kicker": "Day 36 — Tuesday, March 16, 2027",
+   "dayOffset": 36,
+   "title": "In that order",
+   "body": [
+    "The packet's order is the argument: the petition's claim; the school's own detail, initialed; the district's *known issue* memo; the corrected summary — *should not be relied upon*; the clinic's alignment; the agency's unfinished note; the calendar; the van. Keller has written the adjudication ask in one sentence: the attendance allegation, as pleaded, is not proven by clear and convincing evidence, because the only institution that ever counted it has withdrawn the count. (42 Pa.C.S. § 6341(c), (a))",
+    "Tomorrow the agency presents its case first. Its first exhibit is a page its own source has retracted. There are worse positions to defend a family from — Keller has had most of them, he says, and this is not one."
+   ],
+   "choices": [
+    {
+     "text": "Sleep in the specific way of people who have done the work. Court in the morning.",
+     "next": "night_before122"
+    }
+   ]
+  },
+  {
+   "id": "night_before122",
+   "kicker": "Day 37 — Wednesday, March 17, 2027",
+   "dayOffset": 37,
+   "title": "Dragons, counted",
+   "body": [
+    "Oren, told only that tomorrow is a court day about school, contributes his final exhibit voluntarily: a drawing of the dragon nebulizer, labeled in his careful capitals, with a speech bubble: *I WAS AT THE CLINIC.* It goes on the fridge, not in the packet — some evidence is for the family's record, and the family's record, after this winter, is in excellent order.",
+    "You check the packet once. The wall calendar's space is already re-marked for spring: clinic stickers, shift marks, and — new this month — van pickups, in a different color. The archive continues. It was never the problem. It was always the proof."
+   ],
+   "choices": [
+    {
+     "text": "Go to court.",
+     "next": "adjudication"
+    }
+   ]
+  },
+  {
+   "id": "adjudication",
+   "kicker": "Day 38 — Thursday, March 18, 2027",
+   "dayOffset": 38,
+   "title": "Thursday, March 18",
+   "body": [
+    "Adjudication proceeds as Keller built it. The agency presents: the petition, the summary's sponsor — a supervisor who generated the page from the system of record and concedes, in the cross's fourth question, that she has seen the correction letter and cannot speak for the withdrawn count. The alignment enters without drama: flags, stamps, memo, calendar. The courtroom's temperature is set, as predicted, not by advocacy but by provenance.",
+    "The attendance allegation will be decided on whether a retracted number can carry a clear-and-convincing burden. Paragraph nine waits behind it, true and repaired. The court takes the matter under advisement and moves the case to disposition on March 25 — where everything the adjudication decided, and everything it didn't, becomes a plan for a boy's actual life."
+   ],
+   "choices": [
+    {
+     "text": "To disposition, on whatever the record has become.",
+     "next": "disposition_day"
+    }
+   ]
+  },
+  {
+   "id": "disposition_day",
+   "kicker": "Day 45 — Thursday, March 25, 2027",
+   "dayOffset": 45,
+   "title": "Thursday, March 25",
+   "body": [
+    "Disposition is the second room, with its wider door: reports and evidence helpful to the determination may be received here, and their makers examined. (42 Pa.C.S. § 6341(d)(1), (2)) What the court orders for Oren — home or placement, supervision or none — will be built from the whole winter's record: the number's fate at adjudication, the narrow paragraph and its repair, and the correction's timing, which in this case was everything.",
+    "The judge has read the packet. The judge has also, it turns out, read the file."
+   ],
+   "choices": [
+    {
+     "text": "The record holds a retracted count, an institutional correction in writing, a four-way alignment of independent records, and a true paragraph owned and repaired.",
+     "next": "end_narrow",
+     "requiresFlags": [
+      "schoolFile",
+      "codingLetter"
+     ]
+    },
+    {
+     "text": "The record holds the clinic's alignment and the mother's calendar — but the school's record was never corrected, and the correction letter that would have settled it arrived after adjudication had already taken the official count as proven.",
+     "next": "end_corrected_late",
+     "requiresFlags": [
+      "clinicRecords"
+     ],
+     "requiresNoFlags": [
+      "codingLetter"
+     ]
+    },
+    {
+     "text": "The record holds an admitted allegation, signed for in a conference room — no hearing, no correction, no alignment ever heard.",
+     "next": "end_stipulated",
+     "requiresFlags": [
+      "stipulatedFlag"
+     ]
+    },
+    {
+     "text": "The record holds a summary, a sponsorship, and a mother's say-so — against a burden that was never hers to carry and a number nobody made the system defend.",
+     "next": "end_placed"
+    }
+   ]
+  },
+  {
+   "id": "end_narrow",
+   "kicker": "Day 45 — Thursday, March 25, 2027",
+   "dayOffset": 45,
+   "title": "Ending — Home, on the Narrow Ground",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The attendance allegation is dismissed — not mitigated, not discounted: not proven. The court's adjudication findings say it in the burden's own grammar: on the attendance count, the evidence — a summary withdrawn by its issuing institution, contradicted by the institution's own detail, its own memo, and an alignment of clinic records — does not constitute clear and convincing evidence of educational neglect. (42 Pa.C.S. § 6341(c)) The allegation fails, and with it the petition's centerpiece. (§ 6341(a)) What remains is paragraph nine, the true one: two missed follow-ups, proven, and answered at disposition with their cause repaired in writing. The disposition is the statute's first option: Oren remains with you, subject to supervision and to conditions — the clinic van enrollment among them, recited in the order. (42 Pa.C.S. § 6351(a)(1))",
+    "Name the win precisely, because its shape is the lesson. The number was defeated by provenance, not passion: a written request for the school's *detail* rather than its summary; a clerk's initialed printout; a principal's corrected letter — *should not be relied upon* — obtained by asking the one person who could issue it, in a letter he could say yes to; clinic records aligned date-for-date; the agency's own record (55 Pa. Code § 3130.44(d)) supplying the *to verify* that was never verified. And paragraph nine was not rebutted but owned, because a parent who concedes the true paragraph with a documented repair is believed about the false one. Both halves were strategy. Neither half works alone.",
+    "What no strategy controls: a judge less patient with provenance; a clerk less brave than Ms. Baranski; a district that corrects slower. The case is not closed — supervision runs, reviews recur, and Oren's asthma does not consult the court calendar. But the file that follows this family now says what actually happened in the fall: nine, and fourteen-with-notes, and a mother who caught the error the institutions filed past each other. Permanently. In the record. Where it will be quoted from, correctly, from now on."
+   ]
+  },
+  {
+   "id": "end_corrected_late",
+   "kicker": "Day 45 — Thursday, March 25, 2027",
+   "dayOffset": 45,
+   "title": "Ending — Corrected, One Hearing Late (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The correction letter reached the file on March 24 — six days after adjudication took the official record as it stood. It changed disposition profoundly and adjudication not at all. The court's disposition is merciful and specific: Oren remains home under supervision (42 Pa.C.S. § 6351(a)(1)), the corrected summary is attached to the order, and the agency is directed to conform its records. But the adjudication itself — dependency founded on the attendance allegation as pleaded, twenty-three unexcused — stands in the case's history as a found fact, correctable on paper everywhere except the one page that decided it.",
+    "The autopsy is one of sequence, not effort. The clinic alignment was built. The calendar was kept. What never existed was the school's own *detail* — the initialed printout with the legacy flags — because the request for it was never made in writing, and without the detail, the principal's review had nothing to correct *to*, and answered, reasonably, from the system of record as it stood. Every institution in this story behaved the way institutions behave with the paper in front of them. The paper in front of them was the variable. It usually is.",
+    "Partial, and far from empty: Oren is home, supervised, his school record corrected at the source, the agency directed to conform — a foundation most families would take. What was lost is narrower and worth naming in a training library: the difference between a record corrected before adjudication and after it is the difference between an allegation *dismissed as unproven* (§ 6341(a)) and an allegation *found, then forgiven*. Files remember which. So do future petitions. The detail request is a five-minute letter. File it in the first week, not the last."
+   ]
+  },
+  {
+   "id": "end_stipulated",
+   "kicker": "Day 45 — Thursday, March 25, 2027",
+   "dayOffset": 45,
+   "title": "Ending — The Bargain",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Disposition keeps its promise: Oren remains at home, under supervision and services, exactly as the conference-room offer described. No removal, no foster home, no stranger holding the nebulizer. On the outcomes that keep a family intact, this ending delivers — and the debrief will not pretend otherwise, because parents who take this bargain are not fools, and a library that calls them fools teaches nothing.",
+    "The price is itemized in the file, where prices in this system live. The adjudication rests on an *admission*: twenty-three unexcused absences, educational neglect, agreed and signed. The school never corrected its record under the pressure of a hearing; the clinic's alignment was never heard; the agency's *to verify* was never read aloud. Every future reader of this file — the next caseworker, the next report writer, the next judge — will meet the number first, armored now in the one thing that makes numbers immortal: the mother's own agreement. Reviews will quote it. Summaries will copy it. It will be, forever, what the fall of 2026 *was*.",
+    "What no strategy controls is also honestly part of this ending: hearings are gambles, judges vary, and the certainty bought here — a son home tonight, services started, no removal risk this spring — is real value purchased with a real record. The scenario's doctrine is only about seeing the price tag before signing: a stipulation is not the end of a fight but a *settlement of the facts*, and in a system that runs on files, facts are the one currency that never devalues and never expires. The correction remains available — school records can still be pursued, reviews still argued. But it will now be argued uphill, against an admission, by the person who signed it."
+   ]
+  },
+  {
+   "id": "end_placed",
+   "kicker": "Day 45 — Thursday, March 25, 2027",
+   "dayOffset": 45,
+   "title": "Ending — Twenty-Three, Standing",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The number stands. Adjudication found the attendance allegation proven on the strength of the only document anyone sponsored — the summary — the mother's contrary account being, in the court's unavoidable phrase, *uncorroborated by records*. Disposition continued the logic: placement with a foster family, services for the mother, reviews to come. Oren packs the dragon in a bag that a stranger's household will learn to plug in. The correction of his school record — if it ever comes — will arrive as an erratum to a case that has already been decided by its error.",
+    "This is the ending the burden of proof exists to prevent, and its mechanics deserve the cold light. The burden never moved: dependency required clear and convincing evidence (42 Pa.C.S. § 6341(c)), and a migrated count from unverified coding is not that — *when someone makes the court look at it*. Nobody did. The detail was never requested in writing; the clinic's alignment was never assembled; the agency's record — with its own *to verify*, releasable on request (55 Pa. Code § 3130.44(d)) — was never requested at all. Against a sponsored summary, the defense offered the truth, unexhibited. Truth is the beginning of a case. It is not, in a paper system, the case.",
+    "It is not the end of the story — reviews recur on the statute's clock, corrections can still be pursued and filed, and Oren's mother retains every tool this scenario inventoried, now at the higher prices appeals and reviews charge. But the doctrine has rarely had a cleaner demonstration: institutions generate numbers; numbers generate petitions; and the only force ever documented to reverse the sequence is a parent, early, in writing, asking the system for its own detail — and carrying the answer into the room where burdens live."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s122';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["waiting room|lobby", "Waiting Room"],
+  ["courthouse steps|courthouse|on the steps|outside court|leaving court|after court", "Courthouse Steps"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["parenting|program|support group", "Program"],
+  ["school office|principal|guidance office|school counselor", "School Office"],
+  ["school|teacher|classroom|class", "School"],
+  ["warehouse|factory|night shift|shift work|employer|paycheck", "Workplace"],
+  ["bus stop|\\btransit\\b|\\bbus\\b", "Bus Stop"],
+  ["laundromat|laundry|\\bwash\\b", "Laundromat"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen",
+  "Waiting Room": "plate-waiting", "Courthouse Steps": "plate-courtsteps",
+  "School Office": "plate-schooloffice", "Workplace": "plate-workplace",
+  "Bus Stop": "plate-busstop", "Laundromat": "plate-laundromat",
+  "Program": "plate-program"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+const EXTERIOR_PLATES = ["Apartment Exterior", "Courthouse Steps", "Bus Stop", "School", "Doorway"];
+const VARIANT_RULES = [
+  /* [regex, overlayId, exteriorOnly] — first match wins, one overlay max */
+  ["\\brain\\b|storm|downpour", "ov-rain", true],
+  ["midnight", "ov-night", false],
+  ["\\bnight\\b|tonight|overnight", "ov-night", true],
+  ["dusk|sunset|twilight", "ov-dusk", false],
+  ["evening", "ov-dusk", true],
+  ["dawn|sunrise|first light|daybreak|early morning", "ov-dawn", false]
+];
+function variantFor(node, plateName) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < VARIANT_RULES.length; i++) {
+    if (new RegExp(VARIANT_RULES[i][0]).test(text) &&
+        (!VARIANT_RULES[i][2] || EXTERIOR_PLATES.indexOf(plateName) !== -1)) {
+      return VARIANT_RULES[i][1];
+    }
+  }
+  return null;
+}
+function plateHTML(plateName, node) {
+  const v = node ? variantFor(node, plateName) : null;
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) +
+    (v ? ', ' + v.replace('ov-', '') : '') + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/>' +
+    (v ? '<use href="#' + v + '"/>' : '') + '</svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate, node) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

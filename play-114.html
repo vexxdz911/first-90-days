@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 114 — The Ledger (a fictional composite)",
+  "startDateISO": "2026-01-05",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "Twelve weeks of Booker's compliance have a price the file never records — until his notebook, the sign-in sheets, and the screen log are put side by side against a summary that calls him ‘inconsistent.’"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 5, 2026",
+   "dayOffset": 0,
+   "title": "Twelve Weeks, Priced",
+   "body": [
+    "Your name is Booker. Your daughter Thalia is seven, and she has been placed with a foster family since before this story opens. Your plan is not mysterious: screens on summons, a weekly class run by the private provider the plan names, visits with Thalia, and work — the warehouse shifts that pay for all of it and compete with all of it.",
+    "What nobody has priced for you is the plan itself. Two buses each way to the screen site. Shift hours surrendered, unpaid, every time a summons lands inside a shift. A fee the provider charges for its own class, because the plan names the class and the class charges a fee. Twelve weeks of doing everything asked has a cost, and the file records none of it.",
+    "A pre-review summary is being prepared for the review on Monday, April 6, 2026. It will describe your engagement in a word or two. This story is about what those words will be standing on."
+   ],
+   "choices": [
+    {
+     "text": "Begin the twelve weeks — screens, class, visits, shifts",
+     "next": "notebook_choice",
+     "note": "Week one starts the way all twelve will: with a summons, a schedule, and arithmetic nobody else is doing."
+    }
+   ]
+  },
+  {
+   "id": "notebook_choice",
+   "kicker": "Day 3 — Thursday, January 8, 2026",
+   "dayOffset": 3,
+   "title": "A Notebook, Bought Cheap",
+   "body": [
+    "At the dollar store by the bus stop you pass a wire-bound notebook, the kind with the date printed nowhere and room for everything. A dollar and change. Other parents in the waiting room keep their whole cases in folders; one man you have seen twice keeps his in a grocery bag that is coming apart at the seams.",
+    "A notebook would be a record of the part of this case the file never sees: every trip, every fare, every surrendered hour, every fee — dated, with the receipt stapled beside it. It would also be one more thing to carry, keep, and keep up, on top of a plan that is already a second job."
+   ],
+   "choices": [
+    {
+     "text": "Buy the notebook and start it tonight — date, trip, cost, receipt",
+     "next": "week1_screen",
+     "cash": -4,
+     "setFlags": [
+      "ledgerStarted"
+     ],
+     "addHidden": [
+      "Ledger — notebook started; trips, fares, and fees to be logged with receipts"
+     ],
+     "note": "Four dollars with a pen. The first page gets tonight's date and a heading in block letters: WHAT IT COSTS."
+    },
+    {
+     "text": "Skip it — your memory and your pay stubs will have to do",
+     "next": "week1_screen",
+     "cash": -4,
+     "note": "The money goes to groceries instead. Memory, you tell yourself, is a record too. This scenario will test that sentence."
+    }
+   ]
+  },
+  {
+   "id": "week1_screen",
+   "kicker": "Day 7 — Monday, January 12, 2026",
+   "dayOffset": 7,
+   "title": "Week One: Two Buses Each Way",
+   "body": [
+    "The first summons of the twelve weeks lands for Monday, January 12, 2026: screen at the site across the county, inside your shift. Two buses each way. You swap what you can, surrender what you cannot — two shift hours, unpaid — ride out, provide the screen, ride back, and make the tail of the shift smelling of bus.",
+    "The screen itself takes minutes. The trip takes the morning. The file will record the screen. Nothing anywhere records the morning — unless the notebook does, tonight, in your hand, with the transfer stubs stapled to the page."
+   ],
+   "choices": [
+    {
+     "text": "Log it tonight — date, route, fare, hours surrendered, stubs stapled in",
+     "next": "class1",
+     "cash": -12,
+     "setFlags": [
+      "ledgerKept"
+     ],
+     "addHidden": [
+      "Ledger — week-one screen logged: two buses each way, fare and unpaid hours recorded, stubs kept"
+     ],
+     "note": "Twelve dollars of fares, spent either way. The page takes four minutes. Both numbers go in the notebook."
+    },
+    {
+     "text": "Make the screen and get some sleep — the file has the result, and that is what counts",
+     "next": "class1",
+     "cash": -12,
+     "note": "Twelve dollars of fares, spent either way. The result is in the file by morning. The morning itself is nowhere."
+    }
+   ]
+  },
+  {
+   "id": "class1",
+   "kicker": "Day 10 — Thursday, January 15, 2026",
+   "dayOffset": 10,
+   "title": "The Class the Plan Names",
+   "body": [
+    "The parenting class meets weekly at the provider the plan names, and the provider charges a fee for it — payable at the door, in the ordinary way of doors. You pay it, you sign the sign-in sheet, you sit the two hours, you sign nothing else. The sheet goes into the provider's binder. The receipt goes into your pocket.",
+    "At home the receipt can join the notebook — fee, date, class number, stapled flat — or it can live in the pocket until the pocket is washed. Paper has exactly two careers in this story, and this is the fork where they separate."
+   ],
+   "choices": [
+    {
+     "text": "Staple the fee receipt into the notebook beside the class date",
+     "next": "shift_cost",
+     "cash": -20,
+     "setFlags": [
+      "classLogged"
+     ],
+     "addHidden": [
+      "Ledger — provider class fee logged with receipt stapled beside the class date"
+     ],
+     "note": "Twenty dollars, at the door, either way. Now it is also a page: fee, date, class one, receipt."
+    },
+    {
+     "text": "Pay the fee and keep the receipt in your coat for now",
+     "next": "shift_cost",
+     "cash": -20,
+     "note": "Twenty dollars, at the door, either way. Coats get washed. Binders at the provider keep the sign-in sheet either way — theirs, not yours."
+    }
+   ]
+  },
+  {
+   "id": "shift_cost",
+   "kicker": "Day 14 — Monday, January 19, 2026",
+   "dayOffset": 14,
+   "title": "Hours, Surrendered Unpaid",
+   "body": [
+    "Your supervisor is not unkind about the swaps; she is arithmetic about them, the way supervisors are. Each summons inside a shift is hours she cannot pay and you cannot bill to anyone. By week two the pattern has a shape you can see from the kitchen table: the plan's appointments sit inside the workday, the workday pays for the plan's appointments, and the difference comes out of the same paycheck the plan will later examine for stability.",
+    "A scored assessment form is part of cases like yours — filled in from visits, screens, and notes, rating what it can see. What it can see is attendance and results. The hours underneath them are not a line on it. They are a line in a notebook, or they are nothing."
+   ],
+   "choices": [
+    {
+     "text": "Keep the notebook current with this week's swaps and surrendered hours",
+     "next": "summary_rumor",
+     "note": "The page does not complain. It accumulates. Accumulation, over twelve weeks, is the whole argument it will ever make."
+    }
+   ]
+  },
+  {
+   "id": "summary_rumor",
+   "kicker": "Day 17 — Thursday, January 22, 2026",
+   "dayOffset": 17,
+   "title": "Consistent, Provisionally",
+   "body": [
+    "At a check-in, your worker describes your engagement the way the file currently supports: screens attended, class begun, visits kept — consistent, provisionally, is the shape of it, said in the level voice of a person reading a screen you cannot see.",
+    "“Provisionally” is doing quiet work in that sentence. The summary that goes to the review is written later, from the whole twelve weeks, by whoever assembles it — and summaries count what the file counts. What the file counts, three weeks from now, depends on two mornings neither of you can see coming."
+   ],
+   "choices": [
+    {
+     "text": "Ask what the summary will be built from — sheets, logs, or impressions",
+     "next": "holiday_setup",
+     "note": "“The sign-in sheets and the screen log, mostly,” she says. “The record.” You write the sentence down. It is the most useful sentence of the month."
+    }
+   ]
+  },
+  {
+   "id": "holiday_setup",
+   "kicker": "Day 21 — Monday, January 26, 2026",
+   "dayOffset": 21,
+   "title": "A Summons on a Holiday",
+   "body": [
+    "The next summons arrives for Tuesday, January 27, 2026 — a date your calendar at work has marked in red for months, because it is a holiday, and holidays at the warehouse are the good shifts. The summons does not know it is a holiday. Summonses are issued by a system that prints dates, not by a person who checks them.",
+    "You arrange the swap anyway, because that is what the plan requires and what you have done every time: holiday shift surrendered, buses mapped, morning cleared. Nobody — not the worker, not the site, not the summons — says anything about the site's own holiday hours. There is no one whose job that sentence is."
+   ],
+   "choices": [
+    {
+     "text": "Take the buses out on the holiday morning, as summoned",
+     "next": "holiday_miss",
+     "cash": -12,
+     "note": "Twelve dollars of fares and a premium shift, committed before you know what the morning holds. That is what compliance costs when it is punctual."
+    }
+   ]
+  },
+  {
+   "id": "holiday_miss",
+   "kicker": "Day 22 — Tuesday, January 27, 2026",
+   "dayOffset": 22,
+   "title": "The Locked Door",
+   "body": [
+    "The site is closed. Not late, not short-staffed — closed, with a printed holiday schedule taped inside the glass that nobody sent you, announced to a parking lot of exactly one person. You stand at the locked door on Tuesday, January 27, 2026 with your summons in your hand and your surrendered holiday shift already spent, and the screen that the file expects today does not happen, because there is no one inside to take it.",
+    "The morning can still produce paper, if you make it: a photograph of the posted schedule with the date on it, a notebook page written on the bus home, a call log. Or it can produce only the file's version, which is already being written somewhere in the grammar files use: no screen recorded for this date."
+   ],
+   "choices": [
+    {
+     "text": "Photograph the posted holiday schedule and log the trip in the notebook on the bus home",
+     "next": "miss1_after",
+     "cash": 0,
+     "setFlags": [
+      "holidayDoc"
+     ],
+     "addHidden": [
+      "Holiday screen — site closed for an unannounced holiday; posted schedule photographed, trip logged with fare and surrendered shift"
+     ],
+     "note": "The photograph has a timestamp. The notebook page has the fare, the hours, and the locked door, in that order. The morning now exists twice."
+    },
+    {
+     "text": "Go home and call the worker on the next business day — she will sort it out",
+     "next": "miss1_after",
+     "cash": 0,
+     "note": "She may. Sorting it out will happen in her words, in her note, at her desk — if it happens in writing at all."
+    }
+   ]
+  },
+  {
+   "id": "miss1_after",
+   "kicker": "Day 24 — Thursday, January 29, 2026",
+   "dayOffset": 24,
+   "title": "Reporting a Locked Door",
+   "body": [
+    "How a locked door enters the file depends on how it is reported. Said out loud on the phone, it is a conversation: sympathetic, plausible, and held by two memories. Written — a short dated message to the worker, with the photograph attached, saying the site was closed for the holiday and asking that the screen be re-issued — it is a document, and documents get filed.",
+    "Your lawyer puts it plainly when you mention it at a check-in call. You have one because the law provides for counsel in these cases (42 Pa.C.S. § 6337). “A locked door you reported in writing is a system event,” he says. “A locked door you mentioned is a story about a screen you missed.”"
+   ],
+   "choices": [
+    {
+     "text": "Send the written message with the photograph attached, and keep a copy in the notebook",
+     "next": "class_setup",
+     "cash": -3,
+     "setFlags": [
+      "holidayNoted"
+     ],
+     "addHidden": [
+      "Holiday closure — reported to the worker in writing with the posted schedule attached; copy kept"
+     ],
+     "note": "Three dollars of printing and bus fare across the errand. The message carries its own date. The copy goes behind this week's page."
+    },
+    {
+     "text": "Report it by phone — she was sympathetic, and that should be enough",
+     "next": "class_setup",
+     "cash": -3,
+     "note": "Three dollars across the week's errands either way. Sympathy is real. It is also, in a file, indistinguishable from its absence."
+    }
+   ]
+  },
+  {
+   "id": "class_setup",
+   "kicker": "Day 28 — Monday, February 2, 2026",
+   "dayOffset": 28,
+   "title": "Week Five, Ordinary",
+   "body": [
+    "The class runs on through the middle weeks the way classes do: sign-in sheet, two hours, receipt, bus. Your notebook, if you are keeping it, is becoming a second case file — thinner than the agency's, and about a subject the agency's never mentions. Week five's page writes itself in four lines.",
+    "The provider's office posts the next session's date on the board at the end of class, and everyone copies it down. What the board cannot post is whether the session will actually be held. That information lives one week in the future, behind a door you have already learned to photograph."
+   ],
+   "choices": [
+    {
+     "text": "Go to the next class on the posted date, fee in hand",
+     "next": "class_cancel",
+     "cash": -20,
+     "note": "Twenty dollars ready at the door, as always. The bus fare to get there is spent before the door tells you anything."
+    }
+   ]
+  },
+  {
+   "id": "class_cancel",
+   "kicker": "Day 31 — Thursday, February 5, 2026",
+   "dayOffset": 31,
+   "title": "Cancelled, by the Provider",
+   "body": [
+    "You arrive on Thursday, February 5, 2026 to a dark classroom and a note on the provider's own door: today's session is cancelled — an instructor matter, the note says, in the apologetic handwriting of an office that expected questions it will not be there to answer. The sign-in sheet for today does not exist, because there was nothing to sign in to.",
+    "This is the second morning the system has cancelled on you while the file's clock kept counting you. Like the first, it can leave paper: the provider's cancellation note, a dated request at the front desk for written confirmation, a notebook page. Or it can leave the file's version — a gap in the sign-in column with your name beside the empty row."
+   ],
+   "choices": [
+    {
+     "text": "Photograph the cancellation note and ask the front desk, in writing, to confirm the cancellation",
+     "next": "cancel_after",
+     "cash": -6,
+     "setFlags": [
+      "cancelDoc"
+     ],
+     "addHidden": [
+      "Provider class — session cancelled by the provider; door note photographed, written confirmation requested at the desk"
+     ],
+     "note": "Six dollars of fares for a class that did not meet. The desk takes your written request. A confirmation, when it comes, will have the provider's own name on it."
+    },
+    {
+     "text": "Head home — the provider knows it cancelled; that will be in their records",
+     "next": "cancel_after",
+     "cash": -6,
+     "note": "Six dollars of fares either way. Their records are a binder you cannot open, in an office you cannot enter, summarized later by hands you will not see."
+    }
+   ]
+  },
+  {
+   "id": "cancel_after",
+   "kicker": "Day 33 — Saturday, February 7, 2026",
+   "dayOffset": 33,
+   "title": "The Confirmation, or the Gap",
+   "body": [
+    "Days later the answer to the class morning arrives in one of two forms, depending on what you left at the desk. A written confirmation from the provider — session cancelled, date, their letterhead — is a document that can sit beside any summary ever written about you. Without it, the morning is a gap you will have to narrate, in rooms that price narration the way they price all unaccompanied accounts.",
+    "Your notebook page for the day exists either way, if the notebook exists: fare spent, door photographed or described, class that did not happen. Notebooks testify only when someone files them. That appointment is still ahead of you."
+   ],
+   "choices": [
+    {
+     "text": "File the confirmation — or the notebook page — with this week's papers and keep going",
+     "next": "visits_beat",
+     "note": "The twelve weeks do not pause for their own documentation. Screens, visits, and shifts continue underneath the paper, as they have all along."
+    }
+   ]
+  },
+  {
+   "id": "visits_beat",
+   "kicker": "Day 35 — Monday, February 9, 2026",
+   "dayOffset": 35,
+   "title": "Thalia, on Saturday",
+   "body": [
+    "Saturday's visit is the part of the twelve weeks that is not arithmetic. Thalia has lost a tooth and monetized it, by her telling, at an excellent rate. She shows you a drawing of the warehouse where you work, which in the drawing has a swimming pool, and asks whether the buses you take are the same buses or different buses. Different, mostly. She accepts this as a complete account of transportation.",
+    "On the bus home you do the week's page, because the notebook's discipline is that every week gets one, including the weeks whose only entry is a visit and a drawing: date, visit kept, fare, hours. The file's version of this Saturday is a line that says the visit occurred. Yours says what it cost and what was said about the tooth. Both are records. Only one of them will be read at the review — unless someone puts the other one in its hands."
+   ],
+   "choices": [
+    {
+     "text": "Finish the week's page on the bus home, dated",
+     "next": "notebook_mid",
+     "cash": -8,
+     "note": "Eight dollars of fares for the visit round trip. The page takes the length of the ride, which is exactly as long as it needs to be."
+    }
+   ]
+  },
+  {
+   "id": "notebook_mid",
+   "kicker": "Day 38 — Thursday, February 12, 2026",
+   "dayOffset": 38,
+   "title": "The Notebook, at Halfway",
+   "body": [
+    "Halfway through the twelve weeks, the notebook — if you have kept it — holds a small, stubborn archive: screens with their buses and surrendered hours, class fees with receipts stapled flat, a locked door, a cancelled class, visits with their fares. Added up, in the column you keep at the back, the twelve weeks so far have cost more than a week's pay in fares, fees, and hours. The file's total for the same weeks is zero, because the file does not have a column for it.",
+    "A halfway notebook can still become a whole one: every receipt you kept loose can be stapled in now, in date order, while the weeks are still recent enough to reconstruct honestly. Or the habit can lapse here, the way habits lapse — not by decision, but by tiredness, which this scenario declines to treat as a character flaw and insists on treating as a fork."
+   ],
+   "choices": [
+    {
+     "text": "Bring the notebook fully current — every kept receipt stapled in, in date order",
+     "next": "fee_again",
+     "cash": -3,
+     "setFlags": [
+      "ledgerComplete"
+     ],
+     "addHidden": [
+      "Ledger — brought fully current at the halfway point; all kept receipts stapled in date order"
+     ],
+     "note": "Three dollars of staples, copies, and a new pen across the errand. The archive is now continuous: no week missing, no page reconstructed from air."
+    },
+    {
+     "text": "Let it rest a week — you are tired, and the file is keeping its own record anyway",
+     "next": "fee_again",
+     "cash": -3,
+     "note": "The file is keeping a record. It is keeping the one where your name sits beside a locked door and an empty sign-in row, in grammar that assigns both to you."
+    }
+   ]
+  },
+  {
+   "id": "fee_again",
+   "kicker": "Day 42 — Monday, February 16, 2026",
+   "dayOffset": 42,
+   "title": "The Rest of the Plan, Kept",
+   "body": [
+    "The later weeks run on rails the early weeks laid: summons, buses, screen; class, fee, sign-in sheet; visit, fare, drawing. Your screens are attended, your classes accumulate, your supervisor's swaps become a standing arrangement she initials without comment — which is its own kind of document, and you keep a copy of that too, because by now keeping copies is simply what your hands do.",
+    "Nothing in these weeks is dramatic, and that is their evidentiary value. A record of ordinary compliance, kept daily, is the hardest kind of paper to argue with. It is also, at this point, still sitting in your kitchen — while the summary that will describe these same weeks is being assembled somewhere else, from different paper."
+   ],
+   "choices": [
+    {
+     "text": "Keep the routine exactly as it is, and ask your lawyer what the review will actually read",
+     "next": "screens_routine",
+     "note": "“The summary, first,” he says. “Then whatever is filed under it. In that order. Always in that order.”"
+    }
+   ]
+  },
+  {
+   "id": "screens_routine",
+   "kicker": "Day 45 — Thursday, February 19, 2026",
+   "dayOffset": 45,
+   "title": "Screens, Logged or Not",
+   "body": [
+    "One more summons, one more morning of buses and surrendered hours, one more clean result filed by a site that records results and nothing else. The routine is so established now that its documentation feels redundant — which is precisely when documentation matters most, because summaries are written at the end, from the whole run, and a run is only as documented as its least-documented weeks.",
+    "At the check-in your worker mentions, in passing, that the pre-review summary is being drafted. The word she uses for its method is the word from week three: it will be built from the sign-in sheets and the screen log. You think of two entries in those sources with your name beside them — a holiday with no screen, a class date with no signature — and of what sits beside neither."
+   ],
+   "choices": [
+    {
+     "text": "Ask your lawyer how a parent gets the sign-in sheets and the screen log themselves",
+     "next": "records_learn",
+     "note": "“The same way you get the rest of your record,” he says. “You ask for it. In writing. There is a regulation, and it is not a favor.”"
+    }
+   ]
+  },
+  {
+   "id": "records_learn",
+   "kicker": "Day 47 — Saturday, February 21, 2026",
+   "dayOffset": 47,
+   "title": "The Regulation, in Plain Words",
+   "body": [
+    "Your lawyer writes the citation on the back of his card: 55 Pa. Code § 3130.44(d). The case record — the chronology, the sign-in sheets the agency holds copies of, the screen log — is to be released upon request. “Shall be released upon request,” he says, “is the whole sentence that matters. Your notebook says what the twelve weeks cost. Their sheets say what the twelve weeks were. The review should have to look at both, side by side — but it will only look at what is put in front of it.”",
+    "The request is yours to make, and making it leaves a date in the file the request is about. Not making it leaves the summary alone with the sheets it was built from — sheets whose two most important entries are absences."
+   ],
+   "choices": [
+    {
+     "text": "Decide this week, while the summary is still a draft",
+     "next": "records_fork",
+     "note": "Drafts can still be answered. Filed summaries must be corrected, which is slower, colder work. The difference is this week."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 49 — Monday, February 23, 2026",
+   "dayOffset": 49,
+   "title": "Ask for the Sheets and the Log",
+   "body": [
+    "The written request names what you need: the class sign-in sheets for the twelve weeks, the screen log with its dates, and the chronology entries about your attendance — the agency's own paper, to set beside yours. It goes in dated, copied, with the copy going into the notebook's back pocket, where by now all important copies live.",
+    "Or the review can be met with the notebook alone — your word, your staples, your column of costs — against a summary built from sources you have never seen and cannot quote."
+   ],
+   "choices": [
+    {
+     "text": "Put the request in writing — sign-in sheets, screen log, attendance chronology — and keep a copy",
+     "next": "packet_arrives",
+     "cash": -6,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record requested in writing under 55 Pa. Code § 3130.44(d) — sign-in sheets, screen log, attendance chronology"
+     ],
+     "note": "Six dollars of copies and postage across the errand. The request is now itself a page in the file it asks about."
+    },
+    {
+     "text": "Meet the review with the notebook alone — it is complete, and it is yours",
+     "next": "no_packet",
+     "cash": -6,
+     "note": "Six dollars across the week's errands either way. The notebook is yours. The summary was built from paper that is also, in a sense, yours — and you have never read it."
+    }
+   ]
+  },
+  {
+   "id": "packet_arrives",
+   "kicker": "Day 53 — Friday, February 27, 2026",
+   "dayOffset": 53,
+   "title": "Their Paper, Beside Yours",
+   "body": [
+    "The packet arrives before Friday, February 27, 2026 and you read it the way your lawyer taught you: against the notebook, line by line. The sign-in sheets show your signature on every class date except one — the cancelled session, where the sheet itself does not exist and the provider's confirmation, if you obtained it, explains why. The screen log shows every screen attended except one date — the holiday, where the log's entry is blank in a way that could mean anything a reader wants it to mean.",
+    "Beside the notebook, the blanks have biographies: a locked door with a photographed schedule, a dark classroom with a photographed note. Beside nothing, they have only your name. The two records agree everywhere except the two mornings the system cancelled — and on those mornings, yours is the only one that was there."
+   ],
+   "choices": [
+    {
+     "text": "Take the packet and the notebook to your lawyer, together",
+     "next": "side_by_side",
+     "addHidden": [
+      "Agency sign-in sheets and screen log read against the parent's ledger — agreement except the two system-caused mornings"
+     ],
+     "note": "Two records, one set of weeks. The lawyer's conference table is about to hold both of them at once, which no table has done yet."
+    }
+   ]
+  },
+  {
+   "id": "no_packet",
+   "kicker": "Day 53 — Friday, February 27, 2026",
+   "dayOffset": 53,
+   "title": "What You Cannot Quote",
+   "body": [
+    "Without their paper, you cannot quote the log's blank holiday entry or show that no sign-in sheet exists for the cancelled date — you can only say so, accurately, in your own words, about documents the room has not seen. Your notebook is complete and contemporaneous. It is also, to every reader who has never met you, one interested party's private book.",
+    "The summary, meanwhile, was not written from your book. It was written from the sheets and the log. At the review, the question will be whether the summary's word for your twelve weeks can be examined against its own sources — or only against your staples."
+   ],
+   "choices": [
+    {
+     "text": "Take the notebook to your lawyer anyway, and prepare with what exists",
+     "next": "side_by_side",
+     "note": "What exists is real. The review will now decide what real-but-unaccompanied paper is worth, against a printed summary."
+    }
+   ]
+  },
+  {
+   "id": "side_by_side",
+   "kicker": "Day 57 — Tuesday, March 3, 2026",
+   "dayOffset": 57,
+   "title": "Side by Side, on Counsel's Table",
+   "body": [
+    "On your lawyer's table the two records lie open together for the first time: the agency's sheets and log on the left, your notebook on the right, twelve weeks in two hands. He turns pages slowly. “Here is what I see,” he says. “Eleven weeks where they agree completely — which makes the twelfth kind of week impossible to wave away. Two mornings where the system cancelled on you, documented by you at the time, and by them” — he taps the blank log entry, the missing sheet — “by silence.”",
+    "“Silence in their record, answered by paper in yours. That is an argument a review can actually hear. But hear the condition: it works only if both records are in the room, filed, before the summary hardens into the review's starting point. A notebook in a kitchen is a diary. A notebook in the record is evidence.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask what filing it takes — and what waiting costs",
+     "next": "ledger_totals",
+     "note": "“Copies, a short covering page, and a deadline,” he says. “The summary is coming first. Let me show you its sentence.”"
+    }
+   ]
+  },
+  {
+   "id": "ledger_totals",
+   "kicker": "Day 59 — Thursday, March 5, 2026",
+   "dayOffset": 59,
+   "title": "The Back Column, Totaled",
+   "body": [
+    "Before the summary arrives, counsel asks for the number nobody else has ever asked for: the back column's total. You add it together on his conference table — fares across twelve weeks of screens, classes, and visits; the provider's fee, week after week; the surrendered hours priced at the rate the warehouse would have paid them. The total is more than a week's pay, and less than you feared, and entirely absent from every document the agency has produced about you.",
+    "“We do not file the total to be pitied for it,” counsel says. “We file it because a review that calls a man inconsistent should have to look at what his consistency cost. Numbers like this do not argue. They sit there, in a column, in date order, being true.” The total goes on the notebook's last page, in your hand, with the receipts still stapled where they have always been."
+   ],
+   "choices": [
+    {
+     "text": "Ask to see the summary the moment it reaches counsel",
+     "next": "summary_arrives",
+     "note": "It is already being drafted from the sheets and the log. In days it will have a word for you, and the word is already chosen."
+    }
+   ]
+  },
+  {
+   "id": "summary_arrives",
+   "kicker": "Day 61 — Saturday, March 7, 2026",
+   "dayOffset": 61,
+   "title": "Inconsistent",
+   "body": [
+    "The pre-review summary reaches your lawyer on Saturday, March 7, 2026, and its sentence about you is one word long, with a small parade of support: your engagement is described as “inconsistent.” Underneath, the summary's own arithmetic: two missed screens or classes noted in the twelve weeks — the holiday date, with no screen recorded; the class date, with no sign-in. No mention of a locked door. No mention of a cancelled session. The summary counted the file, and the file counted absences, and the absences became a character word.",
+    "It is, your lawyer says, a perfectly accurate summary of an incomplete record. That sentence is either the problem or the whole defense, depending on what gets filed beside it before the review reads it as settled."
+   ],
+   "choices": [
+    {
+     "text": "Ask exactly what can still be filed, and by when",
+     "next": "summary_read",
+     "note": "Days, not weeks. Filing, in this system, is mostly deciding what paper will be in the room — and then getting it into the room."
+    }
+   ]
+  },
+  {
+   "id": "summary_read",
+   "kicker": "Day 64 — Tuesday, March 10, 2026",
+   "dayOffset": 64,
+   "title": "Reading It Like a Stranger",
+   "body": [
+    "You read the summary the way its future readers will: cold, quickly, as a stranger who knows nothing about buses, holidays, or dark classrooms. To that reader, “inconsistent” is not a claim to be checked; it is a description to be carried into the review and used. Every future report will quote it the way this one quoted the sheets.",
+    "Your lawyer — counsel, as the law provides (42 Pa.C.S. § 6337) — reads it the other way, as a document with sources. “Every characterization in a summary is a footnote that lost its text,” he says. “Our job is to reattach the text: their log, their sheets, your ledger, the photographs, the confirmation — in one packet, in date order, filed before the review. Then the word has to survive its own evidence, in public.”"
+   ],
+   "choices": [
+    {
+     "text": "Decide how the answer will be filed",
+     "next": "assembly",
+     "note": "The packet is an assembly job now: two records, two photographs, one confirmation, one covering page. Nothing in it argues. Everything in it is dated."
+    }
+   ]
+  },
+  {
+   "id": "assembly",
+   "kicker": "Day 68 — Saturday, March 14, 2026",
+   "dayOffset": 68,
+   "title": "Assemble the Packet, or Keep the Notebook",
+   "body": [
+    "The packet, if it is filed, is unglamorous by design: your ledger pages copied in date order; the agency's sign-in sheets and screen log beside them; the holiday schedule photograph; the provider's cancellation confirmation if you hold it; and your lawyer's one-page covering letter that says only what the packet is — two records of the same twelve weeks, submitted so the review can characterize the engagement from both.",
+    "The alternative is also a real choice, and parents make it for real reasons: keep the notebook at home, private, yours — a record of what this cost you, kept for yourself and Thalia someday — and let the review proceed on the agency's paper alone. Paper that never enters the record changes nothing in the record. That is not a criticism of the keeping. It is a fact about the filing."
+   ],
+   "choices": [
+    {
+     "text": "Assemble and file the packet with counsel — ledger, sheets, log, photographs, covering page",
+     "next": "packet_filed_scene",
+     "cash": -8,
+     "setFlags": [
+      "packetFiled"
+     ],
+     "addHidden": [
+      "Engagement packet filed with counsel before the review — ledger and agency sign-in sheets/screen log side by side"
+     ],
+     "note": "Eight dollars of copies across the errand. Filed, stamped, copied back into the notebook's back pocket. The notebook is now in two places, one of which decides things."
+    },
+    {
+     "text": "Keep the notebook at home — it is yours, and Thalia's someday",
+     "next": "notebook_home_scene",
+     "cash": -8,
+     "note": "Eight dollars across the week's errands either way. The notebook stays whole, private, and complete — in the one room the review will never enter."
+    }
+   ]
+  },
+  {
+   "id": "packet_filed_scene",
+   "kicker": "Day 71 — Tuesday, March 17, 2026",
+   "dayOffset": 71,
+   "title": "Filed, Stamped, Copied Back",
+   "body": [
+    "The filing takes eleven minutes at a counter and changes the geography of the case: the ledger is now where decisions are made from. Your worker, at the next check-in, mentions it without edge: “I saw the packet. The holiday — I didn't know the site was closed.” It is not an apology. It is something the system values almost as much: an acknowledgment, from inside it, that the paper says what it says.",
+    "The summary still says “inconsistent.” Summaries are not rewritten by packets; they are answered by them, in a room, on a date. That date is now the only appointment that matters."
+   ],
+   "choices": [
+    {
+     "text": "Keep the routine — screens, class, visits — exactly as it is until the review",
+     "next": "work_beat",
+     "note": "The packet is filed. The twelve weeks, meanwhile, are still a daughter's ordinary Saturdays, and you keep them."
+    }
+   ]
+  },
+  {
+   "id": "notebook_home_scene",
+   "kicker": "Day 71 — Tuesday, March 17, 2026",
+   "dayOffset": 71,
+   "title": "The Notebook, by the Door",
+   "body": [
+    "The notebook goes where it has always gone: by the door, under the summonses, in the geography of a kitchen that has run a case for twelve weeks. It is complete. It is dated. Its column of costs is accurate to the dollar, and its two most important pages — a locked door, a dark classroom — are written in the hand of the only person who was there.",
+    "None of that is in dispute. What is in dispute, at the review, will be a summary neither of you wrote, built from sheets one of you has never seen — or, on the path where the record was requested, seen and never answered with the ledger that answers it."
+   ],
+   "choices": [
+    {
+     "text": "Keep the routine — screens, class, visits — exactly as it is until the review",
+     "next": "work_beat",
+     "note": "Paper by the door decides nothing by the door. The review is where paper is weighed, and the review is close."
+    }
+   ]
+  },
+  {
+   "id": "work_beat",
+   "kicker": "Day 75 — Saturday, March 21, 2026",
+   "dayOffset": 75,
+   "title": "Week Eleven, at Work",
+   "body": [
+    "Week eleven is logistics, which is to say it is the case: a shift rotation that threatens a class, solved with the supervisor's initials; a screen that lands outside the shift for once, and feels like a gift the system did not intend. Thalia's visit includes a spelling test report she presents with the ceremony of a state document, and you receive it with matching ceremony, because some documents deserve it.",
+    "Your lawyer calls in the evening with the review's final shape: the summary will be read first; the packet, if filed, will be on the table; his job will be to put the two records side by side and let the room do the arithmetic. “Reviews believe documents that agree with each other,” he says. “Ours agree eleven weeks out of twelve, and the twelfth week is the system's, documented twice.”"
+   ],
+   "choices": [
+    {
+     "text": "Confirm the review date in writing with everyone who needs it",
+     "next": "work_letter",
+     "note": "One more week where the paper and the life agree with each other — except for the two mornings that started all of this."
+    }
+   ]
+  },
+  {
+   "id": "work_letter",
+   "kicker": "Day 77 — Monday, March 23, 2026",
+   "dayOffset": 77,
+   "title": "The Supervisor's Initials",
+   "body": [
+    "The standing swap arrangement gets its own small ceremony in week eleven: your supervisor initials the schedule for the remaining weeks, in advance, in the box where initials go — converting a series of favors into a document. She does not make a speech about it. She says, “So you stop having to ask,” which in supervisor language is a speech, and a kind one.",
+    "The initialed schedule goes into the notebook, because by now everything that proves an arrangement goes into the notebook. It will never be an exhibit. It is something better and quieter: the reason the visits and classes of the last weeks happen at all, recorded by the only person whose initials could make them happen."
+   ],
+   "choices": [
+    {
+     "text": "File the initialed schedule and keep the week's visit",
+     "next": "thalia_visit2",
+     "note": "Arrangements, initialed. The case runs on them, and now one of them, at least, runs on paper too."
+    }
+   ]
+  },
+  {
+   "id": "thalia_visit2",
+   "kicker": "Day 79 — Wednesday, March 25, 2026",
+   "dayOffset": 79,
+   "title": "The Drawing, Filed at Home",
+   "body": [
+    "Thalia's drawing of the warehouse — the one with the swimming pool — goes into the notebook's back pocket at her instruction, because in her filing system important papers live together, and by her taxonomy the drawing and the receipts are the same kind of thing: proof of where you were. She is not wrong enough to argue with.",
+    "On the bus home you total the back column one more time. Twelve weeks: fares, fees, surrendered hours — a sum the file will never state, now sitting at the back of a record the review either will or will not hold. The sum is not the argument. The dates are the argument. The sum is what the dates cost, and it deserved one column, in one book, kept by the person who paid it."
+   ],
+   "choices": [
+    {
+     "text": "Put the notebook — and its filed copy — in order for the review",
+     "next": "thalia_school",
+     "cash": -6,
+     "note": "Six dollars of fares for the visit, spent either way. The column is totaled. The weeks are in order. What remains is a room."
+    }
+   ]
+  },
+  {
+   "id": "thalia_school",
+   "kicker": "Day 81 — Friday, March 27, 2026",
+   "dayOffset": 81,
+   "title": "A Spelling Test, Reported",
+   "body": [
+    "Thalia's school sends its own summary home through the foster family, and it is the only summary in this story written by someone who watched its subject daily: reading, improved; arithmetic, willing; spelling test, presented to her father with state ceremony at the last visit and scored, by her account, at a level the school describes as excellent and she describes as inevitable.",
+    "You file the school note in the notebook's back pocket, behind the drawing, where Thalia's filing system puts all documents of state. It will not be read at the review. Reviews read their own summaries. But a father keeping his daughter's spelling test in the same pocket as his receipts is, in this scenario's considered judgment, a data point — the kind no form has a line for, which is why the notebook exists."
+   ],
+   "choices": [
+    {
+     "text": "Go into the review's final week with the folder in order",
+     "next": "review_notice",
+     "note": "School note filed, drawing filed, receipts stapled, column totaled. The review's paperwork is now a fair fight, if it is fought with paper at all."
+    }
+   ]
+  },
+  {
+   "id": "review_notice",
+   "kicker": "Day 83 — Sunday, March 29, 2026",
+   "dayOffset": 83,
+   "title": "The Review Approaches",
+   "body": [
+    "The notice confirms the review for Monday, April 6, 2026. Your lawyer's preparation is the same preparation he gives every document in this case: from the record outward. What the record holds now depends on decisions already made — a ledger kept or not, a record requested or not, a packet filed or kept by a door.",
+    "“The judge will read the summary first,” he says. “Everyone does. Then the room will find out whether the summary is the only account of your twelve weeks, or merely the first one.” Thalia's case will be measured against a plan. The plan will be measured against a record. The only question left is which record."
+   ],
+   "choices": [
+    {
+     "text": "Prepare with counsel, entry by entry",
+     "next": "counsel_checkin",
+     "note": "Entry by entry is how the packet was built. It is also, not coincidentally, how corrections are made."
+    }
+   ]
+  },
+  {
+   "id": "counsel_checkin",
+   "kicker": "Day 86 — Wednesday, April 1, 2026",
+   "dayOffset": 86,
+   "title": "Entry by Entry, with Counsel",
+   "body": [
+    "Counsel's preparation takes the summary apart the way it was assembled: line by line, source by source. The attended screens: agreed by both records. The attended classes: agreed. The holiday: their log is blank, your ledger is a photograph and a dated page and a written report made the next business day, if you made it. The cancelled class: their sheets are silent, your packet holds the provider's own confirmation, if you obtained it.",
+    "“Notice what we are not doing,” he says. “We are not asking the room to believe you instead of the file. We are asking it to read the whole file — theirs and yours, together — and characterize the engagement from all of it. Rooms can refuse many things. They have a harder time refusing their own log, read aloud, beside a photograph with a date on it.”"
+   ],
+   "choices": [
+    {
+     "text": "Spend the evening before with Thalia's drawing on the refrigerator, where it belongs",
+     "next": "review_eve",
+     "note": "Preparation is done, or it is not done. Either way, tomorrow the summary meets whatever was filed beside it."
+    }
+   ]
+  },
+  {
+   "id": "review_eve",
+   "kicker": "Day 89 — Saturday, April 4, 2026",
+   "dayOffset": 89,
+   "title": "The Night Before the Review",
+   "body": [
+    "The night before the review the kitchen is quiet in the particular way of houses where the important paper is already filed — or already kept at home. The notebook is in its place. Its copy, if you filed it, is in a folder with a stamp on it, in a building across town, waiting to be carried into a room by a lawyer.",
+    "Tomorrow a word — “inconsistent” — will be weighed against twelve weeks of paper. You already know which paper you are bringing. So, in a sense, does the file."
+   ],
+   "choices": [
+    {
+     "text": "Take the folder, set out the morning's fare, and go to the review",
+     "next": "review",
+     "cash": -6,
+     "note": "Six dollars of fare, set out tonight. Small preparations are still preparations; this whole case has run on them."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 91 — Monday, April 6, 2026",
+   "dayOffset": 91,
+   "title": "The Review",
+   "body": [
+    "The review on Monday, April 6, 2026 is orderly and brief. The plan is read line by line, and the pre-review summary's sentence is quoted in the room's level voice: engagement “inconsistent,” two missed items noted. The room begins, in the ordinary way, to treat the word as a fact about you.",
+    "Then your lawyer asks that the characterization be made from the whole record before it is adopted. What happens next depends, with a precision this scenario has been honest about since the dollar-store notebook, on what your choices actually put on the table."
+   ],
+   "choices": [
+    {
+     "text": "Put the two records side by side — the ledger, the sign-in sheets, and the screen log, filed as one packet",
+     "next": "end_corrected",
+     "requiresFlags": [
+      "ledgerKept",
+      "recordsRequested",
+      "packetFiled"
+     ],
+     "note": "Eleven weeks of agreement, read aloud, and two mornings documented by the only person who was there — and by the provider's own confirmation."
+    },
+    {
+     "text": "Produce the notebook today for the first time — kept faithfully, never filed",
+     "next": "end_unfiled",
+     "requiresFlags": [
+      "ledgerKept"
+     ],
+     "requiresNoFlags": [
+      "packetFiled"
+     ],
+     "note": "The book is real, complete, and new to the room. New paper, offered at the last hour, is weighed the way last-hour paper always is."
+    },
+    {
+     "text": "Ask the room to take your word for the two mornings",
+     "next": "end_stands",
+     "note": "Your word is accurate. The summary, printed and already read, is the room's starting point — and starting points are where characterizations live."
+    }
+   ]
+  },
+  {
+   "id": "end_corrected",
+   "kicker": "Day 95 — Friday, April 10, 2026",
+   "dayOffset": 95,
+   "title": "Ending — Consistent, As Documented",
+   "body": [
+    "The correction takes less time than the twelve weeks did, which is usually the way of corrections. Your lawyer walks the room through the packet in date order: the sign-in sheets and the ledger agreeing, week after week; the screen log and the ledger agreeing, screen after screen. Then the two mornings. The holiday: the log's blank entry, set beside the photographed posted schedule, your dated written report, and the fare and surrendered shift in the ledger's column. The cancelled class: the missing sheet, set beside the provider's own written confirmation that the provider cancelled the session.",
+    "The court corrects the characterization on the record. Your engagement is documented as consistent, with the two system-caused exceptions noted as such — the holiday closure and the provider cancellation entered in the record as what they were, not as misses. The summary's word does not survive its own sources, read together, in public. The plan continues; Thalia's placement continues for now; the next review will start from a record that describes the father who actually ran these twelve weeks."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): Two records that agreed almost everywhere. The agency's sign-in sheets and screen log showed attendance at every screen and class of the twelve weeks except two dates. The parent's ledger — dates, trips, fares, surrendered hours, receipts stapled beside them — showed the same attendance, and, for the two excepted dates, the reasons: a screen site closed for a holiday nobody announced, photographed on its own posted schedule and reported in writing the next business day; a class cancelled by the provider, confirmed in the provider's own writing. Filed together as one packet before the review, the two records corrected the summary that had been built from only one of them.",
+    "THE LAW UNDER THIS PATH: Only the verified instruments were used. The agency's sheets and log were obtained because the case record ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)) — requesting them is what let counsel set the summary beside its own sources instead of arguing against its conclusion. Counsel (42 Pa.C.S. § 6337) presented the packet at the review and asked that the characterization be made from the whole record. Nothing here invented a right to a corrected adjective: the packet created the conditions under which the room, reading its own log beside a dated ledger, corrected the word itself. This ending is the scenario's win, labeled plainly: a characterization corrected on the record, with the two exceptions noted as system-caused. The case is not over, Thalia is still placed, and the plan continues.",
+    "THE HONEST PART: The twelve weeks still cost what they cost — the fares, the fee, the surrendered holiday shift were never repaid by anyone, and the ledger's back column remains the only place that sum is written down. A different reviewer could have noted the packet and kept the word anyway; a site that announced its holidays, or a provider that reported its own cancellation, would have made the packet unnecessary. Workers, offices, and luck held pieces of this. What your choices controlled was narrower and durable: when the system cancelled on you twice, you were the only party who wrote it down at the time — and you filed what you wrote where it could be read. Outcomes in this system turn on workers, judges, and luck as much as on any parent's choices, and never on a parent's worth."
+   ]
+  },
+  {
+   "id": "end_unfiled",
+   "kicker": "Day 95 — Friday, April 10, 2026",
+   "dayOffset": 95,
+   "title": "Ending — Kept, But Never Filed",
+   "body": [
+    "The notebook comes out of your bag at the review, and the room is polite about it in the way rooms are polite about paper they have never seen: it is examined, its staples and dates are noted, and its two most important pages are read with genuine attention — for the length of a review's attention, which is minutes, shared among every other line of a plan.",
+    "The summary's word is softened in the discussion and survives in the document. Reports are not rewritten around a book produced at the table; the characterization is carried forward, now with a line noting that the father ‘presented a personal log at the review.’ The notebook goes home with you, complete as ever. The file goes everywhere else, with the word intact."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): A complete, contemporaneous, accurate ledger — in the wrong geography. Kept week by week with its receipts, photographs, and its column of costs, it answered both of the summary's counted misses. It was never requested against the agency's own sheets and log, and never filed beside them, so at the review it arrived as one party's private book, offered at the last hour, against a printed summary the room had already read. The discussion acknowledged it. The document did not absorb it.",
+    "THE LAW UNDER THIS PATH: The missing moves were the verified ones, and neither is dramatic. The agency's sign-in sheets and screen log were available on written request — the record ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)) — and counsel (42 Pa.C.S. § 6337) could have filed the two records together before the review, when filing changes what a summary is answered by. Paper that never enters the record changes nothing in the record: that is this ending, and it is this batch's recurring lesson, stated without blame. Keeping the notebook was the hard part, and it was done. Filing it was the decisive part, and it was not.",
+    "THE HONEST PART: Nothing in this ending says the notebook was wasted. It is dated, checkable, and still exists — a later review, a later filing, can still put it where it belongs, and its column of costs is a true account no other document contradicts. What was lost was timing: characterizations harden by being quoted, and each report that repeats ‘inconsistent’ makes the next correction slower. A worker who had written the holiday closure into her own notes, or a provider who reported its cancellation to the agency, would have spared you all of it. The word in the file is a verdict on what was filed, not on the father who kept the book."
+   ]
+  },
+  {
+   "id": "end_stands",
+   "kicker": "Day 95 — Friday, April 10, 2026",
+   "dayOffset": 95,
+   "title": "Ending — The Summary Stands",
+   "body": [
+    "The review adopts the summary's sentence the way reviews adopt most sentences: without heat, without doubt, as the starting point for the next twelve weeks. Engagement: inconsistent. Two missed items, noted. The plan continues with the word attached to it, and the word will be quoted by the next summary, and the next, the way file language reproduces — faithfully, and without ever re-meeting the mornings it describes.",
+    "Your account of the locked door and the dark classroom was heard in the room, in your voice, in order. It was believed the way unaccompanied accounts are believed: personally, and set aside professionally. The buses, the holiday shift, the fee at the door — the price of the twelve weeks — remains recorded nowhere except your memory, which was always the archive this ending was going to have."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORD HELD (the hidden record, revealed): One record only. The sign-in sheets and the screen log, as summarized: attendance everywhere except a holiday with no screen recorded and a class date with no signature, characterized in one word — ‘inconsistent’ — with no entry anywhere explaining either absence. The two mornings the system cancelled were present in the file only as gaps with the father's name beside them, and gaps, in summaries, are read in the direction the grammar points: toward the parent.",
+    "THE LAW UNDER THIS PATH: Every instrument that would have answered the word existed and is verified. A contemporaneous ledger would have dated the costs and the cancellations as they happened. The agency's own sheets and log were available on written request (55 Pa. Code § 3130.44(d)), to be set beside their summary. Counsel (42 Pa.C.S. § 6337) can assemble and file whatever paper exists — and cannot manufacture, at the review, a photograph from a holiday morning two months past. Defaults rule wherever documentation does not. That sentence, not any fact about this father, is this ending.",
+    "THE HONEST PART: Be clear, because the summary was not: you attended every screen the site was open for and every class the provider held. The two ‘misses’ were a locked door and a cancelled session, and the twelve weeks cost you fares, fees, and a premium holiday shift that no document repaid or recorded. A caseworker who wrote the closure into her own note, a provider who reported its cancellation, a reviewer who asked what the blanks meant — any of them changes this ending without you changing anything. It records the state of a file, not the engagement of a father. And the notebook can still be started tonight: paper begun late is worth less than paper begun on time, and infinitely more than the next summary's word, unanswered again."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s114';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

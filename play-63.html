@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 63 — Cancelled, Again (a fictional composite)",
+  "startDateISO": "2026-08-03",
+  "startNode": "start",
+  "startCash": 150,
+  "tier": "Hard",
+  "summary": "The center cancels three visits; the report calls it her attendance — building the arithmetic that corrects the record."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, August 3, 2026",
+   "dayOffset": 0,
+   "title": "Tuesdays and Saturdays",
+   "body": [
+    "Your name is Simone. Your son Felix is eight, and he is living in foster care — placed before this story opens, in a part of the case this story does not retell. What this story covers is the rhythm the case now runs on: visits, Tuesdays and Saturdays, at a visitation center across town.",
+    "The center's habit is a phone call. The day before a visit, someone rings to confirm — or you ring them. Ms. Kessler, who runs the desk, is brisk and not unkind, and the calls are pleasant, and at the end of each one nothing exists that a third person could read. In this system, that last part is not a detail. It is the whole mechanism of the next two months.",
+    "You attend your visits. That sentence is true, simple, and — as the summer will show — surprisingly hard for a file to say, if the file is built out of phone calls."
+   ],
+   "choices": [
+    {
+     "text": "Go to the first Tuesday visit — and think about the phone call that confirmed it",
+     "next": "confirm_choice",
+     "note": "A visit, confirmed by a voice, attended by a mother, recorded by no one. Hold that thought."
+    }
+   ]
+  },
+  {
+   "id": "confirm_choice",
+   "kicker": "Day 1 — Tuesday, August 4, 2026",
+   "dayOffset": 1,
+   "title": "The Day Before",
+   "body": [
+    "It is Tuesday, August 4, 2026, visit day, and yesterday's confirmation was the usual call: two minutes, friendly, gone. There is another way to confirm a visit, and it costs nothing but the small awkwardness of being the person who puts things in writing: a short text or email the day before — visit, date, time, ‘please confirm’ — which the center answers, or doesn't, in writing either way.",
+    "Paper (and its digital cousins) have dates on them. Phone calls have memories on them. This case will be decided, in part, by which of those your confirmations are made of."
+   ],
+   "choices": [
+    {
+     "text": "Start confirming in writing — a short message the day before every visit, replies saved",
+     "next": "written_start",
+     "setFlags": [
+      "confirmWritten"
+     ],
+     "addHidden": [
+      "Visits — confirmed in writing the day before, from the first week"
+     ],
+     "note": "The first reply is two words: ‘Confirmed, thanks.’ Two words, with a date on them. That is what evidence looks like before it grows up."
+    },
+    {
+     "text": "Keep phoning — it works, it's friendly, and Ms. Kessler knows your voice",
+     "next": "phone_start",
+     "note": "She does know your voice. Voices, unfortunately, cannot be attached to a review report."
+    }
+   ]
+  },
+  {
+   "id": "written_start",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "Two Words, Dated",
+   "body": [
+    "The thread begins: your message, the center's reply, your message, the reply. It is the dullest correspondence in the world and, potentially, the most valuable paper in your case — a dated, third-party confirmation for every visit, written by the center itself, before anything about the visit could be disputed.",
+    "You save the replies the way you save receipts. Somewhere, an attendance percentage is going to be computed about you this year. When it is, there will be something to compute it against."
+   ],
+   "choices": [
+    {
+     "text": "Go on with the visits — Tuesdays and Saturdays, confirmed the day before",
+     "next": "good_weeks",
+     "note": "A rhythm with a paper shadow. The summer can now begin, in both versions."
+    }
+   ]
+  },
+  {
+   "id": "phone_start",
+   "kicker": "Day 2 — Wednesday, August 5, 2026",
+   "dayOffset": 2,
+   "title": "The Friendly System",
+   "body": [
+    "The calls continue, warm and weightless. Ms. Kessler confirms; you attend; the visit happens; the call evaporates. If anyone ever asks whether a given visit was confirmed, the answer will live in two people's recollections, one of whom answers phones for forty families.",
+    "None of this feels like a mistake. That is what makes it one of this system's most reliable traps: the informal way works perfectly, right up until the moment it is asked to prove something."
+   ],
+   "choices": [
+    {
+     "text": "Go on with the visits — Tuesdays and Saturdays, as confirmed by phone",
+     "next": "good_weeks",
+     "note": "The visits are real. Their confirmations are weather: true, and gone."
+    }
+   ]
+  },
+  {
+   "id": "good_weeks",
+   "kicker": "Day 8 — Tuesday, August 11, 2026",
+   "dayOffset": 8,
+   "title": "The Good Weeks",
+   "body": [
+    "The first full week runs the way weeks are supposed to: Tuesday's visit, Saturday's visit, Felix at the center-room door with his shoes already off and an agenda already formed. He is working on a drawing series — the center, the bus, your kitchen, the center again — and each visit adds a panel.",
+    "This is what attendance actually looks like from inside it: buses, snacks, drawings, the ordinary machinery of showing up. Files do not see machinery. Files see counts. The distance between those two views is where this scenario lives."
+   ],
+   "choices": [
+    {
+     "text": "Keep the rhythm — and keep whatever record of it you are keeping",
+     "next": "second_saturday",
+     "note": "Showing up is the job. Proving you showed up, it turns out, is a second job, running in parallel, unpaid."
+    }
+   ]
+  },
+  {
+   "id": "second_saturday",
+   "kicker": "Day 12 — Saturday, August 15, 2026",
+   "dayOffset": 12,
+   "title": "The Drawing, Panel Four",
+   "body": [
+    "Saturday, August 15, 2026's visit is the good kind that leaves nothing to write home about: a board game Felix has decided to be magnanimous about losing, a sandwich negotiated down to its crusts, the drawing's fourth panel — your kitchen, with the table set for two and a third chair drawn in pencil, ‘for later.’",
+    "Ms. Kessler, passing with a clipboard, says the thing staff say: ‘You're one of my reliables.’ It is true, it is kind, and it will appear nowhere. Praise, in this building, is spoken. Counts are written. Remember which one the report will use."
+   ],
+   "choices": [
+    {
+     "text": "Thank her — and go home on the bus with panel four in your bag",
+     "next": "cancel1",
+     "addHidden": [
+      "Visit held — full visit; Felix's drawing, panel four"
+     ],
+     "note": "‘One of my reliables.’ File that under things that are true and unprovable, unless the paper says otherwise."
+    }
+   ]
+  },
+  {
+   "id": "cancel1",
+   "kicker": "Day 15 — Tuesday, August 18, 2026",
+   "dayOffset": 15,
+   "title": "Cancelled, the First Time",
+   "body": [
+    "Tuesday, August 18, 2026, visit morning. Your phone rings while the kettle is on: Ms. Kessler, apologetic, brisk. The center is short-staffed today; today's visit is cancelled. ‘We'll find you a make-up slot,’ she says, ‘when there's a slot.’ There is no date in that sentence. There is barely a noun in it.",
+    "This happens, in this system, more often than any report admits: a visit cancelled by the provider's arithmetic, not by the parent's. What happens next — in the file, I mean — depends on what you do in the next hour."
+   ],
+   "choices": [
+    {
+     "text": "Answer the same day in writing — sorry to miss Felix, please propose a make-up date, in reply",
+     "next": "cancel1_written",
+     "setFlags": [
+      "cancelTrail"
+     ],
+     "addHidden": [
+      "Cancellation 1 — center cancelled by phone, morning of; parent answered the same day in writing requesting a make-up"
+     ],
+     "note": "Your message is short, warm, and dated, and it asks for the one thing the phone call didn't contain: a date. The asking is now a record."
+    },
+    {
+     "text": "Accept the verbal promise — ‘we'll find a slot’ — and hang up kindly",
+     "next": "cancel1_verbal",
+     "cash": -6,
+     "note": "Kindly is how you do everything. The promise, meanwhile, has no date, no witness, and no existence outside Ms. Kessler's memory of a busy morning. (And you had already paid the bus fare before the phone rang.)"
+    }
+   ]
+  },
+  {
+   "id": "cancel1_written",
+   "kicker": "Day 16 — Wednesday, August 19, 2026",
+   "dayOffset": 16,
+   "title": "A Reply with No Date in It",
+   "body": [
+    "The center replies the next day, in writing, which is its own small victory: ‘Noted — we'll offer a make-up when there's a slot.’ You read it three times. The sentence confirms the cancellation was theirs. It confirms you asked. It does not contain a date, a day, or a time, and you understand, holding it, that ‘when there's a slot’ is a place where make-up visits go to be forgotten politely.",
+    "You save it anyway. A reply that promises nothing still proves two things: who cancelled, and that you answered in writing the same day. Percentages are computed from less."
+   ],
+   "choices": [
+    {
+     "text": "Save it, and go to Saturday's visit as scheduled",
+     "next": "held_visit2",
+     "note": "Who cancelled: documented. Make-up: vaporous. Both halves matter, and now both halves exist."
+    }
+   ]
+  },
+  {
+   "id": "cancel1_verbal",
+   "kicker": "Day 16 — Wednesday, August 19, 2026",
+   "dayOffset": 16,
+   "title": "When There's a Slot",
+   "body": [
+    "No reply exists, because no message was sent. In the center's day, the cancellation was one of eleven phone calls; in yours, it was the day's whole weather. Ms. Kessler meant the promise. Meaning a promise and scheduling it are different departments, and only one of them keeps a calendar.",
+    "Saturday's visit is still on, confirmed the usual way. You go, because going is what you do — and because some part of you already suspects that going, undocumented, is a tree falling in a forest of forms."
+   ],
+   "choices": [
+    {
+     "text": "Go to Saturday's visit — showing up is still the main thing",
+     "next": "held_visit2",
+     "note": "It is the main thing. The scenario's whole argument is that ‘main’ and ‘only’ are different words."
+    }
+   ]
+  },
+  {
+   "id": "held_visit2",
+   "kicker": "Day 22 — Tuesday, August 25, 2026",
+   "dayOffset": 22,
+   "title": "A Held Visit",
+   "body": [
+    "Tuesday, August 25, 2026: a visit that happens, which in this summer's accounting is becoming a category worth naming. Felix has opinions about the cancelled one — children keep their own attendance records, in a medium adults can't file — and then the visit does what visits do: game, sandwich, drawing, goodbye at the door with his hand up, palm out, the way he waves now.",
+    "You attend. As you attend every visit that is actually held. If the summer's file could see the room, there would be no scenario. The file sees counts, and the counts are being kept by the party that cancels."
+   ],
+   "choices": [
+    {
+     "text": "Go home — and, whenever the make-up is mentioned, notice whether a date is attached",
+     "next": "makeup_chase",
+     "note": "Held: attended. Cancelled: pending a date that does not exist. The arithmetic is already drifting, and arithmetic drifts downhill."
+    }
+   ]
+  },
+  {
+   "id": "makeup_chase",
+   "kicker": "Day 26 — Saturday, August 29, 2026",
+   "dayOffset": 26,
+   "title": "Chasing the Make-Up",
+   "body": [
+    "Saturday, August 29, 2026, a held visit — and at the desk, the make-up question, raised again. ‘Still nothing,’ Ms. Kessler says, not unkindly. ‘You're on the list.’ There is a list. You have never seen the list. The list, if it says anything about dates, has not said it to you.",
+    "There are two ways to leave this conversation: with a dated written record that you asked, again — or with the warm understanding of two people who both intend well, which is the raw material from which ‘the parent never followed up’ is later manufactured."
+   ],
+   "choices": [
+    {
+     "text": "Follow up in writing that evening — second request for a make-up date for the cancelled Tuesday",
+     "next": "cancel2",
+     "setFlags": [
+      "cancelTrail"
+     ],
+     "addHidden": [
+      "Make-up request — repeated in writing; center replied 'when there's a slot,' no date given"
+     ],
+     "note": "Asked, again, in writing, again with a date on the asking. The file is learning a pattern, even if the calendar isn't."
+    },
+    {
+     "text": "Leave it with Ms. Kessler — you're on the list, and pushing helps no one",
+     "next": "cancel2",
+     "note": "On the list. The list is the most trusted and least examined document in this entire system."
+    }
+   ]
+  },
+  {
+   "id": "cancel2",
+   "kicker": "Day 29 — Tuesday, September 1, 2026",
+   "dayOffset": 29,
+   "title": "Cancelled, Again",
+   "body": [
+    "Tuesday, September 1, 2026. The phone rings in the morning, and you know the shape of the call before the kettle boils: staffing, apologies, cancellation — the second one. ‘Same as before,’ Ms. Kessler says, ‘we'll find a slot.’ Two make-ups are now owed to Felix's summer, in a currency of slots that has never once been observed in the wild.",
+    "A pattern cancelled once is an accident. Cancelled twice, with no make-up dated, it is a system describing itself. What the review will call it depends on the paper."
+   ],
+   "choices": [
+    {
+     "text": "Answer in writing the same day, as before — cancellation noted, make-up requested, again",
+     "next": "rumor_beat",
+     "setFlags": [
+      "cancelTrail"
+     ],
+     "addHidden": [
+      "Cancellation 2 — center cancelled by phone; parent answered the same day in writing requesting a make-up"
+     ],
+     "note": "Same day, in writing, second time. A trail is just a thing that happens twice with dates on it."
+    },
+    {
+     "text": "Accept it verbally, as before — they know you're reliable",
+     "next": "rumor_beat",
+     "cash": -6,
+     "note": "They do know. Knowledge held by a busy desk, about forty families, across a summer, is a depreciating asset. (The bus fare, again, was already spent.)"
+    }
+   ]
+  },
+  {
+   "id": "rumor_beat",
+   "kicker": "Day 33 — Saturday, September 5, 2026",
+   "dayOffset": 33,
+   "title": "Sixty-Something Percent",
+   "body": [
+    "A held visit, Saturday, September 5, 2026 — and at the door afterward, the foster parent mentions, in the careful voice people use for other people's paperwork, something she heard on a call with the agency: Simone's attendance described as ‘not great — sixty-something percent, they said.’",
+    "Sixty-something. You do the first arithmetic standing in the doorway, and it does not work on any numbers you know: you have attended every visit that has ever actually been held. Unless — and the thought arrives whole — the cancelled ones are being counted as yours. A percentage is a fraction. Fractions have two halves. You have been watching the top half. Someone else owns the bottom."
+   ],
+   "choices": [
+    {
+     "text": "Go home and start counting from your own records — every scheduled visit since August",
+     "next": "cancel3",
+     "note": "Scheduled. Held. Cancelled. Attended. Four different numbers wearing one another's coats. Time to separate them."
+    }
+   ]
+  },
+  {
+   "id": "cancel3",
+   "kicker": "Day 40 — Saturday, September 12, 2026",
+   "dayOffset": 40,
+   "title": "Halfway There",
+   "body": [
+    "Saturday, September 12, 2026 — a Saturday. You are on the bus, halfway to the center, Felix's snack in your bag and panel nine of the drawing series promised for today, when the phone rings. Staffing. Apologies. Cancelled — the third time in two months. The bus continues for one more stop out of pure momentum before you can get off.",
+    "‘When there's a slot,’ Ms. Kessler says, completing the set. Three cancellations, three promises, zero dates. You stand at a bus stop in the wrong half of town, holding a sandwich bag, being reliable at a cancelled visit."
+   ],
+   "choices": [
+    {
+     "text": "Text the center from the bus stop, in writing — cancellation noted, make-up requested, third time",
+     "next": "bus_ride_home",
+     "cash": -7,
+     "setFlags": [
+      "cancelTrail"
+     ],
+     "addHidden": [
+      "Cancellation 3 — Saturday; parent already travelling when the center cancelled; written notice sent the same day"
+     ],
+     "note": "Sent from a bus stop, timestamped by the network itself. If a trail could have a monument, this is it."
+    },
+    {
+     "text": "Call back and accept it verbally — the bus home is not the place for paperwork",
+     "next": "bus_ride_home",
+     "cash": -7,
+     "note": "The fare is spent either way. What differs is whether today's cancellation joins the others in writing, or in memory."
+    }
+   ]
+  },
+  {
+   "id": "bus_ride_home",
+   "kicker": "Day 41 — Sunday, September 13, 2026",
+   "dayOffset": 41,
+   "title": "The Long Way Back",
+   "body": [
+    "The bus home takes the long way, as buses do when the trip has no visit at the end of it. You think about Felix being told, by someone, in some words, that today's visit is off — and about what word will be used for it in the summary of the summer, and whose name will be grammatically attached to the cancellation when it gets there.",
+    "Summaries assign. That is their job and their danger. A cancellation described without an owner tends to acquire the nearest name — and the nearest name, in an attendance paragraph, is always the parent's."
+   ],
+   "choices": [
+    {
+     "text": "Get home, and do the full count at the kitchen table",
+     "next": "monday_after",
+     "cash": -6,
+     "note": "Return fare: spent on a visit that didn't happen. Some expenses are also evidence."
+    }
+   ]
+  },
+  {
+   "id": "monday_after",
+   "kicker": "Day 42 — Monday, September 14, 2026",
+   "dayOffset": 42,
+   "title": "The Count",
+   "body": [
+    "At the kitchen table, the count, for the report window the summer will be judged on — Tuesday, August 4, 2026 to Saturday, September 12, 2026: twelve visits scheduled, Tuesdays and Saturdays. Three cancelled by the center. Nine actually held. You attended nine. Nine of nine held visits: every single one.",
+    "And yet a voice on a phone call said sixty-something. Twelve scheduled and nine attended is seventy-five percent, not sixty — so even counting the center's cancellations against you doesn't reach their number. Something else is in their denominator. You can guess at it. Guessing, as this series never tires of showing, is what you do instead of reading the file."
+   ],
+   "choices": [
+    {
+     "text": "Write the count down, dated, with the four numbers separated",
+     "next": "tally_night",
+     "addHidden": [
+      "Parent's tally — 12 scheduled, 3 cancelled by the center, 9 held, 9 attended"
+     ],
+     "note": "Four numbers, separated at last. Now: where did fifteen come from — because sixty percent of their count means their count isn't twelve."
+    }
+   ]
+  },
+  {
+   "id": "tally_night",
+   "kicker": "Day 43 — Tuesday, September 15, 2026",
+   "dayOffset": 43,
+   "title": "Nine of Nine",
+   "body": [
+    "Nine of nine. You sit with the fraction a while. It is, as a measure of a mother, perfect — and, as a document, worthless, because it is yours: your count, your table, your word. The report's number will arrive wearing the agency's letterhead, and letterhead is a kind of armour that kitchen-table arithmetic does not pierce by itself.",
+    "What pierces it is the agency's own paper, read closely: their attendance summary, their cancellation log, their denominator, in their hand. There is a way to ask for that paper. There has been, all along."
+   ],
+   "choices": [
+    {
+     "text": "Ask your lawyer how to get the center's own numbers — before the review does its arithmetic without you",
+     "next": "records_beat",
+     "note": "‘Their number, their paper.’ Your lawyer is already nodding. This is her favourite kind of fight: one where the other side has already written everything down."
+    }
+   ]
+  },
+  {
+   "id": "records_beat",
+   "kicker": "Day 44 — Wednesday, September 16, 2026",
+   "dayOffset": 44,
+   "title": "Their Number, Their Paper",
+   "body": [
+    "Your lawyer — counsel is your right in this case, as the law provides (42 Pa.C.S. § 6337) — lays it out in one breath: ‘You may request the case record, and the regulation says it “shall be released upon request” (55 Pa. Code § 3130.44(d)). We ask for the attendance summary and the center's scheduling log. Their percentage was computed from something. We are going to read the something.’",
+    "The request is one page. It asks for the paper behind a number that has already been said out loud about you on a phone call — which makes it, in the quiet taxonomy of this system, not early and not late, but exactly on time."
+   ],
+   "choices": [
+    {
+     "text": "Sign and send the written request — attendance summary and scheduling log, in writing",
+     "next": "packet_arrives",
+     "cash": -4,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "note": "Signed, dated, copied. The denominator is about to have an author you can quote."
+    },
+    {
+     "text": "Skip it — your own count is right, and the review will listen to reason",
+     "next": "no_packet63",
+     "note": "Your count is right. Reviews, as a species, listen to records. Reason is admitted only when it arrives as an attachment."
+    }
+   ]
+  },
+  {
+   "id": "packet_arrives",
+   "kicker": "Day 50 — Tuesday, September 22, 2026",
+   "dayOffset": 50,
+   "title": "Fifteen",
+   "body": [
+    "The packet arrives, and there it is, in the center's own summary: ‘Family attended 9 of 15 scheduled visits (60%).’ Fifteen. Your count said twelve — and the scheduling log, read line by line with your lawyer, explains the extra three: make-up slots the center logged as ‘scheduled’ after each cancellation, on dates it never gave you, at times it never sent. You were marked absent from visits you were never told existed.",
+    "And the three real cancellations? In the summary's arithmetic they sit in your column as visits not attended — the center's staffing folded, silently, into the family's percentage. Nine of nine held visits became sixty percent of fifteen scheduled ones. Every step of that transformation is on paper. Their paper. That is what makes it answerable."
+   ],
+   "choices": [
+    {
+     "text": "Ask your lawyer what the corrected table needs — line by line, from their own log",
+     "next": "prep_beat",
+     "addHidden": [
+      "Attendance summary — 15 'scheduled,' 9 attended (60%); provider cancellations and unannounced make-up slots folded into the parent's percentage"
+     ],
+     "note": "Their number, their paper, their log. The correction will not need a single fact from outside their own file."
+    }
+   ]
+  },
+  {
+   "id": "no_packet63",
+   "kicker": "Day 50 — Tuesday, September 22, 2026",
+   "dayOffset": 50,
+   "title": "Your Count Against Their Letterhead",
+   "body": [
+    "Without the packet, your preparation is your kitchen-table count and whatever written trail the summer left: confirmations, if you made them in writing; cancellation replies, if you answered in writing. True numbers, honestly kept — and authored by the one person the review is already inclined to treat as an interested party: you.",
+    "Your lawyer is blunt about the physics. ‘If their summary says sixty percent and your page says nine of nine, the room believes the summary until your page is made of their paper. We go in with what we have. It is less than we could have had.’"
+   ],
+   "choices": [
+    {
+     "text": "Prepare anyway — build the best table your own records allow",
+     "next": "prep_beat",
+     "note": "A table built from your own trail is still a table. Whether it can move their number depends on how much of the trail is in writing."
+    }
+   ]
+  },
+  {
+   "id": "prep_beat",
+   "kicker": "Day 53 — Friday, September 25, 2026",
+   "dayOffset": 53,
+   "title": "The Corrected Table",
+   "body": [
+    "The last week before the review offers the scenario's final fork, and it is pure paperwork. The corrected table exists to be built: four columns — scheduled, cancelled by the center, actually held, attended — every row dated, the confirmations and cancellation replies attached, the center's own log lines quoted where you have them. Attached, it goes into the review packet, where percentages are read.",
+    "Or you can go in with the story: three cancellations, a bus ride, a promise made three times. The story is true, and moving, and takes four minutes to tell, in a hearing that runs on attachments."
+   ],
+   "choices": [
+    {
+     "text": "Build the corrected table with your lawyer and attach it to the review packet",
+     "next": "table_built",
+     "cash": -5,
+     "setFlags": [
+      "mathAttached"
+     ],
+     "addHidden": [
+      "Corrected attendance table — 12 scheduled, 3 cancelled by the center, 9 held, 9 attended; confirmations and replies attached"
+     ],
+     "note": "Four columns, twelve rows, every number sourced. Arithmetic, dressed for court."
+    },
+    {
+     "text": "Go in with the story — tell it clearly, in order, and trust the room",
+     "next": "story_ready",
+     "note": "The room may well believe you. Believing and correcting a written finding are, as ever, two different procedures."
+    }
+   ]
+  },
+  {
+   "id": "table_built",
+   "kicker": "Day 54 — Saturday, September 26, 2026",
+   "dayOffset": 54,
+   "title": "Four Columns",
+   "body": [
+    "The table is one page and it is beautiful in the way only arithmetic can be: twelve scheduled visits, each with its date; three cancelled by the center, each with the date of your same-day written answer; nine held; nine attended. At the bottom, your lawyer adds the center's own figure, quoted from its summary, and the three logged make-up slots nobody was ever told about — the whole transformation, visible at a glance.",
+    "Sixty percent, it turns out, was never a measure of you. It was a measure of a denominator. Denominators can be corrected. That is what the review is for — when someone brings the correction in writing."
+   ],
+   "choices": [
+    {
+     "text": "File it with the review packet — and go to the last visits before the hearing",
+     "next": "review_notice",
+     "note": "Filed, copied, attached. The number going into the review now has competition."
+    }
+   ]
+  },
+  {
+   "id": "story_ready",
+   "kicker": "Day 54 — Saturday, September 26, 2026",
+   "dayOffset": 54,
+   "title": "The Story, Rehearsed",
+   "body": [
+    "Your lawyer rehearses you until the story is tight: the three phone calls, the three promises, the bus. It is true in every particular and it will be believed, probably, in the way stories are believed in rooms that run on exhibits — warmly, personally, and without the percentage moving, because a percentage is a document and can only be corrected by another document.",
+    "‘Tell it well,’ she says. ‘Then watch what the finding says. Findings quote paper. If the finding moves at all, it will move toward the make-ups — those, a room can grant on a story. The number needs the table.’"
+   ],
+   "choices": [
+    {
+     "text": "Go to the review with the story — and ask, at minimum, for the make-ups to be ordered",
+     "next": "review_notice",
+     "note": "A true story, well told. In this system, that buys more than nothing and less than arithmetic."
+    }
+   ]
+  },
+  {
+   "id": "review_notice",
+   "kicker": "Day 57 — Tuesday, September 29, 2026",
+   "dayOffset": 57,
+   "title": "Sixty Percent, in Print",
+   "body": [
+    "The review report arrives ahead of the hearing, and there, in the attendance paragraph, the summer has been summarized in one line: ‘Family attended 60% of scheduled visits.’ Tuesday, September 29, 2026's report was written from the center's summary, the way reports are — which is to say, the number has now been quoted into a second document, and quotations, as this series keeps showing, are how numbers harden.",
+    "Whether it hardens further — into the plan's findings, where it will shape what the autumn asks of you — depends on what is lying on the table next to it when the room convenes: a corrected table, a set of dated replies, a story, or nothing."
+   ],
+   "choices": [
+    {
+     "text": "Go to the last visits, and then to the review",
+     "next": "last_visits",
+     "note": "The line is printed. Printed lines can still be corrected — by better-printed lines, attached in time."
+    }
+   ]
+  },
+  {
+   "id": "last_visits",
+   "kicker": "Day 58 — Wednesday, September 30, 2026",
+   "dayOffset": 58,
+   "title": "Panel Ten",
+   "body": [
+    "The visits before the review are held, both of them, and attended, both of them — the streak that the report's percentage somehow describes as sixty. Felix presents panel ten of the drawing series: the review building, as imagined by an eight-year-old, with many windows and, in the largest one, a table with four columns. He has been listening more carefully than anyone knew.",
+    "‘That's the counting room,’ he says. He is not wrong. Tomorrow, the counting happens."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review",
+     "next": "review",
+     "note": "Nine of nine, and counting. What the room does with the count is the last scene of the summer."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 60 — Friday, October 2, 2026",
+   "dayOffset": 60,
+   "title": "The Review",
+   "body": [
+    "The review convenes. The report is presented; the attendance paragraph is read aloud in the level voice reserved for numbers: ‘Family attended 60% of scheduled visits.’ Nobody in the room experiences that sentence as an accusation. It is simply what the file says — which is exactly the problem your whole summer has been about.",
+    "Then it is your side's turn. Your lawyer looks at what the summer actually put on paper — the confirmations, the replies, the log, the table — and chooses her lead."
+   ],
+   "choices": [
+    {
+     "text": "Present the corrected table — confirmations, same-day cancellation replies, and the center's own summary and log attached",
+     "next": "end_corrected",
+     "requiresFlags": [
+      "confirmWritten",
+      "cancelTrail",
+      "recordsRequested",
+      "mathAttached"
+     ],
+     "note": "This lead exists only because every layer of it was built before today: written confirmations, written answers, the requested record, the attached arithmetic. The room is just where they are spent."
+    },
+    {
+     "text": "Present the cancellation replies and ask for the make-up visits to be ordered with dates",
+     "next": "end_makeups",
+     "requiresFlags": [
+      "cancelTrail"
+     ],
+     "note": "The replies prove the cancellations were the center's and that you asked, in writing, every time. A room can grant dates on that paper — even if it leaves the number alone."
+    },
+    {
+     "text": "Tell the story of the three cancellations and ask for the make-ups",
+     "next": "end_makeups",
+     "note": "True, in order, and believed in the way stories are believed. Make-ups live within a story's reach. Percentages don't."
+    },
+    {
+     "text": "Say the visits ‘mostly happened’ and move on to services",
+     "next": "end_poor",
+     "note": "‘Mostly happened’ is, not coincidentally, almost exactly what sixty percent says. The room nods, and the number keeps its coat."
+    }
+   ]
+  },
+  {
+   "id": "end_corrected",
+   "kicker": "Day 66 — Thursday, October 8, 2026",
+   "dayOffset": 66,
+   "title": "Ending — Sixty Percent, Corrected",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A denominator, taken apart on the record. The center's summary counted 15 ‘scheduled’ visits: your real 12, plus 3 make-up slots it logged but never gave you dates for — and it folded its own 3 staffing cancellations into your column as visits not attended. Against that, your attached table set the four true numbers side by side, every row sourced: 12 scheduled, 3 cancelled by the center, 9 held, 9 attended — nine of nine. The confirmations were the center's own replies; the cancellation answers were dated the days the calls came in; the log lines were quoted from the record you requested. At the review, the attendance finding was corrected on the record to the table's arithmetic, and the three lost visits were ordered made up, with dates this time. The plan's language going forward describes a parent who attended every visit that was held.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): The paper that decided this ending was obtained the way this series always obtains it: the case record — including the attendance summary and the scheduling log behind it — ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)), requested in writing by a party whose counsel (42 Pa.C.S. § 6337) then built the correction out of the agency's own lines. No new right was invented here; arithmetic is not a legal doctrine. Say plainly what was won: Felix is still placed, visits still run Tuesdays and Saturdays at the center, and no order today ends this case. What changed is the finding every future summary will quote — and the three make-up visits, ordered with dates, are real hours with your son that the old number would never have produced.",
+    "THE HONEST PART: A center with fuller staffing never cancels, and none of this is necessary; a different reviewer could have noted the table and kept the percentage anyway, on the theory that summaries are entitled to their conventions — some do. Ms. Kessler's memory, the agency's report habits, the reviewer, and luck all hold pieces of this outcome. This ending is not a verdict on you as a mother: you attended every held visit on every path through this scenario, including the worst one. What your choices changed is whether the file could prove it — whether ‘reliable,’ said kindly at a desk in August, would still exist in October, in the only form October reads. It did, because you wrote it down, three different ways, all summer."
+   ]
+  },
+  {
+   "id": "end_makeups",
+   "kicker": "Day 66 — Thursday, October 8, 2026",
+   "dayOffset": 66,
+   "title": "Ending — Make-Ups, Eventually",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A partial correction. The review credited what was in front of it — your dated cancellation answers, or your account, believed — enough to order the lost visits made up, this time with dates attached to the order. What it did not do is reopen the arithmetic: the ‘60%’ line stands in the findings, uncorrected, because the full correction needed the whole apparatus — written confirmations for every visit, the center's own summary and log obtained on request, and a corrected table attached to the packet — and some layer of that apparatus was missing. So the file now holds both: real make-up visits, ordered and dated, and a percentage that still describes a mother who missed visits she was never allowed to attend. Future summaries will quote the number, not the bus ride.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): The make-ups were won with the tools this path used — a written trail, presented by counsel (42 Pa.C.S. § 6337). The correction that didn't happen was available through the unused or unfinished ones: the record behind the percentage ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)), and a percentage, being a document, can only be corrected by another document — the four-column table, built from the provider's own log, attached before the hearing. Note the asymmetry this ending teaches, because it generalizes: remedies a room can grant out of fairness (dates for make-ups) move on stories and partial paper; findings, once written, move only on complete paper. You got the remedy. The finding kept the number.",
+    "THE HONEST PART: Do not let the standing percentage obscure the real hours: three visits, restored with dates, are three afternoons with Felix that September had simply deleted, and plenty of parents leave this room with neither the dates nor the correction. A different reviewer might have corrected the number on the partial trail, or refused the make-ups on the full one — reviewers differ, centers differ, and the same summer, faithfully kept, lands differently in different rooms. Your attendance was never the variable in this scenario; on every path you attended every held visit. The variable was the denominator's ownership. Next review, the table can still be built — the log still exists, and a request can still be sent. Paper keeps. That is its whole virtue."
+   ]
+  },
+  {
+   "id": "end_poor",
+   "kicker": "Day 66 — Thursday, October 8, 2026",
+   "dayOffset": 66,
+   "title": "Ending — Attendance: Poor",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): One number, hardened. ‘Family attended 60% of scheduled visits’ was read at the review, met by no table, no log, and no dated trail, and was adopted into the plan's findings in the natural way of unopposed sentences: by quotation. The findings do not say the center cancelled three visits for staffing. They do not say make-up slots were logged that you were never told about. They say a percentage, and the percentage now has an owner, grammatically and permanently: the family. Which is to say, you. The next summary will quote the findings, the way this one quoted the summary, the way the summary quoted a count nobody ever showed you.",
+    "THE LAW UNDER THIS PATH (kept to this scenario's verified set): Nothing in this ending was decided against you after a contest of records, because there was only one record in the room. The instruments all existed: confirmations and cancellation answers could have been made in writing, at no cost, the day each event happened; the attendance summary and scheduling log behind the percentage were yours on written request — they ‘shall be released upon request’ (55 Pa. Code § 3130.44(d)); and counsel (42 Pa.C.S. § 6337) was there to build the four-column table and attach it. All of that remains available for the next review — the log still exists, the request can still be sent, and a finding, however hardened, can still be answered by the paper it was computed from. It will simply have to be answered uphill, against a finding instead of a draft.",
+    "THE HONEST PART: Let this debrief be as fair as the finding wasn't: you attended every visit that was ever held — nine of nine, all summer, including the Saturday you rode a bus halfway across town to a cancellation. The center cancelled; the summary folded; the finding hardened. At no point did anyone in the chain need to intend any of it, which is precisely the system's most dangerous property: it can misdescribe a reliable parent as a poor attendee using nothing but phone calls, a busy desk, and arithmetic nobody checked. A fuller-staffed center, a supervisor who logged cancellations in the provider's own column, a reviewer who asked for the denominator — any of those lucks changes this ending without you changing at all. Outcomes here turn on staffing, habits, and luck. Your share, next time, is the unglamorous trio: confirm in writing, answer in writing, and bring the count — because in this system, attendance you cannot prove is attendance that, on paper, did not happen."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s63';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

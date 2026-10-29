@@ -1,0 +1,55 @@
+# Strategy Guide — Scenario 112: "The Empty Months"
+
+*Game documentation for a fictional simulation in "The First 90 Days" (Tactic Watch). The family, the case, and every choice below are fictional. This guide is general information about how the scenario is built — it is not legal advice for any real case.*
+
+## (1) The win
+
+**Best ending: "Ending — Payments Begin, and the File Tells the Truth (PARTIAL)".**
+
+State it honestly: this is a **PARTIAL** win, and the scenario labels it that way in its own debrief. The approval is completed on the record's own dates, payments begin, the review's findings attribute the caregiver's financial strain to the agency's processing lag rather than to Bernice, and the kinship placement is steadied on a truthful file. The drained savings are **not** restored — not in this ending, not in any ending in this scenario. A decade of overtime spent across the empty months stays spent. Anyone who calls this ending whole is selling something; it returns the future, not the winter.
+
+## (2) The route
+
+Verified by walking the scenario graph from the start node (see the verification note at the end). Key decision points, in order — node title, winning choice, and what it changes:
+
+1. **Two Children, One Kitchen Table** → **The Stamped Copies** → **In Process, Again** — the winter's baseline: a packet submitted the week the children arrived, stamped copies kept, and an agency answer — "in process" — that exists, so far, only in Bernice's call log.
+2. **The Grocery Math** — *Pay for the week's groceries and the shoes, and write the total in the log.* Cash −24. The log's money column begins: the record of the drawdown that a summary will later call strain.
+3. **Dena, on Sunday** → **The Letter That Says Nothing, in Writing** → **The Visit That Goes Fine** → **A Goodbye in the Hallway** — the in-process letter is filed behind the stamped copy (a timestamp with letterhead), the home visit goes fine, and the first worker leaves: whatever she knew in her head leaves with her head.
+4. **The New Worker Reads the Summary** → **Resubmit, or Show the Stamp** — *Lay the stamped copy on the table and ask that the original submission date be noted in the file.* Sets **submissionProven**. This is the reset beat, refused politely: a fresh packet would carry a fresh date and quietly rewrite when the empty months began.
+5. **What the File Now Knows** → **School Costs, Clinic Costs** — *Pay both, log both.* Cash −18. The household's arithmetic keeps arriving in installments, and the log keeps matching it.
+6. **The Balance, Looked At** — *Keep going — and fight the paperwork with what is left.* The alternative choice on this node (written notice that she cannot continue) is the road to **Ending — Notice Given: The Placement Disrupts**, and it is a true road: the notice is honest, and the placement ends anyway.
+7. **The Word in the Summary** → **What a Review Actually Decides** — the summary's sentence ("caregiver experiencing financial strain") is found, and Ms. Hart translates the review: a permanency hearing determines continuing necessity, compliance, progress, and reasonable efforts from evidence (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)).
+8. **Asking Dena** — *Ask Dena, at the kitchen table, to sign the record request this week.* Cash −4. Sets **recordsRequested**. The load-bearing signature of the scenario — and it cannot be Bernice's: under 55 Pa. Code § 3130.44(d) the record "shall be released upon request," and the right belongs to the case's subjects, not to a placement applicant. Dena, a party, signs at her mother's asking — the device this series first taught in Scenario 4, stated there and here in the same terms.
+9. **A Signature That Is Hers** → **Dena's Progress, in Careful Language** → **The Chronology Arrives — Or Doesn't** → **The Blank Line** — the requested chronology shows, in the agency's own hand, the packet received the week the children arrived, routed for signature, and then nothing: no signature entry, no approval entry, no payment entry, and a signature page whose line sits blank.
+10. **Your Side of the Ledger** → **The Assembly, Step by Step** — the bank book beside the chronology: their silence, her spending, one story in two columns. Counsel for Dena (42 Pa.C.S. § 6337) lays out the assembly.
+11. **One Page, Dates Only** — *Build it — one page, dates only, every line checkable.* Cash −6. Sets **chronologyBuilt**. Eleven dates that answer five words.
+12. **Eleven Dates** → **The Payments Office** — *Ask for the printed status page, dated, with the received date on it.* Cash −4. Sets **unsignedConfirmed**: "awaiting signature," confirmed by the office that owns the line.
+13. **The Review Notice** → **Filed Ahead, or Carried In** — *File the chronology and exhibits with the agency and the court, in writing, before the review.* Cash −6. Sets **paperOnRecord**. Filed ahead, the review is the page's second reading, not its first.
+14. **Preparing Without Rehearsing** → **The Week the Case Waits** → **What Mireya Asks at Bedtime** — the placement whose stability is about to be questioned, documented in its own ordinary week.
+15. **The Form Learns a Word** → **The New Worker's Second Reading** — a scored assessment form has absorbed the summary's sentence without its cause; the new worker, having now read the filed chronology, says the smaller truer thing: the review will have both halves.
+16. **The Night Before the Review** → **Courthouse Steps** → **The Review** — *Put the full paper on the record — the stamped copy, the eleven dates, the blank signature line.* This choice is flag-gated: it is only available with **recordsRequested** + **chronologyBuilt** + **paperOnRecord** all set. It leads to **Ending — Payments Begin, and the File Tells the Truth (PARTIAL)**.
+
+## (3) Why this wins — the law as it is supposed to work
+
+Only principles from the scenario's verified set are stated here:
+
+- **The case record is obtainable on a party's written request** — 55 Pa. Code § 3130.44(d) ("shall be released upon request"). Step 8 is that right, exercised by the person who holds it: the regulation's right belongs to the case's subjects, not to a placement applicant, which is why the signature that unlocks the agency's chronology is Dena's, signed at her mother's asking. Bernice's own ask, however reasonable, would not be the regulation's ask.
+- **A permanency review decides from evidence.** The court determines the continuing necessity of placement, compliance with the plan, progress, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)), at a hearing held within six months of placement (42 Pa.C.S. § 6351(e)(3)(i)). A summary's adjective is none of those determinations; a chronology with exhibits is the material determinations are made from. The win is the court being handed a cause it could weigh.
+- **Counsel** (42 Pa.C.S. § 6337) is Dena's, as a party — used here for its least dramatic function: assembling a grandmother's kitchen-table folder into exhibits a review can act on.
+- **No payment rule is stated as law anywhere in this scenario**, deliberately: the letter and the status printout state their own contents on their face, and the story turns on dates, a signature that never happened, and paper — never on a claimed entitlement to an amount or a deadline.
+
+## (4) The traps
+
+1. **Resubmitting a fresh packet at "Resubmit, or Show the Stamp"** (no **submissionProven**). The clean start cleans the start date out of the file: October becomes this week, the empty months lose their beginning, and a gap with no start is attributable to no one — which, in a file, means attributable to the caregiver.
+2. **Sparing Dena at "Asking Dena"** (no **recordsRequested**). A kindness with a price: the agency's chronology — the half with the blank signature line in it — stays unread, and Bernice builds from her folder alone. The gated choice at "The Review" never opens.
+3. **Carrying the documents loose at "One Page, Dates Only"** (no **chronologyBuilt**). The exhibits are real either way; only the assembled page is readable in a twenty-minute hearing. Folders do not speak. Pages assembled from them do.
+4. **Carrying the folder in at "Filed Ahead, or Carried In"** (no **paperOnRecord**). The judge meets eleven dates for the first time while the summary's sentence sits already read and underlined. The remaining ungated road at the review is the hallway offer — **Ending — Paid, With the Note Still Standing**: the money arrives and the misdescription keeps its forwarding address.
+5. **Answering orally at "The Review"** (available only when nothing was filed ahead). Every word is true, and the order still adopts the summary: strain entered as instability, with services ordered around the wrong diagnosis — **Ending — Strain, Entered as Instability**.
+6. **Giving notice at "The Balance, Looked At."** The most honest trap in the scenario, because the notice is true: the savings really were gone. Truth without the chronology behind it reads as a capacity finding, and the placement disrupts — **Ending — Notice Given: The Placement Disrupts**.
+
+## (5) What no strategy controls
+
+The approver whose desk the packet sat on. The first worker's departure and the second worker's summary. Whether a payments clerk turns her screen or prints the page. A judge who might have noted the chronology and pressed the stability question anyway. The route controls only this: whether, when the system finally weighed Bernice's winter, it weighed a calendar she had kept since October — stamped, logged, assembled, filed — instead of a sentence it had written about her in her absence. Outcomes in this system turn on workers, judges, clerks, and luck as much as on any caregiver's choices — and never on whether two children were fed, which they were, every day, out of their grandmother's old age.
+
+---
+*Verification: this route was walked programmatically against `scenario-112.json` — each named choice was followed from the start node in order; every intermediate node and choice exists; every flag-gated choice's requirements (recordsRequested + chronologyBuilt + paperOnRecord at the review) were satisfied by flags set earlier on the walk; the walk terminates at the ending node titled "Ending — Payments Begin, and the File Tells the Truth (PARTIAL)" after visiting 36 nodes, with $108 of the $170 starting cash remaining. Walked path: start -> folder_copies -> payment_call1 -> grocery_math -> dena_sunday -> letter_in_process -> home_visit -> worker_goodbye -> new_worker -> resubmit_beat -> resubmit_after -> school_costs -> savings_low -> strain_note -> advocate_beat -> dena_ask -> dena_after -> dena_progress -> record_arrives -> signature_page -> bank_book -> counsel_meet112 -> chronology_build -> chronology_after -> payment_office -> review_notice -> paper_filed -> review_prep -> household_week -> bedtime_beat112 -> strain_deepens -> worker_ack -> review_eve -> morning_review -> review_hearing -> end_win.*

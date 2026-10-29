@@ -1,0 +1,367 @@
+# THE FIRST 90 DAYS — Scenario 43: “Two Reports, One Week”
+
+*Human-readable script. This document and `scenario-43.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts two reports investigated in the same week — two workers, two files, meetings, and paperwork. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier.
+
+Start date: Monday, March 9, 2026. Day offsets are days since the scenario's start date.
+
+## [start] Monday's Card
+*Day 0 — Monday, March 9, 2026 (dayOffset 0)*
+
+The card is in the door when Latoya Freeman gets home at 5:40, same as every weekday: Ms. Stoll, county agency, please call. Odell, eleven, is at the kitchen table with his math. Brianna, eight, is explaining a drawing to the refrigerator. Both of them have been home since 3:50 — on a Monday, from aftercare, which lets out at five and walks them the four minutes to the building in a licensed, fluorescent crocodile.
+
+The report, when Latoya reaches Ms. Stoll, is about evenings: a neighbor — the building knows which neighbor; the fence between their patios has been a diplomatic incident since August — reports the children are 'home alone every evening.'
+
+Every evening. The aftercare crocodile disagrees. But the report is not about the truth yet. It is about a file, and the file has just been opened.
+
+**Choices:**
+- Write down the call — her name, the report's words, the word 'every' — before dinner → **c2**  _(FLAG: callLogged)_
+  - NOTE (shown after choosing): 'Every evening' is a claim with a shape. Shapes can be answered. The aftercare receipts answer this one — if they are ever filed where the claim lives.
+- Call the neighbor instead and have it out about the fence → **c2**
+  - NOTE (shown after choosing): The fence is not the case. The case is a sentence in a file, and sentences are not corrected by shouting over patios.
+
+## [c2] Thursday's Call
+*Day 1 — Tuesday, March 10, 2026 (dayOffset 1)*
+
+Thursday brings the second one, and it is worse because it is partly true. The school counselor, Ms. Beaumont, calls with care in her voice: Odell, asked about his afternoons, told her 'we stay by ourselves till Mom gets home.' A report has been made. A worker — Mr. Ibarra, a different worker — will be in touch.
+
+Odell's sentence is a child's compression of a true thing: on Wednesdays, aftercare closes early, and the children let themselves in at 3:50, and Aunt Yvette — across the hall, retired, home by four — checks in, and Latoya is home at 5:40. Four days a week it's false. One day a week it's a schedule with a ten-minute seam.
+
+Two reports. Two workers. Two files. The system's next move, if nobody organizes it, is to put them in one folder and read them as one story — and the merged story is uglier than either of its parents.
+
+**Choices:**
+- Note the second report in its own column: different claim, different worker, different file → **d2**  _(FLAG: filesSeparated)_
+  - NOTE (shown after choosing): Two columns on one page. It looks like bookkeeping. It is, in fact, the strategy, visible from space: these files must never be allowed to become each other.
+- Feel the week tilt and call your sister to vent → **d2**
+  - NOTE (shown after choosing): Venting is human. Columns are useful. The week will reward the useful one.
+
+## [d2] Two Case Numbers
+*Day 2 — Wednesday, March 11, 2026 (dayOffset 2)*
+
+Two case numbers arrive in two envelopes. Case officers who say 'the case' are already merging. Latoya writes the numbers on the folder in two colors — a small, stubborn act of administration that will matter more than any speech she gives this month.
+
+Each file will hold an intake summary: the reporter's claims, compressed. Each summary will exaggerate in its own direction. Answering them well means answering them separately — File One's claims with File One's documents, File Two's with File Two's — because a combined answer invites a combined file, and a combined file is a story about a pattern.
+
+Patterns are how two exaggerations corroborate each other. Separation is how they get examined one at a time.
+
+**Choices:**
+- Request both intake summaries, in writing, one request per file → **records**  _(FLAG: recordsRequested ; HIDDEN + Records — parent requested each investigation's intake summary separately, in writing)_
+  - NOTE (shown after choosing): Under 55 Pa. Code § 3130.44(d), the record is released on request — per file. Two envelopes will come back. Reading them side by side is the moment the strategy becomes obvious.
+- Request 'the file' — singular — and save the stationery → **records**
+  - NOTE (shown after choosing): The agency's mailroom will do what the request does: merge. You will receive one packet, and the merging will have begun with your own envelope.
+
+## [records] Two Summaries
+*Day 3 — Thursday, March 12, 2026 (dayOffset 3)*
+
+The summaries arrive the same day, in the two colors' worth of trouble. File One: 'Children, 11 and 8, unsupervised in home every evening; parent works; neighbor reports ongoing pattern.' File Two: 'Child states he and sibling are alone after school daily until parent returns; no adult supervision identified.'
+
+Read separately, each is answerable: 'every evening' dies on aftercare receipts; 'daily' dies on the aftercare enrollment Odell forgot he attends. Read together — as a supervisor will, if the files merge — they describe a home where two children are always alone, attested by a neighbor and a child. Corroboration is just two exaggerations shaking hands.
+
+On Wednesday, meanwhile, the real afternoon runs its small seam: bus at 3:50, Yvette at 4:00, Latoya at 5:40. The seam is the only true thing in either file, and neither file contains it.
+
+**Choices:**
+- Mark each summary's claims in its own color — every, daily, ongoing — claim by claim → **n2b**  _(FLAG: claimsMarked)_
+  - NOTE (shown after choosing): Adverbs and absolutes are where summaries exaggerate. Marked, they become a checklist: each absolute gets its document, per file, in order.
+- Read them once, feel sick, and put them in the drawer → **n2b**
+  - NOTE (shown after choosing): The drawer is where marked claims go to become unmarked time.
+
+## [n2b] Odell's Sentence
+*Day 4 — Friday, March 13, 2026 (dayOffset 4)*
+
+Odell, asked gently at dinner, reconstructs his counselor conversation with a child's fidelity: 'She asked what I do after school. I said we stay by ourselves till you get home. I meant Wednesdays. She didn't ask about aftercare. I didn't say about aftercare because she didn't ask.'
+
+Eleven-year-olds answer the question asked. Files answer the summary written. Between Ms. Beaumont's question and Mr. Ibarra's summary, aftercare — four days a week of licensed, receipted supervision — fell out of the story because a child didn't volunteer it and a summary didn't miss it.
+
+Latoya writes Odell's account down that night, in his words, dated. It is File Two's first true document, and it cost one dinner conversation.
+
+**Choices:**
+- Write Odell's account tonight, in his words, with the date — for File Two → **prep**  _(FLAG: andreAccount ; HIDDEN + Record — parent wrote the child's account of the school conversation the same week, in his words)_
+  - NOTE (shown after choosing): His words explain the sentence's birth: a true Wednesday, asked about generally, answered generally, summarized absolutely. Files understand genealogies when they're written down.
+- Coach Odell on what to say next time he's asked → **prep**
+  - NOTE (shown after choosing): Children coached are children discounted — workers can tell, and files note it. His uncoached account, written down, is worth more than any rehearsed correction.
+
+## [prep] Two Packets
+*Day 5 — Saturday, March 14, 2026 (dayOffset 5)*
+
+The documents assemble into two piles, and the piles are the strategy made physical. File One's packet: aftercare enrollment and receipts (four days a week, since September), Latoya's work schedule, Yvette's statement about Wednesdays. File Two's packet: the aftercare attendance log (showing Odell, present, four days a week), Odell's account, the counselor's own sign-out sheet.
+
+Or: one combined summary — a single letter telling the whole story of the week, both reports answered between the same covers, mailed to whichever worker asks first. It reads better. It also teaches each file the other file's contents.
+
+Paper teaches whatever it touches. The question is what each file should learn.
+
+**Choices:**
+- Build two packets — one per file, each answering only its own claims → **eve**  _(FLAG: twoPackets ; HIDDEN + Documentation — parent prepared a separate evidence packet for each investigation)_
+  - NOTE (shown after choosing): Two envelopes, two colors, no cross-references. Each file will meet a complete answer to itself — and never meet the other file at all.
+- Build one combined letter — clearer, warmer, everything in one place → **eve**  _(FLAG: onePacket)_
+  - NOTE (shown after choosing): It is clearer. It is warmer. It will be photocopied into both files, where its whole-week narrative becomes the merged record both workers were about to build anyway.
+
+## [eve] Two Envelopes
+*Day 6 — Sunday, March 15, 2026 (dayOffset 6)*
+
+The night before the meetings, the folder holds its two colors. Ms. Stoll meets her Tuesday about File One. Mr. Ibarra meets her Thursday about File Two. Two meetings, two workers, two chances to keep the week from becoming a pattern.
+
+Latoya rehearses the discipline to herself in the kitchen: File One's meeting is about evenings and a fence. File Two's meeting is about a sentence an eleven-year-old said. Neither meeting is about the other file. If a worker asks about the other report, the answer is a sentence long and boring: 'That's the other file — I've answered it in that file, in writing.'
+
+Boring, repeated, and watertight — if the packets exist to make it true.
+
+**Choices:**
+- Seal both envelopes tonight; the meetings are deliveries now → **gate**
+  - NOTE (shown after choosing): Deliveries don't improvise. Whatever each meeting holds, it will be met with its own file's paper — and nothing else's.
+- Keep the packets open — a detail may need adding at the last minute → **gate**
+  - NOTE (shown after choosing): Open packets invite merging at the kitchen table, the night before, by their own author. Seal them.
+
+## [gate] The First Meeting
+*Day 7 — Monday, March 16, 2026 (dayOffset 7)*
+
+Ms. Stoll's office, Tuesday. File One is between them, and Stoll — who has a fence dispute of her own at home, though Latoya will never know it — reads the neighbor's claim the way professionals read neighbors: with attention to the word 'every,' which reporters use and files should not.
+
+Latoya's answer to File One is due in this room, in some form. What form is the decision the week built toward: this file's packet, the combined letter that answers both reports at once, or her voice, warm and thorough and unrecorded.
+
+Choose the form. The files are watching — both of them, including the one that isn't in the room.
+
+**Choices:**
+- Deliver File One's packet: aftercare receipts, work schedule, Yvette's Wednesday statement — this file only → **w1**  _(REQUIRES FLAG: twoPackets)_
+  - NOTE (shown after choosing): Stoll works down it like a checklist being disarmed: every — receipts. Evenings — schedule. Ongoing — September's enrollment. The file's claims die in the order they were written, killed by their own file's documents.
+- Deliver the combined letter — the whole week, answered at once, for whichever file needs it → **m1**  _(REQUIRES FLAG: onePacket)_
+  - NOTE (shown after choosing): Stoll reads it fully and thanks her — and asks, reasonably, whether Mr. Ibarra has a copy. By Friday, both files will. The merger will be Latoya's own stationery's work.
+- Answer warmly and completely out loud — the receipts exist, and you'll send them if needed → **h1**  _(HIDDEN + Response — parent answered the first report verbally; documents mentioned but not filed)_
+  - NOTE (shown after choosing): Stoll writes for a long time. What she writes is a summary of a voice describing receipts. File One now contains a description of evidence. File Two contains a child saying 'daily.' Across town, the two descriptions are about to meet.
+
+## [w1] The Fence
+*Day 9 — Wednesday, March 18, 2026 (dayOffset 9)*
+
+Before File One closes, Stoll does a thing thorough workers do: she notes the fence. Not as an accusation — as context, typed where context lives: 'Reporting neighbor is party to an ongoing property dispute with the family; reports of 'every evening' not corroborated by aftercare records.'
+
+It is the sound of a file being read by its own documents. The neighbor's motive doesn't make the report false; the receipts make 'every' false. Stoll's note records both, in the right order, which is the order Latoya's packet arranged.
+
+File One will close as unfounded. One color is off the folder. Thursday remains — File Two, Mr. Ibarra, and an eleven-year-old's sentence.
+
+**Choices:**
+- Ask for File One's closure in writing, with the summary corrected as documented → **w1b**  _(FLAG: closureInWriting)_
+  - NOTE (shown after choosing): It will come. A closed file, in writing, with its exaggerations corrected on the record, is not just an ending — it's a wall the other file can't lean on.
+- Thank her and turn to Thursday → **w1b**
+  - NOTE (shown after choosing): Thursday is where the week was always going to be decided. File One's shadow is shorter than it was. It is not gone from the building.
+
+## [w1b] One Color Down
+*Day 10 — Thursday, March 19, 2026 (dayOffset 10)*
+
+The interval between the meetings is two days, and Latoya spends them the way the strategy demands: not celebrating File One, but preparing File Two as if File One had never existed. Ibarra has not seen Stoll's file. He has seen one summary: a child, saying 'daily,' with no adult identified.
+
+His file's weakness is also its danger: a child's own words are the hardest claims to answer, because they arrive pre-believed. The answer cannot be 'Odell lied' — Odell didn't. The answer is genealogy: how the sentence was born, and what it left out, documented by the school's own paper.
+
+Thursday, she carries one envelope. In it: the attendance log, the sign-out sheet, Odell's account. File Two's whole world, answering File Two.
+
+**Choices:**
+- Re-read File Two's packet Wednesday night, claim by claim, against the summary → **w2**
+  - NOTE (shown after choosing): Daily — the log. No adult identified — Yvette's line in File One... no: Yvette belongs to both afternoons, and her Wednesday statement is in this packet too, addressed to this file. Each packet complete. Each file alone.
+- Trust Tuesday's momentum — the truth is clearly winning this week → **w2**
+  - NOTE (shown after choosing): Momentum is not a filing system. Ibarra's file has never met the truth, and it will not meet Tuesday's.
+
+## [w2] The Counselor's Log
+*Day 12 — Saturday, March 21, 2026 (dayOffset 12)*
+
+Ibarra's meeting is quieter and more careful. He lays out File Two like a man who knows its weakness: 'Your son said it himself.' Latoya's packet answers in the school's own handwriting: the aftercare attendance log — Odell Freeman, present Monday, Tuesday, Thursday, Friday, week after week — and the counselor's sign-out sheet for the conversation, timed at six minutes, one question about afternoons, asked generally and answered, by an eleven-year-old, generally.
+
+And Odell's account, in his words: 'I meant Wednesdays. She didn't ask about aftercare.' Ibarra reads it twice. 'He's right,' he says, finally. 'She didn't.'
+
+The sentence that opened File Two is still true — about Wednesdays, between 3:50 and 4:00, with an aunt across the hall. As a claim about 'daily,' it is dead, killed by a log the school itself kept.
+
+**Choices:**
+- Ask what File Two's file will say about Wednesdays — the seam deserves its own accurate line → **w2b**
+  - NOTE (shown after choosing): The line he drafts: 'Wednesdays: children alone approx. 10 minutes; aunt across hall checks in from 4:00; parent home 5:40.' Accurate, bounded, boring. Boring is what true files look like.
+- Ask whether File One's closure helps here → **w2b**
+  - NOTE (shown after choosing): 'Different file,' he says, not unkindly — and Latoya feels the strategy's whole architecture in the answer: separation cuts both ways, and both ways are protection.
+
+## [w2b] The Seam, Described Accurately
+*Day 13 — Sunday, March 22, 2026 (dayOffset 13)*
+
+What remains is the seam itself: ten minutes, Wednesdays, two children and a door. Ibarra's options, as he lays them out, are the system's honest menu: close File Two as unfounded, with the Wednesday arrangement documented as adequate — or attach a voluntary thread, a note that the family will adjust Wednesday coverage and the file will check in once, in sixty days.
+
+Latoya chooses the document over the thread: Yvette, in writing, already covers 4:00; the ten minutes get a name and a log line instead of a service. Ibarra writes it up as closure language, and — because this file has taught him its reader is attentive — turns the draft around.
+
+Two summaries are being readied across town, in two files. Both are nearly right. Nearly is the natural habitat of the last error.
+
+**Choices:**
+- Read his draft at the table, line by line, before it is filed → **w3**  _(FLAG: draftRead)_
+  - NOTE (shown after choosing): One phrase: 'children unsupervised Wednesdays until 5:40' — the aunt, compressed out by a preposition. He corrects it at the table: 'aunt across hall from 4:00.' Files accept corrections most cheaply before they're filed, at tables, from readers.
+- Trust the drafts — both workers have been fair → **w3**
+  - NOTE (shown after choosing): They have, remarkably. Fairness drafts; accuracy files. The gap between them is one preposition wide.
+
+## [w3] Two Letters
+*Day 15 — Tuesday, March 24, 2026 (dayOffset 15)*
+
+The closing letters arrive two days apart, in two envelopes, like everything else this month. File One: unfounded, the neighbor's claim uncorroborated, the fence noted. File Two: unfounded, the child's statement contextualized by the school's own records, the Wednesday arrangement documented.
+
+Each letter has an acknowledgment line. Each letter summarizes its case in one paragraph — summaries again, the system's native compression, waiting for a reader or a signature.
+
+Latoya's folder holds both colors now, closed. The last discipline of the strategy is the oldest one in this game: read what you sign, even — especially — the victories.
+
+**Choices:**
+- Read both letters fully; sign; file each in its own color, with its own packet → **end_good**  _(FLAG: readBeforeSigning)_
+  - NOTE (shown after choosing): Both paragraphs are clean — she checks File Two's twice for the preposition, and finds the aunt standing in it, from 4:00, where the correction put her. The week ends as it was fought: separately, accurately, in writing.
+- Sign both at the door — the week is over and both files closed → **end_partial**
+  - NOTE (shown after choosing): File Two's summary paragraph, unsigned-for and unread, describes the Wednesday arrangement as 'children alone Wednesdays' — the aunt, gone again, in the one paragraph future readers will actually read. The full file knows better, one page deeper. Summaries are forever; corrections are footnotes.
+
+## [end_good] Two Files, Both Closed
+*Day 18 — Friday, March 27, 2026 (dayOffset 18)*
+
+**DEBRIEF:**
+
+Both investigations closed as unfounded — each on its own record, each answered with its own documents: aftercare receipts against 'every evening,' the school's own attendance log against 'daily.' The reports never merged, so they never corroborated each other, so each exaggeration died alone in its own file. WIN: separation was the strategy, and it worked because it was maintained at every step — two requests, two packets, two meetings, two letters, read.
+
+The record inside this story: under 55 Pa. Code § 3130.44(d), each file's intake summary came from her record, on request — requested separately, which is how Latoya knew each file's exact claims and could answer claims instead of atmosphere. Odell's own account, written in his words the week he said them, did the delicate work: it explained a child's sentence without ever calling it false.
+
+Notice what 'daily' and 'every' have in common: absolutes are where summaries exaggerate, and absolutes are what documents kill. A receipt doesn't argue. It just has a date on it, in the right file.
+
+Honesty requires this: two fair workers read two good packets; a different pair merges the files by default and dares the parent to unmerge them. Workers vary. What doesn't: a combined answer would have merged them by the parent's own hand, and a verbal one would have left two summaries free to meet. The packets were the strategy. The strategy was envelopes.
+
+## [m1] Copied to Both Files
+*Day 9 — Wednesday, March 18, 2026 (dayOffset 9)*
+
+The combined letter is a good letter — clear, complete, warm with documentation. Ms. Stoll thanks Latoya for it, files it in File One, and sends a copy to Mr. Ibarra, because coordination is what offices call sharing. By Friday, the letter lives in both files, and a thing Latoya built to answer two reports has become the bridge between them.
+
+Read in File One, the letter's Wednesday paragraph — the seam, honestly described — now sits beside the neighbor's 'every evening' as apparent corroboration of a pattern. Read in File Two, the aftercare receipts sit beside Odell's 'daily' the same way. The letter told the truth. It told all of it, in both places, which is how truth becomes a narrative neither file contained alone.
+
+Stoll closes File One anyway — receipts are receipts. But she closes it with a sentence the separated strategy would never have produced: 'See also File Two; pattern addressed in services referral.'
+
+**Choices:**
+- Ask what 'services referral' means, precisely, before anything else happens → **m2**
+  - NOTE (shown after choosing): It means File Two is about to be offered a solution to a story File Two only believes because File One's contents are now inside it. Precision, at this point, is damage control.
+- Accept File One's closure as the week's win and move on → **m2**
+  - NOTE (shown after choosing): Half a win, banked. The referral is already in an envelope of its own.
+
+## [m2] What Voluntary Means
+*Day 12 — Saturday, March 21, 2026 (dayOffset 12)*
+
+Ibarra lays out the offer plainly, because he is a plain dealer: voluntary family services, ninety days — an after-school program placement for Wednesdays (which Yvette already covers), a monthly check-in, a parenting resource packet. 'Voluntary' means Latoya can decline. Declining, he notes without threat, means the file closes on its summary — 'daily,' uncorrected — because the full correction only happens inside a services file's paperwork.
+
+It is a genuinely kind offer and a genuinely bad bargain: ninety days of programming to correct a sentence. The sentence, meanwhile, remains available for correction the separated way — packet, per file — but the moment for cheap correction was Tuesday, and it has been spent on a bridge.
+
+The services plan is one page. It has a signature line. Everything in this story has a signature line.
+
+**Choices:**
+- Read the plan fully — every line — before deciding anything → **m2b**  _(FLAG: planRead)_
+  - NOTE (shown after choosing): The plan is narrow: Wednesdays' program, one check-in a month, ninety days, ends automatically. Narrow is negotiable. Unread is forever.
+- Decline on principle — the reports were exaggerations, not a service need → **m2b**
+  - NOTE (shown after choosing): Principle is noted in the file as 'mother declined services,' a sentence future readers will weigh without the principle attached.
+
+## [m2b] Ninety Days
+*Day 13 — Sunday, March 22, 2026 (dayOffset 13)*
+
+Latoya signs the narrow version — Wednesdays only, ninety days, one check-in monthly — because the alternative leaves 'daily' standing in a file that will outlive her indignation, and because the Wednesday program, whatever else it is, is free and Odell likes the look of its gym.
+
+What she does not do is leave the merged file's story uncorrected. Inside the services file's own paperwork — the one place the system now guarantees her documents will be read — she files File Two's true packet: the attendance log, Odell's account, Yvette's statement, addressed to File Two's claims, in File Two's color.
+
+Late separation is weaker than early separation. It is what remains, and she does it properly, in writing, where the readers now are.
+
+**Choices:**
+- File the per-file packet inside the services paperwork, with a cover line asking for the summary to be corrected → **m3**  _(FLAG: lateSeparation ; HIDDEN + Documentation — parent filed the per-file evidence packet and requested correction of the summary)_
+  - NOTE (shown after choosing): Ibarra reads it at his desk, where desks correct things. The summary's 'daily' will not survive the services file's closing review — because now the correction lives where the file's author works.
+- Do the ninety days and let the file be whatever it is → **m3**
+  - NOTE (shown after choosing): Files are whatever is filed in them. The ninety days will generate check-in notes praising compliance, beside a summary that still says a child is alone daily.
+
+## [m3] Day Ninety
+*Day 15 — Tuesday, March 24, 2026 (dayOffset 15)*
+
+The ninety days run their course with the dullness of adequate arrangements: Wednesdays at the program (Odell reports the gym is 'mid' and the snacks excellent), check-ins that take four minutes, Yvette across the hall rendered partially decorative and fully unbothered.
+
+At the closing review, the services file's summary comes back for Latoya's acknowledgment — the system's last compression of her week in March. What it says depends on what was filed into it at day one of the ninety: a per-file packet with a correction request, or nothing but check-ins.
+
+The acknowledgment line waits. The paragraph above it is the whole remaining question of the case.
+
+**Choices:**
+- Read the closing summary before signing — every word → **end_partial**  _(FLAG: readBeforeSigning)_
+  - NOTE (shown after choosing): If the packet was filed, the paragraph says 'Wednesdays, arranged coverage; initial report language corrected per school records.' If it wasn't, you are about to learn what it says instead — at the exact moment your signature stops being able to change it.
+- Sign — ninety days of cooperation ought to end the matter → **end_partial**
+  - NOTE (shown after choosing): It ends the services. The summary signs too, in its way: whatever it says is now the file's permanent first paragraph about your family, acknowledged by your hand.
+
+## [end_partial] Ninety Days of Services
+*Day 18 — Friday, March 27, 2026 (dayOffset 18)*
+
+**DEBRIEF:**
+
+The family completed ninety days of voluntary services for a Wednesday seam that an aunt already covered — because the two reports were answered with one combined letter, and the letter merged the files it was meant to answer. No one was removed; both underlying reports were exaggerations; and still the week cost a season of check-ins to correct a sentence. PARTIAL WIN: separation, applied late inside the services file, got the summary corrected by the closing review — but the services themselves were the tax on merging.
+
+The record inside this story: under 55 Pa. Code § 3130.44(d), the two intake summaries were Latoya's to read, per file, from the start — and the summaries showed exactly why the files had to stay apart: each one's exaggeration ('every evening,' 'daily') was the other one's false corroboration. Answered together, they corroborated. The corroboration is what services were prescribed for.
+
+Notice the hinge: it wasn't a worker's decision. It was a photocopy — Latoya's own letter, faithfully copied into both files by a helpful office. The merger parents should fear most is the one they mail themselves.
+
+Honesty requires this: the services were benign, the workers decent, the Wednesday program genuinely pleasant. A different office converts 'declined services' or a merged file into a petition; this one offered a bargain and kept it narrow. Systems vary. What doesn't: files merge at the first shared document, and they unmerge slowly, at retail price, or not at all.
+
+## [h1] One Narrative
+*Day 9 — Wednesday, March 18, 2026 (dayOffset 9)*
+
+By the second meeting, the files have been 'coordinated' — the office's word for what happened next. Stoll's summary of Latoya's verbal account ('mother states children attend aftercare; receipts at home') has been placed in a shared folder with Ibarra's summary of Odell's statement. A supervisor, reading both in one sitting — the sitting Latoya's answers made possible — writes the sentence the week had been threatening since Thursday:
+
+'Two independent reports describe a pattern of unsupervised children, corroborated by the child's own statement.'
+
+Independent. The neighbor and the child never met; the fence and the schoolroom never touched; but in a merged file, independence is a property of paper arrangement, and the paper has been arranged. The receipts that would have corrected File One are described, not filed. Descriptions don't corroborate. They just agree, vaguely, with everything.
+
+**Choices:**
+- Ask, in writing, for each file's claims to be assessed on its own documentation — and offer both packets now → **h2**  _(FLAG: unmergeRequested)_
+  - NOTE (shown after choosing): The request goes in late and uphill: unmerging requires a supervisor to un-read a narrative. But the packets, offered now, at least give the assessment something heavier than summaries to stand on.
+- Protest the merger at the top of your voice — this is two exaggerations in a trench coat → **h2**
+  - NOTE (shown after choosing): The metaphor is accurate and the file records 'mother became agitated regarding coordination.' Accuracy, delivered vocally, files as agitation.
+
+## [h2] The Assessment
+*Day 12 — Saturday, March 21, 2026 (dayOffset 12)*
+
+The assessment is a form, and forms score what files contain. This file contains: a neighbor's absolute ('every evening'), a child's absolute ('daily'), a supervisor's narrative ('pattern'), a mother's verbal assurances (summarized, unreceipted), and — if she offered them late — two packets now sitting at the back of a merged file, behind the narrative they were meant to prevent.
+
+Scored forms do not read packets at the back with fresh eyes. They read the top: pattern, corroboration, child's own statement. The score comes out the way the arrangement of paper predicted on Thursday.
+
+What a scored form produces, in a case like this, is not a removal — the children were never unsafe enough for that, and everyone in the building knows it. It produces a plan. Plans are how systems keep cases they cannot close and cannot justify: open, serviced, reviewed.
+
+**Choices:**
+- Read the plan when it comes — all of it, before any signature → **h2b**  _(FLAG: planRead)_
+  - NOTE (shown after choosing): Reading won't shrink it now. It will at least make its terms known quantities instead of discovered ones, which is the difference between a sentence and an ambush.
+- Refuse to engage with a plan built on a merger → **h2b**
+  - NOTE (shown after choosing): Non-engagement is also scored, by the same form, in a box labeled with a word no parent wants in a file.
+
+## [h2b] The Plan, Handed Down
+*Day 13 — Sunday, March 22, 2026 (dayOffset 13)*
+
+The plan arrives as plans do: aftercare enrollment mandated and verified monthly (the children already attend), a Wednesday supervision arrangement to be approved by the agency (Yvette, presumably, pending approval of her hallway), parenting classes — six sessions, evenings, the very evenings in question — and check-ins for six months, with reviews.
+
+Nothing in it is dangerous. Everything in it is authorship: the family's actual, working, documented arrangements, re-issued as instructions, by a file built from two exaggerations and a summary of a voice. Latoya's signature line waits at the bottom — acknowledgment of the plan, in a system where refusing plans has its own paperwork gravity.
+
+The packets, where they exist, sit at the back of the file like a dissenting opinion: correct, complete, and outvoted by arrangement.
+
+**Choices:**
+- Sign under a written objection: 'Plan acknowledged; its factual basis is disputed per the documentation filed' — attached, dated → **h3**  _(FLAG: objectionFiled)_
+  - NOTE (shown after choosing): The objection goes into the file with the plan — the first per-file, claim-by-claim document in it, arriving as a footnote to a story already written. Footnotes are where corrections live when they arrive after the text.
+- Sign it clean — six months of check-ins is survivable → **h3**
+  - NOTE (shown after choosing): Survivable, yes. The signature, unaccompanied, also files the family's consent to the narrative — 'pattern,' acknowledged by the pattern's subject.
+
+## [h3] Reviews
+*Day 15 — Tuesday, March 24, 2026 (dayOffset 15)*
+
+The reviews come at intervals, and they are boring in the way of plans being complied with: aftercare verified (it was always attended), Wednesday arrangement approved (Yvette, sanctified by paperwork), classes attended (Latoya has opinions about the classes she will share with no one in the building).
+
+Compliance, duly noted, does not reopen the narrative. Plans end by expiring, not by apologizing. What remains at the end of the six months is the file: two reports, one merger, one plan, and a closing summary that will compress all of it into a paragraph for the next reader.
+
+The closing summary is being drafted now. Its raw material is everything above it in the file — narrative first, packets last.
+
+**Choices:**
+- Submit a one-page closing statement for the file: the two reports, the two exaggerations, the documents, in order → **end_hard**  _(FLAG: closingStatement)_
+  - NOTE (shown after choosing): It goes in at the back, with the packets — the file's dissenting appendix, complete and correct and positioned exactly where late truth lives. Future readers who dig will find it. The summary's readers will not need to dig; that's what summaries are.
+- Let the plan expire in silence — the family has said enough → **end_hard**
+  - NOTE (shown after choosing): Silence is the file's favorite closing author. It writes 'case closed following services compliance' and means it as the whole story.
+
+## [end_hard] The File They Merged
+*Day 18 — Friday, March 27, 2026 (dayOffset 18)*
+
+**DEBRIEF:**
+
+The case stayed open for six months under a plan the family didn't need — aftercare they already used, a Wednesday arrangement they already had, classes for evenings that were never unsupervised — because two reports were answered with a voice instead of documents, and the summaries of that voice merged into a 'pattern' no single document in the file actually supported. The children stayed home; nothing worse happened; and the file's permanent first paragraph describes a pattern that two exaggerations built between them.
+
+The record inside this story: under 55 Pa. Code § 3130.44(d), both intake summaries were available, per file, from the start. Read side by side, they showed their own cure — each claim was answerable by documents that existed (receipts, logs, a neighbor across a hall). What was never supplied, per file, in writing, was the cure. The merger filled the vacuum, as mergers do.
+
+Notice the supervisor's sentence: 'two independent reports.' Independence is a claim about sources — and in a merged file it becomes true by arrangement. The only way to keep two reports honest is to keep two files separate, answered separately, in writing, before anyone reads them in one sitting.
+
+Honesty requires this: no one in this story acted in bad faith, and a worse office converts the same merged file into a petition. This one produced a plan — survivable, pointless, six months long. Systems vary in their appetites. They do not vary in their physics: summaries merge, patterns score, and paper filed late is paper read last.

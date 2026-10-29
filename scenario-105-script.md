@@ -1,0 +1,461 @@
+# THE FIRST 90 DAYS — Scenario 105: “The Plan in the Wrong Font”
+
+*Human-readable script. This document and `scenario-105.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a father with a brain injury working a case plan that was not written for the way he thinks: an evaluation, services, reviews, and a refitted plan. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier; `REQUIRES NO FLAG: name` means it is only available if that flag was never set. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, August 4, 2025. Day offsets are days since the scenario's start date.
+
+## [start] The Quiet After the Hospital
+*Day 0 — Monday, August 4, 2025 (dayOffset 0)*
+
+Your name is Clarence Castellane. You are forty-one, and for nineteen years you ran a warehouse floor — manifests, forklifts, a crew of eleven who called you by your first name. Eleven months ago a load shifted. The accident took eleven minutes. The brain injury it left has taken longer to describe: words that arrive a beat late, a mind that is clear at nine in the morning and fogged by four, and a notebook system your rehabilitation team taught you — one page, one task, written down before it can evaporate.
+
+Your daughter Maren is eight. While you were hospitalized last month, she stayed with your sister Vivian, twenty minutes away. This week, after your discharge, a report was made questioning whether Maren can be safe at home with a father whose processing has changed. No one says you harmed her. The report says something harder to answer: that no one yet knows what your days actually look like now.
+
+Today the agency places Maren with Vivian — formally, on paper — while you are assessed. Vivian signs at her own kitchen table, with Maren's backpack already by her door. A hearing will follow within days, because the law makes it follow within days.
+
+**Choices:**
+- Ask what happens next, and write the answer in the notebook → **counsel_meet**
+  - NOTE (shown after choosing): The caseworker, Mr. Salas, gives you a date and a building. You write both down before the words can thin out.
+
+## [counsel_meet] A Lawyer, and the Notebook Rule
+*Day 1 — Tuesday, August 5, 2025 (dayOffset 1)*
+
+Ms. Thornbury, your lawyer, meets you in a courthouse office that smells of copier heat. Before any of it begins, she tells you, you have the right to counsel in these proceedings — and to appointed counsel if you cannot afford one. (42 Pa.C.S. § 6337; § 6332(a)) She is yours either way, and she works the way your rehabilitation team worked: everything important goes on paper.
+
+"Clarence, your memory is not the problem we solve in court," she says. "Paper is. If you ask for something, ask in writing. If you complete something, keep the page. The file will describe a man. Our job is to make sure it describes the one who actually shows up."
+
+She writes the shelter care date on a card: the hearing must be held not later than 72 hours after a child is taken into shelter care. (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d))
+
+**Choices:**
+- Go to the shelter care hearing with the notebook open → **shelter_hearing**
+  - NOTE (shown after choosing): Vivian will be there. Maren will not — children her age wait in another room, with a coloring book and an adult whose job is kindness.
+
+## [shelter_hearing] Seventy-Two Hours
+*Day 3 — Thursday, August 7, 2025 (dayOffset 3)*
+
+The shelter care hearing is short and crowded with procedure. The judge confirms counsel, hears that Maren is safe with Vivian, and hears the agency's request: placement continues while an evaluation and a family service plan are prepared. The judge states the findings the law requires before a placement continues, and sets the case on its track.
+
+Vivian speaks briefly. She is Maren's aunt, she lives twenty minutes away, Maren's school bus already passes her street. What she says is noted — kinship, named out loud, in the room, on the record — and the judge says the permanency questions will be taken up at review: whether placement remains necessary, whether the plan is being followed, what progress has been made. (42 Pa.C.S. § 6351(e)(3)(i); § 6351(f))
+
+You say one true sentence — "Mornings, I can do anything you ask. Ask me in the morning." — and write down that you said it.
+
+**Choices:**
+- Go home to a quiet house and wait for the plan → **plan_arrives**  _(HIDDEN + Shelter care — kinship placement with paternal aunt named on the record)_
+
+## [plan_arrives] Nine Pages, Small Type
+*Day 7 — Monday, August 11, 2025 (dayOffset 7)*
+
+The family service plan arrives by mail: nine pages, single-spaced, with your name misspelled once. It lists a parenting class, a neuropsychological evaluation, weekly visits at Vivian's, and check-ins — each item a paragraph, each paragraph full of other paragraphs' worth of instructions.
+
+You read page one at the kitchen table at ten in the morning and understand every word. You read page four at seven in the evening and understand almost none of them — not because the words changed, but because you did, the way you do every day, on a schedule as reliable as a bus timetable.
+
+The plan does not know any of this. The plan was written for a reader who does not exist: a man who is the same at six at night as he is at nine in the morning.
+
+**Choices:**
+- Take the plan to your next meeting and say, plainly, that you cannot hold it in this form → **notebook_system**
+  - NOTE (shown after choosing): Saying it out loud is step one. In this system, step one is never the one that counts.
+- Sign it as it is — everyone signs; the details will sort themselves out → **notebook_system**
+  - NOTE (shown after choosing): They will be sorted, eventually. The question the whole case will turn on is: by whom, and in whose words?
+
+## [notebook_system] One Page, One Task
+*Day 10 — Thursday, August 14, 2025 (dayOffset 10)*
+
+Your rehabilitation counselor kept one page of your chart that Ms. Thornbury asks you to copy for the file. It describes the notebook system plainly: tasks written singly, in sequence; instructions given once, in writing, in the morning; rest before fatigue, not after failure. Under those conditions, the chart says, you ran a modified work trial for six weeks without a missed step.
+
+"This page," Ms. Thornbury says, "is the most important document in your case, and right now it lives in a medical chart nobody in this case will ever read. Everything we do from here is moving paper like this into the file where decisions are made — and asking, in writing, for the case to be run in the conditions where you actually succeed."
+
+**Choices:**
+- Start with the parenting class — look at when it meets → **class_schedule**
+
+## [class_schedule] Six O'Clock
+*Day 14 — Monday, August 18, 2025 (dayOffset 14)*
+
+The parenting class meets Tuesdays and Thursdays at 6 p.m., across town, two buses away. Six in the evening is the hour your word-finding pauses stretch longest, when a sentence you could build at breakfast takes three tries and still arrives missing a noun.
+
+The enrollment form has no line for this. It has lines for your name, your case number, and a signature promising attendance. A missed class, the form says, will be recorded as non-attendance. It does not say what an attended class, sat through in a fog, will be recorded as.
+
+**Choices:**
+- Write to Mr. Salas and the program: request a morning section, in writing, and keep the copy → **evaluation_offer**  _(FLAG: morningRequest ; HIDDEN + Request — morning class section requested in writing, copy kept)_
+  - NOTE (shown after choosing): One page. Dated. It asks for a time of day, not for mercy — and it creates the paper the rest of this case will stand on.
+- Enroll in the evening section and push through — effort should be visible → **evaluation_offer**
+  - NOTE (shown after choosing): Effort is visible at 9 a.m. At 6 p.m., what is visible is fatigue — and fatigue, in a sign-in sheet's vocabulary, reads as something else.
+
+## [evaluation_offer] Four Hours, One Morning
+*Day 17 — Thursday, August 21, 2025 (dayOffset 17)*
+
+The evaluation letter arrives: a neuropsychological battery, one appointment, four hours, beginning at 8 a.m. and running past noon — history, testing, more testing, an interview at the end, when the morning you depend on has already been spent by the test itself.
+
+Ms. Thornbury reads the letter twice. "An evaluation measures the man in the room," she says. "If the room is arranged so that only your worst hour is in it, the report will describe your worst hour — accurately, and completely misleadingly. We can ask, in writing, for the battery to be split across two mornings. Asking is allowed. Asking in writing is what makes it part of the case."
+
+**Choices:**
+- Request, in writing, that the battery be split into two morning sessions, with your rehab chart page attached → **evaluation_day**  _(FLAG: evalFitRequest ; HIDDEN + Request — evaluation split into morning sessions requested in writing, rehab chart attached)_
+  - NOTE (shown after choosing): The letter is respectful, specific, and short enough for you to check every word of it at 9 a.m. before it goes.
+- Take the appointment as scheduled — questioning it might look like dodging the test → **evaluation_day**
+  - NOTE (shown after choosing): You are not dodging anything. But the letter you didn't send cannot explain that to anyone, ever.
+
+## [evaluation_day] The Battery
+*Day 21 — Monday, August 25, 2025 (dayOffset 21)*
+
+The evaluation happens. However it was scheduled, it happens the way evaluations do: a quiet room, a kind examiner, tasks that begin with words you know and end, hours in, with words that will not come when called.
+
+You do the notebook thing anyway — you ask for instructions in writing, you work one page at a time, you say "say that again, slower" without embarrassment, the way rehabilitation taught you. The examiner notes it all. What the notes will add up to, in the report, is a question this scenario will answer the way the real system answers it: later, in writing, in a document you will have to request to see.
+
+**Choices:**
+- Go to Vivian's for Sunday dinner, and Maren's spelling list → **rosalind_sunday**  _(HIDDEN + Evaluation — completed; notebook strategies used and noted by examiner)_
+
+## [rosalind_sunday] Sunday at Vivian's
+*Day 24 — Thursday, August 28, 2025 (dayOffset 24)*
+
+Vivian's house has become the geography of the case: Maren's toothbrush in the blue cup, her school shoes by a door that is not yours. She quizzes Maren on spelling at the table where the placement papers were signed, and you time it, and get two words wrong yourself, and Maren — delighted, merciless — corrects her father in pencil.
+
+"She asks when," Vivian says later, at the sink, not unkindly. "I tell her: when the paper is right. She thinks I mean her spelling." Your sister is holding your daughter's daily life together with her own two hands. She is also, the file will eventually notice, the reason the agency can afford to be slow.
+
+**Choices:**
+- Drive home and open the mail that came Saturday → **eval_report**
+
+## [eval_report] The Man at His Worst Hour
+*Day 28 — Monday, September 1, 2025 (dayOffset 28)*
+
+The evaluation report arrives at Ms. Thornbury's office, and she reads you the summary at 9:30 in the morning, in her office, slowly, the way she does everything that matters.
+
+The testing is real. So is the conclusion it builds toward: significant limitations in processing speed and stamina, parenting capacity "uncertain," further observation recommended. What the report describes — precisely, professionally, and without a single false statement — is a man measured across the hours when he fades, with the morning he runs on treated as a warm-up act.
+
+"Nothing in here is a lie," Ms. Thornbury says. "That is what makes it dangerous. A lie can be disproven. A true measurement of the wrong hours can only be answered with a fuller record."
+
+**Choices:**
+- Ask what a fuller record would even look like → **plan_steps_ask**
+  - NOTE (shown after choosing): "It looks like you," she says, "on paper, at your best-documented. We start with the plan itself."
+
+## [plan_steps_ask] One Page at a Time
+*Day 35 — Monday, September 8, 2025 (dayOffset 35)*
+
+Ms. Thornbury drafts it with you, at 9 a.m., on one page: a written request that the family service plan be reissued as single-page steps — one objective per page, in sequence, in the format your rehabilitation team prescribed — and that appointments in the case be scheduled in the morning where the provider offers morning hours.
+
+It is not a demand and it does not cite a disability. It is a fit request, from the parent, in writing, with the rehab chart page attached again: here is how I complete things; please hand me the plan in the shape completion takes.
+
+The other option is the one the file so far prefers: let the nine pages stand, and let each missed evening item accumulate its own small, inaccurate entry.
+
+**Choices:**
+- Sign and send the written request for single-page steps and morning scheduling → **caseworker_response**  _(FLAG: stepsRequest ; HIDDEN + Request — plan reissued as single-page steps and morning scheduling, requested in writing)_
+  - NOTE (shown after choosing): Copies: one to Mr. Salas, one to Ms. Thornbury, one in the notebook. The request now exists in three places. The case has begun, very quietly, to change shape.
+- Ask Mr. Salas about it by phone instead — paper feels confrontational → **caseworker_response**
+  - NOTE (shown after choosing): He is warm on the phone. He says he'll see what he can do. Nothing is written by either of you, which means, in the file's arithmetic, nothing was asked.
+
+## [caseworker_response] A Partial Yes
+*Day 38 — Thursday, September 11, 2025 (dayOffset 38)*
+
+Mr. Salas responds the way overloaded systems respond: partly. The parenting program has a morning section starting next month — your name can be moved. The plan document itself, he says, comes from a template; he cannot reissue it, but he can walk you through it page by page at your next meeting, in the morning, as long as it takes.
+
+Ms. Thornbury reads his email with you. "A partial yes, in writing, is worth more than a full yes on the phone," she says. "But notice what just happened. The class moved because there was a letter. The plan didn't, because templates outrank letters — until a court asks about fit at a review, with the letter in the file. Keep every page of this."
+
+Meanwhile, the file has been keeping pages of its own.
+
+**Choices:**
+- Ask Ms. Thornbury what the file actually says about you so far → **attorney_review**
+  - NOTE (shown after choosing): It is the question this whole design turns on. She has been waiting for you to ask it.
+
+## [attorney_review] What the File Says
+*Day 42 — Monday, September 15, 2025 (dayOffset 42)*
+
+"You may request your case record," Ms. Thornbury says, "and what the regulation says is that the material shall be released upon request. (55 Pa. Code § 3130.44(d)) Most parents never ask. The ones who do, ask late. You are going to ask now — in writing, dated, with a copy kept — because the evaluation report is not the only description of you being written in this case."
+
+She means the running file: visit notes, the scored assessment form the agency completes as the case goes — a form you cannot see, sorting what the system observes into items and ratings — and the small entries, made at 6 p.m. by tired people, that harden into words like "non-compliant."
+
+"We cannot correct a record we have not read," she says. "So we read it."
+
+**Choices:**
+- Sign the written record request and send it this week → **records_wait**  _(cash −10 ; FLAG: recordsRequested ; HIDDEN + Record — agency case record requested in writing under § 3130.44(d))_
+  - NOTE (shown after choosing): $10 for copies and postage. The cheapest decisive act in this scenario, and the one everything after it depends on.
+- Wait until the review is closer — the file will be more complete then → **records_wait**
+  - NOTE (shown after choosing): It will be. It will also be longer, older, and read by the judge before it is ever read by you.
+
+## [records_wait] The Weeks the File Travels
+*Day 45 — Thursday, September 18, 2025 (dayOffset 45)*
+
+Requests travel at the speed of offices. In the weeks the packet takes to arrive, the case does not pause: a check-in is rescheduled by the agency and the new time is 4:30 in the afternoon; a visit note is written; the morning class section's start date approaches.
+
+You keep the notebook the way rehabilitation taught you: one page, one task. On the page for the check-in you write the new time, and underneath it, in the handwriting that gets worse as the day does, the words: ask in writing.
+
+**Choices:**
+- Write to confirm the check-in — and ask, again in writing, for a morning time → **records_arrive**  _(FLAG: paperHabit ; HIDDEN + Requests — morning scheduling asked for in writing a second time)_
+  - NOTE (shown after choosing): Whether or not this one is granted, the asking is accumulating into something the file will have to reckon with: a pattern, in dated pages.
+- Go to the 4:30 check-in and do your best in the fog → **records_arrive**
+  - NOTE (shown after choosing): Your best at 4:30 is a real thing. It is simply not the thing the note written about it will describe.
+
+## [records_arrive] 'Non-Compliant,' Three Times
+*Day 52 — Thursday, September 25, 2025 (dayOffset 52)*
+
+The packet arrives: visit notes (kind, accurate), the scored assessment form's summary pages, and the contact log. And there, in the log, the entries Ms. Thornbury predicted, in the flat vocabulary of forms: "Father failed to attend scheduled session — non-compliant." Three times. Three evenings. Three items you had written letters about, or sat through in a fog and been marked absent in every way that counts.
+
+One entry is worse: a session you never received notice of, logged as a refusal. The notice, when Ms. Thornbury asks for it, turns out to have been sent to an address you left in March.
+
+"Now," she says, spreading your kept copies beside their log, letter by letter, date by date, "we answer the record — with the record. Everything you sent is dated. Everything they logged is dated. Paper can correct paper. Nothing else in this system ever has."
+
+**Choices:**
+- Build the written correction with Ms. Thornbury, attaching every request letter you sent → **correction_draft**  _(FLAG: correctionBuilt ; HIDDEN + Correction — drafted from the released record, request letters attached by date ; REQUIRES FLAG: recordsRequested)_
+  - NOTE (shown after choosing): This choice exists because you requested the record. Without the packet, there is nothing to correct — only a feeling that the file is unfair, which files are immune to.
+- Let Ms. Thornbury raise it orally at the review instead → **correction_draft**
+  - NOTE (shown after choosing): She will raise it. Orally raised corrections live in transcripts. Filed corrections live in the file itself, where the next reader — and there is always a next reader — meets them first.
+
+## [correction_draft] The Correction, Filed
+*Day 56 — Monday, September 29, 2025 (dayOffset 56)*
+
+The correction is four pages and deadly dull, which is its strength. Item one: the session of a stated date was preceded, on an earlier stated date, by the attached written request for a morning time; no morning time was offered; attendance was recorded as refusal. Item two: the same shape. Item three: no notice was received; the address used was superseded in March; the current address is attached.
+
+It accuses no one of anything except arithmetic. It asks that the correction be placed in the case record alongside the entries it answers — so that whoever reads the log next reads both. Ms. Thornbury files it with the agency and provides it for the review. Dull paper, filed on time, is how records change their minds.
+
+**Choices:**
+- Ask what else belongs in the record before the review — the fuller picture → **rehab_letter**
+  - NOTE (shown after choosing): "One more document," she says. "The people who actually measured what you can do — under the conditions where you do it."
+
+## [rehab_letter] The Letter From Rehabilitation
+*Day 59 — Thursday, October 2, 2025 (dayOffset 59)*
+
+Your rehabilitation provider — the physician who ran your work trial — offers a letter. Not a character reference: a functional account. What the injury changed. What it did not. The conditions under which you completed a six-week modified work trial without a missed step: written single-task instructions, morning scheduling, rest before fatigue. Her clinical judgment, in one sentence Ms. Thornbury reads twice: "Mr. Castellane parents, works, and completes complex sequences reliably when tasks are presented in the format his rehabilitation prescribed; assessments conducted outside those conditions measure the conditions, not the man."
+
+A letter like this does nothing in a drawer. Offered into the record — handed up, filed, attached to the correction — it becomes the document every later reader must reckon with.
+
+**Choices:**
+- Offer the rehabilitation letter into the record, filed with the correction → **refit_meeting**  _(FLAG: rehabLetter ; HIDDEN + Record — rehabilitation provider's functional letter offered and filed)_
+  - NOTE (shown after choosing): The letter joins the correction in the file. The file now contains two descriptions of you: one measured at your worst hour, and one that explains the hours.
+- Hold the letter for the review — produce it only if the hearing goes badly → **refit_meeting**
+  - NOTE (shown after choosing):  Hearings that go badly on an uncorrected record rarely pause to be rescued. Paper filed early is strategy; paper held back is memorabilia.
+
+## [refit_meeting] Refitting the Plan
+*Day 63 — Monday, October 6, 2025 (dayOffset 63)*
+
+The refit meeting happens at 9:30 in the morning, at your written request, and it is — to everyone's visible surprise — a good meeting. Mr. Salas brings a supervisor. Whatever paper was filed in this case is in the file between them. Nobody apologizes; systems rarely do. Instead, the plan is rebuilt, item by item, in the open:
+
+The parenting class: morning section, confirmed. The plan itself: reissued as a binder of single pages, one objective each, in sequence — the template, it turns out, can be printed that way when someone with a supervisor's password is asked in a meeting with a filed correction on the table. Remaining evaluation questions: a shorter supplemental session, mornings only. Check-ins: mornings.
+
+What changed was not your diagnosis. What changed was the paper the case runs on — and every change is written, dated, and signed in the room.
+
+**Choices:**
+- Sign the refitted plan, one page at a time, checking each page as you go → **morning_class**  _(FLAG: refitDone ; HIDDEN + Plan — refitted in writing: single-page steps, morning scheduling, supplemental evaluation mornings only)_
+  - NOTE (shown after choosing): You read every page at 9:40 in the morning, and you understand every word. It is the first plan in this case written for the man who has to complete it.
+- Sign it quickly — the meeting went well; don't slow it down with reading → **morning_class**
+  - NOTE (shown after choosing): It went well because of reading — yours, theirs, the file's. The habit is the win. Keep it anyway: the pages are in the binder either way.
+
+## [morning_class] Nine in the Morning
+*Day 66 — Thursday, October 9, 2025 (dayOffset 66)*
+
+The morning parenting section meets in a room with windows. The instructor teaches in the order your notebook likes: one idea, written on the board, practiced, written down. You are — there is no other honest word — good at this. The sign-in sheet fills with your name in the steady morning handwriting.
+
+At the third session, the instructor asks how you remembered the week's practice sequence. You show her the notebook: one page, one task, Maren's bedtime routine broken into the steps rehabilitation would recognize. She writes something in her own notes. In this system, other people's notes are the weather. For once, the weather is fair.
+
+**Choices:**
+- Keep going — the binder, the mornings, the pages → **notebook_checkin**  _(HIDDEN + Services — morning parenting section attended; notebook system observed in use)_
+
+## [notebook_checkin] The Check-In That Fits
+*Day 70 — Monday, October 13, 2025 (dayOffset 70)*
+
+The refitted check-in happens at 9 a.m. in Mr. Salas's office. He has the binder version of your plan. You have the notebook. Between you, item by item, the two documents agree — a sentence nobody could have said in August.
+
+He notes the class attendance, the visit record at Vivian's, the supplemental evaluation scheduled across two mornings. "The file reads differently than it did," he says, in the tone of a man discovering his own paperwork. He is right. It reads like the same man, measured in the hours he lives in.
+
+**Choices:**
+- Ask what remains between here and Maren coming home → **bus_morning**
+  - NOTE (shown after choosing): "Completion, the supplement, and the review," he says. "In that order." You write all three down.
+
+## [bus_morning] Two Buses, Morning Light
+*Day 73 — Thursday, October 16, 2025 (dayOffset 73)*
+
+Completion costs what completion costs: the supplemental evaluation is across town, the class charges a materials fee, and copies of everything — the binder pages, the certificates as they come — go in the folder at a copy shop that opens at eight.
+
+You lay the month's receipts in the notebook: this is the arithmetic underneath every plan in every case like yours. None of it is ruinous. All of it is real, and it is paid in the morning, when you can count.
+
+**Choices:**
+- Pay the fees and make the copies → **homework_practice**  _(cash −27)_
+  - NOTE (shown after choosing): −$27: materials fee, bus fares, copies. The folder thickens. So does the record it mirrors.
+- Skip the copies this month — the originals exist somewhere → **homework_practice**
+  - NOTE (shown after choosing): Originals exist the way hallway promises exist. Your folder is the only archive whose keeper you chose.
+
+## [homework_practice] Practice, at Vivian's Table
+*Day 77 — Monday, October 20, 2025 (dayOffset 77)*
+
+The plan's practice step runs at Vivian's: Maren's full evening routine — dinner, homework, the spelling list, the bath, the book — done by you, in her kitchen, on your pages, while Vivian observes the way the plan prescribes and writes what she sees.
+
+At 6 p.m. you feel the fog arriving on schedule, and you do the thing the binder says to do, the thing rehabilitation built: you stop, you rest twenty minutes with your eyes closed in her armchair, and then you finish the routine at the pace the pages set. Maren reads you the last page of the book, to practice her fluency. The observation form, filled in honestly by your sister, records a father who managed his own fatigue like a professional — because managing it is, now, part of the parenting being measured.
+
+**Choices:**
+- File Vivian's observation with the week's pages → **progress_report**  _(HIDDEN + Practice — full evening routine completed with prescribed rest break; kin observer notes filed)_
+
+## [progress_report] What the Form Says Now
+*Day 80 — Thursday, October 23, 2025 (dayOffset 80)*
+
+The agency's progress summary for the review arrives at Ms. Thornbury's office, and she reads it to you at 9 a.m., as agreed. The scored assessment form's newer items sit beside the old ones — the file does not erase; it accumulates — and the summary's vocabulary has changed with the record: attendance "consistent," plan compliance "demonstrated under refitted conditions," the correction "noted and incorporated."
+
+"Read that phrase again," Ms. Thornbury says. "'Under refitted conditions.' Six months ago the file said the conditions were the man. Now the file knows the difference. That sentence is the whole case, and you wrote it — one dated letter at a time."
+
+**Choices:**
+- Prepare for the review hearing → **review_prep**
+  - NOTE (shown after choosing): One hearing remains between this file and a decision. Preparation, in this design, is not hope. It is inventory.
+
+## [review_prep] Inventory Before the Review
+*Day 84 — Monday, October 27, 2025 (dayOffset 84)*
+
+Ms. Thornbury lays the file out in three stacks, the way she lays out everything. Stack one: the original record — the nine-page plan, the four-hour evaluation, the three "non-compliant" entries. Stack two: the dated requests, the correction with its attachments, the rehabilitation letter. Stack three: the refitted plan, the morning sign-in sheets, the practice observations.
+
+At a permanency review, the court examines whether placement is still necessary, whether the plan is being followed, what progress has been made, and the efforts to finalize the plan. (42 Pa.C.S. § 6351(e)(3)(i); § 6351(f)) "We are not asking the court to forget stack one," she says. "We are asking it to read the file in order — the way you have to read anything to understand it. Stack one is a man measured in the wrong conditions. Stacks two and three are what happened when the conditions were put in writing and then met."
+
+**Choices:**
+- Go to the review with all three stacks → **review1**
+
+## [review1] The Review
+*Day 87 — Thursday, October 30, 2025 (dayOffset 87)*
+
+The review hearing is the first courtroom in this case that feels like the morning. The agency's report — the one you have already read — is presented. The judge asks about the evaluation, and Ms. Thornbury walks the file in order: the battery's hours, the written requests that preceded it, the correction, the rehabilitation letter, the refit.
+
+The judge asks Mr. Salas one question: "If the plan had been issued in this form in August, where would this case be?" Mr. Salas answers honestly: "Further along, Your Honor." The judge continues Maren's placement with Vivian for one further short period — completion of the supplemental evaluation and the final class sessions — and sets the next review, with the direction stated in the room: the plan as refitted is the plan the court will measure.
+
+It is not home. It is the door, measured and dated, with the remaining distance written down in single pages.
+
+**Choices:**
+- Finish the remaining pages — class completion and the supplement → **second_block**  _(HIDDEN + Review — court directs measurement under the refitted plan; remaining steps enumerated)_
+
+## [second_block] The Last Sessions
+*Day 98 — Monday, November 10, 2025 (dayOffset 98)*
+
+The final class sessions run in the morning light, and you complete them the way you have completed everything since the refit: one page, one task, signed sheets accumulating. The certificate, when it comes, is one page. You read it at 9 a.m. and understand every word, including your own correctly spelled name.
+
+Maren, at Vivian's, has begun leaving you notes in the notebook when she visits your pages — spelling words, mostly, corrected in pencil, in the handwriting of a child who has decided her father's system is also hers.
+
+**Choices:**
+- Go to the supplemental evaluation — two mornings, as ordered → **eval_supplement**
+  - NOTE (shown after choosing): The supplement is the evaluation's second chance to meet the man the first one missed. It was scheduled in writing. It will be read the same way.
+
+## [eval_supplement] Measured in the Morning
+*Day 105 — Monday, November 17, 2025 (dayOffset 105)*
+
+The supplemental evaluation runs across two mornings, ninety minutes each, with rest between tasks and instructions in writing — the conditions your rehabilitation prescribed, now simply the conditions, because they were requested in writing, corrected into the record, and ordered into the plan.
+
+The examiner's supplement is shorter than the original report and plainer. Under fitted conditions, it finds, processing and follow-through are functional and consistent; the parenting tasks sampled were completed in sequence; the notebook system is not a crutch but a method, of the kind the examiner recommends in writing for any parent with this profile. It closes with the sentence Ms. Thornbury underlines: "Prior findings should be read as describing performance under unfitted conditions."
+
+The file now corrects itself, in the file's own professional language.
+
+**Choices:**
+- Take the supplement home and file it in the binder, behind the certificate → **home_practice**  _(FLAG: evalSupplement ; HIDDEN + Evaluation — supplemental findings under fitted conditions filed; prior findings qualified in writing)_
+
+## [home_practice] Overnights, in Sequence
+*Day 112 — Monday, November 24, 2025 (dayOffset 112)*
+
+The plan's final practice step expands: overnights at your home, first one, then a weekend, with the binder's pages running the house — morning routines in the morning, the evening routine with its built-in rest, Maren's spelling list at your own table.
+
+Vivian brings her over with the blue-cup toothbrush in a bag, and stands in your doorway a moment, looking at a kitchen where everything is labeled in your handwriting. "She asked me to check the labels," she says. "I told her they're spelled right." The weekend runs on the pages. The pages hold.
+
+**Choices:**
+- Write the weekend up in the notebook, page by page, while it is fresh → **safety_check**  _(HIDDEN + Practice — home overnights completed under the refitted plan's sequence)_
+
+## [safety_check] The Morning Visit
+*Day 119 — Monday, December 1, 2025 (dayOffset 119)*
+
+The home check is scheduled at 9 a.m., because everything in this case is scheduled at 9 a.m. now — the file taught the calendar. Mr. Salas walks a home arranged by a system: the binder on the counter, medications in the lockbox rehabilitation recommended, Maren's room ready, her school a six-minute walk.
+
+He asks how evenings go, and you show him the page: routine, rest break, routine — the fatigue managed in the open, as a step in the plan rather than a failure of it. He writes for a long time. This time, you will read what he wrote before any judge does. You know how. You have the right, and the habit, and the copies.
+
+**Choices:**
+- Prepare for the final review → **rosalind_heard**
+  - NOTE (shown after choosing): One voice remains to be heard in the formal record: the woman who has held this case's daily life in her hands since August.
+
+## [rosalind_heard] Vivian, Heard
+*Day 126 — Monday, December 8, 2025 (dayOffset 126)*
+
+Before the final review, Vivian is heard in the formal way current law provides for: a potential kinship care resource — the category written into the notice-and-hearing provision by Act 48 of 2023, defined at § 6302 — is heard on her qualifications and her knowledge of the placement. (42 Pa.C.S. § 6336.1; 42 Pa.C.S. § 6302)
+
+What Vivian says is simple and complete: Maren is safe, loved, and ready; her brother, measured fairly, does the work; the overnights ran the way the pages said they would. "He parents in writing," she tells the room, "because that's how he thinks now. The writing works. I've watched it work at my own table for five months."
+
+The kinship placement that made the agency's slowness affordable has become, on the record, the strongest witness for ending it.
+
+**Choices:**
+- Go with Ms. Thornbury to prepare the final ask → **final_prep**  _(HIDDEN + Kinship — resource heard on the record in support of reunification under the refitted plan)_
+
+## [final_prep] The Final Ask
+*Day 133 — Monday, December 15, 2025 (dayOffset 133)*
+
+"Here is what we ask, and in what words," Ms. Thornbury says, at 9 a.m., with the binder between you. "Return under the refitted plan — the plan in single pages, with morning scheduling, as a condition of the case's remaining supervision — and closure on the schedule the court sets. We do not ask the court to find the original record wrong about the hours it measured. We ask it to find the record, read whole, proves the fit works."
+
+At disposition and at review, the court's choices are made on the determinations the law lists and on all the relevant evidence. (§ 6351(f); § 6351(f.1)) The evidence, this time, is the whole file — in order, dated, and impossible to read as the story of a man who refused. It is the story of a plan that was rewritten until the man it described could complete it — and then did.
+
+**Choices:**
+- Go to the final review → **final_review**
+
+## [final_review] The Final Review
+*Day 140 — Monday, December 22, 2025 (dayOffset 140)*
+
+The courtroom, the file, the three stacks — now one stack, read in order by everyone in the room before you arrived. The agency's position is in its report. Vivian's words are in the record. The supplement's sentence is in the file, underlined by more hands than yours.
+
+The judge looks at the file, and then at you, and asks the only question left in the case: given everything the record now holds, what should happen next? Ms. Thornbury rises. What she can ask for — really ask for, with pages — depends entirely on which version of the record the two of you built.
+
+**Choices:**
+- Ask for return home under the refitted plan, and closure on schedule → **end_home**  _(REQUIRES FLAG: recordsRequested ; REQUIRES FLAG: correctionBuilt ; REQUIRES FLAG: rehabLetter)_
+  - NOTE (shown after choosing): This ask exists because the record was requested, corrected with its own attachments, and completed by the rehabilitation letter.
+- Ask for return on the refitted plan with an extended supervision period → **end_halfway**  _(REQUIRES FLAG: correctionBuilt)_
+  - NOTE (shown after choosing): The correction alone, without the full record behind it, buys a slower version of the same door.
+- Argue that the evaluation was unfair and ask the court to disregard it → **end_goal**  _(REQUIRES NO FLAG: rehabLetter)_
+  - NOTE (shown after choosing): Unfair is a feeling. Without the functional letter in the record, the court has only the evaluation's own pages to weigh — and feelings do not outweigh pages.
+- Ask for more time on the plan as originally written → **end_rosalind**  _(REQUIRES NO FLAG: correctionBuilt)_
+  - NOTE (shown after choosing): More time, in the original form, at the original hours. The file already knows how that arithmetic ends.
+
+## [end_home] The Plan in the Right Font
+*Day 147 — Monday, December 29, 2025 (dayOffset 147)*
+
+The judge reads the file in order, out loud in the places that matter: the requests, the correction, the letter, the supplement, the sign-in sheets in the steady morning handwriting. Then the order: Maren returns home. The refitted plan — single pages, morning hours, the notebook written in as the method, not the exception — continues as the case's supervision plan, and the case will close on the schedule the order sets.
+
+At home, Maren puts the blue-cup toothbrush in your bathroom herself. On the refrigerator, in the binder's first page, is next week: one page, one task, in print large enough for the man who has to live it. It is the same plan the agency sent in August, in every way that matters, and in one way more: it is finally written in the font — the shape, the hours, the sequence — in which Clarence Castellane can read his own life and complete it.
+
+Vivian comes for Sunday dinner. She brings the spelling list. You get two words wrong, on purpose this time, and Maren corrects you in pencil, in a house where the correction is the whole point.
+
+**Ending.**
+
+**Debrief:**
+- THE RECORD, READ IN ORDER — The winning route was documentation at every step, in the verified mechanics of the case: the record was requested in writing and released on request (55 Pa. Code § 3130.44(d), flag: recordsRequested); the "non-compliant" entries it revealed were answered by a written correction attaching the dated request letters that preceded them (flag: correctionBuilt) — the discipline that a record supports only what is in it, answered with more record; the rehabilitation provider's functional letter was offered into the file (flag: rehabLetter), so the evaluation's true-but-partial measurement was met by a fuller one; and at review the court measured placement's continuing necessity, plan compliance, and progress on that whole file (42 Pa.C.S. § 6351(e)(3)(i); § 6351(f)), choosing return from the outcomes the law lists (§ 6351(f.1)). Maren comes home under the refitted plan — single-page steps, morning scheduling, the notebook system written into the plan itself — and the case closes on the court's schedule.
+- THE HIDDEN ITEMS, MAPPED — The scored assessment form's early items rated a man measured at his worst hours: evening non-attendance, an evaluation spanning his fade, a nine-page plan he could not hold. The later items — morning attendance "consistent," compliance "demonstrated under refitted conditions," the supplement qualifying the original findings — did not describe a different father. They described the same father under conditions the file had finally been made to state. The form never changed its nature; the record changed its contents.
+- What no strategy controlled: the injury, the fatigue's daily timetable, which supervisor approved the refit, or the judge who read the file. Disability-accommodation law exists beyond this scenario's verified set and this route deliberately did not rely on it — the wins here rest entirely on documentation and the dependency mechanics above. This ending is not a verdict that Clarence was always fine or that the concern in August was baseless. It is a record, read whole, proving a fit that works — and outcomes in this system also turn on workers, judges, resources, and luck.
+
+## [end_halfway] The Fitted Plan, Halfway Home
+*Day 147 — Monday, December 29, 2025 (dayOffset 147)*
+
+The court credits the correction and the refitted plan — and stops halfway. Maren remains with Vivian under an extended supervision period while the refitted plan runs to completion, with expanded overnights at home and a further review dated in the order.
+
+It is not the ending the binder was built for. But the binder is now the plan, the mornings are now the schedule, and the remaining distance is written in single pages Clarence can read. Halfway home, in this system, with the paper finally right, is a direction — and directions, unlike the nine pages he was first sent, he knows how to follow.
+
+**Ending.**
+
+**Debrief:**
+- THE RECORD, READ IN PART — The correction reached the file (flag: correctionBuilt), and it was enough to refit the plan and restart progress — but without the full record behind it (the written record request and the rehabilitation letter, flags: recordsRequested and rehabLetter, incomplete on this path), the court extends supervision and keeps Maren placed with Vivian while the refitted plan runs its remaining pages. The direction is home; the date is not yet written.
+- THE HIDDEN ITEMS, MAPPED — The scored assessment form shows the turn — compliance demonstrated under refitted conditions — alongside the unanswered original evaluation, which no functional letter ever qualified in the record. A court can act on a turn. It acts more slowly when the first description in the file still stands uncorrected beside it.
+- What no strategy controlled: the judge's caution, the agency's pace, the timetable of a child's school year. This is a partial win, honestly labeled: the plan fits, the father completes it, and the case continues — outcomes here also turn on workers, judges, and luck, and the remaining pages are, for the first time, pages Clarence can actually finish.
+
+## [end_goal] A New Goal, Written From the Old Record
+*Day 154 — Monday, January 5, 2026 (dayOffset 154)*
+
+The agency's counsel argues from the file exactly as it stands: the evaluation's conclusions, the plan's open items, the log's flat vocabulary. Ms. Thornbury argues unfairness, and she is right, and rightness without a document is a speech. The court changes the goal away from reunification, toward a permanency outcome to be determined — Maren to remain with Vivian while the new goal is pursued.
+
+Clarence holds the nine-page plan on the courthouse steps, in the afternoon, when the words swim. Nothing in the file says he failed his daughter. Everything in the file says he failed the plan. The distance between those two sentences is where this ending lives — and it was measured, all along, in letters never sent and a letter never filed.
+
+**Ending.**
+
+**Debrief:**
+- THE RECORD, READ AS WRITTEN — Without the rehabilitation provider's functional letter in the file (no rehabLetter flag), the evaluation stood as the record's only professional description: a true measurement of unfitted hours, unanswered by any fuller account. On that record, the agency argued the goal should change away from reunification, and the court — reading the file it was given, at a review confined to the determinations the law lists (§ 6351(f)) — had the plan's uncompleted items and the evaluation's conclusions, and little else. A petition or goal argument built on this record would still have to be proven to the governing standards; nothing here ends the case. But the weather has changed, on paper that was never corrected.
+- THE HIDDEN ITEMS, MAPPED — The scored assessment form's items never moved, because the record beneath them never moved: evening absences scored as refusal, a dense plan scored as a father's failure to complete it. The form rated the fit and recorded the rating as the man. That is the documented failure mode this scenario exists to show — and it is a failure of paper, not of parenting, which is precisely why paper was the cure that went unused.
+- What no strategy controlled: the evaluator's hours, the template the plan arrived in, the judge. What was controllable — a letter that existed, from a provider who had measured the man fairly, offered into a record that would have had to reckon with it — stayed in a drawer. Outcomes in this system turn on workers, judges, and luck; they also turn, more often than anyone admits, on which documents were filed while filing could still change the reading.
+
+## [end_rosalind] Still Failing at Six O'Clock
+*Day 154 — Monday, January 5, 2026 (dayOffset 154)*
+
+The review is brief. The plan's items are read out — incomplete, incomplete, not attended — in the flat vocabulary of the log, and the court continues the placement and the plan as written, with a further review in the ordinary course. Maren stays with Vivian. Clarence keeps the evening class seat he cannot use, and the nine pages he cannot hold, and the Sunday spelling lists at his sister's table, where he is — observably, undocumentedly — a father doing fine.
+
+Nothing in this ending is final. The record request can still be sent; the correction can still be built from kept copies — if copies were kept. But the case has acquired the momentum records acquire: each new entry now cites the old ones, and the man in the file, measured forever at six o'clock, falls further behind a plan that was never once handed to him in a shape he could carry.
+
+**Ending.**
+
+**Debrief:**
+- THE RECORD, UNCORRECTED — Without a written correction in the file (no correctionBuilt flag), the contact log's three "non-compliant" entries stood exactly as written — evenings scored as refusal, a notice sent to a superseded address scored as a father's choice. The plan was never refitted, because the paper that forces a refit — dated requests answered by a documented correction — was never assembled. Maren remains with Vivian; the case continues; the plan continues to be administered at hours its subject cannot think, and to record the predictable result as his progress, or lack of it, at review (§ 6351(f)).
+- THE HIDDEN ITEMS, MAPPED — Every item on the scored assessment form in this ending rates a condition as a character: fatigue as refusal, an unfitted format as incapacity, a system's addressing error as a parent's absence. The form is not lying. It is faithfully recording a plan's failure to fit the man it governs — and filing that failure under his name. That mis-filing, uncorrected, is the most common ending in the documented pattern this scenario composites, and the least dramatic: nothing happened, repeatedly, in writing.
+- What no strategy controlled: the injury, the caseload that wrote the log at 6 p.m., the template. What was controllable sits in the debrief of the other endings — a request, a packet, a correction. This outcome is not a verdict on Clarence as a father; Vivian's kitchen table, where he does Maren's spelling list every Sunday, is evidence of a different kind, in a room no form was watching. Outcomes here turn on workers, judges, resources, and luck — and on whether the record ever got the chance to describe the mornings.

@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  #app h2{font-size:1.65rem;line-height:1.18;letter-spacing:-.01em;margin:0 0 10px;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);margin:0 0 7px;}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--ink);margin:0 0 10px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);line-height:1.62;
+    padding:16px 18px 8px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 11px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:30px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-27px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:4px 14px 3px;font-size:.78rem;font-weight:800;letter-spacing:.22em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: no-preference){
+    .plate, .captionbox{animation:sceneIn .28s ease-out;}
+    @keyframes sceneIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- ============================================================================
+  THE FIRST 90 DAYS — COMIC KIT v2 (fragment)
+  Paste ALL of this INSIDE the existing <defs> block in play-comic.html,
+  after the v1 plates and before </defs>. Order inside this fragment matters:
+  gradients/patterns first, then figures, then plates, then overlays.
+  v1 idiom preserved: viewBox 0 0 120 240 figures / 0 0 400 225 plates,
+  body fill = currentColor, ONE held prop per figure in paper #f7ead0 with
+  ink #0d1520 stroke 2-4, every plate ends with the halftone overlay rect.
+  No text in any art. No faces. At most 2 figures per plate.
+  ============================================================================ -->
+
+<!-- ===== v2 gradients & patterns ===== -->
+<radialGradient id="gradDawn" cx="0.18" cy="0.95" r="0.95">
+  <stop offset="0" stop-color="#f7ead0" stop-opacity=".6"/>
+  <stop offset=".45" stop-color="#e8b04b" stop-opacity=".28"/>
+  <stop offset="1" stop-color="#e8b04b" stop-opacity="0"/>
+</radialGradient>
+<pattern id="rain" width="14" height="14" patternUnits="userSpaceOnUse">
+  <line x1="3" y1="-2" x2="7" y2="10" stroke="#0d1520" stroke-width="2"/>
+</pattern>
+
+<!-- ===== Cast v2 (viewBox 0 0 120 240; body = currentColor; one paper prop) ===== -->
+<!-- fig-caseworker2: bob hair with side mass (not hair-back), narrow body.
+     Prop: shoulder bag — paper rect on an ink strap line. -->
+<symbol id="fig-caseworker2" viewBox="0 0 120 240">
+  <rect x="42" y="30" width="7" height="26"/><rect x="71" y="30" width="7" height="26"/>
+  <path d="M43 44 A17 17 0 0 1 77 44 L77 50 L43 50 Z"/>
+  <circle cx="60" cy="44" r="14"/>
+  <path d="M38 68 L82 68 L86 156 L34 156 Z"/>
+  <rect x="40" y="156" width="14" height="76"/><rect x="66" y="156" width="14" height="76"/>
+  <line x1="76" y1="72" x2="92" y2="118" stroke="#0d1520" stroke-width="3"/>
+  <rect x="84" y="116" width="28" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-mother2: long hair mass past the shoulders (not a bun), wider skirt line.
+     Prop: tote bag — paper rect with an ink handle arc. -->
+<symbol id="fig-mother2" viewBox="0 0 120 240">
+  <path d="M38 30 Q60 12 82 30 L86 112 L34 112 Z"/>
+  <circle cx="60" cy="38" r="14"/>
+  <path d="M36 66 Q60 56 84 66 L94 156 L26 156 Z"/>
+  <rect x="39" y="156" width="14" height="76"/><rect x="67" y="156" width="14" height="76"/>
+  <path d="M90 112 Q99 100 108 112" fill="none" stroke="#0d1520" stroke-width="3"/>
+  <rect x="86" y="112" width="27" height="32" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-kin: glasses = two paper-stroke circles + bridge (silhouette distinction,
+     as the doctor's paper-stroke stethoscope in v1); cardigan V in paper stroke
+     (clothing, as the attorney's paper tie in v1). Prop: framed photo. -->
+<symbol id="fig-kin" viewBox="0 0 120 240">
+  <path d="M44 32 A16 14 0 0 1 76 32 L76 38 L44 38 Z"/>
+  <circle cx="60" cy="42" r="13"/>
+  <circle cx="52" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <circle cx="68" cy="42" r="6" fill="none" stroke="#f7ead0" stroke-width="2.5"/>
+  <line x1="58" y1="42" x2="62" y2="42" stroke="#f7ead0" stroke-width="2.5"/>
+  <path d="M34 64 Q60 54 86 64 L92 154 L28 154 Z"/>
+  <path d="M50 66 L60 96 L70 66" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="40" y="154" width="14" height="78"/><rect x="66" y="154" width="14" height="78"/>
+  <rect x="88" y="98" width="24" height="30" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="94" y="104" width="12" height="12" fill="none" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-supervisor: flat short hair, wide blazer with paper lapel lines.
+     Prop: coffee cup — small paper rect with a lid line. -->
+<symbol id="fig-supervisor" viewBox="0 0 120 240">
+  <rect x="44" y="20" width="32" height="9"/>
+  <circle cx="60" cy="40" r="14"/>
+  <path d="M31 60 L89 60 L93 154 L27 154 Z"/>
+  <path d="M51 62 L60 92 L69 62" fill="none" stroke="#f7ead0" stroke-width="3"/>
+  <rect x="38" y="154" width="15" height="78"/><rect x="67" y="154" width="15" height="78"/>
+  <rect x="89" y="100" width="17" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="87" y="95" width="21" height="6" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+<!-- fig-toddler: internal height ~102 units (child = ~147, adult = ~200+);
+     head proportion deliberately larger. Prop: stuffed toy — paper blob + ears.
+     Cast only in v2 plates: never placed in a plate in this kit. -->
+<symbol id="fig-toddler" viewBox="0 0 120 240">
+  <circle cx="58" cy="146" r="15"/>
+  <path d="M42 168 L74 168 L78 204 L38 204 Z"/>
+  <rect x="44" y="204" width="11" height="28"/><rect x="62" y="204" width="11" height="28"/>
+  <circle cx="86" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="100" cy="158" r="4" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="93" cy="170" r="11" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<!-- fig-child2: older child — internal height ~191 units, slimmer than fig-child.
+     Prop: book held at chest — paper rect with an ink centre line. -->
+<symbol id="fig-child2" viewBox="0 0 120 240">
+  <path d="M46 52 A14 12 0 0 1 74 52 L74 56 L46 56 Z"/>
+  <circle cx="60" cy="56" r="13"/>
+  <path d="M45 76 L75 76 L78 172 L42 172 Z"/>
+  <rect x="46" y="172" width="11" height="60"/><rect x="63" y="172" width="11" height="60"/>
+  <rect x="43" y="102" width="34" height="25" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="60" y1="102" x2="60" y2="127" stroke="#0d1520" stroke-width="2"/>
+</symbol>
+
+<!-- ===== Plates v2 (viewBox 0 0 400 225) ===== -->
+<!-- plate-waiting — Agency Waiting Room (COLD). Bolted chairs in two rows,
+     ticket/counter window with the supervisor behind it, ink wall clock,
+     fluorescent bars. Figures: supervisor (behind counter), mother. -->
+<symbol id="plate-waiting" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="52" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="238" y="12" width="110" height="8" fill="#f7ead0" opacity=".85"/>
+  <circle cx="200" cy="46" r="16" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="200" y2="35" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="46" x2="208" y2="50" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-supervisor" x="292" y="42" width="54" height="108" color="#0d1520"/>
+  <rect x="262" y="118" width="122" height="76" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="274" y="82" width="98" height="36" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <rect x="286" y="130" width="34" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="30" y="58" width="60" height="122" color="#c98f2b"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2">
+    <rect x="112" y="142" width="34" height="26"/><rect x="154" y="142" width="34" height="26"/>
+    <rect x="196" y="142" width="34" height="26"/>
+  </g>
+  <rect x="108" y="170" width="126" height="8" fill="#0d1520"/>
+  <g fill="#16283f" stroke="#0d1520" stroke-width="2" opacity=".75">
+    <rect x="126" y="188" width="30" height="20"/><rect x="164" y="188" width="30" height="20"/>
+    <rect x="202" y="188" width="30" height="20"/>
+  </g>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-courtsteps — Courthouse Steps (COLD, exterior). Facade + columns
+     above, wide steps descending toward the viewer, mother + attorney small
+     at the foot. One warm accent only: the lit doorway. -->
+<symbol id="plate-courtsteps" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <path d="M62 30 L200 6 L338 30 Z" fill="#0d1520"/>
+  <rect x="62" y="30" width="276" height="66" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="182" y="50" width="36" height="46" fill="#e8b04b" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#1f3a5c" stroke="#0d1520" stroke-width="2">
+    <rect x="82" y="38" width="15" height="58"/><rect x="122" y="38" width="15" height="58"/>
+    <rect x="243" y="38" width="15" height="58"/><rect x="283" y="38" width="15" height="58"/>
+  </g>
+  <rect x="52" y="96" width="296" height="11" fill="#0d1520"/>
+  <rect x="38" y="112" width="324" height="11" fill="#0d1520" opacity=".85"/>
+  <rect x="24" y="128" width="352" height="11" fill="#0d1520" opacity=".7"/>
+  <rect x="10" y="144" width="380" height="11" fill="#0d1520" opacity=".55"/>
+  <use href="#fig-mother" x="148" y="140" width="42" height="84" color="#c98f2b"/>
+  <use href="#fig-attorney" x="202" y="140" width="42" height="84" color="#0d1520"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-schooloffice — School Office (MIXED: warm room, cold cabinets).
+     Desk with a blank nameplate block, filing cabinets, small flag, wall
+     chairs. Figures: mother, child (plain, standing beside her at the desk). -->
+<symbol id="plate-schooloffice" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="14" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="94" x2="70" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="14" y1="136" x2="70" y2="136" stroke="#0d1520" stroke-width="3"/>
+  <rect x="330" y="52" width="56" height="128" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="116" x2="386" y2="116" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="14" width="3" height="34" fill="#0d1520"/>
+  <rect x="309" y="14" width="26" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="86" width="26" height="20" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="84" y="106" width="26" height="7" fill="#0d1520"/>
+  <use href="#fig-mother" x="118" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="272" y="92" width="44" height="88" color="#16283f"/>
+  <rect x="96" y="156" width="208" height="13" fill="#0d1520"/>
+  <rect x="108" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="282" y="169" width="10" height="40" fill="#0d1520"/>
+  <rect x="168" y="140" width="42" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-workplace — Warehouse / Workplace (COLD-neutral). Racking grids,
+     pallet stacks, high window band, wall time-clock block (ink dial, blank).
+     Figure: mother2 (tote reads as a work bag; no costume props). -->
+<symbol id="plate-workplace" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="24" y="14" width="352" height="26" fill="#f7ead0" opacity=".8" stroke="#0d1520" stroke-width="3"/>
+  <line x1="112" y1="14" x2="112" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="200" y1="14" x2="200" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <line x1="288" y1="14" x2="288" y2="40" stroke="#0d1520" stroke-width="3"/>
+  <rect x="18" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="18" y1="104" x2="122" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="18" y1="150" x2="122" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="70" y1="58" x2="70" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="26" y="76" width="34" height="22" fill="#e8b04b" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="78" y="120" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="278" y="58" width="104" height="140" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <line x1="278" y1="104" x2="382" y2="104" stroke="#0d1520" stroke-width="3"/>
+  <line x1="278" y1="150" x2="382" y2="150" stroke="#0d1520" stroke-width="3"/>
+  <line x1="330" y1="58" x2="330" y2="198" stroke="#0d1520" stroke-width="3"/>
+  <rect x="338" y="76" width="34" height="22" fill="#f7ead0" opacity=".7" stroke="#0d1520" stroke-width="2"/>
+  <rect x="182" y="60" width="36" height="44" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="200" cy="76" r="9" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="190" y="90" width="20" height="6" fill="#f7ead0"/>
+  <use href="#fig-mother2" x="168" y="76" width="64" height="130" color="#c98f2b"/>
+  <rect x="132" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="132" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect x="220" y="176" width="52" height="12" fill="#0d1520" opacity=".85"/>
+  <rect x="220" y="190" width="52" height="12" fill="#0d1520" opacity=".7"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-busstop — Bus Stop (COLD dusk). Sign pole with a blank round sign,
+     shelter frame + bench, street band, apartment silhouettes with lit
+     windows behind. One warm element only: the streetlamp glow.
+     No figures — a place alone, as plate-exterior in v1. -->
+<symbol id="plate-busstop" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="8" y="52" width="86" height="140" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="306" y="38" width="86" height="154" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="22" y="68" width="20" height="16" fill="#e8b04b" opacity=".8"/>
+  <rect x="56" y="68" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="22" y="104" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="56" width="20" height="16" fill="#e8b04b"/>
+  <rect x="354" y="56" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="320" y="92" width="20" height="16" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <ellipse cx="128" cy="58" rx="34" ry="20" fill="#e8b04b" opacity=".3"/>
+  <rect x="125" y="52" width="5" height="140" fill="#0d1520"/>
+  <circle cx="128" cy="48" r="7" fill="#e8b04b"/>
+  <rect x="158" y="66" width="5" height="126" fill="#0d1520"/>
+  <circle cx="160" cy="54" r="13" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="196" y="86" width="104" height="8" fill="#0d1520"/>
+  <rect x="200" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="290" y="86" width="6" height="106" fill="#0d1520"/>
+  <rect x="208" y="146" width="80" height="10" fill="#0d1520"/>
+  <rect x="216" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect x="273" y="156" width="7" height="30" fill="#0d1520"/>
+  <rect y="192" width="400" height="33" fill="#0d1520"/>
+  <rect x="36" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="182" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect x="328" y="206" width="36" height="5" fill="#f7ead0" opacity=".7"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<!-- plate-laundromat — Laundromat (WARM-neutral). Round-front washer doors
+     (circles in rects), folding counter with a laundry basket block, folded
+     stacks on a shelf. Figure: mother. (Child optional in the brief — omitted
+     deliberately: the row is the subject, and the plate stays uncrowded.) -->
+<symbol id="plate-laundromat" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="20" y="20" width="150" height="10" fill="#0d1520"/>
+  <rect x="28" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="34" width="36" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="112" y="34" width="36" height="14" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#f7ead0" stroke="#0d1520" stroke-width="3">
+    <rect x="16" y="66" width="72" height="106"/><rect x="96" y="66" width="72" height="106"/>
+    <rect x="176" y="66" width="72" height="106"/>
+  </g>
+  <circle cx="52" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="132" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="212" cy="122" r="25" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <circle cx="52" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="132" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <circle cx="212" cy="122" r="14" fill="#f7ead0" opacity=".35"/>
+  <rect x="28" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="108" y="76" width="48" height="8" fill="#0d1520"/>
+  <rect x="188" y="76" width="48" height="8" fill="#0d1520"/>
+  <use href="#fig-mother" x="316" y="52" width="62" height="126" color="#c98f2b"/>
+  <rect x="256" y="150" width="96" height="11" fill="#0d1520"/>
+  <rect x="264" y="161" width="9" height="42" fill="#0d1520"/>
+  <path d="M272 128 L316 128 L310 148 L278 148 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <line x1="282" y1="134" x2="306" y2="134" stroke="#0d1520" stroke-width="2"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<!-- plate-program — Program / Parenting-Class Room (WARM-neutral). A ring of
+     chairs suggested by backs at the edges, blank flip-chart easel, low table.
+     Figures: kin (with the framed photo), mother. -->
+<symbol id="plate-program" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="172" y="30" width="56" height="66" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="186" y="24" width="28" height="9" fill="#0d1520"/>
+  <line x1="182" y1="96" x2="168" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <line x1="218" y1="96" x2="232" y2="142" stroke="#0d1520" stroke-width="3"/>
+  <g fill="#c98f2b" stroke="#0d1520" stroke-width="2" opacity=".8">
+    <rect x="86" y="56" width="26" height="20"/><rect x="288" y="56" width="26" height="20"/>
+    <rect x="56" y="104" width="26" height="20"/><rect x="318" y="104" width="26" height="20"/>
+  </g>
+  <use href="#fig-kin" x="112" y="54" width="60" height="122" color="#16283f"/>
+  <use href="#fig-mother" x="238" y="54" width="60" height="122" color="#c98f2b"/>
+  <ellipse cx="200" cy="158" rx="56" ry="11" fill="#0d1520"/>
+  <rect x="188" y="166" width="24" height="8" fill="#0d1520"/>
+  <rect x="158" y="140" width="30" height="10" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <g fill="#0d1520">
+    <rect x="36" y="182" width="52" height="34"/><rect x="312" y="182" width="52" height="34"/>
+  </g>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+
+<!-- ===== Time / weather overlays (viewBox 0 0 400 225) =====
+     Instance AFTER the plate <use> in the same <svg> — see v2-design-spec.md
+     section 2. Exactly one overlay per plate, ever. Subtle by design: an
+     overlay tints a scene, it never re-lights it. -->
+<!-- ov-dawn: warm glow low-left (gradDawn) + one soft glow ellipse. -->
+<symbol id="ov-dawn" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradDawn)"/>
+  <ellipse cx="62" cy="205" rx="110" ry="42" fill="#e8b04b" opacity=".22"/>
+</symbol>
+<!-- ov-dusk: deepening navy wash + halftone at .18 (plate standard is .13/.15). -->
+<symbol id="ov-dusk" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".22"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".18"/>
+</symbol>
+<!-- ov-night: navy wash at .30 + a small crescent (two circles) top-right. -->
+<symbol id="ov-night" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#0d1520" opacity=".30"/>
+  <circle cx="350" cy="36" r="13" fill="#f7ead0"/>
+  <circle cx="358" cy="31" r="11" fill="#16283f"/>
+  <circle cx="306" cy="24" r="2" fill="#f7ead0"/>
+  <circle cx="330" cy="58" r="2" fill="#f7ead0"/>
+</symbol>
+<!-- ov-rain: darker wash + the rain pattern at low opacity. Exterior only. -->
+<symbol id="ov-rain" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="#16283f" opacity=".18"/>
+  <rect width="400" height="225" fill="url(#rain)" opacity=".35"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 112 — The Empty Months (a fictional composite)",
+  "startDateISO": "2026-01-12",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "A kinship grandmother's approval packet sits unsigned for months; her drained savings are then read as a stability risk — until the chronology is put on the record."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 12, 2026",
+   "dayOffset": 0,
+   "title": "Two Children, One Kitchen Table",
+   "body": [
+    "Your name is Bernice. You are sixty-four, retired from thirty-one years of school kitchens, and since Monday, October 20, 2025 your house has held two more people: your grandchildren, Joaquin, who is eight, and Mireya, who is four. They came to you as a kinship placement when their mother — your daughter, Dena — entered the part of her case that could not be done with children in the house. The children are Dena's case. The beds, the lunches, the nightmares at two in the morning: those are yours.",
+    "In the first week you did the caregiver paperwork the way you have done every form since 1987: completely, in ink, with copies. You submitted your approval packet on Friday, October 24, 2025 and kept the stamped copies in a folder on the kitchen table. The payments that were supposed to follow the packet have not followed. The answer, every time you ask, is the same two words: in process.",
+    "Your savings were not large. They were, however, yours — and for almost three months they have been quietly doing the job the missing payments were supposed to do. This story is about those empty months, and about what a file does with a grandmother who is running out of money keeping two children fed."
+   ],
+   "choices": [
+    {
+     "text": "Open the folder on the kitchen table — the one with the stamped copies",
+     "next": "folder_copies",
+     "note": "The folder is the first character in this story after you. It will be in more rooms than you will."
+    }
+   ]
+  },
+  {
+   "id": "folder_copies",
+   "kicker": "Day 2 — Wednesday, January 14, 2026",
+   "dayOffset": 2,
+   "title": "The Stamped Copies",
+   "body": [
+    "The folder holds your whole half of the paperwork: the approval packet's stamped copy, dated Friday, October 24, 2025; the home-study notes; the children's school and clinic papers; a call log you started in November, in pencil, because a woman at the senior center told you that in this system a date you cannot show is a date that did not happen.",
+    "Nothing in the folder is dramatic. That is its power. Stamps, dates, initials — the small change of a case, kept by the one person in it who was never issued a file cabinet.",
+    "What the folder does not hold is any explanation of the missing payments. Explanations, so far, have all been spoken."
+   ],
+   "choices": [
+    {
+     "text": "Call the agency and ask, again, where the payments are",
+     "next": "payment_call1",
+     "note": "You write the date of the call at the top of a fresh page before you dial. Habits are strategies that have stopped introducing themselves."
+    }
+   ]
+  },
+  {
+   "id": "payment_call1",
+   "kicker": "Day 5 — Saturday, January 17, 2026",
+   "dayOffset": 5,
+   "title": "In Process, Again",
+   "body": [
+    "The call on Saturday, January 17, 2026 goes the way the December calls went. The worker who answers is polite. The packet is in process. Processing takes time. There is nothing you need to do — that sentence, again — and nothing she can tell you about when it will finish.",
+    "You ask whether anything is missing from the packet. Nothing is missing, she says. You ask whether anything needs a signature. Not yours, she says — which is true, and is also, though neither of you knows it yet, the most precise sentence anyone will say about this case for weeks.",
+    "You write it all in the log: the date, the words, the name of the person who said them. The log is getting long. Long logs are either a burden or an exhibit, depending on whether anyone ever has to read one."
+   ],
+   "choices": [
+    {
+     "text": "Thank her, hang up, and do the week's grocery math at the table",
+     "next": "grocery_math",
+     "addHidden": [
+      "Call log — payment inquiry; agency answer: packet in process, nothing missing, no signature of caregiver's needed"
+     ],
+     "note": "The math is next. Math, in this house, is also a document."
+    }
+   ]
+  },
+  {
+   "id": "grocery_math",
+   "kicker": "Day 9 — Wednesday, January 21, 2026",
+   "dayOffset": 9,
+   "title": "The Grocery Math",
+   "body": [
+    "Two children eat the way weather happens: constantly, and without consulting anyone. The week's groceries, the school lunch account, Mireya's clinic co-pay, Joaquin's outgrown shoes — the list on the refrigerator is ordinary, and the total is not, and the difference between those two facts is coming out of an account that was supposed to be for your old age.",
+    "You are not careless with money. You are careful with money in a house whose income stopped matching its size in October, for reasons that live in a folder marked in process.",
+    "A neighbor asks how the agency lets this happen. You tell her the truth: nobody has let anything happen, visibly. That is the problem. Invisible things do not get fixed; they get described — later, by other people, in other words."
+   ],
+   "choices": [
+    {
+     "text": "Pay for the week's groceries and the shoes, and write the total in the log",
+     "next": "dena_sunday",
+     "cash": -24,
+     "note": "Twenty-four dollars this round, and not the last round. The log gains a column it never wanted."
+    }
+   ]
+  },
+  {
+   "id": "dena_sunday",
+   "kicker": "Day 13 — Sunday, January 25, 2026",
+   "dayOffset": 13,
+   "title": "Dena, on Sunday",
+   "body": [
+    "Dena visits on Sundays, at your table, in the part of the week that still belongs to the family instead of the case. She is doing the work her plan asks of her — the counselor's reports say so, in their careful language — and the children treat her arrival the way they treat weather clearing.",
+    "She asks about the money. You tell her some of it: the payments are still in process; the savings are holding. She hears the part you did not say, the way daughters do. “Mom. If this gets bad because of paperwork—”",
+    "“Then we will fix the paperwork,” you say, with more confidence than the folder currently justifies. It is the truest sentence available. It is also a promise, and promises, in this family, get logged too."
+   ],
+   "choices": [
+    {
+     "text": "Walk her to the bus, and come home to the week's ordinary work",
+     "next": "letter_in_process",
+     "note": "Ordinary work: lunches, laundry, a form for Joaquin's school that asks for a guardian signature you can actually give."
+    }
+   ]
+  },
+  {
+   "id": "letter_in_process",
+   "kicker": "Day 16 — Wednesday, January 28, 2026",
+   "dayOffset": 16,
+   "title": "The Letter That Says Nothing, in Writing",
+   "body": [
+    "A letter arrives from the agency, and for one envelope's width your heart does the thing it has learned to do. Inside: a single page confirming that your caregiver approval remains in process and that payments will commence upon approval. It is dated Wednesday, January 28, 2026. It does not say what is being processed, or by whom, or what remains to happen.",
+    "You file it behind the stamped packet copy, where it belongs: the agency's own words, in writing, saying that in the third month of two children living in your house, the paper that pays for their care had still not finished moving.",
+    "Letters like this are not answers. They are timestamps with letterhead. Timestamps, assembled later, become chronologies — and chronologies are the one language every room in this system reads."
+   ],
+   "choices": [
+    {
+     "text": "File the letter, and get ready for the home visit this week",
+     "next": "home_visit",
+     "addHidden": [
+      "Agency letter — approval still in process in the third month of placement; payments to commence upon approval"
+     ],
+     "note": "Stamped copy, meet letter. The folder is becoming a conversation the agency does not know it is having."
+    }
+   ]
+  },
+  {
+   "id": "home_visit",
+   "kicker": "Day 18 — Friday, January 30, 2026",
+   "dayOffset": 18,
+   "title": "The Visit That Goes Fine",
+   "body": [
+    "The home visit goes fine, because your home is fine. The worker — the first one, Ms. Larkin, who has carried the case since October — walks the rooms, compliments Mireya's drawing taped to the refrigerator, confirms the children are settled, in school, in routine.",
+    "She asks how you are managing. You say what grandmothers say: we manage. She writes something down. What she writes, you will not see for weeks — and when you do see it, the gap between we manage and what the note made of it will be one of this story's lessons.",
+    "Nothing about the visit is wrong. That is worth saying plainly, because what happens later does not require anyone to have been wrong in this room. It only requires a file that keeps summaries and loses causes."
+   ],
+   "choices": [
+    {
+     "text": "See her out, and help Joaquin with the homework he has been avoiding",
+     "next": "worker_goodbye",
+     "note": "Fractions. He is better at them than he believes. So, it turns out, are you — the household kind."
+    }
+   ]
+  },
+  {
+   "id": "worker_goodbye",
+   "kicker": "Day 21 — Monday, February 2, 2026",
+   "dayOffset": 21,
+   "title": "A Goodbye in the Hallway",
+   "body": [
+    "Ms. Larkin is leaving the agency — a new job, a shorter commute, the ordinary weather of other people's lives. She tells you at the door, kindly, and says the case will transfer and the new worker will have the file.",
+    "The file. Everything the new worker will know about Joaquin, Mireya, Dena, and you will arrive as paper: reports, notes, summaries — and somewhere in it, an approval packet that has been in process since Friday, October 24, 2025.",
+    "Worker changes are not anyone's fault. They are, however, resets: whatever the departing worker knew in her head — and she knew the payments were late, because you told her monthly — leaves with her head. What stays is what the paper says."
+   ],
+   "choices": [
+    {
+     "text": "Thank her, wish her well, and write the transfer in the log",
+     "next": "new_worker",
+     "note": "One line in the log: worker changed. Underneath it, everything the new worker will have to learn from a file."
+    }
+   ]
+  },
+  {
+   "id": "new_worker",
+   "kicker": "Day 24 — Thursday, February 5, 2026",
+   "dayOffset": 24,
+   "title": "The New Worker Reads the Summary",
+   "body": [
+    "The new worker, Mr. Osei, is courteous, prepared, and working from the summary — which is to say, from the shortest version of your family that exists. He knows the children are placed with their grandmother. He knows Dena's plan is progressing. What the summary says about your approval, in full, is the two words you could have predicted.",
+    "He has a suggestion, offered helpfully, the way resets always offer themselves: the fastest way to get the approval moving, he says, is to resubmit the packet — fresh copies, current dates, a clean start for the file.",
+    "A clean start. Your folder, with its stamped copy from Friday, October 24, 2025, sits in your bag like a second opinion."
+   ],
+   "choices": [
+    {
+     "text": "Decide what to put in front of him: the stamped copies, or a fresh packet",
+     "next": "resubmit_beat",
+     "note": "This is a small choice with a long shadow: whether the file learns that the packet already exists, with a date on it."
+    }
+   ]
+  },
+  {
+   "id": "resubmit_beat",
+   "kicker": "Day 26 — Saturday, February 7, 2026",
+   "dayOffset": 26,
+   "title": "Resubmit, or Show the Stamp",
+   "body": [
+    "Resubmitting is easy, and ease is its own argument: new copies, new date, no friction with the new man in his first month. It also has a cost that does not appear on any form: a fresh packet carries a fresh date, and a fresh date quietly rewrites when this began. October becomes this week. The empty months become nobody's months — a gap with no start, attributable to no one, and therefore, in the way of files, attributable to you.",
+    "Or you can do the slightly harder thing: lay the stamped copy on the table — submitted Friday, October 24, 2025, stamp and all — and ask, politely, that the file note what already happened before anyone resubmits anything."
+   ],
+   "choices": [
+    {
+     "text": "Lay the stamped copy on the table and ask that the original submission date be noted in the file",
+     "next": "resubmit_after",
+     "setFlags": [
+      "submissionProven"
+     ],
+     "addHidden": [
+      "Approval packet — original submission date shown from caregiver's stamped copy and noted"
+     ],
+     "note": "He photographs the stamp for the file. October is back in the record, where October belongs."
+    },
+    {
+     "text": "Resubmit a fresh packet — clean start, no friction",
+     "next": "resubmit_after",
+     "note": "The new copies are accepted warmly. The fresh date is clean, recent, and — in every way that will matter later — wrong about when this started."
+    }
+   ]
+  },
+  {
+   "id": "resubmit_after",
+   "kicker": "Day 28 — Monday, February 9, 2026",
+   "dayOffset": 28,
+   "title": "What the File Now Knows",
+   "body": [
+    "Whichever paper you handed over, the meeting ends the same way on the surface: Mr. Osei will check on the approval, and the approval will take the time it takes. The difference is underneath, in what the file can now say about the months behind you.",
+    "A file that knows a packet was submitted in October tells one story about a grandmother's empty months. A file whose earliest packet is dated this week tells another — and the second story has a hole in it exactly the shape of your savings account.",
+    "You go home and write the meeting in the log, either way. Logging is what you do instead of shouting, and it has better handwriting."
+   ],
+   "choices": [
+    {
+     "text": "Go home — Joaquin's school form is due, and Mireya has opinions about dinner",
+     "next": "school_costs",
+     "note": "The case pauses for no one's childhood. That is the case's flaw and the children's protection, in one sentence."
+    }
+   ]
+  },
+  {
+   "id": "school_costs",
+   "kicker": "Day 30 — Wednesday, February 11, 2026",
+   "dayOffset": 30,
+   "title": "School Costs, Clinic Costs",
+   "body": [
+    "Joaquin needs a field-trip fee and a permission slip. Mireya needs a clinic follow-up and a prescription that costs what prescriptions cost. Neither item is large. Together with the month's groceries they are the arithmetic that has been running since October, arriving in its usual installments.",
+    "You pay, because the alternative — children going without, so that a grandmother's file can look comfortable — is not an alternative anyone in this house is willing to file.",
+    "The log's money column is now the most honest document in the case. It is also, read cold by a stranger, the most dangerous one: it shows strain, and strain, in a summary, can be made to mean almost anything."
+   ],
+   "choices": [
+    {
+     "text": "Pay both, log both, and check the savings balance you have been avoiding",
+     "next": "savings_low",
+     "cash": -18,
+     "note": "Eighteen dollars this round. The balance, when you look, is a number with a date attached whether you write it down or not."
+    }
+   ]
+  },
+  {
+   "id": "savings_low",
+   "kicker": "Day 33 — Saturday, February 14, 2026",
+   "dayOffset": 33,
+   "title": "The Balance, Looked At",
+   "body": [
+    "The savings account that took a decade of school-kitchen overtime to build is down to its last layer. You do the arithmetic three times, the way people do when the answer is the problem: at this rate, the house has weeks of cushion left, not months.",
+    "Two honest options sit on the table, and this scenario will not pretend either is painless. You can keep going — keep the house, keep the routine, and fight the paperwork with what is left. Or you can give the agency written notice that you cannot continue as the placement if the payments do not begin — a true statement, with a consequence you can see from here: a disrupted placement, and two children moved to strangers while the adults argue about a signature.",
+    "Nobody should have to choose between those at a kitchen table. The choice is here anyway, because the empty months put it here."
+   ],
+   "choices": [
+    {
+     "text": "Keep going — and fight the paperwork with what is left",
+     "next": "strain_note",
+     "note": "Not heroism. Arithmetic plus stubbornness, logged like everything else."
+    },
+    {
+     "text": "Give written notice that you cannot continue without the payments",
+     "next": "notice_beat",
+     "note": "A true sentence, sent in writing. True sentences still have consequences, and this one's are immediate."
+    }
+   ]
+  },
+  {
+   "id": "notice_beat",
+   "kicker": "Day 35 — Monday, February 16, 2026",
+   "dayOffset": 35,
+   "title": "The Notice, Sent",
+   "body": [
+    "The notice is short, factual, and the hardest page you have ever signed: at the current rate of household spending, with no caregiver payments received since the children's arrival, you cannot continue the placement beyond the end of the month. You keep the stamped copy. Of course you keep the stamped copy.",
+    "The agency answers the way systems answer ultimatums they cannot process: with urgency about the children and silence about the packet. A placement meeting is mentioned. A foster home is mentioned — as a contingency, everyone says, in the tone people use for a word they hope will frighten you back into silence.",
+    "It does not frighten you. It informs you, precisely, of what the empty months were always risking — and you make the decision the notice was written to force, in the only direction left."
+   ],
+   "choices": [
+    {
+     "text": "Tell the children, at their sizes, that a change is coming",
+     "next": "end_disrupt",
+     "note": "Joaquin asks if it is because of money. You tell him the truth at his size, which is the only size truth should ever be told to children."
+    }
+   ]
+  },
+  {
+   "id": "strain_note",
+   "kicker": "Day 36 — Tuesday, February 17, 2026",
+   "dayOffset": 36,
+   "title": "The Word in the Summary",
+   "body": [
+    "A copy of a case summary reaches you through Dena — a page she was given for her own plan meeting — and there it is, in the summary's flat language, next to your name: caregiver experiencing financial strain.",
+    "Five words. Every one of them true, and the sentence they make is false — because the summary records the strain and not its cause, the way a photograph of a flood records water and not the broken pipe. Somewhere ahead is a review, and reviews read summaries, and a summary that says strain, standing alone, can be read as a question about whether this placement is stable.",
+    "You sit with the page a long time. Then you do the thing this whole story has been teaching: you ask what paper could sit beside it."
+   ],
+   "choices": [
+    {
+     "text": "Ask Dena who can explain what a review will do with a line like that",
+     "next": "advocate_beat",
+     "addHidden": [
+      "Case summary — 'caregiver experiencing financial strain,' with no cause stated"
+     ],
+     "note": "Dena has a lawyer. Lawyers, in this system, are translators between families and files."
+    }
+   ]
+  },
+  {
+   "id": "advocate_beat",
+   "kicker": "Day 39 — Friday, February 20, 2026",
+   "dayOffset": 39,
+   "title": "What a Review Actually Decides",
+   "body": [
+    "Dena's lawyer is Ms. Hart, provided for Dena as a party's counsel in this case (42 Pa.C.S. § 6337). She meets you both in a courthouse conference room and translates the review into its working parts, the way she would want it translated for her own mother.",
+    "“A permanency review is a hearing with a list,” she says. “The court determines whether the placement is still necessary, whether the plan is being complied with, what progress has been made, and whether reasonable efforts were made to finalize the plan. (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) Every one of those is decided from evidence — from paper that is actually put in front of the judge.”",
+    "“Right now,” she says, “the paper in front of the judge-to-be says strain, and nothing about a packet. If we want the judge to weigh a cause, the cause has to arrive as documents. And the first document we need is the agency's own chronology — which you, Bernice, cannot request. That right belongs to the case's subjects. Dena can.”"
+   ],
+   "choices": [
+    {
+     "text": "Look at Dena — the asking is about to become hers to make",
+     "next": "dena_ask",
+     "note": "The regulation's right belongs to the case's subjects, not to a placement applicant. Ms. Hart says it plainly so no one mistakes whose signature this needs."
+    }
+   ]
+  },
+  {
+   "id": "dena_ask",
+   "kicker": "Day 42 — Monday, February 23, 2026",
+   "dayOffset": 42,
+   "title": "Asking Dena",
+   "body": [
+    "The request itself is simple: Dena, as the children's mother and a party to the case, signs a written request for the case record — the chronology, the approval file, the placement notes — which under the regulation “shall be released upon request” (55 Pa. Code § 3130.44(d)). You cannot sign it; your name on it would make it a placement applicant's letter, and the right is not yours. Dena's name makes it what the rule contemplates.",
+    "Asking her is not simple. She is mid-treatment, mid-plan, carrying her own file's worth of judgments. You can ask her to carry this one page too — at your kitchen table, with the folder open and the stamped packet copy on top — or you can spare her, and build the review answer from your folder alone."
+   ],
+   "choices": [
+    {
+     "text": "Ask Dena, at the kitchen table, to sign the record request this week",
+     "next": "dena_after",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -4,
+     "addHidden": [
+      "Case record requested in writing by the children's mother, a party, under 55 Pa. Code § 3130.44(d), at the kinship caregiver's asking"
+     ],
+     "note": "She reads it twice, asks two exact questions, and signs. Four dollars of copies. The request is dated, copied, and kept with the plan."
+    },
+    {
+     "text": "Spare Dena — build the answer from your own folder alone",
+     "next": "dena_after",
+     "note": "A kindness with a price: your folder knows your half cold. The agency's chronology — the half with the signature page in it — stays unread."
+    }
+   ]
+  },
+  {
+   "id": "dena_after",
+   "kicker": "Day 44 — Wednesday, February 25, 2026",
+   "dayOffset": 44,
+   "title": "A Signature That Is Hers",
+   "body": [
+    "Whether the request went out over Dena's signature or stayed in the folder as a road not taken, the week moves the way weeks in this house move: school runs, a clinic visit, Dena's Sunday table, Joaquin's fractions improving against his will.",
+    "If Dena signed, the request is now a page in the file it asks about — which means the chronology, when it comes, will come because a party asked for it in writing, on a date, and dates are the spine of everything you are building.",
+    "Ms. Hart's instruction for the waiting is one sentence: keep logging. “Chronologies answer chronologies,” she says. “Yours is the only other one in this case. Keep it boring and keep it exact.”"
+   ],
+   "choices": [
+    {
+     "text": "Keep the log, keep the house, and wait for the packet to answer",
+     "next": "dena_progress",
+     "note": "Boring and exact. A decade of school kitchens taught you both, in that order."
+    }
+   ]
+  },
+  {
+   "id": "dena_progress",
+   "kicker": "Day 46 — Friday, February 27, 2026",
+   "dayOffset": 46,
+   "title": "Dena's Progress, in Careful Language",
+   "body": [
+    "Dena's counselor's report arrives for her plan meeting, and Dena — who is learning, at thirty-one, to read her own file without flinching — shows it to you at the table. Progress, in the careful language: attendance complete, goals met, the plan on its rails.",
+    "It matters here for a plain reason: the review ahead is about the children's placement, and the children's placement is steady partly because their mother is steady and their grandmother's house is the fixed point both of those steadinesses lean on. A review that reads strain without reading any of this will be reading a summary, not a family.",
+    "“Tell them the house part,” Dena says. “Not me. The house.” She means: make the paper show what the house has actually been doing. It is the best legal advice anyone gives in this story, and she gives it for free."
+   ],
+   "choices": [
+    {
+     "text": "Put her report copy in the folder, beside your log",
+     "next": "record_arrives",
+     "note": "Two files becoming one folder, at a kitchen table, without anyone calling it a strategy."
+    }
+   ]
+  },
+  {
+   "id": "record_arrives",
+   "kicker": "Day 49 — Monday, March 2, 2026",
+   "dayOffset": 49,
+   "title": "The Chronology Arrives — Or Doesn't",
+   "body": [
+    "If Dena's request went out, the packet arrives the way records arrive: thick, partly blacked out, and heavier than its paper. If it never went out, what you have instead is the summary Dena was given, your folder, and your log — true, dated, and entirely from your side of the desk.",
+    "Either way, Ms. Hart spreads what exists on her conference table and goes looking for one line: the approval packet's journey through the agency, in the agency's own chronology. Received, routed, signed, paid — the verbs a packet is supposed to collect on its way through a building.",
+    "What the chronology shows — if you are holding the chronology — stops both of you mid-sentence."
+   ],
+   "choices": [
+    {
+     "text": "Read the approval lines together, slowly",
+     "next": "signature_page",
+     "note": "Slowly is how you read a page you have been waiting three months to see."
+    }
+   ]
+  },
+  {
+   "id": "signature_page",
+   "kicker": "Day 52 — Thursday, March 5, 2026",
+   "dayOffset": 52,
+   "title": "The Blank Line",
+   "body": [
+    "The chronology, in the agency's own hand, is short enough to memorize. Approval packet received: Friday, October 24, 2025 — your stamped copy's date, confirmed by the other side of the desk. Routed for signature: the following week. And then — nothing. No signature entry. No approval entry. No payment entry. Month after month of nothing, in a column where nothing is itself the entry.",
+    "On the packet's own signature page, reproduced in the packet Dena requested, the line where an approver was to sign sits blank beneath a routing stamp from the week the children arrived. The packet did not fail an inspection. It was never inspected. It sat — unsigned, unacted on, unmentioned — while the file learned to call your savings account a stability question.",
+    "Nobody in the room says villain. Ms. Hart says the useful word instead: “Documented.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask her what a documented blank line can do at a review",
+     "next": "bank_book",
+     "addHidden": [
+      "Agency chronology — approval packet received and routed the week the children arrived; no signature, approval, or payment entry thereafter"
+     ],
+     "note": "A blank line with a routing stamp above it. The smallest exhibit in this story, and the largest."
+    }
+   ]
+  },
+  {
+   "id": "bank_book",
+   "kicker": "Day 55 — Sunday, March 8, 2026",
+   "dayOffset": 55,
+   "title": "Your Side of the Ledger",
+   "body": [
+    "Your bank book is the other half of the chronology, and it needs no lawyer to read it: a balance line descending, month by month, in amounts that match — almost to the dollar, because you logged them — the groceries, the shoes, the clinic, the lunch account. Two documents, kept by two institutions that have never spoken, telling one story in two columns.",
+    "Ms. Hart puts them side by side on the table: their silence, your spending. “This,” she says, “is what attribution looks like when it is made of paper instead of adjectives. The gap has a start date, a routing stamp, and a blank line. The strain has the same start date. A judge does not need to be persuaded of anything. A judge needs to be shown a calendar.”",
+    "What remains is assembly: turning two columns into one page a review can hold."
+   ],
+   "choices": [
+    {
+     "text": "Ask her to lay out the assembly, step by step",
+     "next": "counsel_meet112",
+     "note": "Assembly is a humble word for the most important work in this case."
+    }
+   ]
+  },
+  {
+   "id": "counsel_meet112",
+   "kicker": "Day 58 — Wednesday, March 11, 2026",
+   "dayOffset": 58,
+   "title": "The Assembly, Step by Step",
+   "body": [
+    "“Step one,” Ms. Hart says, “is the chronology page — one page, dates only, every line checkable against a document: children placed, packet submitted, in-process letter, worker changed, resubmission requested, strain noted. Step two is the exhibits behind it: the stamped copy, the chronology's approval lines, the signature page, your log, your bank book. Step three is filing it — with the agency and the court, in writing, before the review — so the review reads it in advance instead of meeting it as a surprise.”",
+    "“And step zero,” she says, “is the one you have already done, since October, without knowing its name: you kept the copies. Everything we are about to build is built out of a folder on a kitchen table. Grandmothers who throw paper away do not get this meeting.”",
+    "The review, she reminds you, will make its determinations from evidence (42 Pa.C.S. § 6351(f)). The plan is to make sure the evidence includes a cause."
+   ],
+   "choices": [
+    {
+     "text": "Build the one-page chronology with her, from the documents only",
+     "next": "chronology_build",
+     "note": "Documents only. If a line cannot be checked against a page, it does not go on the page."
+    }
+   ]
+  },
+  {
+   "id": "chronology_build",
+   "kicker": "Day 61 — Saturday, March 14, 2026",
+   "dayOffset": 61,
+   "title": "One Page, Dates Only",
+   "body": [
+    "The page assembles the way the log was kept: without adjectives. Placed with grandmother. Packet submitted — stamped copy attached. Agency letter: still in process. Worker changed; resubmission requested; original submission date shown and noted. Record requested by the children's mother; chronology received; approval lines end at a blank signature line. Household spending logged throughout; savings drawn down across the same months.",
+    "It fits on one page because the truth of it is not complicated. It only needed to be assembled before a room that runs on summaries could summarize it wrongly."
+   ],
+   "choices": [
+    {
+     "text": "Build it — one page, dates only, every line checkable",
+     "next": "chronology_after",
+     "setFlags": [
+      "chronologyBuilt"
+     ],
+     "cash": -6,
+     "addHidden": [
+      "One-page chronology — placement, packet submission, agency lag, and household drawdown assembled from documents"
+     ],
+     "note": "Six dollars of copies, in triplicate. One page that answers five words — caregiver experiencing financial strain — with eleven dates."
+    },
+    {
+     "text": "Carry the documents loose — the folder can speak for itself at the review",
+     "next": "chronology_after",
+     "note": "Folders do not speak. Pages assembled from them do. The exhibits are real either way; only one version of them is readable in twenty minutes."
+    }
+   ]
+  },
+  {
+   "id": "chronology_after",
+   "kicker": "Day 63 — Monday, March 16, 2026",
+   "dayOffset": 63,
+   "title": "Eleven Dates",
+   "body": [
+    "The chronology page, finished, is the least emotional document you have ever made about the most emotional winter of your life, and Ms. Hart reads it the way judges read: once, quickly, and then again at the line where the approval column stops.",
+    "“There,” she says. “That is the whole case, and it took eleven dates. Everything else — the strain, the stability question, the payments — is commentary on this page. Our job now is to make the review do its commenting with this page open.”",
+    "Two errands remain: a written confirmation from the payments office, and the filing itself."
+   ],
+   "choices": [
+    {
+     "text": "Go to the payments office and ask for the confirmation in writing",
+     "next": "payment_office",
+     "note": "In writing is doing all the work in that sentence, as it has since October."
+    }
+   ]
+  },
+  {
+   "id": "payment_office",
+   "kicker": "Day 65 — Wednesday, March 18, 2026",
+   "dayOffset": 65,
+   "title": "The Payments Office",
+   "body": [
+    "The payments office is a window, a clerk, and a screen she turns — after a moment's hesitation you will remember kindly — far enough for you to see the approval's status line. It says what the chronology said, in the system's own present tense: awaiting signature.",
+    "The clerk can confirm it verbally, which helps no file anywhere. Or she can print the status page — dated today, with the packet's received date and its awaiting-signature status on it — if you ask for the printout by name."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the printed status page, dated, with the received date on it",
+     "next": "review_notice",
+     "setFlags": [
+      "unsignedConfirmed"
+     ],
+     "cash": -4,
+     "addHidden": [
+      "Payments status printout — packet received in the week the children arrived; status: awaiting signature"
+     ],
+     "note": "One printed page. The blank line, confirmed by the office that owns the line, on the day you asked."
+    },
+    {
+     "text": "Take the verbal confirmation — she was clear, and the bus is coming",
+     "next": "review_notice",
+     "note": "Clear, kind, and unusable in a hearing room: a confirmation that exists only in your log, in your handwriting, again."
+    }
+   ]
+  },
+  {
+   "id": "review_notice",
+   "kicker": "Day 67 — Friday, March 20, 2026",
+   "dayOffset": 67,
+   "title": "The Review Notice",
+   "body": [
+    "The review notice arrives with the hearing's date and its paperwork: the agency's pre-review summary, in which the five words have grown a sentence. The summary now reports that the caregiver's financial strain raises a question about placement stability, and that the review will consider what supports the placement may need.",
+    "Read cold, it is a reasonable paragraph. Read with your chronology open beside it, it is a paragraph about a flood that never mentions the pipe. Both readings will be available in the courtroom. Only one of them will be in the file unless the chronology is filed before the hearing — Ms. Hart's step three, and the last errand on her list.",
+    "The hearing itself is a permanency hearing, held within six months of the children's placement (42 Pa.C.S. § 6351(e)(3)(i)). Six months is a clock too. This one, for once, is on your side: the review comes while the paper is still warm."
+   ],
+   "choices": [
+    {
+     "text": "Decide, with Ms. Hart, whether the chronology goes in ahead of the hearing",
+     "next": "paper_filed",
+     "note": "Filed ahead, it is read in advance. Carried in, it is an ambush — and ambushes, even truthful ones, read worse than pages."
+    }
+   ]
+  },
+  {
+   "id": "paper_filed",
+   "kicker": "Day 69 — Sunday, March 22, 2026",
+   "dayOffset": 69,
+   "title": "Filed Ahead, or Carried In",
+   "body": [
+    "Filing ahead costs copies, a trip, and the small social price of being the grandmother who files things. It buys the only thing that has ever mattered in this case: readers who have seen the cause before they weigh the strain.",
+    "Carrying it in costs nothing today. It also means the judge meets eleven dates for the first time in a twenty-minute hearing, while the summary's sentence — the one that has been in the file for weeks — sits already read, already underlined, already halfway to being a finding."
+   ],
+   "choices": [
+    {
+     "text": "File the chronology and exhibits with the agency and the court, in writing, before the review",
+     "next": "review_prep",
+     "setFlags": [
+      "paperOnRecord"
+     ],
+     "cash": -6,
+     "addHidden": [
+      "Chronology and exhibits filed in writing with agency and court before the permanency review"
+     ],
+     "note": "Stamped, copied, logged. The review will now be the second reading of your page, not the first."
+    },
+    {
+     "text": "Carry the folder to the hearing — let the judge see it fresh",
+     "next": "review_prep",
+     "note": "Fresh is a quality of salads. In hearing rooms, the word for it is untested."
+    }
+   ]
+  },
+  {
+   "id": "review_prep",
+   "kicker": "Day 71 — Tuesday, March 24, 2026",
+   "dayOffset": 71,
+   "title": "Preparing Without Rehearsing",
+   "body": [
+    "Preparation, in Ms. Hart's office, is mostly subtraction: the chronology, the exhibits, Dena's progress report, your log. What Bernice will say, if asked, fits in three sentences, and she writes them on an index card in the handwriting that has labeled a thousand lunch trays: the children came in October. The packet went in that week. The money trouble is the packet's shadow, and the packet is in the file.",
+    "“Do not perform,” Ms. Hart says. “Grandmothers who perform get weighed as performances. Hand up paper and answer questions. The paper is better at this than any of us.”",
+    "Dena, on the phone that night, asks if she should come. She is a party; of course she comes. “Then we both go,” you say, “and we let the dates talk.”"
+   ],
+   "choices": [
+    {
+     "text": "Put the index card in the folder, and go home to the children's week",
+     "next": "household_week",
+     "note": "Three sentences on a card. Eleven dates on a page. A winter on both."
+    }
+   ]
+  },
+  {
+   "id": "household_week",
+   "kicker": "Day 73 — Thursday, March 26, 2026",
+   "dayOffset": 73,
+   "title": "The Week the Case Waits",
+   "body": [
+    "The week before the review is, defiantly, ordinary: Joaquin loses a tooth and negotiates its price like a union man; Mireya insists on pouring her own milk and mostly succeeds; Dena's Sunday visit runs long because nobody watches the clock when the story Mireya is telling reaches its third act.",
+    "This is the placement whose stability a summary is about to question: two children, in their grandmother's house, in a routine so settled it has its own weather. The routine cost money to build. It is now being read, in an office across town, as evidence that the builder is a risk.",
+    "You log the week anyway — tooth, milk, story — because the log's job was never only the money. It is the house, in dates."
+   ],
+   "choices": [
+    {
+     "text": "Log the week, and lay out the children's clothes for the hearing morning",
+     "next": "bedtime_beat112",
+     "note": "Hearing mornings start the night before, in houses that run on preparation."
+    }
+   ]
+  },
+  {
+   "id": "bedtime_beat112",
+   "kicker": "Day 75 — Saturday, March 28, 2026",
+   "dayOffset": 75,
+   "title": "What Mireya Asks at Bedtime",
+   "body": [
+    "Mireya, at bedtime, asks the question underneath the whole case, in the grammar of four: “Are we staying at your house a long time?”",
+    "You give her the truth at her size: you are staying, the grown-ups are doing their paperwork, and her job is sleep. She accepts this with the completeness children accept things, and is asleep inside the story's first page.",
+    "Joaquin, eight and therefore a lawyer, asks from the doorway what happens at the review. “A judge reads the papers,” you say, “and decides if the papers tell the truth.” He considers this. “Do ours?” “Ours are dates,” you say. “Dates are the truest papers there are.”"
+   ],
+   "choices": [
+    {
+     "text": "Turn out the light, and check the folder one last time",
+     "next": "strain_deepens",
+     "note": "Folder, card, copies. The house sleeps. The file, across town, does not — files never do."
+    }
+   ]
+  },
+  {
+   "id": "strain_deepens",
+   "kicker": "Day 77 — Monday, March 30, 2026",
+   "dayOffset": 77,
+   "title": "The Form Learns a Word",
+   "body": [
+    "Two days before the review, Dena brings word of the pre-review paperwork's other half: a scored assessment form has been updated for the review, and among the things it rates — from the visits, the notes, and the summary — is placement stability, and the rating has absorbed the summary's sentence the way forms absorb everything: without its cause attached.",
+    "You cannot see the form's working. That is not this story's complaint; it is this story's weather. What you can do — the only thing anyone in your chair has ever been able to do — is make sure the room where the rating is weighed also holds the documents the rating never met.",
+    "Ms. Hart, on the phone, is calm in the specific way of people holding stamped copies: “Forms rate what they can see. Reviews decide what counts. Ours is filed. Let it count.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask whether the new worker has seen the filed chronology",
+     "next": "worker_ack",
+     "addHidden": [
+      "Scored assessment form updated for the review — placement-stability rating drawn from the summary, cause not attached"
+     ],
+     "note": "A form's rating and a file's cause are about to be introduced, in a room with a judge in it."
+    }
+   ]
+  },
+  {
+   "id": "worker_ack",
+   "kicker": "Day 79 — Wednesday, April 1, 2026",
+   "dayOffset": 79,
+   "title": "The New Worker's Second Reading",
+   "body": [
+    "Mr. Osei calls the evening before the review, and his voice has the particular care of a man who has read a file twice. The chronology reached him. He checked the approval's status himself, he says — the words awaiting signature are, as of this week, no longer a secret the building was keeping from itself.",
+    "He does not promise an outcome; workers who promise outcomes are writing checks the system cashes selectively. He says the smaller, truer thing: “The summary was written before the packet's history was in front of us. The review will have both.”",
+    "Both. For five months the case had a strain with no cause in it. Tonight, on the eve of the room that decides, it has both halves of its own story in the same file."
+   ],
+   "choices": [
+    {
+     "text": "Thank him, log the call, and sleep as well as hearing eves allow",
+     "next": "review_eve",
+     "note": "Logged: call, date, words. Some habits outlast the cases that taught them."
+    }
+   ]
+  },
+  {
+   "id": "review_eve",
+   "kicker": "Day 81 — Friday, April 3, 2026",
+   "dayOffset": 81,
+   "title": "The Night Before the Review",
+   "body": [
+    "The folder is by the door. The index card is in the folder. Dena will meet you at the courthouse steps, a party arriving for her children's hearing with her mother beside her — which is, whatever the file calls it, the family's actual structure, arriving in person.",
+    "You think about the winter in its true units: not months of process, but a stamped copy kept, a log kept, a daughter asked, a chronology assembled, a page filed. None of it was dramatic. All of it is about to be weighed in a room that weighs nothing else.",
+    "Across town, the summary's sentence sits in the file too, waiting for the same room. Sentences, like grandmothers, are patient. Tomorrow they meet a calendar."
+   ],
+   "choices": [
+    {
+     "text": "Take the folder, take Dena's arm at the steps, and go in",
+     "next": "morning_review",
+     "note": "Two generations of the same family, one folder. The courthouse has seen worse delegations."
+    }
+   ]
+  },
+  {
+   "id": "morning_review",
+   "kicker": "Day 83 — Sunday, April 5, 2026",
+   "dayOffset": 83,
+   "title": "Courthouse Steps",
+   "body": [
+    "The courthouse morning runs on its rails: the metal detector, the list on the wall, the conference-room wait in which every family in the corridor is holding a version of the same folder. Dena's hands are steady. Yours are steady. Steadiness, in this building, is a form of testimony.",
+    "Ms. Hart goes through the exhibits once, in order, the way she will hand them up: stamped copy, chronology page, signature page, status printout, log, bank book. “Dates first,” she says. “Feelings in the hallway, where they belong and where I will have plenty of my own afterward.”",
+    "The clerk calls the case. The children's case. The room, as ever, is smaller than what happens in it."
+   ],
+   "choices": [
+    {
+     "text": "Go in, and let the hearing be a hearing",
+     "next": "review_hearing",
+     "note": "Twenty minutes, a judge, and two versions of one winter: a sentence, and a calendar."
+    }
+   ]
+  },
+  {
+   "id": "review_hearing",
+   "kicker": "Day 85 — Tuesday, April 7, 2026",
+   "dayOffset": 85,
+   "title": "The Review",
+   "body": [
+    "The judge opens the way the statute opens: this is a permanency hearing, and the court will determine the continuing necessity of the placement, compliance with the plan, the progress made, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) — and it will determine them from the evidence.",
+    "The agency's summary is read first: the placement is going well; the children are settled; the caregiver is experiencing financial strain, raising a stability question. The sentence lands in the room exactly as written — true words, missing their cause, halfway to a finding.",
+    "Then Ms. Hart rises, and what happens next depends — with a precision this story has been honest about since October — on what your winter actually put in her hands."
+   ],
+   "choices": [
+    {
+     "text": "Put the full paper on the record — the stamped copy, the eleven dates, the blank signature line",
+     "next": "end_win",
+     "requiresFlags": [
+      "recordsRequested",
+      "chronologyBuilt",
+      "paperOnRecord"
+     ],
+     "note": "Exhibit by exhibit: received, routed, unsigned, unpaid — and a household ledger that matches the silence, month for month."
+    },
+    {
+     "text": "Accept the agency's hallway offer — payments started this week, the stability sentence left for another day",
+     "next": "end_middle",
+     "note": "Money now; language later. It is a real offer, and its price is written in the part of the file that travels."
+    },
+    {
+     "text": "Answer the stability question out loud — the winter, told by the woman who lived it",
+     "next": "end_strain",
+     "requiresNoFlags": [
+      "paperOnRecord"
+     ],
+     "note": "Every word of it is true. The summary is printed, filed, and already read; your voice is in the room for twenty minutes and in the transcript forever — at a summary's length, in a summary's words."
+    }
+   ]
+  },
+  {
+   "id": "end_win",
+   "kicker": "Day 88 — Friday, April 10, 2026",
+   "dayOffset": 88,
+   "title": "Ending — Payments Begin, and the File Tells the Truth (PARTIAL)",
+   "body": [
+    "The review does the thing reviews do when a cause arrives as exhibits: it re-describes the winter. The chronology is walked line by line — the packet's received date confirmed from the agency's own chronology, the routing stamp, the blank signature line, the status printout reading awaiting signature five months after the children arrived. The judge asks the agency one question — when the signature will happen — and accepts, on the record, the answer the building owed you in November: this week.",
+    "The order that follows keeps the placement exactly where it is, and writes the winter correctly while it does it: the caregiver's financial strain is attributed, in the findings, to the delayed approval — an agency processing lag — and not to the caregiver. Payments are directed to begin, with the approval completed on the record's own dates. The stability question, as a question about Bernice, is withdrawn by the only mechanism that ever withdraws such questions: better paper, in the same file, read by the person who decides.",
+    "You walk out with Dena's arm in yours and a folder that weighs the same as it did this morning. What it means has changed entirely."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Two columns that finally met. Their column: a packet received Friday, October 24, 2025, routed the following week, and then a blank signature line and an awaiting-signature status for five months — the agency's own chronology and its own payments printout, obtained because Dena, a party, requested the record that “shall be released upon request” (55 Pa. Code § 3130.44(d)). Your column: the stamped copy that proved October, the call log, the bank book whose descent matched the silence month for month, and a one-page chronology of eleven checkable dates, filed with the agency and the court before the hearing. At the hearing the court made its determinations from evidence (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) — and the evidence had a cause in it.",
+    "LABEL THIS WIN HONESTLY — IT IS PARTIAL: Payments begin, the record attributes the gap to the lag and not to the caregiver, and the placement is steadied on a truthful file. The drained savings are not restored by this ending or any ending in this scenario: the decade of overtime that the empty months spent stays spent, and no order in this story writes it back. What the win returns is the future — a placement read correctly from here, and payments that now arrive in the present tense. Anyone who calls that whole is selling something. It is enough, and it is not everything, and both halves of that sentence are the lesson.",
+    "WHAT NO STRATEGY CONTROLS: A different judge could have noted the chronology and pressed the stability question anyway; a payments office that lost the printout, a worker who never re-read the file, a daughter too deep in her own crisis to sign a page — any of them thins this ending without Bernice changing a thing. Workers, judges, clerks, and luck held pieces of it. What her choices controlled was narrower and durable: when the system finally weighed her winter, it weighed a calendar she had kept since October, instead of a sentence it had written about her in her absence."
+   ]
+  },
+  {
+   "id": "end_middle",
+   "kicker": "Day 88 — Friday, April 10, 2026",
+   "dayOffset": 88,
+   "title": "Ending — Paid, With the Note Still Standing",
+   "body": [
+    "The hallway offer is real, and you take it with open eyes: the approval is completed that week — the signature, it turns out, was always a week's work — and the first payment arrives before the month turns. Groceries stop being arithmetic. The house exhales.",
+    "Inside the courtroom, the review is brief and kind. The placement continues. And the summary's sentence — caregiver experiencing financial strain, stability question noted — is adopted into the review's paperwork without its cause ever being put beside it, because the chronology that carries the cause was never the price of the hallway deal. The strain is over. Its description remains, filed, quotable, and available to every future reader of this case.",
+    "You have won the money and lost the sentence. Both facts will travel with the file. Only one of them was ever going to pay for shoes."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): The same two columns as every path — the agency's blank signature line and your descending bank book — but assembled, if at all, only as a private folder, never as the review's evidence. The payments were fixed in a hallway, administratively, the moment the building was embarrassed into a signature. The record of why they were late was nobody's exhibit. So the file keeps both truths in their unbalanced forms: payments, current; strain, unexplained — a caregiver whose file says she struggled financially in the winter her grandchildren arrived, with the reason living in her kitchen-table folder instead of in the case.",
+    "THE PROCESS UNDER THIS PATH: The right that would have corrected the sentence was the verified one — the case record, released on a party's written request (55 Pa. Code § 3130.44(d)), signed by Dena because the right belongs to the case's subjects, not to a placement applicant — and the review that would have weighed the correction decides its questions from evidence put before it (42 Pa.C.S. § 6351(f)). A hallway can start payments. Only a record can re-describe a winter, and this winter's re-description was traded away, knowingly, for speed. The trade is understandable. Trades still cost what they cost.",
+    "THE HONEST PART: This ending is not a failure, and this debrief will not pretend the money is a small thing — it is rent, food, and a grandmother sleeping without arithmetic. It is a partial ending with the partiality located precisely: the future is paid for and the past is misdescribed, and the misdescription is the part with a forwarding address. A later review, a different worker, a new summary quoting the old one — the note will be read again by people who were not in the hallway. Whether it is ever corrected will depend on paper that, as of tonight, still lives only in a folder on a kitchen table — where, to Bernice's credit and this system's instruction, it at least still exists."
+   ]
+  },
+  {
+   "id": "end_strain",
+   "kicker": "Day 88 — Friday, April 10, 2026",
+   "dayOffset": 88,
+   "title": "Ending — Strain, Entered as Instability",
+   "body": [
+    "You tell the winter beautifully. You tell it in order, with the dates you know by heart, and the room listens the way rooms listen to grandmothers: with respect, and with a printed summary open in front of them.",
+    "The order, when it comes, is not cruel. The placement continues — the children are settled, everyone agrees — and the court, weighing the only paper it was given about the money, does what paper invites: it notes the caregiver's financial strain as a placement-stability concern, directs supportive services aimed at the caregiver's budgeting and household management, and sets the next review to examine whether the strain has resolved.",
+    "Services, arriving at last — aimed, with perfect administrative logic, at the one diagnosis the file contained. The packet, unsigned on a desk across town, is not mentioned in the order. It is not mentioned anywhere. That is what unmentioned things do: they continue."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A summary's sentence, adopted: strain, entered as instability, with services ordered around the wrong diagnosis — budgeting help for a woman whose budget was raided by a missing signature. Your account of the lag was spoken at the review and is preserved the way spoken accounts are: summarized, briefly, in someone else's words. The chronology that would have proven it — the agency's own approval lines ending at a blank signature line, obtainable on a party's written request under 55 Pa. Code § 3130.44(d) — was never requested, or never assembled, or never filed, and a court making its determinations from evidence (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) cannot weigh a cause it was never handed.",
+    "THE PROCESS UNDER THIS PATH: Nothing in this ending required bad faith from anyone in the room. The summary said strain; no exhibit said lag; the order therefore treated strain. That is the mechanism this scenario exists to teach: in a permanency review, the file's description of a problem becomes the court's prescription for it, and descriptions are only ever corrected by other documents — filed, dated, and in the record before the hearing weighs them. An oral history, however true, enters the record as the note-taker's summary of it, and summaries are how this winter got misdescribed in the first place.",
+    "THE HONEST PART: Be fair to the woman in this ending, because the file was not: she fed two children for five months out of her own old age, kept every copy, and told the truth in the room. The system's failure to sign a packet became, on paper, her instability — and the services now ordered will consume her afternoons teaching her to manage money she managed correctly all along. A kinder judge might have asked the agency for its approval chronology unprompted; some do. This one weighed what was filed. The folder on the kitchen table still holds the correction. Folders, unlike hearings, do not expire — but they do wait, and waiting is what the empty months were made of."
+   ]
+  },
+  {
+   "id": "end_disrupt",
+   "kicker": "Day 38 — Thursday, February 19, 2026",
+   "dayOffset": 38,
+   "title": "Ending — Notice Given: The Placement Disrupts",
+   "body": [
+    "The contingency becomes the plan, in the brisk language of placement meetings: the children will move to a foster home at the end of the month, as a temporary measure, everyone says, until the caregiver's circumstances stabilize. Temporary is a word this system uses the way families use soon — sincerely, and without a date attached.",
+    "Joaquin packs his school bag and a second bag, and asks whether the new house will know that Mireya cannot sleep without the story. You write it on a card for the new caregiver, in your clearest hand: the story, the milk, the tooth money rates. It is the last document you file in this case, and like all your documents, it is exact.",
+    "The approval packet, the record will eventually show, was signed some weeks after the children moved — in process, completed at last, in an empty house's file. Nobody in this ending acted from cruelty. A signature was late, a savings account was finite, and two children paid the exchange rate between those two facts."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A grandmother who did everything in ink — packet submitted Friday, October 24, 2025, stamped copy kept, calls logged — and an agency chronology nobody in this path ever requested, in which the packet she submitted sat unsigned from the week the children arrived. The notice Bernice sent was true when she sent it: the money was gone because the payments had never come, and the payments had never come because of a blank line in a building she had never entered. The disruption is recorded in the file as a caregiver's inability to continue. Its cause is recorded nowhere, because the document that would record it was never asked for.",
+    "THE PROCESS UNDER THIS PATH: The instrument that changes this ending is the verified one, and it was never Bernice's to sign: the case record “shall be released upon request” (55 Pa. Code § 3130.44(d)), and the right belongs to the case's subjects — Dena, a party, signing at her mother's asking, as the kinship scenario in this series teaches it. With the chronology in hand, the review's determinations (42 Pa.C.S. § 6351(f)) would have had a cause to weigh. Without it, the file weighed the only thing it held: a finite bank account. Notice, in this system, is also a document — and a true notice, sent without the chronology behind it, reads to every later reader as a capacity finding instead of a billing record.",
+    "THE HONEST PART: This ending must not be read as a grandmother failing two children. It is a placement ended by arithmetic that an unsigned packet imposed on a fixed income — the documented administrative-lag pattern this scenario is built from, run to its end. A worker who escalated the signature, a supervisor who audited awaiting-signature packets, a daughter positioned to sign a request in November instead of February: other people's paper held pieces of this too, and any one of them changes it. What Bernice controlled — the copies, the log, the truth told at kitchen-table size — she did, from the first week, in ink. The system's blank line outlasted her savings anyway. That sentence is the indictment this scenario files, and it is filed against a line, not a woman."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s112';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["waiting room|lobby", "Waiting Room"],
+  ["courthouse steps|courthouse|on the steps|outside court|leaving court|after court", "Courthouse Steps"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["parenting|program|support group", "Program"],
+  ["school office|principal|guidance office|school counselor", "School Office"],
+  ["school|teacher|classroom|class", "School"],
+  ["warehouse|factory|night shift|shift work|employer|paycheck", "Workplace"],
+  ["bus stop|\\btransit\\b|\\bbus\\b", "Bus Stop"],
+  ["laundromat|laundry|\\bwash\\b", "Laundromat"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen",
+  "Waiting Room": "plate-waiting", "Courthouse Steps": "plate-courtsteps",
+  "School Office": "plate-schooloffice", "Workplace": "plate-workplace",
+  "Bus Stop": "plate-busstop", "Laundromat": "plate-laundromat",
+  "Program": "plate-program"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+const EXTERIOR_PLATES = ["Apartment Exterior", "Courthouse Steps", "Bus Stop", "School", "Doorway"];
+const VARIANT_RULES = [
+  /* [regex, overlayId, exteriorOnly] — first match wins, one overlay max */
+  ["\\brain\\b|storm|downpour", "ov-rain", true],
+  ["midnight", "ov-night", false],
+  ["\\bnight\\b|tonight|overnight", "ov-night", true],
+  ["dusk|sunset|twilight", "ov-dusk", false],
+  ["evening", "ov-dusk", true],
+  ["dawn|sunrise|first light|daybreak|early morning", "ov-dawn", false]
+];
+function variantFor(node, plateName) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < VARIANT_RULES.length; i++) {
+    if (new RegExp(VARIANT_RULES[i][0]).test(text) &&
+        (!VARIANT_RULES[i][2] || EXTERIOR_PLATES.indexOf(plateName) !== -1)) {
+      return VARIANT_RULES[i][1];
+    }
+  }
+  return null;
+}
+function plateHTML(plateName, node) {
+  const v = node ? variantFor(node, plateName) : null;
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) +
+    (v ? ', ' + v.replace('ov-', '') : '') + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/>' +
+    (v ? '<use href="#' + v + '"/>' : '') + '</svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate, node) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

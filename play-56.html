@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 56 — The Wrong Gregory (a fictional composite)",
+  "startDateISO": "2026-12-07",
+  "startNode": "start",
+  "startCash": 260,
+  "tier": "Complex",
+  "summary": "You are Katya, in your fifth month of recovery. Your son Lev, four, is in foster care, and two paper walls stand between him and his uncle Gregory's home. The first is yours: an indicated report from the day Lev fell at the park — with a ninety-day appeal clock already running. The second is Gregory's: his kinship study is stalled by a record that belongs to a different man with his name. Two files, two corrections, one winter."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, December 7, 2026",
+   "dayOffset": 0,
+   "title": "The letter and the stall",
+   "body": [
+    "Two envelopes arrive in the same week, which is how you learn that trouble travels in convoys. The first is from Children and Youth: the report from the park — the afternoon Lev climbed too high and fell, the ambulance, the nine stitches — has been determined 'indicated,' naming you. You have ninety days from the notice to appeal it, or it becomes permanent: the appeal right and its clock are 23 Pa.C.S. § 6341(a)(2), and the notice, dated December 9th, starts a count that ends March 9th.",
+    "The second envelope is worse-dressed and sadder: your brother Gregory, whose kinship study for Lev began in November, has been told his approval is 'on hold pending record clarification.' Gregory's record, to your certain knowledge, contains one speeding ticket. 'Record clarification' is doing something in that sentence, and it is not clarifying."
+   ],
+   "choices": [
+    {
+     "text": "Put both envelopes in the folder you now keep. Then sort the winter: your clock first (it is the one that expires), his stall second (it is the one that festers).",
+     "next": "folder_system",
+     "addHidden": [
+      "indicated-clock"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "folder_system",
+   "kicker": "Day 0 — Monday, December 7, 2026",
+   "dayOffset": 0,
+   "title": "The folder",
+   "body": [
+    "Your sponsor, watching you spread two envelopes across her kitchen table like a losing hand, issues the winter's first order: 'Folder. Sections. Dates on everything. Recovery runs on inventory, and so — apparently — does the county.' By evening the folder exists: APPEAL (your clock), GREGORY (his stall), LEV (visits and his file), in that order, because order is a form of hope you can manufacture.",
+    "Every document this scenario produces goes into it with a date on its face. You do not yet know that the folder itself — its chronology, its completeness — will end up functioning as evidence of the thing the indicated report questions: whether you are a person who keeps track. Keep track."
+   ],
+   "choices": [
+    {
+     "text": "Sort the winter: the appeal clock first, in writing, while it is still cheap to stop.",
+     "next": "sort_winter"
+    }
+   ]
+  },
+  {
+   "id": "sort_winter",
+   "kicker": "Day 1 — Tuesday, December 8, 2026",
+   "dayOffset": 1,
+   "title": "Your clock",
+   "body": [
+    "Your counsel — appointed under 42 Pa.C.S. § 6337 — reads the indicated notice the way she reads everything: twice, with the second reading aloud. \"Ninety days to request the appeal hearing, and here's what changed under Act 119: the appeal isn't you begging to be believed. At the hearing, the agency has to prove the report accurate by substantial evidence — that's § 6341(c.2)(5) — and before the hearing, you're entitled to the evidence the agency collected, including anything in it that helps you — (c.2)(4). If we win, the report is expunged and the county and the Department get ordered to fix their files.\"",
+    "\"And if we file and wait?\" — \"The hearing gets scheduled; the report sits 'indicated' while it pends. Your recovery program, your job applications — the report is a fact about you in every database until a hearing officer says otherwise. We file this week. Early is free.\""
+   ],
+   "choices": [
+    {
+     "text": "File the appeal request now — the § 6341(a)(2) appeal, in writing, weeks inside the deadline.",
+     "next": "lev_visit",
+     "setFlags": [
+      "appealFiled"
+     ],
+     "cash": -8
+    }
+   ]
+  },
+  {
+   "id": "lev_visit",
+   "kicker": "Day 2 — Wednesday, December 9, 2026",
+   "dayOffset": 2,
+   "title": "Lev, at the visit",
+   "body": [
+    "Lev, at Thursday's visit, is four years old and running a railroad across the visitation room carpet with the concentration of a tiny executive. His foster mother — kind, unhurried, the sort who sends photos through the agency without being asked — reports his current headlines: sleeping through; preschool going well; and a question he has begun asking at bath time: 'When is Uncle Greg's dog's turn?' Bruno, Gregory's ancient beagle, has been promised a supervisory role in Lev's life, and Lev intends to hold the adults to it.",
+    "This is the stake under the paperwork: a four-year-old with a placement pending on a dog's turn, while two files miseducate the adults. File the appeal. Fix the name. The railroad is waiting."
+   ],
+   "choices": [
+    {
+     "text": "File the § 6341(a)(2) appeal this week — December, weeks inside the clock.",
+     "next": "appeal_filed"
+    }
+   ]
+  },
+  {
+   "id": "appeal_filed",
+   "kicker": "Day 3 — Thursday, December 10, 2026",
+   "dayOffset": 3,
+   "title": "Gregory's envelope",
+   "body": [
+    "With your clock stopped from being an emergency, you turn to the stall. Gregory, thirty-five, a finish carpenter with a duplex and a workshop, shows you his letter and his humiliation in equal measure: the hold cites 'an indicated report (2011) appearing in the household clearance summary under the applicant's name.' In 2011 Gregory was twenty, working in Ohio, and — this is the part that matters — his name is shared, in full, by a cousin in another county neither of you has spoken to in a decade. A cousin whose middle initial is M. Gregory's is T.",
+    "\"They asked if I had anything to tell them,\" he says. \"Like a confession was the form I was missing.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask the agency, in writing, for the specific identifiers behind the hold: the full name, date of birth, and report number the summary relied on.",
+     "next": "gregory_house",
+     "setFlags": [
+      "identifiersAsked"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "gregory_house",
+   "kicker": "Day 4 — Friday, December 11, 2026",
+   "dayOffset": 4,
+   "title": "Gregory's half of the duplex",
+   "body": [
+    "Gregory's home, walked in the same week, is a kinship placement in mid-assembly: the second bedroom painted a color Lev chose from a hardware-store swatch fan ('train blue'); a gate kit for the stairs still in its box because the study hasn't told him where gates go; Bruno asleep on a rug shaped like a bone, in flagrant violation of scale. Gregory's own room smells of sawdust and coffee. It is not a facility. It is an uncle's house with a four-year-old's name working its way into every room.",
+    "'The hold letter's in the kitchen,' he says. 'I keep it where I can see it. It says my name and somebody else's life in the same paragraph. We're going to make them unwrite it.'"
+   ],
+   "choices": [
+    {
+     "text": "Unwriting starts with identifiers: his full name, his date of birth, the question of who else carries both.",
+     "next": "sponsor_talk"
+    }
+   ]
+  },
+  {
+   "id": "sponsor_talk",
+   "kicker": "Day 5 — Saturday, December 12, 2026",
+   "dayOffset": 5,
+   "title": "The sponsor's rule",
+   "body": [
+    "Your sponsor reviews your draft letter to the agency — the one demanding the identifiers behind Gregory's hold — and returns it with one line struck and one rule pronounced: 'No anger in ink. Anger fades; the letter stays, and someday a hearing officer reads your letters to decide who you are. Write like the person you're becoming, not the afternoon you're having.'",
+    "The revised letter is four sentences: the hold's contents, the identifiers requested (full name, date of birth, report number), the correction sought, the response date asked. It is the least emotional document you have ever signed and, your counsel will later say, one of the most effective."
+   ],
+   "choices": [
+    {
+     "text": "Send it. The agency's answer will either be identifiers — or a silence you can also use.",
+     "next": "identifiers_ask"
+    }
+   ]
+  },
+  {
+   "id": "identifiers_ask",
+   "kicker": "Day 6 — Sunday, December 13, 2026",
+   "dayOffset": 6,
+   "title": "Identifiers",
+   "body": [
+    "The agency's reply takes nine days and contains the confession the file owed him: the clearance summary lists 'Gregory M.,' a date of birth in a different year, and a report number from a different county — merged into Gregory T.'s summary, the worker writes, 'during data migration.' Two men, one name, and a database that treats a name as an identity. Gregory's study didn't stall on his history. It stalled on his cousin's, wearing his name like a borrowed coat.",
+    "Ms. Barlow, the worker, is apologetic and precise about the fix: the summary must be corrected by the source, the clearances re-run under full identifiers, and the study resumed. Apologies do not correct databases, however. Written corrections, transmitted to every holder of the summary, do."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the correction in writing, addressed to the file, with transmittal to every office that received the original summary.",
+     "next": "cousin_check",
+     "setFlags": [
+      "conflationDocumented"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cousin_check",
+   "kicker": "Day 7 — Monday, December 14, 2026",
+   "dayOffset": 7,
+   "title": "The cousin, documented",
+   "body": [
+    "While the agency composes its answer, your family does its own records work the way families do — through your aunt, the unofficial registrar of everyone's everything. The cousin: Gregory M., two counties away, born two years earlier, a man whose 2011 you know of only as family weather ('trouble, back then'). Your aunt supplies the identifiers from a family Bible's flyleaf and an old reunion roster, and Gregory — whose stomach for this is thinner than yours — says the sentence that belongs in the file: 'I feel sorry for him too. But his report can't raise Lev. Mine has to be allowed to.'",
+    "You send the identifiers to the agency as an exhibit to your request: the two men, side by side, distinguishable by every field a database keeps. Databases confuse what letters let them. Letters are how the confusion ends."
+   ],
+   "choices": [
+    {
+     "text": "The agency meeting follows. Get its commitments in writing — dates, names, transmittals.",
+     "next": "agency_meeting56"
+    }
+   ]
+  },
+  {
+   "id": "agency_meeting56",
+   "kicker": "Day 8 — Tuesday, December 15, 2026",
+   "dayOffset": 8,
+   "title": "The meeting",
+   "body": [
+    "Ms. Barlow, to her credit, runs the meeting like a person correcting her own office: the migration merge is explained (a name-only match accepted by a validation routine in 2024), the fix is itemized (source correction, re-run under full identifiers, study resumed, the erroneous summary recalled from every office that received it), and the timeline is given in dates rather than weather. Your counsel writes the dates down and reads them back, which is the ceremony by which agency timelines become commitments.",
+    "'One more thing,' Ms. Barlow says, at the door, in the unofficial register. 'Tell your brother the hold letter should never have read like an accusation. The corrected one won't.'"
+   ],
+   "choices": [
+    {
+     "text": "Leave with the itemized fix in a follow-up letter — the correction, addressed to the file, transmitted everywhere the error went.",
+     "next": "correction56"
+    }
+   ]
+  },
+  {
+   "id": "correction56",
+   "kicker": "Day 9 — Wednesday, December 16, 2026",
+   "dayOffset": 9,
+   "title": "Your own record, opened",
+   "body": [
+    "There is a second reason to move now, and it belongs to your side of the winter: as Lev's mother and a party, you may request the case record in writing — 55 Pa. Code § 3130.44(d). Your request names two things: Lev's placement file (which contains Gregory's study and the tainted summary, where a second correction may be needed) and the park investigation file underlying your indicated report — the evidence (c.2)(4) entitles you to see, including whatever the agency collected that cuts your way.",
+    "One signature, two files, both corrections. Requests are cheap. Winters are long."
+   ],
+   "choices": [
+    {
+     "text": "File the § 3130.44(d) request covering both files.",
+     "next": "db_holders",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "record-request"
+     ],
+     "cash": -9
+    }
+   ]
+  },
+  {
+   "id": "db_holders",
+   "kicker": "Day 10 — Thursday, December 17, 2026",
+   "dayOffset": 10,
+   "title": "Everywhere the error went",
+   "body": [
+    "The transmittal list, when the agency produces it, is the winter's quiet horror in list form: the wrong summary went to the county's placement unit, the study file, a contracted background-check vendor, and a state database extract. A name-only match, four destinations. The correction must make the same journey — each holder confirming receipt in writing — because a correction that reaches three of four holders is a rumor with good intentions.",
+    "Gregory keeps the confirmations in a folder of his own now. 'My name, traveling with papers,' he says. 'Like it should have the first time.'"
+   ],
+   "choices": [
+    {
+     "text": "While his correction travels, build yours: your program's attendance record goes to your counsel for the appeal file.",
+     "next": "program_letter56"
+    }
+   ]
+  },
+  {
+   "id": "program_letter56",
+   "kicker": "Day 11 — Friday, December 18, 2026",
+   "dayOffset": 11,
+   "title": "Five months, one absence",
+   "body": [
+    "Your program counselor's letter is the recovery's balance sheet: five months enrolled; attendance near-perfect with the single absence annotated (the ambulance day, which the letter handles in one clause and a hospital's corroboration); screens clean; phase advancement on schedule; and the counselor's closing assessment, written by a woman who has watched hundreds of parents from this exact chair: 'Ms. K. presents as a parent in active, documented recovery whose child is the stated center of her treatment planning.'",
+    "It is not appeal evidence about the park. It is context evidence about you — and hearing officers, like all readers, judge the affidavit in front of them partly by the file around it. Your file is becoming the kind that helps."
+   ],
+   "choices": [
+    {
+     "text": "One more piece of your own evidence to gather before the investigation file arrives: the park itself, photographed.",
+     "next": "park_return"
+    }
+   ]
+  },
+  {
+   "id": "park_return",
+   "kicker": "Day 13 — Sunday, December 20, 2026",
+   "dayOffset": 13,
+   "title": "The park, photographed",
+   "body": [
+    "Your counsel's investigator photographs the climbing structure on a gray December morning: its posted age rating (4–7 — Lev's exact bracket, in the manufacturer's plate), the sight lines from the pavilion where your neighbor fell, the distance from the structure to the path — twenty-one feet, measured, not the impressionistic geography of a narrative written afterward. Lev's stitches scar is not in the photographs. The structure that 'should have been supervised differently' stands in them looking like what it is: a playground doing its ordinary job, in a park full of parents making the same twenty-foot calculations every day.",
+    "The photographs are not an argument. They are the scene, preserved, in case anyone later describes it from imagination."
+   ],
+   "choices": [
+    {
+     "text": "File the § 3130.44(d) request — both files, yours and the placement file, in one signature.",
+     "next": "records56"
+    }
+   ]
+  },
+  {
+   "id": "records56",
+   "kicker": "Day 14 — Monday, December 21, 2026",
+   "dayOffset": 14,
+   "title": "What the investigation file holds",
+   "body": [
+    "The investigation file arrives in January, and reading it is the strangest hour of your recovery: your worst afternoon, documented by strangers. It holds the worker's narrative (the fall, the ambulance, 'mother appeared distressed and distracted'), the hospital note (nine stitches, 'no other injuries; child calm; mother appropriate at bedside'), and — on page eleven, collected by the agency and never mentioned in its summary — a signed statement from the parks department attendant.",
+    "The attendant's statement says the things you have been saying since November into rooms that wrote down only some of them: you were twenty feet away, helping your elderly neighbor who had fallen on the path; Lev was on the age-appropriate structure; the attendant himself was the adult nearest the structure; and the fall 'could have happened with any parent present.' The agency had this the whole time. Under (c.2)(4), its evidence — all of it, including the parts that help you — is now yours to use."
+   ],
+   "choices": [
+    {
+     "text": "Give page eleven to your counsel with both hands. \"This was in their file since November.\"",
+     "next": "foster_mother56",
+     "setFlags": [
+      "exculpatoryFound"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "foster_mother56",
+   "kicker": "Day 15 — Tuesday, December 22, 2026",
+   "dayOffset": 15,
+   "title": "Lev's foster mother",
+   "body": [
+    "Lev's foster mother, at the January visit, delivers her own small report with the air of a woman filing a minority opinion in a case she supports: Lev is thriving; his questions about Bruno have achieved the status of a liturgy; and she has told the agency — in writing, she mentions, because she has learned from watching you — that 'this placement should end at his uncle's, on the uncle's readiness and not a day of database longer.'",
+    "Foster parents' voices carry the § 6336.1 guarantee of notice and hearing, and hers will be in the review packet: the incumbent placement advocating for the kinship one. Files rarely contain a sentence that generous. Reviews notice when they do."
+   ],
+   "choices": [
+    {
+     "text": "One document in your own file needs chasing before the investigation record lands: Lev's hospital record, which you may request as his mother.",
+     "next": "hospital_records"
+    }
+   ]
+  },
+  {
+   "id": "hospital_records",
+   "kicker": "Day 16 — Wednesday, December 23, 2026",
+   "dayOffset": 16,
+   "title": "The hospital note, firsthand",
+   "body": [
+    "Lev's emergency record, requested in your name as his mother, corroborates the investigation file's version in the hospital's own hand: 'laceration, forehead, nine sutures; no other injuries identified; child calm, consolable; mother present, appropriate, providing history.' You read 'appropriate' three times. In November, an adjective in a summary — 'distracted' — rearranged your legal life. In the primary record, another adjective has been sitting quietly, attached to the same afternoon, in the notes of people who were actually watching.",
+    "This is the winter's method in miniature: summaries argue; records testify. Your appeal now has both adjectives, with provenance. The investigation file, when it arrives, will add a third voice — the attendant's."
+   ],
+   "choices": [
+    {
+     "text": "The investigation file lands this week. Read it whole — including page eleven.",
+     "next": "page_eleven"
+    }
+   ]
+  },
+  {
+   "id": "page_eleven",
+   "kicker": "Day 17 — Thursday, December 24, 2026",
+   "dayOffset": 17,
+   "title": "Gregory's correction, traveling",
+   "body": [
+    "While your appeal strengthens, Gregory's correction does its slow paperwork: the corrected summary issues with his full identifiers; his clearances re-run clean under his own date of birth; the study resumes — home visit repeated (the first one, absurdly, must be redone because its paperwork references the wrong file number), references re-called. Gregory endures the rerun with a carpenter's philosophy: 'Measure twice. They measured the wrong man once.'",
+    "His part of the winter is now a schedule instead of a mystery: study completion estimated mid-February. Yours is a hearing: January 27th."
+   ],
+   "choices": [
+    {
+     "text": "Prepare the hearing with your counsel: the attendant subpoenaed if needed, the hospital note, your program's attendance record — and the burden where it belongs: on the agency, by substantial evidence (c.2)(5).",
+     "next": "narrative_vs_file",
+     "setFlags": [
+      "hearingReady"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "narrative_vs_file",
+   "kicker": "Day 19 — Saturday, December 26, 2026",
+   "dayOffset": 19,
+   "title": "Summary vs. file",
+   "body": [
+    "Your counsel builds the appeal's skeleton as a two-column document — 'What the summary says' against 'What the agency's file says' — and the columns do not behave like opponents; the second reads like the first one's correction. Summary: 'mother distracted, child unsupervised on structure.' File: mother twenty feet away rendering aid; attendant present and nearer; structure age-appropriate; hospital: mother appropriate. Summary: 'worker responded to scene.' File: the attendant's statement collected November 12th; the summary written November 20th, without it.",
+    "'Act 119 exists for this document,' your counsel says. 'The burden is theirs, the evidence is theirs, and the exculpatory piece was in their drawer. We don't have to prove you're perfect. We have to make them prove the report — with their own paper, out loud, in order.'"
+   ],
+   "choices": [
+    {
+     "text": "Subpoena the attendant if he won't come willingly. Then prepare the hearing like the evidence exam it is.",
+     "next": "hearing_prep56"
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep56",
+   "kicker": "Day 21 — Monday, December 28, 2026",
+   "dayOffset": 21,
+   "title": "Preparation",
+   "body": [
+    "Your counsel's preparation has a notable shape: she spends less time on you than on the agency's proof. \"Under Act 119, they carry it. Our job is to make them carry it in the open: their narrative says 'distracted.' Their own file says twenty feet, a fallen neighbor, an attendant present, age-appropriate equipment. Substantial evidence is not a mountain — but it is more than an adjective. When their case is a summary of their file and our case is their file, hearing officers can count.\"",
+    "Your program counselor provides the attendance record: five months, one absence (the ambulance day does not count, and the record says why). Recovery is not the subject of this hearing. It is, all the same, the room the hearing happens in."
+   ],
+   "choices": [
+    {
+     "text": "January 27th. Bring the file. Bring Gregory — he is not a witness in your appeal, but his presence is a fact about Lev's options, and hearing officers notice families.",
+     "next": "attendant_interview"
+    }
+   ]
+  },
+  {
+   "id": "attendant_interview",
+   "kicker": "Day 24 — Thursday, December 31, 2026",
+   "dayOffset": 24,
+   "title": "The attendant, interviewed",
+   "body": [
+    "The parks attendant — a retired school janitor named on page eleven — agrees to testify without a subpoena, which your counsel notes is what happens when a witness is telling a story he has already signed once. His account, in the investigator's notes, matches his statement in every particular and adds the one detail memory kept for the hearing: 'She hollered over — “Eyes on him a second, love” — when she went to the lady who fell. That's not distracted. That's a handoff. I've seen a thousand of them.'",
+    "A handoff. The word enters the appeal file and stays there, doing the work that adjectives do when they come from witnesses instead of summaries."
+   ],
+   "choices": [
+    {
+     "text": "January's visits continue while the tracks run. Attend everything. The file is watching you back, in the good way now.",
+     "next": "january_visit"
+    }
+   ]
+  },
+  {
+   "id": "january_visit",
+   "kicker": "Day 30 — Wednesday, January 6, 2027",
+   "dayOffset": 30,
+   "title": "January visits",
+   "body": [
+    "Lev's January visits acquire a companion: Gregory now attends the second half, with the agency's blessing — the kinship study's resumption has made him a person in the case again — and Bruno attends once, ceremonially, in the parking lot, where Lev conducts a thorough inspection and files his approval by attempting to ride him. The foster mother's log of these visits, which she keeps with a diarist's care, records 'child's transition behaviors: none noted; child treats uncle's presence as furniture — the good kind.'",
+    "Transition is the science the review will ask about, and it is being rehearsed weekly, on the record, by the incumbent placement herself. Some files argue. This one demonstrates."
+   ],
+   "choices": [
+    {
+     "text": "Gregory's study formally restarts — the home visit redone, under his own file number this time.",
+     "next": "study_restart"
+    }
+   ]
+  },
+  {
+   "id": "study_restart",
+   "kicker": "Day 36 — Tuesday, January 12, 2027",
+   "dayOffset": 36,
+   "title": "The study, restarted",
+   "body": [
+    "Gregory's re-run home visit is conducted by a worker who opens with the correction — 'For the record: this study concerns Gregory T., born [his year], of this address' — and the recitation, absurd and necessary, makes Gregory laugh in his own kitchen for the first time since November. The visit itself is thorough and brief: the train-blue room, the gate installed (he did not wait to be told where gates go), Bruno's vaccination records produced from a folder labeled with a carpenter's precision.",
+    "'Your brother keeps folders now too,' the worker observes. 'It's spreading through the family,' Gregory says. 'We're calling it the winter.'"
+   ],
+   "choices": [
+    {
+     "text": "His references are called the following week. Answer your phone; so does everyone who loves Lev.",
+     "next": "gregory_references"
+    }
+   ]
+  },
+  {
+   "id": "gregory_references",
+   "kicker": "Day 39 — Friday, January 15, 2027",
+   "dayOffset": 39,
+   "title": "References",
+   "body": [
+    "The references speak in the order the study calls them: the pastor (Gregory tithes in carpentry — the church's ramp, the food bank's shelves); two clients (a kitchen, a nursery — 'he built the room his own kids were rocked in; he'd build Lev's right'); your mother by phone from Arizona, who provides the family's closing argument in grandmother form: 'Both my children are in your files this winter. One of them is recovering out loud. The other never did anything but share a name with trouble. Kindly sort your papers.'",
+    "Reference calls are a study's oral tradition — unscripted, unrehearsed, and for that reason believed. Gregory's assemble into a man the corrected file finally describes accurately."
+   ],
+   "choices": [
+    {
+     "text": "Meanwhile, your indicated report collects its own winter interest: a job answer arrives that has nothing to do with the hearing.",
+     "next": "katya_work"
+    }
+   ]
+  },
+  {
+   "id": "katya_work",
+   "kicker": "Day 42 — Monday, January 18, 2027",
+   "dayOffset": 42,
+   "title": "The report, at work",
+   "body": [
+    "The preschool-assistant job you applied to in December — the one your recovery plan counted as a milestone — answers in January with the indicated report's practical voice: the required child-abuse clearance cannot issue while the report stands indicated; the position goes to another candidate. The letter is polite. Politeness does not pay the rent the job would have.",
+    "You file the letter in the APPEAL section of the folder, because it belongs to the appeal's true accounting: an indicated report is not an abstraction awaiting a hearing. It is a fact that interviews you at every application, every program, every background check, until a hearing officer rules. The stakes of January 27th now include a sentence about your employability that no one has to explain to you twice."
+   ],
+   "choices": [
+    {
+     "text": "One more document arrives for the folder before the hearing: the ChildLine registry's own statement of what your status means.",
+     "next": "childline_letter"
+    }
+   ]
+  },
+  {
+   "id": "childline_letter",
+   "kicker": "Day 45 — Thursday, January 21, 2027",
+   "dayOffset": 45,
+   "title": "What 'indicated' means, on paper",
+   "body": [
+    "The registry's status letter is bureaucratically serene: your report's status, its category, the review and appeal rights recited like a weather report for a climate you're living in. You read it with your counsel at the final prep, and she does the lawyer's kindness of translating its coldest line: the report will remain as it stands unless the appeal changes it — aging out is measured in years and decades, not in the seasons of a recovery or a childhood.",
+    "'Then January 27th isn't a formality,' you say. 'It was never going to be,' she says. 'It's the only room where the report has to defend itself. That's Act 119's whole point — make it come to a hearing and carry its proof.'"
+   ],
+   "choices": [
+    {
+     "text": "The eve of the hearing: folder closed, witness confirmed, Gregory briefed on where to sit and when to be furniture.",
+     "next": "hearing_eve"
+    }
+   ]
+  },
+  {
+   "id": "hearing_eve",
+   "kicker": "Day 48 — Sunday, January 24, 2027",
+   "dayOffset": 48,
+   "title": "The eve",
+   "body": [
+    "The night before the hearing, Gregory cooks — badly, cheerfully, with Bruno supervising from the rug — and the family's war council consists of your sponsor's rule recited like grace: no anger in ink, and none in testimony either; the file will do the arguing. Your counsel's last text is a litigator's blessing: 'Their burden. Our paper. Sleep.'",
+    "You sleep the way appellants sleep, which is in chapters, and wake to a gray morning with the folder by the door — APPEAL, GREGORY, LEV — in the order the winter taught you."
+   ],
+   "choices": [
+    {
+     "text": "January 27th. Bring the file. Bring Gregory. Make them carry it.",
+     "next": "hearing56"
+    }
+   ]
+  },
+  {
+   "id": "hearing56",
+   "kicker": "Day 51 — Wednesday, January 27, 2027",
+   "dayOffset": 51,
+   "title": "The appeal hearing",
+   "body": [
+    "The hearing is administrative — a hearing officer, a table, a record made by a stenographer — and it is decided on exactly the evidence Act 119 prescribes. The agency presents its narrative and its worker, who is honest under oath-adjacent pressure: yes, the attendant's statement was collected; no, it wasn't in her summary because 'the summary focused on the mother's position.' The attendant, subpoenaed, repeats page eleven in person. The hospital note is stipulated.",
+    "Your counsel closes in one paragraph: the agency must prove the report accurate by substantial evidence; its own collected evidence describes a supervised child, a momentarily diverted mother rendering aid to a fallen elderly woman, and an accident on appropriate equipment. 'Distracted,' the adjective, is asked to carry a finding. It cannot."
+   ],
+   "choices": [
+    {
+     "text": "The decision does not come from the bench. It will come by mail, within the time the statute allows — up to 45 days under § 6341(c.3). Wait, and work Gregory's track.",
+     "next": "the_wait56"
+    }
+   ]
+  },
+  {
+   "id": "the_wait56",
+   "kicker": "Day 58 — Wednesday, February 3, 2027",
+   "dayOffset": 58,
+   "title": "The wait, used",
+   "body": [
+    "February is study season: Gregory's re-run home visit (a worker who apologizes to his empty rooms for the delay), his references — a pastor, two clients, your mother by phone from Arizona — and his safety plan for a four-year-old, which includes, on the advice of no one, a workshop lock and a gate at the top of the stairs that he built in an afternoon because waiting is easier with sawdust.",
+    "The study completes February 18th: approved, without conditions, under his own name and identifiers, with the corrected summary stapled in front of the wrong one so the file remembers its own error. Lev's placement review is set for March 12th. Your appeal decision is somewhere in the mail's weather."
+   ],
+   "choices": [
+    {
+     "text": "Ask the agency to confirm Gregory's approval and the March 12th review in writing — the winter has taught everyone what writing is for.",
+     "next": "confirm56",
+     "setFlags": [
+      "gregoryApproved"
+     ],
+     "cash": -6
+    }
+   ]
+  },
+  {
+   "id": "confirm56",
+   "kicker": "Day 66 — Thursday, February 11, 2027",
+   "dayOffset": 66,
+   "title": "March approaches",
+   "body": [
+    "The confirmation letter arrives. The decision letter — yours — does not, yet. Tuesday, March 9, 2027 was your filing deadline, met in December; the decision runs on (c.3)'s clock, not yours, and hearing decisions in these appeals arrive when they arrive, up to the statutory outside limit. Your counsel files nothing and calls once, for the record, to confirm the decision is pending issuance.",
+    "On March 5th, two envelopes from Harrisburg are in your mailbox. You open them in the car, because some letters cannot wait for a kitchen."
+   ],
+   "choices": [
+    {
+     "text": "Open them.",
+     "next": "gregory_gate"
+    }
+   ]
+  },
+  {
+   "id": "gregory_gate",
+   "kicker": "Day 73 — Thursday, February 18, 2027",
+   "dayOffset": 73,
+   "title": "The gate, installed",
+   "body": [
+    "February 18th arrives with the study's completion and Gregory's gate finally out of its box — installed at the top of the stairs by its purchaser in an afternoon, inspected by the study's closing visit, and noted in the approval with a bureaucrat's restraint: 'Safety gate installed; home meets standards without conditions.' Bruno has been trained, by Lev's proxy (a stuffed dog of similar vintage), to wait at the gate rather than besiege it. Two species are now ready for the placement.",
+    "The approval letter goes into the GREGORY section with its confirmations: corrected summary at the front, the wrong one behind it, the file's memory of its own error preserved the way your counsel advised — visible, answered, and harmless at last."
+   ],
+   "choices": [
+    {
+     "text": "The approval must reach the court file before March 12th. Transmit it with confirmation — the winter's last errand of the kind.",
+     "next": "study_addendum"
+    }
+   ]
+  },
+  {
+   "id": "study_addendum",
+   "kicker": "Day 76 — Sunday, February 21, 2027",
+   "dayOffset": 76,
+   "title": "Transmitted, confirmed",
+   "body": [
+    "The approval's transmittal to the court file is confirmed in writing within the week — the agency's letter, the clerk's stamp, your counsel's copy, a small trinity of paper that six months ago would have seemed like overkill and now reads as hygiene. Gregory's track is complete: the right man, his own identifiers, an unconditional approval, a court file that contains all three facts.",
+    "What remains is a mailbox in Harrisburg, a decision within its statutory window, and the March 12th review assembling both files at last."
+   ],
+   "choices": [
+    {
+     "text": "Your counsel calls once, for the record, to confirm the decision is pending issuance. Then the waiting ends the way it ends.",
+     "next": "decision_call"
+    }
+   ]
+  },
+  {
+   "id": "decision_call",
+   "kicker": "Day 85 — Tuesday, March 2, 2027",
+   "dayOffset": 85,
+   "title": "Issued",
+   "body": [
+    "'It's issued,' your counsel says, on a Tuesday call you take standing in the bakery aisle for no reason your legs can explain. 'It's in the mail. I don't have the text yet — decisions come to the parties on paper, which this winter has taught us to respect and resent in equal measure. Do not read it alone in a parking lot. Read it at your sponsor's table, with Gregory, and then call me.'",
+    "March 5th. Two envelopes from Harrisburg are in your mailbox. You drive them, unopened, to your sponsor's kitchen, where Gregory is already waiting with Bruno's leash still in his hand from the walk over."
+   ],
+   "choices": [
+    {
+     "text": "Open them — at the table, with your people, the way the winter taught you to do everything else.",
+     "next": "decision56"
+    }
+   ]
+  },
+  {
+   "id": "decision56",
+   "kicker": "Day 88 — Friday, March 5, 2027",
+   "dayOffset": 88,
+   "title": "The decision",
+   "body": [
+    "The hearing officer's decision is eleven pages and it reads the agency's file back to it: the attendant's statement, the hospital note, the stipulated facts — and the conclusion the arithmetic required. What the decision orders is the last piece of the winter. What Gregory's approval already settled is the other. The March 12th review will assemble them, one way or another."
+   ],
+   "choices": [
+    {
+     "text": "Read the operative paragraph. Then call Gregory.",
+     "next": "march_packet"
+    }
+   ]
+  },
+  {
+   "id": "march_packet",
+   "kicker": "Day 90 — Sunday, March 7, 2027",
+   "dayOffset": 90,
+   "title": "The review packet",
+   "body": [
+    "Your counsel assembles the March 12th packet in the order a judge's morning prefers: the hearing officer's decision (whatever it holds); Gregory's approval, corrected file and all; the foster mother's letter advocating the placement; the visit logs showing a four-year-old already rehearsing his uncle's household; and your program record, five months becoming six, the trajectory underneath everything.",
+    "'Whatever the decision says,' she tells you, 'this packet is the truest file this family has ever had in a courthouse. True files are not guarantees. They are the ground guarantees are built on, when they come.'"
+   ],
+   "choices": [
+    {
+     "text": "Ms. Barlow confirms the agency's recommendation by phone. Hear it before the courtroom does.",
+     "next": "barlow_call"
+    }
+   ]
+  },
+  {
+   "id": "barlow_call",
+   "kicker": "Day 92 — Tuesday, March 9, 2027",
+   "dayOffset": 92,
+   "title": "The agency's recommendation",
+   "body": [
+    "Ms. Barlow's call is careful in the way of a worker who has corrected her own file once this winter and intends the correction to stand: the agency will recommend placement with Gregory at the review — his approval is unconditional, the transition is documented, the incumbent foster parent concurs. On your report, the agency's position follows the hearing officer's decision, 'as it should.' The institution that wrote both files' errors will walk into March carrying both corrections. It is not redemption. It is what accountability looks like at caseworker scale: specific, documented, and filed.",
+    "You thank her, and write it down, and date it — the folder's last entry before the review."
+   ],
+   "choices": [
+    {
+     "text": "Call Gregory. Tell him the recommendation, the date, and that Bruno should expect inspection by a four-year-old with standards.",
+     "next": "gregory_call56"
+    }
+   ]
+  },
+  {
+   "id": "gregory_call56",
+   "kicker": "Day 93 — Wednesday, March 10, 2027",
+   "dayOffset": 93,
+   "title": "Telling Gregory",
+   "body": [
+    "Gregory receives the news the way carpenters receive measurements — twice, to be sure. 'Placement recommended. March 12th. And my name — spelled with the T, in the right file?' 'With the T,' you confirm, 'in the right file, in front of the wrong one, forever, as a warning to databases.' He is quiet a moment. 'Then I'll paint the gate,' he says. 'Train blue. He'll want it matching the room.'",
+    "The winter ends the way it ran: in documents confirmed aloud, between two siblings, over a phone line — with a dog asleep on a rug and a gate about to change color."
+   ],
+   "choices": [
+    {
+     "text": "March 12th. Both files, one courtroom, one four-year-old's address.",
+     "next": "outcome56"
+    }
+   ]
+  },
+  {
+   "id": "outcome56",
+   "kicker": "Day 95 — Friday, March 12, 2027",
+   "dayOffset": 95,
+   "title": "March 12th — the review",
+   "body": [
+    "The courtroom has both files in it now — yours, decided; Gregory's, corrected — and a four-year-old's address is, as always, the only question actually on the table. Ms. Barlow presents the agency's recommendation. Your counsel presents the winter. The judge reads the decision's operative paragraph one more time before ruling."
+   ],
+   "choices": [
+    {
+     "text": "Hear the ruling.",
+     "next": "final_gate56"
+    }
+   ]
+  },
+  {
+   "id": "final_gate56",
+   "kicker": "Day 95 — Friday, March 12, 2027",
+   "dayOffset": 95,
+   "title": "Two files",
+   "body": [
+    "Everything the winter built is in this room: a timely appeal, an expunged — or upheld — report; a corrected identity; an approved uncle. The ruling is assembled from whichever of those actually happened."
+   ],
+   "choices": [
+    {
+     "text": "The report is expunged on the agency's own evidence, and Gregory — the right Gregory — is approved: placement with his uncle.",
+     "next": "end_bothfiles",
+     "requiresFlags": [
+      "appealFiled",
+      "exculpatoryFound",
+      "gregoryApproved"
+     ]
+    },
+    {
+     "text": "Gregory is approved and Lev is placed with him — but the report stands, and it will follow Katya into every background check until it ages or is revisited.",
+     "next": "end_onefile"
+    },
+    {
+     "text": "The report stands, and the study — uncorrected or unfinished — means Lev waits in foster care for the next review.",
+     "next": "end_upheldwaiting"
+    }
+   ]
+  },
+  {
+   "id": "end_bothfiles",
+   "kicker": "Day 95 — Friday, March 12, 2027",
+   "dayOffset": 95,
+   "title": "Ending — Both Files, Corrected",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The report is expunged — the hearing officer finds the agency did not carry its burden of proving it accurate by substantial evidence, its own attendant's statement outweighing its summary's adjective — and the orders go out as § 6341(c.3) provides: the report expunged, the county agency and the Department directed to amend their records. At the review, Lev is placed with Gregory T. — the uncle whose own name was restored to him in writing in January, whose study was completed under his own identifiers, and whose gate-at-the-stairs craftsmanship is noted in the approval without official comment on its quality, which is high.",
+    "Two disciplines won this winter, and both are paper disciplines. On your side: the appeal was filed inside the 90-day clock (§ 6341(a)(2)) — early, in December, because early is free — and then Act 119's architecture did the work: the agency's burden (c.2)(5), and its duty that the evidence it collected, including what helped you, be available (c.2)(4). The attendant's statement existed since November. The appeal is what made the agency answer for ignoring it. On Gregory's side: an identity error is corrected the way it was made — in writing, at the source, transmitted to every holder of the wrong summary — with identifiers demanded before arguments were offered. 'The wrong man' is not a defense you plead. It is a fact you document until the database agrees.",
+    "What no strategy controls: the hearing officer. Another officer, on the same record, could have found the narrative sufficient; Act 119's burden shift raises the floor, it does not appoint the judge. And Gregory's cousin's actual record was the winter's dark luck — had the conflated report been Gregory's own, the study's question would have been real, and this ending unavailable. The strategy's claim is narrower and complete: both files now say what is true. Courts can work with true files. Families can build on them. It is the false ones — unappealed, uncorrected, unexamined — that quietly decide addresses."
+   ]
+  },
+  {
+   "id": "end_onefile",
+   "kicker": "Day 102 — Friday, March 19, 2027",
+   "dayOffset": 102,
+   "title": "Ending — One File Corrected (partial)",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "Lev goes to Gregory's — the identity correction held, the study approved the right man, and placement follows. But the indicated report stands: the hearing officer found the agency's proof sufficient, or the evidence landed differently than the file promised. Katya leaves the courthouse simultaneously a mother whose son is with family and a woman whose name sits in ChildLine as indicated — with consequences she will meet at job applications and program paperwork for years, blunted only partly by the knowledge that the report ages and that further review rights exist and are time-limited, as the decision letter itself will state.",
+    "Hold the two facts apart, because the system won't: the kinship track and the appeal track are separate files with separate burdens, and winning one does not launder the other. Gregory's correction was total because it was provable — identifiers are arithmetic. Katya's appeal was a judgment call because supervision is a judgment — and judgment calls, by design, sometimes land on the family. The record built here (the attendant's statement, the hospital note, the stipulations) is preserved in the hearing record; it is the foundation any further review stands on, and it did not exist until the appeal forced the file open.",
+    "This is a partial win with a long shadow, and the guide names it plainly: Lev is home with family, which is the outcome childhood is measured in; and the report is a debt Katya will pay in installments of explanation. Both are true. The winter's work made one of them true. The other is the reason the next family should file in December too — the clock is the same, and sometimes the officer is different."
+   ]
+  },
+  {
+   "id": "end_upheldwaiting",
+   "kicker": "Day 102 — Friday, March 19, 2027",
+   "dayOffset": 102,
+   "title": "Ending — Upheld and Waiting",
+   "ending": true,
+   "body": [],
+   "debrief": [
+    "The report is upheld, and Gregory's study — its correction still traveling, or its re-run still queued at the review date — is not ready to carry a placement. Lev stays in his foster home, kindly kept and officially temporary, and the next review is a season away. Katya walks out with two files that both, in different ways, say 'not yet' about people they do not describe accurately — one by judgment, one by clerical gravity.",
+    "The post-mortem is the scenario: every mechanism that fixes these files is time-shaped. The appeal clock (§ 6341(a)(2)) ran from December 9th whether or not anyone felt ready; identity corrections move at the speed of the offices that made the error; studies re-run at queue speed. What beats the shapes is starting inside them early — appeal filed in the first weeks, identifiers demanded in the first letter, the record request (§ 3130.44(d)) filed while the tracks were still warm. None of that guarantees outcomes. All of it guarantees that the system's delays are spent on your case's real questions instead of its clerical ones.",
+    "From here: the correction, once landed, reopens Gregory's study on a court's impatience rather than an agency's queue, and the next review reads a different file. Winters end. The discipline is to make sure yours ends because the paper became true — not merely because the season changed."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s56';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

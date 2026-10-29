@@ -1,0 +1,721 @@
+{
+  "meta": {
+    "title": "The First 90 Days",
+    "subtitle": "Scenario 121 \u2014 The Meeting That Happened Without Her (a fictional composite)",
+    "startDateISO": "2026-09-07",
+    "startNode": "start",
+    "startCash": 160,
+    "tier": "Complex",
+    "summary": "You are Reginald Bly. Your daughter Alina, twelve, is placed with her grandmother two districts away. A letter has just informed you that her school was decided last Tuesday \u2014 at a best-interest meeting you were never told about, in a process you have never heard of."
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "kicker": "Day 0 \u2014 Monday, September 7, 2026",
+      "dayOffset": 0,
+      "title": "Will be enrolled",
+      "body": [
+        "The letter is from the school district where your mother lives, and its grammar is the first injury: *Alina Bly will be enrolled at Jefferson Middle School effective Monday, September 21.* Not *may*. Not *the district proposes*. Will \u2014 the future tense of a decision already made, arriving at the father's address like a weather report.",
+        "Alina has been at her grandmother Wilma's since August 10, placed there by a court after your injury, your lost job, and the spring when a twelve-year-old quietly became the adult in your house. Her school \u2014 her math team, her science project, the counselor who knows the whole story \u2014 is nineteen miles in the other direction. Nobody has asked you about any of this. You did not know there was an asking."
+      ],
+      "choices": [
+        {
+          "text": "Call your mother first. If a decision was made, somebody in this family was in the room.",
+          "next": "backstory121"
+        }
+      ]
+    },
+    {
+      "id": "backstory121",
+      "kicker": "Day 0 \u2014 Monday, September 7, 2026",
+      "dayOffset": 0,
+      "title": "How Alina got to Wilma's",
+      "body": [
+        "The record, in the order it deserves: your wife died two years ago. Your back went in March \u2014 a warehouse lift, a disc, a surgery date that kept moving. By May, Alina was making the lunches, signing your name to the forms she could reach, and falling asleep in second period. The school reported what it saw, accurately. The petition that followed was, in its facts, also accurate.",
+        "Dependency was found; disposition placed Alina with your mother \u2014 her grandmother, her favorite person, in a house an hour's bus ride from yours and two districts from her school. You visit twice a week. You are healing, working light duty since August, doing the plan. The plan, as written, mentions Alina's school exactly nowhere \u2014 an omission that seemed harmless until a letter used the words *will be enrolled*."
+      ],
+      "choices": [
+        {
+          "text": "Call Wilma.",
+          "next": "wilma_call"
+        }
+      ]
+    },
+    {
+      "id": "wilma_call",
+      "kicker": "Day 1 \u2014 Tuesday, September 8, 2026",
+      "dayOffset": 1,
+      "title": "Bus paperwork",
+      "body": [
+        "Wilma is indignant in the specific way of a woman discovering she has been used as a rubber stamp. Yes, she took a call on September 1 \u2014 from the agency, she thought, about *bus paperwork*. A nice man asked whether Alina was settled, whether the school near her house was 'fine.' She said the child was settled and the school was a school. Nobody said the words *best interest*. Nobody said a determination was being made. Her assent, such as it was, is apparently in a file somewhere wearing a suit.",
+        "\"Reginald,\" she says, \"if they'd told me it was a meeting, I'd have worn my meeting voice. And I'd have told them to call her father.\" She is already reaching for a pen: whatever she said, she will now say what it was \u2014 on paper."
+      ],
+      "choices": [
+        {
+          "text": "Ask her to write exactly what that call was \u2014 and then find out what a 'best-interest determination' is supposed to be.",
+          "next": "bid_reveal",
+          "setFlags": [
+            "wilmaStatement"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bid_reveal",
+      "kicker": "Day 2 \u2014 Wednesday, September 9, 2026",
+      "dayOffset": 2,
+      "title": "September 1",
+      "body": [
+        "Ms. Vadnais, the caseworker, confirms the architecture without embarrassment. A best-interest determination \u2014 a BID \u2014 was held September 1 at the district office: agency, school district staff, and 'the caregiver, by phone.' The determination: transfer serves Alina's best interest, citing proximity to her placement. You were not notified, she explains, because school notifications to parents in your posture 'usually run through the agency,' and the agency's letter went to your previous address \u2014 the one on the petition, from March.",
+        "Your current address is on the agency's visitation file, the medical file, and four months of sign-in sheets. It is not on the letter that decided your daughter's school."
+      ],
+      "choices": [
+        {
+          "text": "Call the guardian ad litem \u2014 Mr. Havel represents Alina. Was he in the room?",
+          "next": "gal121"
+        }
+      ]
+    },
+    {
+      "id": "gal121",
+      "kicker": "Day 3 \u2014 Thursday, September 10, 2026",
+      "dayOffset": 3,
+      "title": "Not in the room either",
+      "body": [
+        "Mr. Havel was not in the room either \u2014 he learned of the BID from the same letter you did, a day later. His professional annoyance is a useful instrument: layered, precise, and aimed. \"A determination about a child's best interest,\" he says, \"was made by a subset of the people the word *interest* involves. I will be saying so, in writing, to both districts. Whether the court ever hears it depends on whether someone builds the record. That someone, Mr. Bly, is you.\"",
+        "He gives you the lawyer's name \u2014 Ms. Anselmi \u2014 and the advice that organizes the rest of this scenario: \"Do not fight the letter. Fight for the determination to be made again, properly, before September 21. A process redone is winnable. A process denounced is just weather.\""
+      ],
+      "choices": [
+        {
+          "text": "Ms. Anselmi's office. Bring the letter, your mother's account, and every address you have ever given the agency.",
+          "next": "lawyer121"
+        }
+      ]
+    },
+    {
+      "id": "lawyer121",
+      "kicker": "Day 3 \u2014 Thursday, September 10, 2026",
+      "dayOffset": 3,
+      "title": "All the factors",
+      "body": [
+        "Ms. Anselmi puts the federal standard on the whiteboard, because it is shorter than the system's behavior suggests. A child in foster care enrolls or remains in her school of origin *unless a determination is made that it is not in her best interest to attend it* \u2014 and that determination is to be based on *all factors relating to the child's best interest, including consideration of the appropriateness of the current educational setting and the proximity to the school in which she was enrolled when placed*. (20 U.S.C. \u00a7 6311(g)(1)(E)(i))",
+        "\"Now measure September 1 against the sentence,\" she says. \"One factor \u2014 proximity. A caregiver consulted about bus paperwork. A parent at an address the agency itself doesn't use. A teacher never asked. That is not a determination based on all factors; it is a default wearing a determination's clothes. We ask \u2014 in writing, to the agency and both districts \u2014 for the determination to be made again, with the parent present, the teacher heard, and the answer written. And we ask before September 21, because undoing an enrollment is heavier than pausing one.\""
+      ],
+      "choices": [
+        {
+          "text": "Sign the written objection and demand for a reconvened determination \u2014 to the agency, both districts, copies everywhere.",
+          "next": "objection_sent",
+          "setFlags": [
+            "bidObjected"
+          ],
+          "addHidden": [
+            "School \u2014 written objection to best-interest determination; reconvened determination demanded before transfer date"
+          ]
+        },
+        {
+          "text": "Call Ms. Vadnais first. A demand letter feels like an escalation; a conversation might soften the agency into redoing it voluntarily.",
+          "next": "phone_fight"
+        }
+      ]
+    },
+    {
+      "id": "phone_fight",
+      "kicker": "Day 4 \u2014 Friday, September 11, 2026",
+      "dayOffset": 4,
+      "title": "Expressed disagreement",
+      "body": [
+        "The conversation is courteous and weightless. Ms. Vadnais understands your concern. The determination is, however, 'final for this semester' \u2014 a phrase with no citation attached, because none exists. She will note your objection in the file. When Ms. Anselmi later reads the file note, it says, in full: *father expressed disagreement re: school*.",
+        "\"Expressed disagreement,\" Ms. Anselmi says, \"is what a written demand looks like after a phone call metabolizes it. We are going to write the letter anyway \u2014 a week of its force already spent on courtesy.\""
+      ],
+      "choices": [
+        {
+          "text": "Write the letter now: objection, the factor list, the demand for a reconvened determination before September 21.",
+          "next": "objection_sent",
+          "setFlags": [
+            "bidObjected"
+          ],
+          "addHidden": [
+            "School \u2014 written objection filed after verbal objection was recorded only as 'expressed disagreement'"
+          ]
+        },
+        {
+          "text": "Accept the finality. The districts have decided; spend your strength on the case plan instead.",
+          "next": "default_path"
+        }
+      ]
+    },
+    {
+      "id": "objection_sent",
+      "kicker": "Day 5 \u2014 Saturday, September 12, 2026",
+      "dayOffset": 5,
+      "title": "The letter, out",
+      "body": [
+        "The objection goes to four addresses: the agency, the district of origin, the district of placement, and the court file through counsel. Its exhibits are modest and devastating: the enrollment letter's date; your mother's account of the September 1 call; the visitation file's address page \u2014 your real address, in the agency's own records since May. It asks for three things: the determination reconvened with all factors considered; the parent present; enrollment held meanwhile.",
+        "Paper this specific creates a problem institutions cannot file under weather: someone, somewhere, has to answer it with their name attached."
+      ],
+      "choices": [
+        {
+          "text": "Now the file itself \u2014 ask for the agency record, and the BID's own paper, in writing.",
+          "next": "records121"
+        }
+      ]
+    },
+    {
+      "id": "records121",
+      "kicker": "Day 6 \u2014 Sunday, September 13, 2026",
+      "dayOffset": 6,
+      "title": "The determination's paper",
+      "body": [
+        "The regulation gives you the ask: the agency's case record is to be released on request. (55 Pa. Code \u00a7 3130.44(d)) You request the whole record \u2014 and by name, everything touching the September 1 determination: the meeting notice, the attendee list, the BID form itself.",
+        "Files answer lists. This list is about to learn what September 1 actually consisted of \u2014 which matters more than what it concluded."
+      ],
+      "choices": [
+        {
+          "text": "Sign it, date it, send it so it leaves a trail, keep the copies.",
+          "next": "vadnais_letter",
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "cash": -10,
+          "addHidden": [
+            "Record \u2014 agency record and BID documentation requested in writing"
+          ]
+        },
+        {
+          "text": "Rely on the districts' copies instead \u2014 the agency's file will just duplicate them.",
+          "next": "vadnais_letter"
+        }
+      ]
+    },
+    {
+      "id": "vadnais_letter",
+      "kicker": "Day 7 \u2014 Monday, September 14, 2026",
+      "dayOffset": 7,
+      "title": "As listed",
+      "body": [
+        "The agency's written response arrives with the speed of an institution that has consulted its counsel: the determination, it maintains, was properly made; notice to the father was sent to the address 'as listed.' Attached \u2014 whether by candor or by clerical accident, you will never know \u2014 is the address page from the petition, March's address, beside a routing stamp from the visitation unit, bearing your current address, dated May.",
+        "Ms. Anselmi puts both pages in one exhibit sleeve. \"Institutions rarely confess,\" she says. \"They file. We just make sure the filing reaches the room.\""
+      ],
+      "choices": [
+        {
+          "text": "Take the exhibit sleeve to the one office that has been silent so far: the district of origin's foster care point of contact.",
+          "next": "district_poc"
+        }
+      ]
+    },
+    {
+      "id": "district_poc",
+      "kicker": "Day 8 \u2014 Tuesday, September 15, 2026",
+      "dayOffset": 8,
+      "title": "The other district",
+      "body": [
+        "The district of origin keeps a foster care point of contact because federal law expects the collaboration to have a name: districts are to collaborate with the child welfare agency, designate a point of contact, and maintain clear written procedures for keeping a child in her school of origin \u2014 transportation included. (20 U.S.C. \u00a7 6312(c)(5)) The point of contact, reading your packet, displays the professional embarrassment of a man discovering his own district never received the BID notice either: September 1's 'district staff' were from the *receiving* district. The school that stands to lose Alina was not in the room when her best interest was determined.",
+        "\"Then the room was missing three of its chairs,\" he says. \"Mine, yours, and her teacher's. I'll sign the request for a reconvened determination myself.\""
+      ],
+      "choices": [
+        {
+          "text": "With the district's own point of contact co-signing the ask, assemble the September 1 paper when it arrives.",
+          "next": "bid_paper",
+          "setFlags": [
+            "districtAlly"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "default_path",
+      "kicker": "Day 8 \u2014 Tuesday, September 15, 2026",
+      "dayOffset": 8,
+      "title": "Final for this semester",
+      "body": [
+        "The phrase does its quiet work. No letter is written; no determination is reconvened; the file's account of your position remains four words \u2014 *father expressed disagreement* \u2014 and September moves at its usual speed toward the 21st. Ms. Vadnais is not unkind about it. Systems are rarely unkind about their defaults. They are simply already in motion, and motion is most of what a default is.",
+        "Alina asks Wilma once whether the bus question was ever decided. Wilma, who took a six-minute call about paperwork, says the truest sentence in the case: \"Baby, I believe it was decided by people who never said the word *decided* out loud.\""
+      ],
+      "choices": [
+        {
+          "text": "September 21 arrives.",
+          "next": "transfer_monday"
+        }
+      ]
+    },
+    {
+      "id": "bid_paper",
+      "kicker": "Day 9 \u2014 Wednesday, September 16, 2026",
+      "dayOffset": 9,
+      "title": "One factor, scored",
+      "body": [
+        "The BID file, produced under your record request, is four pages \u2014 and the determination's form is the most eloquent document in this case. Its factor list mirrors the statute's: appropriateness of the current educational setting; proximity; the child's attachments and programs; input from the parent; input from the child's teachers. Against nearly every line: *not obtained*. Against proximity alone: a score, a note, a signature.",
+        "A determination 'based on all factors' (20 U.S.C. \u00a7 6311(g)(1)(E)(i)) cannot be built from one factor and four blanks. Nobody has to accuse September 1 of bad faith. Its own form accuses it of being unfinished."
+      ],
+      "choices": [
+        {
+          "text": "Fill the blanks. Start with the teacher who was never asked \u2014 Ms. Aldana, who has taught Alina for two years.",
+          "next": "teacher_call"
+        }
+      ]
+    },
+    {
+      "id": "teacher_call",
+      "kicker": "Day 9 \u2014 Wednesday, September 16, 2026",
+      "dayOffset": 9,
+      "title": "The teacher who was never asked",
+      "body": [
+        "Ms. Aldana answers the school's phone with two years of Alina in her voice. Advanced mathematics \u2014 placed by assessment in June, a track the receiving district rebuilds from its own testing, weeks into the term, if at all. The science-fair project, mid-build. The counselor relationship, built across the year her mother-in-fact \u2014 no, her *grandmother* \u2014 no. Built across the year Alina's mother died. \"Nobody asked me anything,\" she says. \"I read about the transfer in the office copy of the letter. I assumed you'd been consulted. Parents usually are. That's the assumption everyone at my end was working under.\"",
+        "Assumptions, all the way down \u2014 and every one of them filing itself as a fact."
+      ],
+      "choices": [
+        {
+          "text": "Ask her to put it in writing for the reconvened determination: the track, the project, the counselor \u2014 dated, signed, on school letterhead.",
+          "next": "wilma_statement",
+          "setFlags": [
+            "teacherHeard"
+          ]
+        },
+        {
+          "text": "Take her verbal support as enough \u2014 the meeting will hear the father's voice; paper from a teacher is a bonus.",
+          "next": "wilma_statement"
+        }
+      ]
+    },
+    {
+      "id": "wilma_statement",
+      "kicker": "Day 10 \u2014 Thursday, September 17, 2026",
+      "dayOffset": 10,
+      "title": "Wilma's meeting voice",
+      "body": [
+        "Your mother writes her statement at the kitchen table, in her meeting voice, in ink: what the September 1 call was (six minutes, about buses), what she was never told (that a determination was being made, that her answers were the caregiver consultation), and what she would have said if asked the real questions \u2014 including that Alina cries about the math team in the specific way she cries about nothing else.",
+        "She signs it, dates it, and adds a postscript that advocates will quote for years: *I am the placement. I am not the parent. You have his address.*"
+      ],
+      "choices": [
+        {
+          "text": "One voice remains unconsulted in this entire file. Ask Alina what she wants \u2014 and whether she will write it.",
+          "next": "alina_voice121"
+        }
+      ]
+    },
+    {
+      "id": "alina_voice121",
+      "kicker": "Day 10 \u2014 Thursday, September 17, 2026",
+      "dayOffset": 10,
+      "title": "Her paragraph",
+      "body": [
+        "Alina writes her paragraph at Wilma's table after dinner, with the seriousness of a girl who has been discussed in paragraphs for months and is finally holding the pen. She wants to stay at her school. The bus is long and she does not care. The math team is hers. She understands adults decide; she asks that this be in the file when they do: *I already changed houses. I don't want to change everything.*",
+        "Whether a child's paragraph is evidence, input, or merely the point of the entire proceeding is a question systems answer differently. It is undisputed that a file deciding her best interest should contain it."
+      ],
+      "choices": [
+        {
+          "text": "Ask her permission to file it with the determination packet \u2014 her words, her name, her choice.",
+          "next": "bid_date",
+          "setFlags": [
+            "alinaVoice"
+          ]
+        },
+        {
+          "text": "Keep it in the family. She has been paperworked enough.",
+          "next": "bid_date"
+        }
+      ]
+    },
+    {
+      "id": "bid_date",
+      "kicker": "Day 10 \u2014 Thursday, September 17, 2026",
+      "dayOffset": 10,
+      "title": "Friday, September 18",
+      "body": [
+        "The answer to the objection arrives from the agency's counsel, in the register institutions use when they are conceding the minimum real thing: *without prejudice to the September 1 determination*, a reconvened best-interest meeting will be held Friday, September 18 \u2014 the parent to attend, the child's teacher invited, both districts represented \u2014 and enrollment will be held in place pending its outcome. The stay exists because the objection asked for it in writing, with a date in it. September 21 stands still, for now, at the edge of the calendar.",
+        "Three days. The packet is nearly built. What it still lacks is the piece that kills more school-stability cases than every legal argument combined: the ride."
+      ],
+      "choices": [
+        {
+          "text": "Do the transportation math before the meeting does it at you.",
+          "next": "transport_math"
+        }
+      ]
+    },
+    {
+      "id": "transport_math",
+      "kicker": "Day 11 \u2014 Friday, September 18, 2026",
+      "dayOffset": 11,
+      "title": "Nineteen miles",
+      "body": [
+        "The geography, unsentimentally: Wilma's house to Alina's school, nineteen miles. The origin district's bus route passes four miles from Wilma's door. Wilma works part-time afternoons and can drive mornings. You work light duty with Fridays variable. The statute's procedures exist for exactly this arithmetic: transportation to the school of origin is to be provided, arranged, and funded under the district's written procedures, with additional costs met by the child welfare agency's reimbursement, by the district, or shared. (20 U.S.C. \u00a7 6312(c)(5)(B))",
+        "Three doors for the money. What the meeting needs is a father who has already walked through one of them, on paper."
+      ],
+      "choices": [
+        {
+          "text": "Draft the shared plan: Wilma drives mornings; the district extends its existing route the last four miles in the afternoons; the agency reimburses the mileage difference; you cover Fridays. Bring it printed.",
+          "next": "pre_bid_prep",
+          "setFlags": [
+            "transportPlan"
+          ]
+        },
+        {
+          "text": "Go to the meeting on the merits and let the professionals solve transportation, as the law's procedures promise they will.",
+          "next": "pre_bid_prep"
+        }
+      ]
+    },
+    {
+      "id": "pre_bid_prep",
+      "kicker": "Day 11 \u2014 Friday, September 18, 2026",
+      "dayOffset": 11,
+      "title": "The factor walk",
+      "body": [
+        "Ms. Anselmi rehearses you the way she rehearses everyone: the determination will walk the factor list, and you will have one disciplined sentence per factor, with a document behind each. Current setting: Ms. Aldana's letter. Proximity: nineteen miles, and a costed transport plan \u2014 or, without one, a hole the other side will pour concrete into. The child's own input: her paragraph, if she has allowed it. The September 1 paper: unfinished, on its own form.",
+        "\"We are not arguing that proximity doesn't matter,\" she says. \"We are arguing that a determination is a thing with parts, and September 1 was missing most of them. Make them do it whole.\""
+      ],
+      "choices": [
+        {
+          "text": "Walk into the reconvened determination.",
+          "next": "bid_day"
+        }
+      ]
+    },
+    {
+      "id": "bid_day",
+      "kicker": "Day 11 \u2014 Friday, September 18, 2026",
+      "dayOffset": 11,
+      "title": "The meeting, again",
+      "body": [
+        "The room is fuller this time, which is the first finding. Both districts. The agency. Mr. Havel. Ms. Aldana by phone, her letter in the packet. Your mother's statement. Your daughter's paragraph, if it is in the file, read into the meeting's record by the chair without commentary \u2014 the sound of a child's handwriting being taken seriously is a particular silence.",
+        "The factors are walked, one by one, because the objection demanded they be. And then the meeting arrives, as every such meeting arrives, at the last box on the form: transportation \u2014 the place where best interests go to be priced."
+      ],
+      "choices": [
+        {
+          "text": "Put your printed plan in the center of the table: who drives, which route, whose dollars \u2014 reimbursement, district, shared, in the statute's own three doors.",
+          "next": "bid_outcome_fork",
+          "setFlags": [
+            "transportFunded"
+          ]
+        },
+        {
+          "text": "Argue the merits and leave the last box to the room's goodwill \u2014 surely, with the factors this clear, someone will own the ride.",
+          "next": "bid_outcome_fork"
+        }
+      ]
+    },
+    {
+      "id": "bid_outcome_fork",
+      "kicker": "Day 11 \u2014 Friday, September 18, 2026",
+      "dayOffset": 11,
+      "title": "What the room decides",
+      "body": [
+        "The determination is re-made in the room \u2014 deliberated this time, on the full factor list, with your exhibits sweating in the middle of the table. What it decides turns on a brutally simple variable: whether staying at Alina's school is a plan with a funded ride inside it, or a principle with a hole where the ride should be.",
+        "The letter confirming it will follow within days. Either way, the case now moves toward the October review \u2014 and the review will read whichever version of September your choices left in the file."
+      ],
+      "choices": [
+        {
+          "text": "The determination, re-made, keeps Alina at her school \u2014 with the transportation plan written into it as a term, funded and assigned.",
+          "next": "post_bid_origin",
+          "requiresFlags": [
+            "bidObjected",
+            "transportFunded"
+          ]
+        },
+        {
+          "text": "The determination keeps Alina at her school in principle \u2014 and leaves transportation 'to be arranged,' unassigned and unfunded.",
+          "next": "post_bid_origin",
+          "requiresFlags": [
+            "bidObjected"
+          ],
+          "requiresNoFlags": [
+            "transportFunded"
+          ]
+        },
+        {
+          "text": "The determination, re-made on all the factors this time, still lands on transfer \u2014 proximity and a fresh start outweighing the rest, on a record that finally says why.",
+          "next": "post_bid_transfer",
+          "requiresFlags": [
+            "bidObjected"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post_bid_origin",
+      "kicker": "Day 12 \u2014 Saturday, September 19, 2026",
+      "dayOffset": 12,
+      "title": "The letter, corrected",
+      "body": [
+        "The confirming letter uses a different grammar than the first one. Not *will be enrolled* \u2014 *will remain*. Alina keeps her school: her math track, her project, her counselor, her paragraph now permanently in the file that decides things about her. What remains to be seen is whether the arrangement survives contact with October \u2014 buses, mileage forms, a grandmother's alarm clock, a father's Fridays.",
+        "School stability, it turns out, is not an event. It is a route that has to be driven, in both senses, every day."
+      ],
+      "choices": [
+        {
+          "text": "Drive it. The next three weeks are the review's evidence.",
+          "next": "first_bus_week"
+        }
+      ]
+    },
+    {
+      "id": "post_bid_transfer",
+      "kicker": "Day 12 \u2014 Saturday, September 19, 2026",
+      "dayOffset": 12,
+      "title": "A fairer letter",
+      "body": [
+        "The confirming letter still says transfer \u2014 but it is a different species of document from September's. This one recites the factors: the advanced track, weighed; the counselor, weighed; your daughter's paragraph, quoted; proximity and the transport burden, weighed heavier. September 21 stands. Alina will change schools \u2014 after a determination that finally did the work its name promises, in a room you were in, on a record you can read, appeal, and hold the system to.",
+        "Losing properly is not winning. But the record of a proper loss is a tool: it fixes the reasons, and reasons can change. What happens next decides whether the transfer is a rupture or a bridge."
+      ],
+      "choices": [
+        {
+          "text": "September 21. Enrollment day \u2014 and the law has instructions for that day too.",
+          "next": "enrollment_day"
+        }
+      ]
+    },
+    {
+      "id": "enrollment_day",
+      "kicker": "Day 14 \u2014 Monday, September 21, 2026",
+      "dayOffset": 14,
+      "title": "Enrolled on the day",
+      "body": [
+        "Alina is enrolled at Jefferson Middle School on Monday, September 21, immediately \u2014 as the federal assurances require when a determination goes against the school of origin: immediate enrollment in the new school even without the records normally required, and the enrolling school reaching back at once for her academic and other records. (20 U.S.C. \u00a7 6311(g)(1)(E)(ii), (iii)) She has a locker by ten and a schedule by eleven. The machinery of arrival works. What machinery cannot do is move her *placement in the advanced track* \u2014 that lives in assessments, and assessments have calendars.",
+        "You watch her walk in with the folder she would not let anyone carry. The fight is not over. It has changed weapons: from preventing a transfer to prosecuting its paperwork."
+      ],
+      "choices": [
+        {
+          "text": "Chase the records transfer like it owes you money. Every day without her file is a placement decision being made by an empty folder.",
+          "next": "alina_new_school"
+        }
+      ]
+    },
+    {
+      "id": "transfer_monday",
+      "kicker": "Day 14 \u2014 Monday, September 21, 2026",
+      "dayOffset": 14,
+      "title": "A locker, eventually",
+      "body": [
+        "Alina starts at Jefferson Middle School on September 21 \u2014 not immediately, in the way the federal assurances describe when a real determination has been made (20 U.S.C. \u00a7 6311(g)(1)(E)(ii)), but eventually, in the way of processed paperwork: two days of schedule confusion, a week for her records to be requested, longer for them to arrive, and an assessment for the advanced track scheduled at the district's convenience in November. Nobody violated anything anyone can point to. The determination that was supposed to structure all of this was made in six minutes, on one factor, and its thinness is now simply the medium Alina swims in.",
+        "She adapts, the way the system counts on children adapting. The costs are itemized nowhere, which is where such costs prefer to live."
+      ],
+      "choices": [
+        {
+          "text": "Read the ending of the September that was decided by a phone call about buses.",
+          "next": "end_default"
+        }
+      ]
+    },
+    {
+      "id": "end_default",
+      "kicker": "Day 14 \u2014 Monday, September 21, 2026",
+      "dayOffset": 14,
+      "title": "Ending \u2014 Enrolled on a Tuesday",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "There was no hearing about the school \u2014 no room, no moment, no loss anyone can appeal, because nothing was ever formally decided in a way the system had to defend. A six-minute phone call about bus paperwork became a determination; a determination became an enrollment; an enrollment became a girl in the standard track of a school she describes as *fine*, waiting until November for an assessment her old school completed in June. Her father's objection exists in the file in its entirety: *father expressed disagreement*. Four words, spelled correctly.",
+        "The debrief is the statute, read against the file. The assurance is real: school of origin unless a determination based on all factors \u2014 the appropriateness of the current setting, proximity, the whole list \u2014 decides otherwise. (20 U.S.C. \u00a7 6311(g)(1)(E)(i)) The machinery is real: points of contact, written transportation procedures, funded rides. (20 U.S.C. \u00a7 6312(c)(5)) And none of it is self-executing. Every piece of it waits for a dated, written objection \u2014 the kind that creates a problem an institution must answer with a name attached \u2014 and for a record request (55 Pa. Code \u00a7 3130.44(d)) that drags the four-page form into the light. The father in this ending had every fact the winning father had. He had them in conversations. Conversations are where this system stores things it intends to lose.",
+        "It is not sealed \u2014 determinations can be revisited, transfers appealed through the districts' own processes, records corrected at any review; Alina's November assessment may yet restore her track, months late and grades lighter. But September cannot be re-run, and September was when the asking was cheap. In the first ninety days of a case, the defaults load themselves into envelopes and letterhead. The only counterweight ever documented is paper, sent early, with the address right."
+      ]
+    },
+    {
+      "id": "first_bus_week",
+      "kicker": "Day 16 \u2014 Wednesday, September 23, 2026",
+      "dayOffset": 16,
+      "title": "The route, running",
+      "body": [
+        "Week one of the arrangement: Wilma's car at 7:10, the handoff at the route's last stop, Alina boarding the origin district's bus with her project folder like a commuter with a briefcase. She is, her counselor reports, *annoyingly awake* in first period. The math team practices Tuesdays. The science fair board acquires its second panel.",
+        "Ms. Aldana emails you \u2014 you, directly, because the file now has your address right \u2014 a one-line progress note. These are the documents October's review will be made of, and they are accumulating the way all decisive evidence accumulates: on ordinary days, without ceremony."
+      ],
+      "choices": [
+        {
+          "text": "Keep every one. And when the mileage invoice arrives, read it as carefully as any court paper.",
+          "next": "math_team"
+        }
+      ]
+    },
+    {
+      "id": "alina_new_school",
+      "kicker": "Day 17 \u2014 Thursday, September 24, 2026",
+      "dayOffset": 17,
+      "title": "It's fine. It's just not mine",
+      "body": [
+        "Alina's review of Jefferson, delivered at Wilma's table with a fork suspended: \"The kids are fine. The teachers are fine. It's fine. It's just not mine.\" Her classes are the standard track \u2014 the receiving school places by its own assessment, scheduled for October, and until then a girl who was doing advanced work does ordinary work well and gets quietly bored in the specific way that precedes trouble.",
+        "The records from her old school arrive in pieces: grades first, then attendance, then \u2014 the piece that matters \u2014 nothing about the advanced placement, which traveled, as such things do, in a separate system that nobody requested by name."
+      ],
+      "choices": [
+        {
+          "text": "Request it by name: the assessment record, the track placement, the counselor's file \u2014 in writing, to both districts.",
+          "next": "records_chase"
+        }
+      ]
+    },
+    {
+      "id": "records_chase",
+      "kicker": "Day 20 \u2014 Sunday, September 27, 2026",
+      "dayOffset": 20,
+      "title": "By name",
+      "body": [
+        "The lesson of this whole case applies to paper as to meetings: lists get answered. Requested by name, the assessment record surfaces in six days \u2014 June's scores, the placement memo, Ms. Aldana's cover note, which includes a sentence the receiving school's counselor reads twice: *This student should not be re-assessed downward by default; her placement reflects two years of data.*",
+        "The receiving district schedules Alina's placement review \u2014 its own process, its own calendar \u2014 for late October. After the review hearing in her dependency case. Which means the October review, in court, becomes the room where the school question is argued with the whole record finally assembled, including what a proper determination costs when it still comes out *transfer*."
+      ],
+      "choices": [
+        {
+          "text": "Assemble it all for the review: both determinations, the full factor record, the enrollment paper, the assessment file.",
+          "next": "review_prep"
+        }
+      ]
+    },
+    {
+      "id": "math_team",
+      "kicker": "Day 21 \u2014 Monday, September 28, 2026",
+      "dayOffset": 21,
+      "title": "The math team final",
+      "body": [
+        "The math team makes its regional final \u2014 a fact Alina delivers at Wilma's table with the paragraph-writer's own hand now steady enough to add: *told you*. Her placement on the team exists because a June assessment put her in the advanced track, and the track exists because a school across two district lines kept her file whole. In the transfer version of this autumn \u2014 the one September 1 designed \u2014 the final happens without her, and no document anywhere records the loss, because losses that consist of things not happening leave no paper. This one nearly did.",
+        "You file the tournament program in the review packet, between the transport invoices \u2014 the two kinds of evidence a school case runs on: what it costs, and what it's for."
+      ],
+      "choices": [
+        {
+          "text": "The mileage invoice arrives. Paper meets paper.",
+          "next": "route_bill"
+        }
+      ]
+    },
+    {
+      "id": "route_bill",
+      "kicker": "Day 24 \u2014 Thursday, October 1, 2026",
+      "dayOffset": 24,
+      "title": "The invoice",
+      "body": [
+        "The mileage and route-extension accounting arrives with an institutional stumble in it: the agency's share is processed late, the district's paperwork wants a form the agency hasn't countersigned, and for nine days the arrangement runs on Wilma's credit card and Wilma's faith. It is resolved \u2014 the countersignature lands, the reimbursement posts \u2014 because every party's obligation was written into a determination with names and numbers, and written obligations can be chased. Unwritten ones can only be mourned.",
+        "You keep the whole paper trail: the promise, the stumble, the chase, the cure. At the review, it is the difference between *the plan works* and *the plan works on paper*."
+      ],
+      "choices": [
+        {
+          "text": "One honest conversation remains before the review: how long can Wilma carry the mornings?",
+          "next": "wilma_tired"
+        }
+      ]
+    },
+    {
+      "id": "wilma_tired",
+      "kicker": "Day 30 \u2014 Wednesday, October 7, 2026",
+      "dayOffset": 30,
+      "title": "Wilma's alarm clock",
+      "body": [
+        "Your mother, at her table, in her meeting voice: \"I will drive that girl until I am ninety if the court orders me to. But a plan that depends on a seventy-one-year-old never being sick is not a plan, it's a hope with a license plate.\" She is right, and her rightness is the review's business: the arrangement needs a documented backup \u2014 your Fridays formalized, a neighbor on the route vetted as the relief driver, the district's contingency noted in the file.",
+        "You build the backup in writing, because backups, like everything else in this case, exist when they are on paper and evaporate when they are understood."
+      ],
+      "choices": [
+        {
+          "text": "File the backup plan with the agency and both districts; put a copy in the review packet.",
+          "next": "review_prep",
+          "cash": -14
+        },
+        {
+          "text": "Trust the arrangement's momentum. It has survived a month; don't reopen what works.",
+          "next": "review_prep"
+        }
+      ]
+    },
+    {
+      "id": "review_prep",
+      "kicker": "Day 35 \u2014 Monday, October 12, 2026",
+      "dayOffset": 35,
+      "title": "The school chapter",
+      "body": [
+        "The review packet's school chapter is, by now, a small book: two determinations \u2014 the six-minute original and its reconvened successor; the factor record, blanks and all, beside the same form filled; a teacher's letter; a grandmother's statement; a daughter's paragraph; invoices, programs, enrollment records, assessment files \u2014 whichever subset your autumn actually built.",
+        "Ms. Anselmi arranges it in the order the court determines things. \"October's hearing is about the whole case \u2014 necessity, compliance, progress, efforts. (42 Pa.C.S. \u00a7 6351(f)) School is where several of those words will be read from. Let's make the reading accurate.\""
+      ],
+      "choices": [
+        {
+          "text": "One page of drafted findings language, in the statute's own order, and then court.",
+          "next": "anselmi_findings"
+        }
+      ]
+    },
+    {
+      "id": "anselmi_findings",
+      "kicker": "Day 36 \u2014 Tuesday, October 13, 2026",
+      "dayOffset": 36,
+      "title": "Findings, drafted",
+      "body": [
+        "Ms. Anselmi drafts the ask as findings, because judges sign findings more readily than essays. On the school question, in whichever direction the record runs: that the court note the determination history \u2014 what September 1 was, what September 18 made of it \u2014 and direct the parties to maintain the arrangement the record supports, with the transportation terms (or the placement review) stated in the order itself, where defaults cannot edit them.",
+        "\"An order is the only memo a system cannot misfile,\" she says. \"We are asking the court to write the school chapter into one.\""
+      ],
+      "choices": [
+        {
+          "text": "Go to court.",
+          "next": "review_day"
+        }
+      ]
+    },
+    {
+      "id": "review_day",
+      "kicker": "Day 38 \u2014 Thursday, October 15, 2026",
+      "dayOffset": 38,
+      "title": "Thursday, October 15",
+      "body": [
+        "The review runs the statute's determinations \u2014 continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, reasonable efforts to finalize the plan. (42 Pa.C.S. \u00a7 6351(f)(1), (2), (3), (5.1)) Your progress is real and is found. Then the court reaches the school chapter, and reads \u2014 as courts do \u2014 what the file actually holds.",
+        "The school question is answered by the autumn that built it."
+      ],
+      "choices": [
+        {
+          "text": "The file holds a gutted original determination, a reconvened one made on all the factors, and a funded transportation plan already running \u2014 with invoices to prove it.",
+          "next": "end_origin",
+          "requiresFlags": [
+            "bidObjected",
+            "transportFunded"
+          ]
+        },
+        {
+          "text": "The file holds a proper determination and a kept school \u2014 but the ride belongs to a seventy-one-year-old's alarm clock, unfunded and unbacked.",
+          "next": "end_unfunded",
+          "requiresFlags": [
+            "bidObjected"
+          ],
+          "requiresNoFlags": [
+            "transportFunded"
+          ]
+        },
+        {
+          "text": "The file holds a determination done properly the second time \u2014 and a transfer that survived it, with the paperwork now prosecuted to a whole record.",
+          "next": "end_fair_transfer",
+          "requiresFlags": [
+            "bidObjected"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "end_origin",
+      "kicker": "Day 38 \u2014 Thursday, October 15, 2026",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Nineteen Miles, Funded",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The review order does the thing Ms. Anselmi asked: it writes the school arrangement into the order itself. Alina remains at her school of origin; the transportation plan \u2014 Wilma's mornings, the district's extended afternoon route, the agency's reimbursement share, your Fridays, the documented backup \u2014 is recited as a term, with the invoice paper attached as the court's own exhibit of a plan that has already survived a month of Tuesdays. The judge's one oral addition is aimed at the file: \"The next determination about this child's schooling will be made the way the September one was made the second time. The first way is not a way.\"",
+        "Name what won, with the statute open. The right is structural: remain in the school of origin unless a determination \u2014 based on *all* factors relating to best interest, including the appropriateness of the current setting and proximity \u2014 decides otherwise. (20 U.S.C. \u00a7 6311(g)(1)(E)(i)) September 1 honored it in the breach: one factor, four blanks, a parent notified at a dead address, a caregiver consulted about buses. The counter-machinery was equally structural: a written objection with the factor list in it; the agency record requested (55 Pa. Code \u00a7 3130.44(d)), whose four-page BID form testified against itself; a teacher's letter; a kin caregiver's statement; a child's paragraph; and \u2014 the load-bearing piece \u2014 a transportation plan walked through the statute's three funding doors (agency reimbursement, district payment, or shared cost, 20 U.S.C. \u00a7 6312(c)(5)(B)) and laid on the table before the room had to price a principle.",
+        "What no strategy controls: November 10, 2027, when Alina reaches fifteen of her twenty-two months in care and the termination-petition question arrives with its own exceptions (42 U.S.C. \u00a7 675(5)(E)) \u2014 this scenario ends thirteen months before that clock strikes, and its debrief will not pretend the school win settles it. A route can be redrawn; a grandmother can get the flu; determinations can be revisited when facts change, by any side. What this autumn controlled was narrower and complete: the decision about a child's school was made on purpose, by the full list of people the word *interest* involves, in writing. That is the whole doctrine of this scenario. It is also, not incidentally, the law."
+      ]
+    },
+    {
+      "id": "end_unfunded",
+      "kicker": "Day 38 \u2014 Thursday, October 15, 2026",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Kept, on a Grandmother's Alarm Clock (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "Alina keeps her school. The review confirms the reconvened determination, praises the factor record \u2014 and then the judge reads the transportation paragraph that your September left blank, and her pen slows. The arrangement she is asked to ratify runs on a seventy-one-year-old woman's mornings, unpriced and unbacked. The order ratifies it for sixty days and directs the parties to return with the transportation terms \u2014 funding, backup, contingency \u2014 in writing, the review continued on that single question. You won the school. You were assigned the ride as homework, by a judge who has seen what unfunded victories do by November.",
+        "The accounting is exact. The reconvened determination happened because the objection was written, dated, and served \u2014 and because the record request (55 Pa. Code \u00a7 3130.44(d)) produced a four-page form that no advocate could have summarized as devastatingly as it summarized itself. The merits were fully built. What was left to 'goodwill' was the box the federal procedures exist to fill: transportation to the school of origin is to be provided, arranged, and funded under written procedures, the additional costs answered by reimbursement, district payment, or sharing. (20 U.S.C. \u00a7 6312(c)(5)(B)) A principle in that box is a plan with a hole in it, and holes in October become gaps in January.",
+        "Partial \u2014 and the most recoverable partial in this library, because the remaining work is arithmetic rather than advocacy: sixty days, a costed plan, a named backup, a countersignature. Alina is thriving at the school she kept; her file now says why, in full; and the court has dated the question's return. Finish the box. The scenario's lesson is not that merits don't matter \u2014 they carried everything else. It is that in school-stability cases, merits decide *whether*, and transportation decides *whether it happens*."
+      ]
+    },
+    {
+      "id": "end_fair_transfer",
+      "kicker": "Day 38 \u2014 Thursday, October 15, 2026",
+      "dayOffset": 38,
+      "title": "Ending \u2014 A Fair Meeting, a New School (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The review confirms the reconvened determination, and Jefferson Middle School stands as Alina's school. The court's language matters, and Ms. Anselmi makes sure you hear it: the September 18 determination \u2014 parent present, teacher heard, factors weighed, the child's own paragraph in the record \u2014 is commended as the process the first one should have been; its conclusion, on proximity and transition burden, is one this record permits. Alina's placement review at Jefferson is ordered expedited on the strength of the assessment file you chased down by name, and the advanced-track question is set for November with her June data in the packet. You lost the school. You won the record \u2014 and the record is already spending itself on her behalf.",
+        "Hold this ending to the scenario's own standard, because it is the ending this doctrine most needs to say out loud: a proper process does not guarantee your outcome. The federal assurance is that a child remains in her school of origin *unless a determination, based on all factors, decides otherwise* (20 U.S.C. \u00a7 6311(g)(1)(E)(i)) \u2014 and a determination that genuinely weighs the advanced track, the counselor, the paragraph, and the nineteen miles can still land on transfer. What the rebuilt process bought, even in loss: immediate enrollment with records pursued (20 U.S.C. \u00a7 6311(g)(1)(E)(ii), (iii)), a transfer with stated reasons that can be revisited when facts change, and a father permanently inside the notification loop \u2014 no more dead addresses; the file was corrected in open court.",
+        "What no strategy controls lives here most plainly: the weighing itself, done by other people, on factors the law lists but does not rank. September 1 was winnable because it was unfinished. September 18 was losable because it was finished honestly. Both things are true, and a training library that hides the second teaches a lie about the first. Alina's case continues \u2014 her placement review, her track, her father's progress \u2014 on the fullest record any version of this autumn produced."
+      ]
+    }
+  ]
+}

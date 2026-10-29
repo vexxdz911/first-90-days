@@ -1,0 +1,535 @@
+# THE FIRST 90 DAYS — Scenario 46: “Two Workers, One File”
+
+*Human-readable script. This document and `scenario-46.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts an indicated report against a daycare provider, the closing of her program's enrollment, and an appeal hearing. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier.
+
+Start date: Monday, February 9, 2026. Day offsets are days since the scenario's start date.
+
+## [start] Three Seconds
+*Day 0 — Monday, February 9, 2026 (dayOffset 0)*
+
+Angela Price runs a licensed home daycare out of the first floor of her house — six children, a waiting list, a decade without an incident — and is the mother of Isaac, four, who attends his own life upstairs and down with the proprietary air of a landlord's son.
+
+At 10:15 on a Monday morning, she is changing Otis, two, on the table in the nursery nook. She turns — does not leave, turns — to the sink two steps away to rinse a cloth. Otis, an escape artist in training, rolls. Her hand catches his leg. He goes down the short distance into the crook of her arm and the padded rail, and comes up with a bump rising on his forehead and a cry that brings the room's other toddlers to attention like meerkats.
+
+Three seconds. That is the event, whole and entire. The protocol she has followed for a decade now runs itself: ice, comfort, incident report, a call to licensing to self-report, a call to Otis's mother. By noon she has reported herself to everyone who regulates her. By evening, someone else will report her too.
+
+**Choices:**
+- Write the incident log in that first hour, verbatim — times, the sink, the catch, the bump — signed and dated → **c2**  _(FLAG: incidentLog ; HIDDEN + Record — provider wrote a verbatim incident log within the hour, signed and dated)_
+  - NOTE (shown after choosing): 10:15, sink, three seconds, caught leg, padded rail, bump. Written at 11:00, it is the account every later account will be compared to — which is precisely its value, if it exists.
+- Handle the calls first — licensing, the parent — and write the log tonight → **c2**
+  - NOTE (shown after choosing): Tonight's log will be accurate too. It will also be second — written after the report, after the worry, and it will be read that way, fairly or not.
+
+## [c2] Two Reports of One Fall
+*Day 1 — Tuesday, February 10, 2026 (dayOffset 1)*
+
+Otis's mother, Mrs. Donnelly, is gracious at pickup — she has the incident report, the ice pack's successor (a bag of peas), and a calm toddler. That evening, her sister asks the question families ask: 'Did you call it in? You should call it in.' By morning there are two investigations of one fall: licensing's (which Angela invited) and the agency's (which the ChildLine call opened), and a worker assigned to the second: Mr. Ostrowski.
+
+Angela's position is unusual in this game and worth naming: she is not only a parent in a file. She is a professional in two. The agency's determination about Otis's fall will be read by licensing, by parents, and by the clearances she renews to work at all. An indicated report doesn't just describe her. It employs — or unemploys — her.
+
+Ostrowski calls Wednesday. The interview is Friday, at the daycare, after hours.
+
+**Choices:**
+- Assemble what exists: the incident log (if written), the licensing self-report, Otis's attendance record → **records**  _(FLAG: fileAssembled)_
+  - NOTE (shown after choosing): Her own paper, in one folder, before the system's paper starts. Providers live by documentation; the habit is about to become the case.
+- Trust the decade — ten clean years are their own statement → **records**
+  - NOTE (shown after choosing): Decades are summaries too, and just as compressible. The file will contain documents or adjectives. Her decade deserves documents.
+
+## [records] The File Opens
+*Day 3 — Thursday, February 12, 2026 (dayOffset 3)*
+
+Angela requests the record — the intake summary — under 55 Pa. Code § 3130.44(d). It arrives as a paragraph: 'Toddler, 2, fell from changing table at licensed home daycare. Head injury (bump). Possible supervision lapse. Provider self-reported to licensing; parent also reported.'
+
+It is fair, as intakes go — the self-report is in it, which matters, because self-reporting is the behavior the system claims to want from providers, and its presence in the intake is the first evidence that Angela does this job the way the job asks.
+
+'Possible supervision lapse' is the claim to answer: three seconds, two steps, a caught leg. Friday's interview will be about that phrase. Interviews generate statements, and statements — as this case will spend five months proving — are only as stable as the notes that hold them.
+
+**Choices:**
+- File the written request and mark the phrase: 'possible supervision lapse' is the case → **int1**  _(FLAG: recordsRequested ; HIDDEN + Records — parent obtained the intake summary before the first interview)_
+  - NOTE (shown after choosing): One phrase, answerable with an incident log, a room layout, and a consistent account — provided the account stays consistent in other people's handwriting. That proviso is the plot.
+- Skip the summary — you were there; no one knows the room like you → **int1**
+  - NOTE (shown after choosing): No one does. The file wasn't there at all. It will know the room exclusively through notes, two sets of them, written by two different people.
+
+## [int1] Mr. Ostrowski's Notebook
+*Day 4 — Friday, February 13, 2026 (dayOffset 4)*
+
+Ostrowski is a notebook man: paper, spiral, written in a hand like a seismograph. He walks the nursery nook. He measures nothing and notices everything — the sink, two steps; the table; the rail's padding. Angela tells it once, the way it happened: turned to the sink, three seconds, the roll, the catch, the bump. He writes for a long time. Isaac, upstairs, conducts a toy uprising in solidarity.
+
+'You've done this a while,' Ostrowski says, closing the notebook, in the tone of a man whose notes have already reached a neighborhood of a conclusion. The formal typed summary will follow by mail, for her signature — a routine step, he says. The investigation will take some weeks.
+
+What Angela cannot know, signing nothing yet, feeling almost reassured: the notebook is the investigation's most accurate document, and almost no one will ever read it. Everyone will read what gets typed from it.
+
+**Choices:**
+- Ask, before he leaves, for a copy of whatever statement or summary she'll be asked to sign → **int1b**  _(FLAG: copyAsked)_
+  - NOTE (shown after choosing): 'It'll come by mail,' he says. It will. Mail is where summaries go to become the record. Her asking is noted in his notebook — the accurate document records that she asked.
+- Thank him — his manner suggests the file is in sane hands → **int1b**
+  - NOTE (shown after choosing): It is. Sane hands, paper notebook. The file's tragedy will not be Ostrowski. It will be his filing system, and his calendar, and his leave.
+
+## [int1b] The Typed Summary
+*Day 5 — Saturday, February 14, 2026 (dayOffset 5)*
+
+The typed summary arrives Tuesday: one page, her account in the agency's prose. It is right in every particular but one, and the one is load-bearing: 'Provider states she left the changing area to rinse a cloth at the sink.'
+
+Left the changing area. She turned, within arm's reach, in the same nook — her words, and Ostrowski's notebook's words, were 'turned to the sink.' The typed sentence relocates her by six feet and one verb, into a different regulatory universe: leaving a toddler unattended on a table is a violation; turning at arm's reach to rinse a cloth is a Tuesday.
+
+There is a signature line: 'I have read the above and it accurately reflects my statement.' The page's accuracy is hers to certify or correct. Signature lines are elections. This one is close.
+
+**Choices:**
+- Correct it in writing before signing: 'turned to the sink, two steps, within arm's reach' — initial the correction, keep a copy → **lic1**  _(FLAG: summaryCorrected ; HIDDEN + Statement — provider corrected the typed interview summary in writing before signing)_
+  - NOTE (shown after choosing): Corrected, initialed, copied, filed. The typed record now matches the notebook and the room. If the correction holds in the file, a sentence that could have founded a determination is disarmed at birth.
+- Sign as written — 'left the changing area' is close enough, and correcting feels adversarial → **lic1**
+  - NOTE (shown after choosing): It sails into the file as her certified statement: she left the area. Months from now, a second worker will interview her, hear 'at the sink,' and the file will discover an inconsistency — between Angela and a sentence Angela signed.
+
+## [lic1] Licensing's Letter
+*Day 8 — Tuesday, February 17, 2026 (dayOffset 8)*
+
+Licensing's parallel investigation moves at its own pace: an inspector, Ms. Duarte, visits, reads the incident log and the self-report, inspects the nook, and issues the finding licensing exists to make: the fall was an accident during compliant care; the self-report was timely and complete; a corrective note is added about strap use, and the matter, for licensing, is closed.
+
+A closed licensing file is a powerful document in an open agency one — if it gets there. Two buildings, two investigations, one fall: paper does not commute between agencies on its own. It is carried, by people who know both files exist.
+
+Angela knows. The agency file is about to lose its author, and with him, its memory of the room.
+
+**Choices:**
+- Send the agency a copy of licensing's closure, in writing, for its file — with the incident log behind it → **leave**  _(FLAG: licensingSent ; HIDDEN + Documentation — licensing's closure finding sent to the agency file in writing)_
+  - NOTE (shown after choosing): It goes in dated: an accident, per the regulator, during compliant care, self-reported. The agency's file now contains a professional judgment that contradicts 'supervision lapse' — if anyone reads that far into it.
+- Keep licensing's closure for licensing — the agency will run its own process → **leave**
+  - NOTE (shown after choosing): It will run it with new personnel, from paper, in a hurry. The closure letter stays in the wrong building, being right.
+
+## [leave] The Leave
+*Day 12 — Saturday, February 21, 2026 (dayOffset 12)*
+
+In the third week, the case is transferred. Mr. Ostrowski has gone on extended leave — a family emergency, the supervisor says, the file will be reassigned, these things happen. His notebook goes where leaving workers' notebooks go: into the file's unstructured depths, unindexed, in seismograph handwriting, beside a typed summary that may or may not carry Angela's correction.
+
+The new worker, Ms. Trask, inherits: an intake paragraph, a typed summary, a licensing closure (if sent), and a deadline culture that rewards closed cases. She has never seen the nursery nook. She has never heard the sentence 'turned to the sink' in the voice that said it.
+
+She schedules a fresh interview — standard, when a case changes hands. Fresh interviews of consistent people should be harmless. They are harmless exactly as often as new note-takers reproduce old accounts exactly.
+
+**Choices:**
+- Write to the file now: a one-page continuity memo — your account, the licensing closure, the corrected summary — for whoever inherits this case → **fam**  _(FLAG: continuityMemo)_
+  - NOTE (shown after choosing): It goes in addressed 'to the file.' Files outlive workers; memos to files are how parents brief the future. Trask will read it — or read past it, which is also information.
+- Wait for the new worker to make contact — continuity is the agency's job → **fam**
+  - NOTE (shown after choosing): It is, in the same sense that summaries are the typist's job. The results, in both cases, belong to whoever shows up with paper.
+
+## [fam] Isaac's Questions
+*Day 18 — Friday, February 27, 2026 (dayOffset 18)*
+
+The investigation's third week runs through the household's economy like weather: enrollment inquiries slow (parents hear things), two families pause 'until it's resolved,' and Isaac — who has absorbed the household tension the way four-year-olds do, osmotically — asks whether Otis's bump was his fault for being loud upstairs.
+
+Angela answers him at the sink, rinsing a cloth, in the room where it happened: no. And does the month's quiet paperwork in the evenings: the file, the bills, the waiting. An investigation of a provider is an investigation of a family's income conducted by other means. The file knows none of this. Files know statements.
+
+Trask's interview is next week. What it produces will be compared, someday, against a notebook almost no one can find.
+
+**Choices:**
+- Keep the household paper in order — enrollment records, the paused families' notes, Isaac's world documented as steady → **int2**  _(FLAG: householdSteady)_
+  - NOTE (shown after choosing): Steadiness, documented, is a file's antidote to 'household stress' inferences. The month is being lived well and written down, which is the only way files learn either fact.
+- Let the household fend for itself while the case is fought → **int2**
+  - NOTE (shown after choosing): Households under investigation fend observably, and observations become notes, and notes become atmospheres in files.
+
+## [int2] Ms. Trask's Interview
+*Day 25 — Friday, March 6, 2026 (dayOffset 25)*
+
+Trask is efficient and new-broomish: laptop, not notebook; questions from the typed summary, not the room. Angela tells it the second time — turned to the sink, two steps, three seconds, the catch, the bump — in the same words, because it is the same event and she has a professional's respect for verbatim.
+
+Trask types while Angela talks, the way typists do, condensing in real time. What her screen makes of 'turned to the sink, within arm's reach' will not be visible to Angela today. It will become visible on April 6th, in a determination letter, attributed to Angela as a change in her story.
+
+After the interview, there is a choice that separates providers who survive files from providers who are surprised by them: whether Angela puts her own account into the file again, in her own hand, now — a written statement, dated, verbatim — against the day two summaries are compared.
+
+**Choices:**
+- Submit a written statement this week — the incident, in her own words, signed and dated, for the file → **int2b**  _(FLAG: writtenStatement ; HIDDEN + Statement — provider filed her own written account after the second interview)_
+  - NOTE (shown after choosing): Filed and stamped. Whatever Trask's screen made of the afternoon, the file now contains Angela's version in Angela's words, dated before any determination — the fixed point against which 'inconsistency' will someday have to be measured.
+- Assume two tellings of the truth can't hurt her — she said the same thing both times → **int2b**
+  - NOTE (shown after choosing): She did. The file does not contain tellings. It contains notes of tellings, and notes are written by the listeners.
+
+## [int2b] Trask's Letter
+*Day 27 — Sunday, March 8, 2026 (dayOffset 27)*
+
+A follow-up letter arrives — routine, courteous — summarizing the second interview in one paragraph: 'Provider now states she remained at the changing table throughout.'
+
+Remained at the table. Angela said 'turned to the sink' — the sink being two steps away, the turning being the entire event. Trask's paragraph has composited Ostrowski's typed error ('left the changing area') inverted: where the first summary moved Angela away from the table, the second nails her to it. Her actual position — at the sink, arm's reach, three seconds — is in neither summary. It is in her incident log, her written statement if she filed one, and a spiral notebook in seismograph handwriting.
+
+The letter asks for no response. Letters that ask for no response are the ones that must be answered.
+
+**Choices:**
+- Answer in writing: 'For accuracy — my account at both interviews: I turned to the sink, two steps, within arm's reach' — filed, dated → **sup**  _(FLAG: correctionFiled ; HIDDEN + Correction — provider corrected the second interview's summary in writing, restating one consistent account)_
+  - NOTE (shown after choosing): Short, factual, unheated — a surveyor's correction, not an argument. It goes into the file beside the letter it corrects, where a future reader can watch the summaries disagree with each other instead of with her.
+- Let it go — it's a form letter, and the truth is in the file somewhere → **sup**
+  - NOTE (shown after choosing): Somewhere is doing enormous work in that sentence. Determinations are drafted from the top of files, and the top is now two summaries pointing at each other through Angela.
+
+## [sup] The Supervisor's Review
+*Day 34 — Sunday, March 15, 2026 (dayOffset 34)*
+
+A status conference, late March: Trask, her supervisor, and the file, with Angela present by phone for the last ten minutes. The supervisor is candid in the way of supervisors near deadlines: the matter is 'trending indicated' — on the basis, she says, of 'inconsistencies in the provider's accounts of supervision.'
+
+Inconsistencies. Angela hears the word assemble itself out of the file's parts: a typed summary she may or may not have corrected, a second summary that moved her again, and her own voice — constant, verbatim, twice — nowhere in the comparison because comparisons are made between documents.
+
+Ten minutes is enough time to say one thing well, or to ask for the thing that matters: the determination, when it comes, in writing, with its basis stated — so that an appeal, if it comes to that, can aim at sentences.
+
+**Choices:**
+- State it once, for the record: one account, both interviews — and ask that the determination state its basis in writing → **isaac**  _(FLAG: basisAsked)_
+  - NOTE (shown after choosing): Noted. When the letter comes, it will either carry its basis — giving the appeal its target — or omit it, giving the appeal its opening argument. Either way, she asked on the record.
+- Plead the decade — ten years, no incidents, a self-report in the first hour → **isaac**
+  - NOTE (shown after choosing): The decade is real and the file contains whatever of it was filed. Character, in determinations, is what documentation says it was.
+
+## [isaac] Isaac's Own File
+*Day 44 — Wednesday, March 25, 2026 (dayOffset 44)*
+
+In April, the investigation widens its lens the way investigations of providers do: Angela is also a mother, and the file schedules a home visit of the upstairs — Isaac's world. It goes the way prepared homes go: a four-year-old's room with strong opinions about dinosaurs, a mother whose professional standards are visible in her own child's arrangements, a worker (Trask, thorough now) writing notes that say, in the file's dialect, what the room says plainly.
+
+The visit's notes will be the best pages in the file. They will not be the pages the determination cites. Determinations cite statements, and the statements in this file were written by two other people, about three seconds in February.
+
+The letter is being drafted across town. Its date will be Monday, April 6th.
+
+**Choices:**
+- Request a copy of the home-visit notes for your folder → **det**  _(FLAG: visitNotesCopy)_
+  - NOTE (shown after choosing): Copied without fuss. The folder thickens with the file's fairest pages — ballast, again, for a hearing that hasn't been scheduled yet.
+- Let the visit speak for itself → **det**
+  - NOTE (shown after choosing): It speaks in Trask's notes, in Trask's dialect. Her dialect has already moved Angela six feet in two directions.
+
+## [det] Indicated
+*Day 56 — Monday, April 6, 2026 (dayOffset 56)*
+
+The letter is dated Monday, April 6, 2026. The determination: INDICATED. The basis, stated in two sentences Angela reads until they stop swimming: 'The provider's statements regarding her supervision of the child at the time of the injury are inconsistent. Licensing action is referred.'
+
+Her statements. The letter does not say 'the file's summaries.' It cannot — determinations are written as if files were transparent, as if notes were voices. Angela's voice, which said one thing twice, is now officially a woman who said two things, and the status attaches: indicated, in the statewide record, on the clearances she renews, against the license licensing itself had already closed.
+
+And the letter's last paragraph, in the flattest type on the page: an appeal may be requested in writing within 90 days of notification — 23 Pa.C.S. § 6341(a)(2). Notification April 6. Ninety days: July 5, 2026. The window is printed. It is already open. It is already closing.
+
+**Choices:**
+- Write the dates on the folder tonight — April 6, July 5 — and get counsel this week → **app0**  _(FLAG: deadlineKept ; HIDDEN + Deadlines — parent calendared the 90-day appeal window from the determination letter)_
+  - NOTE (shown after choosing): The case is now an appeal with a subtraction problem attached. Everything else — the license, the outrage, the decade — is commentary. July 5 is the text.
+- Put the letter in the drawer — the license fight comes first, and this can wait → **app0**
+  - NOTE (shown after choosing): The license fight and the appeal are the same fight wearing two buildings' clothes, and only one of them has a 90-day fuse. Drawers, again, are where windows close.
+
+## [app0] Counsel's Office
+*Day 57 — Tuesday, April 7, 2026 (dayOffset 57)*
+
+Counsel — retained this week, because appeals are lawyering country — lays out the anatomy on a legal pad, in the order the statute builds it. One: the written request, within 90 days (§ 6341(a)(2)) — the fuse. Two: inside the appeal, the appellant's right to the investigation evidence — all of it, including what helps her (§ 6341(c.2)(4)) — the tool this case was born for, because the file that convicted her has never been read whole by anyone, including, counsel suspects, the people who wrote its determination. Three: at any hearing, the agency bears the burden, by substantial evidence (§ 6341(c.2)(5)) — a real burden, carried by the file. Four: a decision within 45 days of the hearing (§ 6341(c.3)). Five: if it goes wrong, reconsideration within 15 days and the Commonwealth Court within 30 (§ 6341(g)) — the short windows at the top of the building.
+
+'The appeal,' counsel says, 'is a demand that they show us the inconsistency. In writing. All of it.' She looks at Angela's folder — incident log, statements, corrections — with professional approval. 'You've been building the other side of the hearing since February. Now we make them build theirs.'
+
+**Choices:**
+- Build the appeal properly: the request, with the evidence demand inside it → **det2**  _(FLAG: appealBuilt)_
+  - NOTE (shown after choosing): The request will ask for everything: both workers' notes, the typed summaries, the drafts — the file's whole archaeology. (c.2)(4) is about to go digging in a spiral notebook.
+- Just file something — a bare request preserves the right, and speed is safety → **det2**
+  - NOTE (shown after choosing): Speed preserves the right and nothing else: a hearing, someday, on the file as it stands — the file whose archaeology stays buried. The right is the door. The demand is the room beyond it.
+
+## [det2] The License Clock
+*Day 58 — Wednesday, April 8, 2026 (dayOffset 58)*
+
+Licensing, notified of the indicated determination, moves on its own track: her certificate is flagged, new enrollments are paused pending the appeal, and two more families — reading the flag the way parents read anything about childcare, totally — withdraw. The daycare's rooms empty by ones. Isaac asks where everyone went, with the directness of a personnel department.
+
+This is what the appeal is actually for, beyond the principle: a determination that can be expunged is a license that can be unflagged. The calendars differ — licensing will wait for the appeal's outcome — and so the appeal's calendar becomes the family's: filed within the window, evidence demanded, hearing, decision within 45 days, windows beyond.
+
+The request goes out this week, in one of its two shapes.
+
+**Choices:**
+- File the built appeal: written request plus the § 6341(c.2)(4) demand for the complete investigation evidence → **app1**  _(FLAG: appealFiled ; FLAG: evidenceDemanded ; HIDDEN + Appeal — written request filed within the window, demanding the complete investigation evidence under § 6341(c.2)(4) ; REQUIRES FLAG: appealBuilt)_
+  - NOTE (shown after choosing): Filed, dated, inside the window, with the demand in it. Somewhere in an agency file room, a clerk is about to be assigned the task of finding a spiral notebook.
+- File the bare request — preserve the right now; the evidence can be chased later → **wait1**  _(FLAG: appealFiled ; HIDDEN + Appeal — bare written request filed within the 90-day window; no evidence demand made)_
+  - NOTE (shown after choosing): The right is preserved. The hearing will be fought on the file as it stands — two summaries, a determination, and whatever Angela's folder can carry into the room uninvited.
+- Wait — think it over another week; July 5 is far away → **drawer**
+  - NOTE (shown after choosing): It is ninety days away and it began on April 6. Weeks spent thinking are spent from the window, and the window does not replenish.
+
+## [drawer] The Drawer
+*Day 70 — Monday, April 20, 2026 (dayOffset 70)*
+
+The letter spends the spring where letters go: under the good scissors, while the license flag does its slow work and the daycare runs at half enrollment and Isaac's questions acquire a personnel department's persistence. Thinking it over is not irrational. It is merely expensive in the only currency the statute accepts: days of ninety.
+
+In late June, the arithmetic is performed at the kitchen table, the way it always eventually is: April 6, plus ninety days, is July 5. The count of days remaining has a specific, unglamorous number, and it is small enough to fit on the folder in pencil — and large enough, barely, to build the appeal the case deserves, if it starts today.
+
+Windows are subtraction problems. This one is still solvable. The drawer opens.
+
+**Choices:**
+- Build it now, at drawer speed: counsel, the request, the evidence demand — this week → **app1L**  _(FLAG: appealFiled ; FLAG: evidenceDemanded ; FLAG: appealBuilt ; HIDDEN + Appeal — written request with evidence demand filed late in the 90-day window)_
+  - NOTE (shown after choosing): Late, complete, inside the window — the tax is urgency, not validity. The demand goes in. The clerk's assignment begins: find everything, including the notebook.
+- Let it go — the license can be fought on licensing's own track → **miss1**
+  - NOTE (shown after choosing): It can be fought there. It will be fought there without the one instrument that could clear the underlying status — because on July 5, at midnight, the appeal stops existing as an option, and the indicated determination becomes the permanent ground both fights stand on.
+
+## [app1L] Filed, Late and Whole
+*Day 100 — Wednesday, May 20, 2026 (dayOffset 100)*
+
+The appeal arrives at the agency with days to spare instead of weeks — the request, the demand, counsel's signature. It is valid in every particular the statute checks: written, timely, demanding. What lateness cost was comfort; what it didn't cost was the case, because the case was never the calendar. The case is the file, and the file is now going to be produced.
+
+The agency's evidence assembly begins — the (c.2)(4) production: everything the determination rested on, including the exculpatory. A clerk with a cart meets a file with a spiral notebook in its depths, in seismograph handwriting, unindexed since February.
+
+Whether the notebook makes the cart is the next month's drama. It should not have to be. Drama, in files, is what happens instead of indexing.
+
+**Choices:**
+- Calendar the production: ask counsel to confirm the evidence's arrival date in writing → **ev1**  _(FLAG: productionCalendared)_
+  - NOTE (shown after choosing): Confirmed. The packet will arrive on a date, and its index will be read the way Angela has learned to read everything: against a checklist, looking for what's missing.
+- Wait for the packet — the demand has been made; the system is moving → **ev1**
+  - NOTE (shown after choosing): Systems move toward their deadlines and away from their omissions. What the packet omits will have to be noticed by its reader. That reader is Angela.
+
+## [wait1] The Long Wait, Bare
+*Day 90 — Sunday, May 10, 2026 (dayOffset 90)*
+
+The bare appeal waits the way bare appeals do: a hearing will be scheduled; the file stands as it stands. Counsel, asked about the agency's evidence, explains the asymmetry Angela chose in April without knowing it: without a (c.2)(4) demand in the request, the agency prepares its hearing case from its file — and Angela prepares hers from her folder, her memory, and whatever the file's custodians choose to bring.
+
+Her folder is genuinely good: the incident log, the corrected summary (if corrected), her written statement (if filed), the licensing closure. What it does not contain is the one document that could end the argument — Ostrowski's notebook, the first account, in the first hand, matching hers.
+
+The hearing will come in June. Rooms rule on what enters them. What enters this one is now mostly decided.
+
+**Choices:**
+- Prepare the folder as the case: log, statement, licensing closure, corrections — the whole paper, organized → **hear0**  _(FLAG: folderPrepared)_
+  - NOTE (shown after choosing): It is a real case. It is missing only its best witness, who is a notebook, and who has not been summoned.
+- Plan to testify — she was there; the workers, in a sense, were not → **hear0**
+  - NOTE (shown after choosing): She was. Testimony is weighed against burdens, and the burden in this room is substantial evidence — a standard two summaries can sometimes carry, even wrong ones.
+
+## [ev0] The Long Wait
+*Day 95 — Friday, May 15, 2026 (dayOffset 95)*
+
+Spring becomes the appeal's waiting room: the license flag holds, enrollment stays paused, and the file — somewhere — is being assembled into the evidence packet (c.2)(4) entitles her to. Counsel warns her about packets: they arrive indexed, and indexes are confessions — read the index first, against the file you know must exist, and list what the index doesn't.
+
+Angela's checklist is ready before the packet is: intake, both interview summaries, her statements and corrections, licensing correspondence, the determination worksheet — and, item zero, the one she has been carrying since February: 'Worker 1's original field notes (notebook).'
+
+The packet arrives on a Tuesday, in a box.
+
+**Choices:**
+- Read the index first — before a single page → **ev1**  _(FLAG: indexRead)_
+  - NOTE (shown after choosing): The index is the map of what the agency thinks its case is. Maps show coastlines beautifully. They show omissions only to readers who know the territory.
+- Read it front to back like a book — the truth will accumulate → **ev1**
+  - NOTE (shown after choosing): Books accumulate. Evidence is audited. The difference is a checklist, and hers is in her hand.
+
+## [app1] The Request, Filed
+*Day 62 — Sunday, April 12, 2026 (dayOffset 62)*
+
+The appeal goes in whole: the written request, inside the window, with the (c.2)(4) demand for the complete investigation evidence — both workers' notes, the summaries and their drafts, the determination worksheet, 'and all evidence, including any evidence favorable to the appellant,' in the statute's spirit if not its syllables.
+
+What the demand sets in motion is archaeology. The determination was written from the file's top. The production must come from the file's whole depth — and this file's depth contains a spiral notebook, in a seismograph hand, filed in February by a man who then went on leave.
+
+Counsel calendars the production and the likely hearing. Angela goes home to a half-empty daycare and waits the way litigants wait: with a checklist, in writing, for a box.
+
+**Choices:**
+- Build the checklist now: every document the file must contain — item zero, the notebook → **ev0**  _(FLAG: checklistBuilt)_
+  - NOTE (shown after choosing): When the box arrives, it will be audited, not read. Audits find absences. Absences, in (c.2)(4) productions, are arguments.
+- Trust the production to be complete — the demand was comprehensive → **ev0**
+  - NOTE (shown after choosing): Demands are comprehensive. Productions are clerical. The distance between them is where this case's last act lives.
+
+## [ev1] The Index
+*Day 105 — Monday, May 25, 2026 (dayOffset 105)*
+
+The packet is thorough, indexed, and — to a reader with a checklist — eloquent in one omission. Intake: present. Typed summary, interview one: present (with Angela's correction, if she made it, riding in the file like a passenger). Licensing closure: present, if sent. Second interview summary and follow-up letter: present. Angela's statements and corrections: present, if filed. Determination worksheet: present, citing 'inconsistencies between interviews of 2/13 and 3/6.'
+
+And worker one's original field notes — the notebook, the first account, the only notes taken in the room where the room could be seen: NOT IN THE INDEX. A line in the production log, when counsel asks, explains: 'Field notes of prior worker not located in file.'
+
+Not located. The determination's entire basis is a comparison between two interviews, and one interview's original record was never located by the people who compared it.
+
+**Choices:**
+- Have counsel demand, in writing, a further search — the (c.2)(4) production is incomplete without the first worker's notes → **ev2**  _(FLAG: searchDemanded ; HIDDEN + Appeal — parent demanded a further search for the first worker's missing field notes)_
+  - NOTE (shown after choosing): The demand is specific: the notebook, Ostrowski's leave file, the transfer inventory. Incomplete productions are curable — by the party that notices, in writing, before the hearing. Angela notices.
+- Proceed — the summaries may be enough to attack on their own → **ev2**
+  - NOTE (shown after choosing): They might be: two summaries disagreeing with each other is an argument. But the notebook is not an argument. It's the verdict's missing foundation, and foundations are produced, or the building inspector gets involved.
+
+## [ev2] Not Located
+*Day 110 — Saturday, May 30, 2026 (dayOffset 110)*
+
+The phrase 'not located' deserves the scrutiny Angela has learned to give phrases. Files are physical before they are legal: a notebook existed in February, in a room, in a hand. It went somewhere — a desk, a leave file, a transfer box. The agency's determination compared its typed descendant against a second interview and found Angela inconsistent. Her appeal now asks the prior question: where is the original?
+
+Counsel's demand produces motion — a documented search: the file room, the leave paperwork, Ostrowski's desk (cleared by a supervisor in March, contents boxed, box logged). The box's log lists, among its items, in a clerk's hand: '1 spiral notebook, field notes.'
+
+The box exists. What remains is whether its contents reach the hearing — and whether Angela's side insists, in writing, that the hearing cannot fairly proceed on a comparison whose first term is missing.
+
+**Choices:**
+- Insist in writing: produce the notebook or stipulate it cannot be found — either document advances the case → **prep0**  _(FLAG: productionInsisted)_
+  - NOTE (shown after choosing): Both outcomes help, which is the mark of a good demand: a produced notebook can be read; a stipulated absence can be argued. What cannot survive is the shrug — so the shrug is put in writing and made to choose.
+- Let the search run its course without pressure → **prep1**
+  - NOTE (shown after choosing): Searches under no pressure find what they find, when they find it — occasionally after hearings. The hearing date is not waiting for the box.
+
+## [prep0] The Box
+*Day 114 — Wednesday, June 3, 2026 (dayOffset 114)*
+
+The box is produced in the week before the hearing — a supervisor, a clerk, a logged chain of custody, and inside it, under a mileage log and a training manual: the spiral notebook. Ostrowski's hand, seismograph and all. February 13th's pages: the room, the sink, 'two steps,' 'turned,' 'caught the leg,' 'bump, forehead, padded rail,' 'provider consistent, detailed,' and — in the margin, in the same hand — 'self-reported to licensing before my visit.'
+
+It matches Angela's account word for word in every load-bearing particular. It matches her incident log. It matches her written statement. The things it does not match are the two documents the determination actually rested on: the typed summary ('left the changing area') and Trask's paragraph ('remained at the table throughout'). The inconsistency in this file was never between Angela's statements. It was between two transcriptions of them, and the original — the one document that could arbitrate — spent four months in a box.
+
+Counsel copies the pages twice and is quiet for a moment, the way lawyers are quiet when a case turns into a citation.
+
+**Choices:**
+- Build the hearing exhibit: notebook page, typed summary, second summary — the three documents, one page each, in order → **prep1**  _(FLAG: worker1Notes ; FLAG: exhibitBuilt ; HIDDEN + Evidence — first worker's original field notes obtained; they corroborate the parent's account)_
+  - NOTE (shown after choosing): Three pages. February's hand, the typed error, the second error. The exhibit argues itself; counsel's job is now pagination.
+- Send the notebook pages to the agency ahead of the hearing — fairness, and a chance for them to fold → **prep1**  _(FLAG: worker1Notes)_
+  - NOTE (shown after choosing): Sent. Agencies fold quietly when they fold — a withdrawal before the hearing is still an expungement. If they don't fold, the hearing has the exhibit anyway, now with a cover letter proving the agency saw it first.
+
+## [prep1] Counsel's Exhibit
+*Day 117 — Saturday, June 6, 2026 (dayOffset 117)*
+
+The hearing is set: June 9th — day 120 from a February Monday. Counsel builds the appellant's case in the order the hearing officer will meet it: the incident log (the first hour), the licensing closure (the regulator's own verdict), Angela's statements and corrections (if they exist — the file's fixed points), and, where the evidence demand did its work, the three-page exhibit that compares the file against itself.
+
+Angela's own testimony is prepared the way true testimony should be: once through, in her words — turned, two steps, three seconds, the catch — unchanged since February because it is a memory of an event, not a position.
+
+The agency's case, meanwhile, is its burden: substantial evidence (§ 6341(c.2)(5)). Its evidence is two summaries and a worksheet. After June 9th, a decision is due within 45 days (§ 6341(c.3)). The windows are all calendared now. This family calendars everything, in pencil that has become ink.
+
+**Choices:**
+- Rehearse the comparison, not the outrage: notebook, typed, second — the file disagrees with itself, not with her → **hear0**
+  - NOTE (shown after choosing): The theme is set and it is devastating because it is clerical: she never changed. The paper did. Twice. In two directions.
+- Rehearse the whole story — the decade, the self-report, the empty rooms → **hear0**
+  - NOTE (shown after choosing): The decade is context. The comparison is the case. Hearing officers rule on cases, with context as garnish.
+
+## [hear0] The Hearing Room
+*Day 119 — Monday, June 8, 2026 (dayOffset 119)*
+
+The room is smaller than the case feels: a hearing officer, a court reporter, the agency's counsel with the file, Angela's counsel with two folders — Angela's, and the agency's own production. Isaac is with his grandmother. The daycare is closed for the day, its rooms still, its cubbies labeled in a hand the state currently considers indicated.
+
+The officer opens with the standard and the burden, stated plainly for the record: the agency must support the indicated determination with substantial evidence. Angela's appeal, and specifically her (c.2)(4) demand, have furnished the room with something determinations rarely face: the complete file, including the parts its own authors hadn't read.
+
+The agency presents first. Its case is the comparison: two interviews, two accounts, one conclusion. Watch what the comparison is made of, when it is made to stand up in a room.
+
+**Choices:**
+- Let their case be fully presented — the worksheet, the two summaries, Trask — before answering → **hear**
+  - NOTE (shown after choosing): Counsel wants it all on the record: every sentence the determination rested on, spoken aloud, transcribed. Records are where burdens go to be weighed, and this one is about to be weighed against its own footnotes.
+- Signal counsel to object early and often — momentum matters → **hear**
+  - NOTE (shown after choosing): Momentum is a courtroom theory. This room runs on documents and standards. The documents are patient.
+
+## [hear] The Hearing
+*Day 120 — Tuesday, June 9, 2026 (dayOffset 120)*
+
+The agency's case takes forty minutes: Trask testifies from her summary — the provider 'remained at the table,' having earlier 'left the changing area' — and the worksheet's conclusion is read into the record: inconsistent statements as to supervision. On cross, she concedes the architecture piece by piece, without rancor, because it happens to be true: she never saw the room before March; her account of February comes from the typed summary; she did not have the first worker's notes; she has not read them since.
+
+Then Angela's counsel rises with whatever the spring produced. If the notebook was demanded and found, the hearing becomes a reading lesson: three pages, projected onto the record one at a time. If it wasn't, the hearing becomes what hearings become — her word, her folder, her decade, against a comparison whose first term no one in the room has ever actually seen.
+
+The officer watches counsel's hands, to see what they're holding.
+
+**Choices:**
+- Put in the three pages: the notebook, the typed summary, the second summary — and let the file testify against itself → **hear2**  _(REQUIRES FLAG: worker1Notes)_
+  - NOTE (shown after choosing): Page one: February's hand — 'turned to the sink, two steps.' Page two: the typed relocation. Page three: the second relocation, opposite direction. Counsel says the only sentence the exhibit needs: 'The appellant's account is page one. It has always been page one. The inconsistency is between pages two and three.' The officer asks for the pages to be marked. Marking is the sound of a burden failing.
+- Testify fully herself — the event, in her words, unchanged since February — and put the folder in: log, closure, statements → **hear2**  _(FLAG: hearingTestimony)_
+  - NOTE (shown after choosing): Her testimony is a metronome: the same account, the same words, for the fifth time in five months, to the fifth listener. The folder corroborates her consistency everywhere except the one place the determination lives: the comparison itself, whose original she never obtained.
+- Rest on the written record — the summaries disagree with each other; let that be the argument → **hear2**
+  - NOTE (shown after choosing): It is an argument, and counsel makes it cleanly: two summaries, two directions, no original produced. Whether disagreement alone defeats substantial evidence is the question the officer takes home. It is a thinner question than the one the notebook would have asked.
+
+## [hear2] What the Room Decides
+*Day 124 — Saturday, June 13, 2026 (dayOffset 124)*
+
+The hearing closes with the officer's thanks and the statute's clock: a decision within 45 days (§ 6341(c.3)). The weeks that follow are the family's familiar weather — a flagged license, a half-empty daycare, a folder that now contains a transcript.
+
+Everything has been decided except the decision. What it will say was substantially determined by what was in the room in June — which was determined by what was demanded in April — which was determined by a letter opened on April 6th and a window counted in pencil.
+
+The decision arrives July 9th, by mail, in an envelope Angela opens at the sink, because that is where she opens everything now.
+
+**Choices:**
+- Open it at the table, with the folder beside you and the calendar open → **dec**
+  - NOTE (shown after choosing): Whatever it says, its next windows — if it has any — start today. This family does not let decisions sit in drawers. The drawer era ended in June.
+
+## [dec] The Decision
+*Day 148 — Tuesday, July 7, 2026 (dayOffset 148)*
+
+July 9, 2026 — inside the 45 days, as the statute orders. The decision is three pages. What it holds depends, with a fidelity that would be elegant if it weren't a family's livelihood, on what the hearing room held.
+
+If the notebook was in the room, the decision's logic is already visible in the transcript: a burden cannot be carried by a comparison whose original contradicts it. If Angela's voice was the room's main exhibit, the officer weighed a metronome against a standard, and standards are heavier than voices. If the record alone was argued, the officer decided what two disagreeing summaries, unarbitrated, are worth as substantial evidence.
+
+Angela reads the operative paragraph first, the way she has learned to read everything: looking for the verb.
+
+**Choices:**
+- Read the operative paragraph → **dec_read**
+  - NOTE (shown after choosing): The verb is the case. Everything else — the reasoning, the citations, the windows it opens or closes — is commentary on one verb.
+
+## [dec_read] The Verb
+*Day 149 — Wednesday, July 8, 2026 (dayOffset 149)*
+
+The paragraph is in front of her. The months are in front of her: a February morning, three seconds, a bump; a notebook; a typed page; a second page; a determination built from the distance between the two pages; a window counted in pencil; a demand; a box; a hearing.
+
+Files, in the end, are just paper that outlives the people who write it. This one's paper has been unusual in one respect: since February, someone with the most at stake in its contents has been reading every page, correcting every relocation, demanding every missing piece — and the decision, whatever it is, is the sound of that reading being answered.
+
+She reads the verb.
+
+**Choices:**
+- Read it → **dec_verb**
+
+## [dec_verb] Expunged, Upheld, or Answered For
+*Day 150 — Thursday, July 9, 2026 (dayOffset 150)*
+
+The envelope's contents resolve into the outcome the year's paper built. Counsel is on the phone within the hour, whichever way it goes — because every ending in this statute has a next step except the good one, and the good one's next step is a license to unflag and a daycare to refill.
+
+Isaac asks, that evening, whether the letters are done. Angela — at the sink, rinsing a cloth, in the room where it happened — tells him the truth in the size he can hold: 'The letters are done. We wrote good ones.'
+
+What the file says about three seconds in February is, from today, either corrected where it counts or appealable on the windows that remain. Either way, it no longer says it unopposed.
+
+**Choices:**
+- Take the outcome the paper built → **end_router**
+
+## [end_router] The Ruling, As Filed
+*Day 151 — Friday, July 10, 2026 (dayOffset 151)*
+
+The decision, as counsel reads it aloud over the phone, resolves into its holding — the holding the hearing's record made available. Where the notebook testified, the comparison collapsed and the status could not stand. Where only a voice testified, the standard stood where standards stand. Where the record argued alone, the officer weighed paper against paper and found the agency's thinner — or didn't.
+
+Angela files the decision in the folder, in order, behind the transcript. It is not the last document in the folder unless it is the good one. Her pencil is already moving toward the calendar, in case it isn't.
+
+**Choices:**
+- File it → **end_good**  _(REQUIRES FLAG: worker1Notes)_
+  - NOTE (shown after choosing): Counsel's summary, when it comes, is one line: 'They couldn't carry it — their own first page beat their last two.'
+- File it — and calendar what remains → **end_partial**  _(REQUIRES FLAG: hearingTestimony)_
+  - NOTE (shown after choosing): The decision upholds the status on the agency's paper. It also — in counsel's reading — leaves the (g) windows standing in a row like doors: fifteen days, thirty days. This family knows what doors are for, now, and what pencils are for.
+- File it — and read what remains → **end_hard**
+  - NOTE (shown after choosing): Upheld, on two summaries and a worksheet. What remains is at the top of the building: the short windows, the higher court, and a record that includes the fact that the original notes were never produced — an absence that appellate courts, unlike hearing rooms, sometimes find interesting.
+
+## [miss1] Licensing's Own Track
+*Day 120 — Tuesday, June 9, 2026 (dayOffset 120)*
+
+July 5th passes the way deadlines do — at midnight, without ceremony, in a drawer. The appeal that was never filed cannot be unmissed; reconsideration and courts review decisions, and an unappealed determination is not a decision. It is a status, and statuses set like concrete.
+
+Licensing's track proceeds on the concrete: the indicated determination is final, the flag is permanent-grade, and the certificate fight becomes a rearguard action about conditions, supervision plans, and whether a provider with an indicated status from a three-second fall can be re-credentialed while the status stands. Her lawyer for licensing is good. The ground she stands on is a status that an April letter and a June deadline could have contested, when contesting was cheap.
+
+The daycare runs at whatever enrollment the flag allows. Isaac stops asking where everyone went. That, too, is a cost, though it appears in no file.
+
+**Choices:**
+- Fight the licensing track with everything left: hearings, conditions, character witnesses, the decade → **end_missed**
+  - NOTE (shown after choosing): She will, and some of it will work — licensing is a different building with its own mercy. What none of it can do is reach back through July 5th and file the appeal. The status underneath the fight remains, answering clearances, indefinitely.
+- Consider closing — a decade's work, ended by an unopened envelope's deadline → **end_missed**
+  - NOTE (shown after choosing): The thought occurs at the sink, where everything in this story occurs. She doesn't close. But the thought has a date on it now, and the date is the one thing in the case she never calendared in time.
+
+## [end_good] Expunged — The File Couldn't Carry It
+*Day 152 — Saturday, July 11, 2026 (dayOffset 152)*
+
+**DEBRIEF:**
+
+The indicated determination was expunged: at the hearing, the agency's burden — substantial evidence, § 6341(c.2)(5) — had to be carried by its 'inconsistency,' and the inconsistency, once the (c.2)(4) production was forced to disgorge Worker One's original notes, turned out to live between the agency's own summaries. The first account in the file — taken in the room, on the day — matched Angela's word for word. Her account never changed. The transcriptions did, twice, in opposite directions. A file cannot carry a burden with that. WIN: the status is removed, the licensing flag follows it down, and the daycare's cubbies refill by September.
+
+The verified law inside this ending: the appeal was filed by written request within 90 days of notification (§ 6341(a)(2)) — April 6 to July 5, 2026 — and it was the evidence demand, § 6341(c.2)(4), that decided it: the appellant's right to the investigation evidence, including the exculpatory parts, including a spiral notebook in a box. The decision came within 45 days of the June 9 hearing (§ 6341(c.3)), as the law requires. Every instrument used was in the letter she almost put in a drawer.
+
+Notice the case's true hinge, because it was clerical: nobody lied. A typist compressed, a successor paraphrased, a determination compared the compressions. The only cure for that is the original record, demanded in writing, in time — plus a parent who kept her own paper from the first hour (an incident log written at 11 a.m. is a fixed point no summary can orbit away from).
+
+Honesty requires this: the notebook could have stayed lost; a hearing officer could have shrugged at handwriting; Ostrowski could have written worse notes. Boxes, officers, and notebooks vary. What doesn't: the demand is what made the box open. Undemanded, the determination's comparison would have stood forever, comparing two errors and calling the distance a woman's dishonesty.
+
+## [end_partial] Upheld, With Fifteen Days
+*Day 152 — Saturday, July 11, 2026 (dayOffset 152)*
+
+**DEBRIEF:**
+
+The hearing officer upheld the indicated determination: Angela's testimony was credited as sincere, but substantial evidence — the agency's modest burden under § 6341(c.2)(5) — was found in the two summaries and the worksheet, and sincerity, however consistent, did not displace paper. PARTIAL: the status stands, but the ending is not the end — the decision carries the statute's last windows on its face: reconsideration within 15 days of the decision, and an appeal to the Commonwealth Court within 30 (§ 6341(g)) — July 24 and August 8, 2026, calendared by counsel the day the envelope opened. The record preserved for those windows includes the fact that the first worker's notes were never produced, which is the kind of absence higher courts read carefully.
+
+The verified law inside this ending: the 90-day window (§ 6341(a)(2)) was used, the 45-day decision (§ 6341(c.3)) arrived on time, and what remains is § 6341(g) — short windows, at the top of the building, which is why this family now calendars decisions the hour they land. A reconsideration request can put the notebook question squarely: the comparison's original was never in evidence. Whether it moves the same officer is a coin the family gets to flip only because the windows were kept.
+
+Notice what Angela's consistency bought, even in defeat: a transcript in which the agency's own worker conceded she never saw the room and never read the first notes. That record is the appeal she still owns. Voices lose hearings and win records, when counsel makes them testify into one.
+
+Honesty requires this: reconsideration is granted rarely, and the Commonwealth Court reviews the record for the burden, not for fairness in the abstract — the same two summaries will be waiting there. Some upheld cases die at this desk. What the (g) windows guarantee is not victory. It is that the file's central absence gets read once more, by a colder reader, before it sets. Some families win exactly there. None win from the drawer.
+
+## [end_hard] Upheld
+*Day 152 — Saturday, July 11, 2026 (dayOffset 152)*
+
+**DEBRIEF:**
+
+The indicated determination was upheld: argued on the written record alone, the case asked a hearing officer to find that two disagreeing summaries defeat substantial evidence — and the officer found instead that the summaries agreed on the only fact the burden needed: a toddler fell from a table during contested supervision. The notebook, never demanded, was never missed by the room. The status stands, with the § 6341(g) windows — 15 days for reconsideration, 30 for the Commonwealth Court — technically open and practically steep, because courts review the record that was made, and this record has a hole in it shaped like a spiral notebook.
+
+The verified law inside this ending: the agency's burden was substantial evidence (§ 6341(c.2)(5)) — real, but modest — and the appellant's evidence right (§ 6341(c.2)(4)) existed all spring, unexercised in the one case built to need it. The statute gave Angela a subpoena for her own file's truth. It waited in the letter, in the flattest paragraph, while a bare request preserved a right and surrendered the evidence that made the right worth having.
+
+Notice where this was decided: not in the hearing room, but in April, at the drafting of a one-page request — the difference between 'I appeal' and 'I appeal, and produce everything.' Four words of difference. A career of consequence. The hearing merely announced the arithmetic.
+
+Honesty requires this: hearing officers vary, and some would have found the dueling summaries insufficient on their own; some agencies produce complete files unasked. Neither mercy was scheduled in this case, and mercy unscheduled is not a strategy. The demand is the strategy. It costs a paragraph and it subpoenas the truth from inside the other side's filing cabinet. In a case about what the file says, there is no stronger move — which is why it is unforgivable, tactically, to leave it in the letter unopened.
+
+## [end_missed] The Window, Missed
+*Day 150 — Thursday, July 9, 2026 (dayOffset 150)*
+
+**DEBRIEF:**
+
+The 90 days ran out on July 5, 2026, with the appeal unfiled, and the indicated determination became final — not upheld, not reviewed, simply unopposed past the only deadline that mattered. Angela Price keeps her licensing fight, her decade, her incident log written in the first hour; what she no longer has is the instrument that could have cleared the status underneath all of it. The (c.2) machinery — the evidence demand, the burden, the hearing, the 45-day decision — exists only inside the window § 6341(a)(2) opens, and the window is a subtraction problem with no appeals from its arithmetic.
+
+The verified law inside this ending is one sentence long and it is the whole case: a request for expungement must be made in writing within 90 days of notification. Notification was April 6. The deadline was July 5. Both dates were printed in the letter, in the flattest type, in a drawer, under the good scissors. No other fact in this story — not the summaries, not the notebook, not the leave — was ever as consequential as that subtraction.
+
+Notice the tragedy's clerical nature: the appeal, when this family finally built it in other branches of this story, took a week. The window gave thirteen. The difference between a contested determination and a permanent one was not effort, merit, or truth. It was a date, noticed or not, in the spring.
+
+Honesty requires this: lives are busy, licenses burn down in parallel, drawers are human. Workers and officers vary in every other particular, but the window does not vary, for anyone, ever — it is the one element of the system with no discretion in it at all. Which is why the first move, on the day any determination lands, is never the argument. It is the calendar. Everything else in this game can be repaired late except the dates.

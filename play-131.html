@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 131 — Three Files, One Family (a fictional composite)",
+  "startDateISO": "2025-11-03",
+  "startNode": "start",
+  "startCash": 200,
+  "tier": "Complex",
+  "summary": "Two children entered care on two different dates; a third file — an indicated report against the mother — runs beside both. Three clocks, three buildings, one folder: sequence the appeal before its window closes, document the exceptions child by child, and arrive at the fifteen-month table with every file answered."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, November 3, 2025",
+   "dayOffset": 0,
+   "title": "Three Envelopes",
+   "body": [
+    "Your name is Celeste. Teo, eleven, entered foster care on Monday, November 3, 2025, after the school called in the bruises from his bicycle crash and the story took a weekend to sort out. Irati, eight, followed on Friday, November 21 — the second entry the file records, eighteen days later, when the first placement could not take siblings and the case widened instead of narrowing.",
+    "And in December a third envelope joined the others: an indicated report, naming you, arising from the same crash — with a 90-day appeal window (23 Pa.C.S. § 6341(a)(2)) that closes Monday, March 16, 2026, counted from the December 16 notice. Three files. Three clocks. One mother. This is the marathon version of the lesson every smaller scenario taught: sequence is survival."
+   ],
+   "choices": [
+    {
+     "text": "Build the master calendar first: every clock, every date, one page",
+     "next": "cal_a",
+     "setFlags": [
+      "calendarSet"
+     ],
+     "addHidden": [
+      "Master calendar of all three tracks built"
+     ],
+     "note": "Three clocks, one page, on the refrigerator, where fear can't blur them."
+    },
+    {
+     "text": "Handle each file as it comes up — you're organized enough",
+     "next": "cal_a",
+     "note": "Organized enough is the epitaph of many a deadline."
+    }
+   ]
+  },
+  {
+   "id": "cal_a",
+   "kicker": "Day 1 — Tuesday, November 4, 2025",
+   "dayOffset": 1,
+   "title": "The Envelopes, Opened in Order",
+   "body": [
+    "Each envelope is opened at the kitchen table and read twice — once for what it says, once for what it starts. Three start-dates, three different kinds of clock, and a household that has just learned the difference between them.",
+    "You write the three dates on an index card before you do anything else. The card will outlive the envelopes."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "cal_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "cal_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "cal_b",
+   "kicker": "Day 2 — Wednesday, November 5, 2025",
+   "dayOffset": 2,
+   "title": "What a Calendar Cannot Do",
+   "body": [
+    "A calendar cannot attend a hearing, file a letter, or love two children in two placements. What it can do — all it can do, and everything — is make sure none of those things is ever attempted late.",
+    "Counsel gets the second index card. The refrigerator gets the first. The folder gets the originals."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "calendar131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "calendar131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "calendar131",
+   "kicker": "Day 4 — Friday, November 7, 2025",
+   "dayOffset": 4,
+   "title": "Ms. Urrutia Draws the Board",
+   "body": [
+    "Your lawyer, Ms. Urrutia, draws the board the way the appeal scenario taught: three columns — TEO (entered Nov 3, 2025; fifteen months = Wednesday, February 3, 2027), COSETTE (entered Nov 21, 2025; fifteen months = Sunday, February 21, 2027), APPEAL (notified Dec 16, 2025; due March 16, 2026). 'Different children, different months,' she says. 'The statute counts children, not families.'",
+    "Counsel is your right (42 Pa.C.S. § 6337) — and here, counsel is also cartography. 'The appeal goes first,' she says, tapping March. 'It is the only date on this board that cannot be continued.'"
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "appeal_first",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "appeal_first",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "appeal_first",
+   "kicker": "Day 9 — Wednesday, November 12, 2025",
+   "dayOffset": 9,
+   "title": "The Appeal, Filed in Week One",
+   "body": [
+    "The appeal letter is the half-page the library's families know by heart: name, report number, amend or expunge, signature, date. It goes out on day 9 of 90 — not because the appeal is the most important file, but because it is the most perishable.",
+    "The clerk stamps your copy. March 16 is now a date you own instead of a date that owns you."
+   ],
+   "choices": [
+    {
+     "text": "Mail it with the stamped copy filed, and note the Bureau's clocks on the calendar: evidence, hearing, decision",
+     "next": "appeal_done",
+     "cash": -10,
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "Indicated-report appeal filed in writing on day 9 of 90"
+     ],
+     "note": "Filed first because it perishes first. Sequence is the strategy."
+    },
+    {
+     "text": "Draft it carefully and mail it after the January review settles your thinking",
+     "next": "appeal_done",
+     "note": "January reviews have eaten bigger windows than this one. You mailed it — day 30-plus, inside, and lucky."
+    }
+   ]
+  },
+  {
+   "id": "appeal_done",
+   "kicker": "Day 16 — Wednesday, November 19, 2025",
+   "dayOffset": 16,
+   "title": "Two Placements, Two Logs",
+   "body": [
+    "Teo is with a foster family near his school; Irati is with a resource family across town, because the sibling home fell through in week two — a fact the file records in one line and the children record in every Sunday visit, which happens at a park between the two houses, weather permitting, love insisting.",
+    "Sibling visits are a plan item. Plan items generate paper or they generate apologies. Your job, per Ms. Urrutia: make them generate paper."
+   ],
+   "choices": [
+    {
+     "text": "Keep one sibling-visit log for both children, signed by both resource families",
+     "next": "two_a",
+     "setFlags": [
+      "siblingLog"
+     ],
+     "addHidden": [
+      "Sibling visit log kept and countersigned by both placements"
+     ],
+     "note": "One log, two signatures, two children in the same document — the file rarely sees them together. Make it."
+    },
+    {
+     "text": "Each home keeps its own notes — that's their job",
+     "next": "two_a",
+     "note": "Their job is care. The log is yours."
+    }
+   ]
+  },
+  {
+   "id": "two_a",
+   "kicker": "Day 18 — Friday, November 21, 2025",
+   "dayOffset": 18,
+   "title": "Two Sundays",
+   "body": [
+    "The Sunday visit, in a park between two placements, becomes the family's fixed point: sandwiches, the log, the children's running audit of each other's weeks. Resource families who sign a log together start, slowly, to coordinate like one.",
+    "Coordination between placements is not the agency's job to invent. It can be the family's job to document."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "two_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "two_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "two_b",
+   "kicker": "Day 20 — Sunday, November 23, 2025",
+   "dayOffset": 20,
+   "title": "The Log's Second Signature",
+   "body": [
+    "Teo's resource mother signs; Irati's signs beneath her, in a different hand, and the log becomes the first document in either file that contains both children's names on the same page for a family reason.",
+    "Small paper. The marathon is made of it."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "records131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "records131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "records131",
+   "kicker": "Day 23 — Wednesday, November 26, 2025",
+   "dayOffset": 23,
+   "title": "Both Records, Requested",
+   "body": [
+    "Two dependency cases means two case records, and the request that unlocks them is the same in each: the material is released upon request (55 Pa. Code § 3130.44(d)), with redactions for others' information under (f). You sign both requests in one sitting, because partial mirrors produce partial strategies.",
+    "What comes back will show you each child's file as its own court will read it — including whether either file even mentions the other's clock."
+   ],
+   "choices": [
+    {
+     "text": "Sign both written requests; file both stamped copies in the master folder",
+     "next": "packets_back",
+     "cash": -10,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Both children's case records requested in writing under § 3130.44(d)"
+     ],
+     "note": "Two mirrors, requested together. The board is about to get honest."
+    },
+    {
+     "text": "Request Teo's now — his clock is the urgent one",
+     "next": "packets_back",
+     "note": "His is earlier by eighteen days. Irati's is the one that will surprise you."
+    }
+   ]
+  },
+  {
+   "id": "packets_back",
+   "kicker": "Day 44 — Wednesday, December 17, 2025",
+   "dayOffset": 44,
+   "title": "What the Two Files Say",
+   "body": [
+    "Teo's file is orderly: services dated, visits logged, the bicycle-crash investigation summarized fairly. Irati's file is thinner and stranger: her entry paperwork carries a wrong date — November 12, nine days before she entered care — inflating her clock by over a week, an error no one made on purpose and everyone downstream has been copying.",
+    "Clocks built on copied errors are still clocks, until someone files the correction. You are someone. The correction is a page with the true date, the entry order attached, and a request that both files carry it."
+   ],
+   "choices": [
+    {
+     "text": "File the date correction in both children's files, entry order attached",
+     "next": "read_a",
+     "cash": -5,
+     "setFlags": [
+      "dateCorrected"
+     ],
+     "addHidden": [
+      "Irati's entry-date error corrected in writing in both files"
+     ],
+     "note": "Nine days, returned to an eight-year-old by a photocopy. The calendar is a moral instrument."
+    },
+    {
+     "text": "Mention the wrong date at the next review so the judge can note it",
+     "next": "read_a",
+     "note": "Judges note what is filed. What is mentioned gets noted as mentioned."
+    }
+   ]
+  },
+  {
+   "id": "read_a",
+   "kicker": "Day 50 — Tuesday, December 23, 2025",
+   "dayOffset": 50,
+   "title": "Reading Teo's File First",
+   "body": [
+    "Teo's file reads like a case being run by adults: dated services, honest summaries, the crash investigation closed fairly. You index it in an evening and feel, briefly, the system's competence as a personal kindness.",
+    "Then you open Irati's, and the evening changes."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "read_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "read_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "read_b",
+   "kicker": "Day 53 — Friday, December 26, 2025",
+   "dayOffset": 53,
+   "title": "Reading Irati's File",
+   "body": [
+    "Hers is thinner — second children in widened cases often get the thinner file — and on its third page sits the entry date, November 12, nine days before the entry order you hold in your other hand says November 21.",
+    "You read the page three times. Then you do what the library exists to teach: you reach for a pen, not a phone."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "correction_filed",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "correction_filed",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "correction_filed",
+   "kicker": "Day 58 — Wednesday, December 31, 2025",
+   "dayOffset": 58,
+   "title": "The Appeal's Evidence",
+   "body": [
+    "The Bureau's scheduling order arrives, and with it the duty the appeal rules place on the agency: provide the appellant all evidence gathered during the investigation relevant to the determination, including the potentially exculpatory, within ten days of the order (23 Pa.C.S. § 6341(c.2)(4)).",
+    "The packet holds the school nurse's note from the crash day — 'spoke with Teo; states he fell from bicycle onto handlebars; bruising pattern consistent' — the sentence the indicated summary had compressed into 'injuries unexplained.' The hallway's rule holds in the third file too: the decisive page is usually already written, by someone else, waiting to be asked for."
+   ],
+   "choices": [
+    {
+     "text": "Build the appeal exhibit set around the nurse's note and the dated photos",
+     "next": "evid_a",
+     "cash": -5,
+     "setFlags": [
+      "evidenceReceived"
+     ],
+     "addHidden": [
+      "Investigation evidence obtained under § 6341(c.2)(4)"
+     ],
+     "note": "Their packet, your exhibits. The burden will be theirs at the hearing (23 Pa.C.S. § 6341(c.2)(5)); the paper is already yours."
+    },
+    {
+     "text": "Your own account of the crash should carry the appeal",
+     "next": "evid_a",
+     "note": "Accounts need corroboration the way clocks need dates. The nurse wrote both."
+    }
+   ]
+  },
+  {
+   "id": "evid_a",
+   "kicker": "Day 63 — Monday, January 5, 2026",
+   "dayOffset": 63,
+   "title": "The School's Letter",
+   "body": [
+    "Teo's school counselor writes the letter the appeal will want in June: the crash, the nurse's note, the boy's account consistent across three tellings — the small, boring consistency that investigations are supposed to notice.",
+    "It is requested in writing, received in writing, and filed in both tracks. Boring consistency, documented, is a theme of this family's year."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "evid_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "evid_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "evid_b",
+   "kicker": "Day 67 — Friday, January 9, 2026",
+   "dayOffset": 67,
+   "title": "The Photographs, Dated",
+   "body": [
+    "The crash-weekend photographs — the bicycle, the handlebar bruise, the helmet split along its seam — are printed with their dates and filed beside the counselor's letter. Photographs without dates are allegations; with dates, they are exhibits.",
+    "The folder gains a section. June is five months away and already losing."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "services131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "services131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "services131",
+   "kicker": "Day 73 — Thursday, January 15, 2026",
+   "dayOffset": 73,
+   "title": "Two Service Plans, One Mother",
+   "body": [
+    "Your services run on two plans in two files that occasionally forget they describe the same woman: a parenting course (Teo's file), a family-therapy referral (Irati's), and a housing application that both files cite and neither owns. The therapy referral, the record shows, was sent five weeks after Irati's plan was signed.",
+    "Gaps that live between two files belong fully to neither — which means, at the permanency table, they can be charged to you in both. The letter that prevents this is short: dates, plan, referral, in both files."
+   ],
+   "choices": [
+    {
+     "text": "Write the referral-gap letter once and file it in both children's cases",
+     "next": "gap_both",
+     "cash": -5,
+     "setFlags": [
+      "gapDocumented"
+     ],
+     "addHidden": [
+      "Therapy referral gap documented in both children's files"
+     ],
+     "note": "One letter, two files. The gap now belongs to its true owner in both courtrooms."
+    },
+    {
+     "text": "Raise the gap in Teo's file — the therapy matters most there",
+     "next": "gap_both",
+     "note": "It matters in Irati's file, where it happened. Gaps must be filed where they live."
+    }
+   ]
+  },
+  {
+   "id": "gap_both",
+   "kicker": "Day 95 — Friday, February 6, 2026",
+   "dayOffset": 95,
+   "title": "The Spring Reviews",
+   "body": [
+    "Spring reviews for both children land in the same week — a scheduling accident that functions as a rehearsal for every combined hearing to come. The judges (two of them; the files never merged) each read a file that now contains the correction, the logs, the gap letter, and the appeal's existence noted by date.",
+    "Teo's judge says the sentence: 'I see the mother's other matters are being litigated in their proper forums, on time.' It is the sound of three files agreeing about you."
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "fall_reviews",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "fall_reviews",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "fall_reviews",
+   "kicker": "Day 118 — Sunday, March 1, 2026",
+   "dayOffset": 118,
+   "title": "The Reviews Before the Hearing",
+   "body": [
+    "May's reviews, one per child, rehearse June: Teo's judge notes the appeal pending and says nothing more about it — its own building, its own burden — while Irati's commends the corrected file by name, an eight-year-old's nine days entered into a court record as a lesson in proofreading with consequences.",
+    "The Bureau's hearing notice is already in the folder. The spring's last job is the witness list, filed in both tracks, so no June morning begins with a missing name."
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "appeal_hearing131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "appeal_hearing131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "appeal_hearing131",
+   "kicker": "Day 217 — Monday, June 8, 2026",
+   "dayOffset": 217,
+   "title": "The Bureau Hearing",
+   "body": [
+    "Monday, June 8, 2026. The agency must prove by substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)). Its case is the summary. Yours is the packet: the nurse's note, the dated photographs, the school counselor's statement, the crash-weekend timeline your sister signed in April.",
+    "The hearing officer asks the agency's witness one question — whether the investigation file contained the nurse's note when the summary was written. The answer is in the transcript forever now: yes."
+   ],
+   "choices": [
+    {
+     "text": "Close on the burden and the note: their standard, their file, their omission",
+     "next": "bur_a",
+     "note": "Short closings win paper cases. This one was written by a school nurse in November."
+    },
+    {
+     "text": "Close on the children's year and what the registry would cost them all",
+     "next": "bur_a",
+     "note": "True, moving, and not the standard. The officer must apply the standard."
+    }
+   ]
+  },
+  {
+   "id": "bur_a",
+   "kicker": "Day 225 — Tuesday, June 16, 2026",
+   "dayOffset": 225,
+   "title": "The Transcript's Quiet Pages",
+   "body": [
+    "After the hearing, before the decision, there is the transcript request — made in writing, because the words said in June will be quoted in rooms the family never enters, and quotations prefer originals.",
+    "The agency's witness's answer about the nurse's note is on page forty-one. You will never need to quote it. Everyone will know you can."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "bur_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "bur_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "bur_b",
+   "kicker": "Day 238 — Monday, June 29, 2026",
+   "dayOffset": 238,
+   "title": "Waiting, Documented",
+   "body": [
+    "The decision window — forty-five days under the statute — is waited out the documented way: services continuing, visits logged, the kinship study of Aunt Selene begun at the agency's own suggestion, paper accumulating in all three files at the pace of a family that has stopped fearing it.",
+    "Waiting is a skill. This family has made it a record."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "decision131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "decision131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "decision131",
+   "kicker": "Day 253 — Tuesday, July 14, 2026",
+   "dayOffset": 253,
+   "title": "Expunged, and What It Doesn't Do",
+   "body": [
+    "The decision — entered within the 45 days the statute allows (23 Pa.C.S. § 6341(c.3)) — amends the report to unfounded. You read it twice at the kitchen table, and Ms. Urrutia's voice is in your ear from November: 'Winning the third file does not win the first two. It clears the air they breathe.'",
+    "She is right. Teo's clock still reads February 2027; Irati's, February 2027 (corrected). The dependency cases do not care about the registry — except that every future reader of either file will now meet a mother whose indicated report was examined and expunged, instead of assumed."
+   ],
+   "choices": [
+    {
+     "text": "File the expungement order in both dependency files, with a cover page noting the date",
+     "next": "kinship131",
+     "setFlags": [
+      "expungementFiled"
+     ],
+     "addHidden": [
+      "Expungement order filed in both dependency cases"
+     ],
+     "note": "Paper does not walk between buildings. You are the corridor."
+    },
+    {
+     "text": "The dependency courts will hear about it through the agency",
+     "next": "kinship131",
+     "note": "They will hear a summary of it. Summaries are how good news goes to be diminished."
+    }
+   ]
+  },
+  {
+   "id": "kinship131",
+   "kicker": "Day 305 — Friday, September 4, 2026",
+   "dayOffset": 305,
+   "title": "Aunt Selene's Application",
+   "body": [
+    "Autumn brings the kinship door: your aunt Selene, retired from the school district, applies to take both children together — the sibling placement that fell through last November, now with a study, a spare house, and a year of Sunday visits to point to. Kinship care, if it comes, is also one of the permanency clock's own exceptions: a child being cared for by a relative is outside the filing duty (42 U.S.C. § 675(5)(E)).",
+    "The study needs the usual constellation: clearances, references, the home visit, dates. You know the choreography by now. So does Selene, who has started a folder of her own — the family resemblance is administrative."
+   ],
+   "choices": [
+    {
+     "text": "Support the study with the sibling log and a written request that both files note it",
+     "next": "study131",
+     "cash": -5,
+     "setFlags": [
+      "kinAsked"
+     ],
+     "addHidden": [
+      "Kinship study supported with the sibling log; request noted in both files"
+     ],
+     "note": "The log does double duty: it proves the bond the placement would protect."
+    },
+    {
+     "text": "Let the study proceed without your fingerprints on it",
+     "next": "study131",
+     "note": "Support visible in the file reads as a family organizing itself. Absence reads as absence."
+    }
+   ]
+  },
+  {
+   "id": "study131",
+   "kicker": "Day 322 — Monday, September 21, 2026",
+   "dayOffset": 322,
+   "title": "The Study and the Services",
+   "body": [
+    "The study proceeds; your services complete in their two files: course certificate (filed, Teo), therapy goals met (filed, Irati — with the gap letter explaining the plan's arithmetic to any reader who wonders why it took until fall).",
+    "Housing remains the board's last open square: your application, filed in spring, reaches its letter in November — a dated waitlist position with a projected February opening, on letterhead, in both files now."
+   ],
+   "choices": [
+    {
+     "text": "Assemble the exception packets child by child: Teo's and Irati's, each with its own dates",
+     "next": "study_winter",
+     "cash": -10,
+     "setFlags": [
+      "packetBuilt"
+     ],
+     "addHidden": [
+      "Per-child exception packets assembled with individual dates"
+     ],
+     "note": "Two packets, two clocks, no blended arithmetic. The statute counts children; so do you."
+    },
+    {
+     "text": "Build one family packet — the story is the same",
+     "next": "study_winter",
+     "note": "The story rhymes; the dates don't. Blended packets are where child-specific exceptions go to blur."
+    }
+   ]
+  },
+  {
+   "id": "study_winter",
+   "kicker": "Day 334 — Saturday, October 3, 2026",
+   "dayOffset": 334,
+   "title": "The Winter of Two Bedtimes",
+   "body": [
+    "December splits the children's evenings between Selene's house and their placements' trial overnights, a geography of toothbrushes in three bathrooms. The log — the one document that has followed both children everywhere — records it all without commentary, which is what logs are for.",
+    "Ms. Urrutia reads a page and says the sentence the winter deserves: 'This is what a family looks like when it refuses to let two files raise two strangers.'"
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "ord_a",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "ord_a",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "ord_a",
+   "kicker": "Day 340 — Friday, October 9, 2026",
+   "dayOffset": 340,
+   "title": "The Study's References",
+   "body": [
+    "Selene's references are collected the study's way: three letters, three phone calls, each logged by the worker with dates. A retired principal writes that Selene 'kept the district's lost children found for thirty years,' a sentence no home study was ever improved by and none was ever hurt by.",
+    "References, like everything else in this case, are paper or they are weather."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "ord_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "ord_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "ord_b",
+   "kicker": "Day 346 — Thursday, October 15, 2026",
+   "dayOffset": 346,
+   "title": "The Home Visit",
+   "body": [
+    "The home visit finds the spare room already plural: two beds, two hooks, a calendar on the wall with both children's school breaks marked in a grandmother-generation hand that predates the case by decades of practice.",
+    "The worker photographs the room for the study. The room, being Selene's, photographs like an argument."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "ord_c",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "ord_c",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "ord_c",
+   "kicker": "Day 352 — Wednesday, October 21, 2026",
+   "dayOffset": 352,
+   "title": "Both Files Note the Study",
+   "body": [
+    "Your written request — that both children's files note the study's progress by date — is granted the way such requests are granted when they are reasonable, written, and early: without discussion, in both files, by Friday.",
+    "Two files, one study, no divergence. The marathon's arithmetic improves every time the paper agrees with itself."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "packets131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "packets131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "packets131",
+   "kicker": "Day 362 — Saturday, October 31, 2026",
+   "dayOffset": 362,
+   "title": "The Winter Push",
+   "body": [
+    "Winter is the long middle of every marathon case: visits expand at both placements, overnights begin at Selene's newly approved home — both children, together, the study approved in December with the court's blessing noted in both files (a relative placement, documented) — and your overnights at your own apartment begin in January, with the February unit letter framed like art.",
+    "The fifteen-month dates now approach in their corrected forms: Teo, Wednesday, February 3, 2027; Irati, Sunday, February 21, 2027. Behind each date stands a packet, a plan entry, and a relative's approved home. The clocks will ask their question. The files are ready to answer in triplicate."
+   ],
+   "choices": [
+    {
+     "text": "Do the paper version: dated, copied, filed",
+     "next": "review131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the case record"
+     ],
+     "note": "Another dated page joins the folder."
+    },
+    {
+     "text": "Handle it with a conversation and move on",
+     "next": "review131",
+     "note": "Conversations end. The file keeps what it was given."
+    },
+    {
+     "text": "File one blended family packet covering both children and rest",
+     "next": "end_one_clock",
+     "note": "One packet, two clocks — and one child's exception blurred past reading. The blended file is where the marathon is lost."
+    }
+   ]
+  },
+  {
+   "id": "review131",
+   "kicker": "Day 398 — Sunday, December 6, 2026",
+   "dayOffset": 398,
+   "title": "The Review Where the Dates Are Said",
+   "body": [
+    "January's combined review — the two judges have begun, sensibly, to sit in sequence on the same morning — hears the state of all three files: the appeal, closed and expunged; the placements, united at Selene's; the services, complete with their gaps documented and owned by their true dates.",
+    "The agency's counsel states the permanency position carefully: the February dates will be met, as the statute contemplates, by the documented exceptions — relative care for both children, and the compelling reason written into each case plan this month at your lawyer's request: reunification on track, trial return scheduled, filing not in either child's interest (42 U.S.C. § 675(5)(E))."
+   ],
+   "choices": [
+    {
+     "text": "Ask both courts to write it: exceptions documented, trial return to begin, goal unchanged in both files",
+     "next": "feb_a",
+     "requiresFlags": [
+      "recordsRequested",
+      "appealFiled",
+      "packetBuilt",
+      "dateCorrected"
+     ],
+     "note": "Asked in both rooms, answered in both orders. The board is fully lit."
+    },
+    {
+     "text": "Ask for immediate return of both children — everything is documented",
+     "next": "end_trial131",
+     "note": "Everything is documented except the last step, which is a step. The best ending takes it in order."
+    },
+    {
+     "text": "Let the agency's statement stand without asking for orders",
+     "next": "end_trial131",
+     "note": "Statements evaporate. Orders accumulate."
+    },
+    {
+     "text": "Accept the agency's split proposal: Teo home now, Irati's goal revisited in the fall",
+     "next": "end_split131",
+     "note": "A split offered in January is a split that lasts. The board was built to refuse it politely, with paper."
+    }
+   ]
+  },
+  {
+   "id": "feb_a",
+   "kicker": "Day 420 — Monday, December 28, 2026",
+   "dayOffset": 420,
+   "title": "The January Paper, Assembled",
+   "body": [
+    "Before February's dates arrive, the packets are assembled in their final form: per child, per exception, each document dated, each date matching the master calendar — which is checked, one last time, against the entry orders themselves.",
+    "Trust, in this family, is a thing that gets verified against originals. The calendar passes."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "feb_b",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "feb_b",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "feb_b",
+   "kicker": "Day 444 — Thursday, January 21, 2027",
+   "dayOffset": 444,
+   "title": "The Trial's First Weeks",
+   "body": [
+    "The trial return's first weeks are documented the way the whole case has been: visits converting to overnights, overnights to weeks, the log's signatures changing from supervision to simple acknowledgment that the children were, as expected, home.",
+    "February approaches on the calendar like a date that has already been answered — because, in January's orders, it has."
+   ],
+   "choices": [
+    {
+     "text": "Carry the page to its file",
+     "next": "february131",
+     "cash": -5,
+     "setFlags": [
+      "paperTrail"
+     ],
+     "addHidden": [
+      "Dated documentation added to the record"
+     ],
+     "note": "Dated, copied, filed — the chain holds."
+    },
+    {
+     "text": "Trust the conversation to carry it",
+     "next": "february131",
+     "note": "Conversations end. The file keeps what it was given."
+    }
+   ]
+  },
+  {
+   "id": "february131",
+   "kicker": "Day 457 — Wednesday, February 3, 2027",
+   "dayOffset": 457,
+   "title": "February, Twice",
+   "body": [
+    "Wednesday, February 3, 2027 — Teo's fifteenth month — passes the way prepared-for dates do: as a review already held, an exception already documented, a trial return already running. Sunday, February 21 — Irati's, on her corrected clock — passes the same way, eighteen days later, the echo arriving exactly when the master calendar always said it would.",
+    "No petition is filed in either case. The question the statute asks at fifteen months was answered in January, in writing, child by child. This is what the finish line of a marathon case looks like: not a tape, but a table — three files, all answered, and a trial return converting to a return while the folder, at last, gets lighter instead of heavier."
+   ],
+   "choices": [
+    {
+     "text": "Convert the trial return at the spring review, both children, aftercare in writing in both files",
+     "next": "end_answered",
+     "note": "The last move is the first lesson, twice: in writing, in both files."
+    },
+    {
+     "text": "Let the trial simply run its course",
+     "next": "end_trial131",
+     "note": "Open files collect new summaries. Close them the way you carried them."
+    }
+   ]
+  },
+  {
+   "id": "end_answered",
+   "kicker": "Day 470 — Tuesday, February 16, 2027",
+   "dayOffset": 470,
+   "title": "Ending — Every Clock Answered",
+   "body": [
+    "By spring both children are home — returned on orders written in two courtrooms, built on one folder. Selene's home stays in the orders as the family's standing respite, the kinship door held open by the same paperwork that opened it. The registry holds nothing against you; the Bureau saw to that in a decision your grandchildren could read.",
+    "State it honestly, the way the debriefs insist: the children spent fifteen months in care, and no strategy gives those months back. What the strategy did was narrower and total: no clock in any of the three files ever found this family unprepared, undocumented, or late. In a marathon case, that is not a consolation. That is the win."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE THREE CLOCKS, AUDITED — Appeal: notified December 16, 2025; 90 days → Monday, March 16, 2026; filed day 9 (23 Pa.C.S. § 6341(a)(2)); evidence under (c.2)(4); burden on the agency under (c.2)(5); decision within (c.3)'s 45 days. Teo: entered November 3, 2025 + 15 months = Wednesday, February 3, 2027. Irati: entered November 21, 2025 (her file's copied November 12 was corrected on the record) + 15 months = Sunday, February 21, 2027. The filing duty and its exceptions — relative care, documented compelling reason, services not provided (42 U.S.C. § 675(5)(E)) — are counted per child, which is why the packets were built per child.",
+    "WHY THIS IS LABELED PARTIAL — The best ending this scenario offers keeps the goal intact, defeats every clock, and returns both children — after fifteen months of placement. A strategy guide that called that unqualified victory would be lying about the cost. The win is real: it is the best possible outcome the documented situations allow, and it was reached by sequencing — perishable deadline first, mirrors second, corrections and packets child by child, orders asked for in both rooms.",
+    "WHAT NO STRATEGY CONTROLS — Two judges, a hearing officer, a study queue, a housing waitlist, and a bicycle. The route controlled the order of the paper and the accuracy of the dates — in a three-file case, the two things most likely to be lost and the two things that decide it. Counsel (42 Pa.C.S. § 6337) and the record requests (55 Pa. Code § 3130.44(d)) are the load-bearing walls; everything else is the family, living its year in date order."
+   ]
+  },
+  {
+   "id": "end_trial131",
+   "kicker": "Day 470 — Tuesday, February 16, 2027",
+   "dayOffset": 470,
+   "title": "Ending — Home in Stages, Both Files Open",
+   "body": [
+    "The children come home in stages across the spring — Teo first, on his earlier clock's order; Irati on a trial that stretches toward summer — with both cases still open, both folders still growing, and the fifteenth months survived but not, as in the best ending, answered in advance.",
+    "Nothing failed here. The exceptions held, the appeal is expunged, the goal never moved. The difference is the texture of the ending: orders asked for late produce returns that arrive late, in a system where late is measured in childhoods."
+   ],
+   "ending": true,
+   "debrief": [
+    "A PARTIAL WIN, SLOWER THAN THE BEST — The same facts, the same clocks, a later set of asks. The gated route required **recordsRequested**, **appealFiled**, **packetBuilt**, and **dateCorrected** — the correction alone was worth nine days of a child's clock, and it existed only because both records were requested and read.",
+    "WHAT NO STRATEGY CONTROLS — Judicial sequencing across two courtrooms. Two files can be won in the same season and still close in different months; the strategy's claim is that neither was ever lost to a date."
+   ]
+  },
+  {
+   "id": "end_one_clock",
+   "kicker": "Day 470 — Tuesday, February 16, 2027",
+   "dayOffset": 470,
+   "title": "Ending — The Clock That Got Away",
+   "body": [
+    "In this branch the appeal was polished instead of filed, or Irati's date was never corrected, or one file's packet was left to a summary — and the board's discipline is shown by its absence: one of the three clocks, the one nobody was watching that month, ran out.",
+    "A petition in one child's case, or a registry entry that outlives both dependency files: the marathon's cruelty is arithmetic. Attention divided by three files is still attention, but the clocks do not divide at all."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE MARATHON'S LESSON — Every deadline in this scenario was computed from primary dates: the 90-day appeal window (23 Pa.C.S. § 6341(a)(2)), and per-child fifteen-month dates under 42 U.S.C. § 675(5)(E). The failures that produce this ending are never effort failures. They are sequencing failures — the perishable filed late, the copied error uncorrected, the second child's packet blended into the first's.",
+    "WHAT NO STRATEGY CONTROLS — Very little, in this ending, was outside the strategy: that is what makes it the cautionary one. The board on the refrigerator — every clock, every date, one page — is the whole defense. Keep the board."
+   ]
+  },
+  {
+   "id": "end_split131",
+   "kicker": "Day 470 — Tuesday, February 16, 2027",
+   "dayOffset": 470,
+   "title": "Ending — Two Files Won, One Still Running",
+   "body": [
+    "This branch ends mid-marathon: the appeal expunged, one child home, the other's case converted to a longer plan after a goal the court questioned in the fall and the file answered too late.",
+    "It is the most common shape of real multi-file cases — not triumph, not disaster, but a split decision measured in different bedtimes in different houses. The folder remains open on the kitchen table, because one file is still running, and it will be run the same way: in date order, to the end."
+   ],
+   "ending": true,
+   "debrief": [
+    "A SPLIT, NAMED HONESTLY — Multi-file cases rarely resolve in a single hearing, and this ending refuses to pretend otherwise. The tracks that were won were won on the library's constants: early appeal (§ 6341(a)(2)), evidence under (c.2)(4), records under § 3130.44(d), per-child exceptions under § 675(5)(E).",
+    "WHAT NO STRATEGY CONTROLS — Courts sequence siblings by their own calendars, and a goal questioned in the fall can take a season to answer even with the right paper. The split is not the strategy failing; it is the strategy still running, one file short of the table."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s131';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+# The Empty Chair (a fictional composite) — Node-for-Node Script (Scenario 123)
+
+Scenario 123 of *The First 90 Days* — script generated node-for-node from `scenario-123.json`; the JSON is the source of truth.
+
+A fictional composite built from published Pennsylvania dependency practice and documented system patterns. Not a real family's case.
+
+**Content note:** a teenager in residential placement and a fight over who makes her education decisions. No graphic content.
+
+**How to read effects:** `cash` is money spent or received at that choice; `FLAG:` marks a fact the story remembers; `HIDDEN +` is an assessment item the player never sees scored; `REQUIRES:` gates a choice on an earlier fact; `NOTE:` is authorial, not spoken in-world. Endings are marked **Ending.** with a **Debrief:**.
+
+**Start date:** Monday, January 4, 2027. **Tier:** Complex. **Start cash:** $150.
+
+---
+
+## [start] School mom
+
+*Day 0 — Monday, January 4, 2027*
+
+Yasmin delivers the news at the visit with a fifteen-year-old's precision for the jugular: "They're getting me a school mom. Since you apparently live nowhere." The facility's education liaison used the word *surrogate*. The school district, having mailed two letters to an address you left in July and called a number disconnected in August, has determined that Yasmin's parent cannot be located — and is appointing someone to make her education decisions.
+
+You visit every week. You have never missed. The facility's own sign-in book has your name in it fourteen times, in your handwriting, next to your current phone number. Somewhere between that book and the district's file, you became unfindable.
+
+**Choices:**
+- Ask Yasmin exactly what was said, by whom, and write it down before the visit ends. → **backstory123**
+
+## [backstory123] How Yasmin got here
+
+*Day 0 — Monday, January 4, 2027*
+
+The record, fairly: last year was a collapsing one — your hours cut, the eviction, the shelter summer, and Yasmin, fourteen then, absorbing the chaos the way teenagers do, by disappearing into it: school refusal, two runaway episodes, a year of grades falling off a table. The dependency finding named the circumstances accurately. Since October she has been at the residential program across the county; you are in stable housing since September, working, in family therapy, visiting weekly without exception.
+
+Your parental rights are intact and unquestioned in the dependency case. It is only in the school district's parallel universe — built from an intake form — that you are a missing person.
+
+**Choices:**
+- Call the facility's education liaison, Ms. Phan, and ask what a 'surrogate' is being appointed to do, exactly. → **facility_call**
+
+## [facility_call] Routine, she says
+
+*Day 1 — Tuesday, January 5, 2027*
+
+Ms. Phan is brisk and not unkind. The school believes Yasmin needs a special-education evaluation. Evaluations need a parent's consent and a parent's participation. The district's letters came back; the district's calls failed; the district is following its process for students whose parents can't be located: assignment of a surrogate parent, an educational decision-maker. "It's routine," she says. "It doesn't affect your rights in the dependency case."
+
+"It affects my rights in the room where her education gets decided," you say — and hear, in your own voice, the sentence this whole scenario is about. Ms. Phan, to her credit, does not argue. She gives you the district office's number and the name of the supervisor: Mr. Corvath.
+
+**Choices:**
+- Ask what the facility has already signed in your place — then take the whole inventory to your lawyer. → **facility_forms**
+
+## [lawyer123] The rule, whole
+
+*Day 2 — Wednesday, January 6, 2027*
+
+Ms. Viteri reads the federal regulation the way she reads everything: in full, out loud, before discussing it. A school must ensure a child's rights are protected when no parent can be identified; when the agency, after reasonable efforts, cannot locate a parent; when the child is a ward of the State; or when the child is an unaccompanied homeless youth — and its duties include assigning an individual to act as a surrogate for the parents. (34 C.F.R. § 300.519(a), (b)) For a child who is a ward of the State, the surrogate may instead be appointed by the judge overseeing the child's case. (§ 300.519(c))
+
+"Three things," she says. "First: you are identifiable, locatable, and in weekly documented contact with the very facility the district got its address from — the factual premise of this process is false, and false premises are fought with paper, not outrage. Second: a surrogate, whoever it is, may not be an employee of the school, the district, or any agency involved in Yasmin's education or care. (§ 300.519(d)(2)(i)) Remember that; this case will test it. Third: the clock is real — the state must make reasonable efforts to assign a surrogate within thirty days of the determination that one is needed (§ 300.519(h)), and a surrogate, once seated, can consent to the evaluation and represent Yasmin in everything about it. (§ 300.519(g)) We have weeks, not months. We write today."
+
+**Choices:**
+- Write today: to the district, the agency, the facility, and the court file — who you are, where you live, that your rights are intact, and that the consent decision is yours. → **letters_out**  _(FLAG: locatedInWriting; HIDDEN + Education — parent asserted identity, current address, and decision-making role in writing to district and agency)_
+- Call Mr. Corvath's office first. A human conversation may unwind this faster than a letter escalates it. → **district_call**
+
+## [facility_forms] The slope of signatures
+
+*Day 2 — Wednesday, January 6, 2027*
+
+On the drive home you inventory, with Yasmin's help by phone, what facility staff have already signed in your parental place: a field-trip permission. A photo release. A school dance form. Each one reasonable; each one a small rehearsal. Nobody decided to replace you. The replacement accreted, form by form, the way the address did — everything in this case accretes, and accretions are only visible when someone reads the whole file at once.
+
+An evaluation consent is not a field-trip form. It decides what gets tested, what gets found, what gets written into the record that follows a child for years. The slope ends there, or it doesn't end.
+
+**Choices:**
+- Take the inventory to Ms. Viteri. You want the rule, whole, before you touch the machinery. → **lawyer123**
+
+## [district_call] Reasonable efforts
+
+*Day 3 — Thursday, January 7, 2027*
+
+The district's special-education office is polite at the speed of process. The file shows, the staffer says, 'reasonable efforts': two letters mailed, returned; two calls to the number on file, disconnected. The determination that a surrogate is needed has been made; the assignment process is underway; if you are in fact the mother, you are welcome to 'provide documentation' for the file. Your existence is received as a claim to be processed — by the process that already concluded you don't exist.
+
+Ms. Viteri, debriefing the call, is succinct: "Their reasonable efforts were reasonable attempts to reach a wrong address. A letter from you ends the factual question in a way no phone call can: it is the location, proving itself, in writing, with a date."
+
+**Choices:**
+- Write the letters — to the district, the agency, the facility, the court — today. → **letters_out**  _(FLAG: locatedInWriting; HIDDEN + Education — parent located herself in writing after district's 'reasonable efforts' reached only a stale address)_
+- Wait for the assignment letter. If a qualified volunteer is appointed, perhaps the practical harm is small, and fighting looks like vanity. → **assignment_news**
+
+## [letters_out] Located
+
+*Day 4 — Friday, January 8, 2027*
+
+The letters go out in one afternoon — the most consequential mail run of your year. To the district: your identity, your current address and phone, your daughter's name and school, the statement that your parental rights are intact and unmodified by any court, and the conclusion the district is asked to draw: no surrogate is needed, because the predicate — a parent who cannot be identified or located — is false. To the agency and the facility: the same, plus a demand that the address be corrected in every file that feeds another file. To the court, through counsel: a copy, so February's review reads the correction from the record, not from memory.
+
+Copies cost you eleven dollars at the copy shop. You have spent more, for less, in this case — but never less, for more.
+
+**Choices:**
+- Now ask for the file — the agency's record of how your address decayed. (55 Pa. Code § 3130.44(d)) → **records123**  _(cash −11)_
+
+## [records123] The file's archaeology
+
+*Day 6 — Sunday, January 10, 2027*
+
+The written record request goes to the agency (55 Pa. Code § 3130.44(d)) — and asks, by name, for everything touching Yasmin's education and your address: intake forms, school correspondence, the notices the district copied to the agency, the determination paperwork itself.
+
+Files, excavated properly, tell on their own formation. This one is about to explain how a mother who visits weekly became, on paper, a person who could not be found.
+
+**Choices:**
+- Sign, date, send, keep the receipt — and read what comes back like a geologist. → **mail_room**  _(FLAG: recordsRequested; HIDDEN + Record — agency record requested in writing, including education correspondence and address history)_
+- Let the letters do the work alone; the file's archaeology is a luxury. → **mail_room**
+
+## [mail_room] Returned to sender
+
+*Day 7 — Monday, January 11, 2027*
+
+The production begins with two envelopes — the district's own letters, returned, stamped *no longer at this address*, filed by the facility in a folder nobody had reason to open twice. Reasonable efforts, fossilized: the district mailed to the shelter you left in July; the facility filed the returns; the agency was copied on neither. Three institutions each held one piece of a simple fact — *the mother can be reached at her daughter's placement, every week, in person* — and no process existed whose job was to assemble it.
+
+Assembling it is now, by default and by letter, your job. You assemble it the way this game always teaches: in writing, with the pieces dated.
+
+**Choices:**
+- Next stratum: the phone number that was 'disconnected.' → **phone_bill**
+
+## [phone_bill] Fourteen signatures
+
+*Day 8 — Tuesday, January 12, 2027*
+
+The number the district called was your old one — disconnected in August, when the shelter period ended and you consolidated your life into a new phone, a new address, a lease. Your current number appears in the facility's visitor log on fourteen consecutive weekly visits, in your own hand, next to your signature. The agency's review paperwork has carried the correct number since October. The district's source document — you can see it coming in the file like weather — is older than all of that.
+
+Institutions do not update each other. That is not malice; it is architecture. Parents are the only integration layer this system has ever reliably had, which is unfair, and true, and — handled in writing — usable.
+
+**Choices:**
+- Read the source document itself: the intake form. → **address_file**
+
+## [address_file] July's handwriting
+
+*Day 9 — Wednesday, January 13, 2027*
+
+Here it is: the facility's intake form from July, completed during the shelter period by a clerk working from the emergency paperwork — the shelter's address, the old phone, and in the box for parental contact, a checkbox ticked: *whereabouts unverified*. It was true for perhaps a week in July, during the worst fortnight of your life. It has been false for six months. It has also been copied, unexamined, into the district's file, where it acquired the force of a finding.
+
+One checkbox. Everything since — the returned letters, the failed calls, the determination, the impending stranger in your chair — is that checkbox, compounding.
+
+**Choices:**
+- Take the full file to Ms. Viteri. The premise fight is winnable; now the candidate question opens. → **intake_form**
+
+## [intake_form] The checkbox
+
+*Day 11 — Friday, January 15, 2027*
+
+Ms. Viteri spreads the archaeology on her table: July's form, the returned envelopes, the visitor log, your letters of January. "Understand what happened," she says, "because the court will want the story in one breath: a stale intake form declared you unverified; two systems mailed the stale address; the failures were filed as efforts; the efforts founded a determination; and the determination is about to appoint a person to exercise rights that were never lost, for a mother who was never missing. Against that story, the district has a process. Processes do not enjoy being narrated."
+
+Then she turns practical. "The district will now float names — it must fill the process it started, unless it withdraws the determination. Who the names are matters. One of them, in cases like this, is very often exactly who the rule forbids."
+
+**Choices:**
+- Ask for the candidate names in writing — before any assignment is made. → **candidate_list**
+
+## [candidate_list] Two names
+
+*Day 12 — Saturday, January 16, 2027*
+
+The district's reply names the pool it is drawing from, and Ms. Viteri's prediction is standing in it. Name one: Mrs. Skye, a retired teacher, trained as a volunteer surrogate, no connection to any agency in Yasmin's life. Name two: the education coordinator of Yasmin's own facility — the person whose program houses her, employs her teachers' liaisons, and would, as surrogate, be consenting to evaluations of a child in her own institution's care.
+
+The regulation's criterion is plain: a surrogate may not be an employee of the state or local education agency, *or of any other agency involved in the education or care of the child*, and must have no interest conflicting with the child's. (34 C.F.R. § 300.519(d)(2)) Name two is not a close call. It is the textbook call.
+
+**Choices:**
+- Object in writing to the facility-employee candidate, citing the rule, while affirming the mother's own availability makes any surrogate unnecessary. → **skye_visit**  _(FLAG: conflictRaised; HIDDEN + Education — written objection to surrogate candidate employed by an agency involved in the child's care)_
+- Say nothing about the names. Challenging the district's pool while your own status is contested may harden positions. → **assignment_news**
+
+## [skye_visit] Mrs. Skye
+
+*Day 15 — Tuesday, January 19, 2027*
+
+You ask to meet her, and the district — surprised into decency by the request — arranges it. Mrs. Skye is sixty-eight, precise, warm, and entirely uninterested in being anyone's weapon. She has served as surrogate for nine children. Her first question is the one that reorders the whole fight: "Have they found you, then?"
+
+"I am a bridge for children with no one," she says. "A located mother is not my case; she is my exit paperwork. If they appoint me anyway, I will do right by your daughter — but you should know that the honest sentence in this file is that I am unnecessary, and I'll write that sentence myself if they make me part of it."
+
+**Choices:**
+- Thank her — and take the district's temperature in person, in Mr. Corvath's office, before any assignment lands. → **corvath_meeting**
+
+## [corvath_meeting] Mr. Corvath's file
+
+*Day 16 — Wednesday, January 20, 2027*
+
+Mr. Corvath receives you with the file open and the air of a man who has read it twice since your letters arrived. He is not a villain; he is a supervisor whose district processed a stale form into a determination, and who now has, on his desk, a located mother, a forbidden candidate, a permissible volunteer who calls herself unnecessary, and a February court date where a judge may ask about all of it.
+
+"For a ward of the State," he says, "the judge overseeing the case could appoint the surrogate instead of us. (§ 300.519(c)) That's not your daughter's posture as I now understand it — but you should know the road exists, because if this reaches February unresolved, it may be the road the court takes to end the uncertainty. A named person, appointed in open court, beats a process drifting." What he does not say — what his open file says for him — is that the district's cleanest exit is to withdraw the determination, and withdrawals are written by people who have been given the paper to justify them. You have given him the paper.
+
+**Choices:**
+- Wait for the district's next move with the file complete and the clock running. → **assignment_news**
+
+## [assignment_news] The determination, revisited or not
+
+*Day 18 — Friday, January 22, 2027*
+
+Late January. What arrives from the district depends, with the usual total precision, on what your January put in front of it: whether you exist on paper as a located parent with an objection to the forbidden candidate — or whether the process simply continued, fed by silence, toward appointing whoever the pool produced first.
+
+The thirty-day effort clock (34 C.F.R. § 300.519(h)) is not the enemy here. It is the metronome. Everything in this case is a question of what exists in the file when it stops.
+
+**Choices:**
+- Object in writing to the facility-employee candidate, citing the rule — the assignment letter names the pool it drew from, and the forbidden name is in it. → **yasmin_wishes**  _(FLAG: conflictRaised; HIDDEN + Education — written objection to surrogate candidate employed by an agency involved in the child's care)_
+- Meanwhile, one voice in this case has not been filed anywhere: Yasmin's. Fix that. → **yasmin_wishes**
+
+## [yasmin_wishes] Her sentence
+
+*Day 20 — Sunday, January 24, 2027*
+
+At the visit, you ask Yasmin the question the whole apparatus has been deciding without her: what does she want? Her answer is specific enough to quote, and with her permission you do: *I want the test. Maybe my brain has a reason and I'd like to know it. I want my mom at the table for it. No offense to the school mom, but I have a mom.* She writes it herself, signs it, dates it — a fifteen-year-old filing her own exhibit.
+
+It goes into the packet as what it is: the stated wishes of the person whose education every adult in the story is arranging. Files in this system are full of children's wishes paraphrased by professionals. Verbatim is rarer, and it reads differently in a courtroom. It reads like a person.
+
+**Choices:**
+- Attach her page. Then face the paper that started all of this — the evaluation consent itself, finally addressed to you. → **evaluation_explainer**  _(FLAG: yasminWishes)_
+- Keep her page in the family. She has been documented enough this year. → **evaluation_explainer**
+
+## [evaluation_explainer] What the evaluation is
+
+*Day 22 — Tuesday, January 26, 2027*
+
+Ms. Viteri walks you through the thing your signature would actually authorize: testing and review to determine whether Yasmin is a child with a disability and what her educational needs are — the initial evaluation the federal rules contemplate, which a parent may request and must consent to. (34 C.F.R. § 300.301(b), (c)) It is not a placement. It is not a label nailed to a forehead. It is a measurement — the same species of measurement whose absence left a year of failing grades to be explained by character.
+
+Your fear, named honestly in her office, is that a finding follows Yasmin forever. Her answer: "An unmeasured difficulty also follows her forever. It just follows her as blame." The consent form, when it comes, will be one page. The decision deserves this whole conversation, and has now had it.
+
+**Choices:**
+- Read the consent request when it reaches your correct address — as, this month, things finally do. → **consent_paper**
+
+## [consent_paper] The form, addressed to you
+
+*Day 24 — Thursday, January 28, 2027*
+
+The consent packet arrives at your real address, with your real name on it, proposing the evaluation's areas and your rights in plain print. It is, bureaucratically, the most beautiful document of your winter: proof that the file can be corrected, that a mother can be re-found by the simple expedient of being written to where she lives.
+
+What remains is the decision it was always actually about — not whether you may decide, but what you will decide. Ms. Viteri leaves it with you overnight, with one instruction: "Decide it as a parent, not as a plaintiff. The chair is won. Chairs don't help children. Signatures and refusals do, depending on what's true."
+
+**Choices:**
+- Sign the consent — dated, copied, returned with proof — and ask for the evaluation's timeline in writing. → **school_visit**  _(FLAG: consentGiven; HIDDEN + Education — parent consented to initial evaluation; surrogate process rendered unnecessary)_
+- Hold the consent unsigned while you think — a label, a file, a daughter's whole school future; a few more weeks of thinking is not unreasonable. → **consent_stall**
+
+## [school_visit] The name card
+
+*Day 26 — Saturday, January 30, 2027*
+
+You visit Yasmin's school — the placement district's building, where her teachers know her as a failing student with a file full of weather. In the conference room, a staff member clears away the remnants of another student's meeting: a tent card, left behind, reading *Parent/Guardian*. You think about the meetings held in this room about your daughter, and the chair that stood empty at them — not because its occupant refused it, but because its occupant's address was a checkbox's casualty.
+
+Her English teacher, met in the hallway, says the sentence the evaluation exists to test: "She's not lazy. Something's costing her more than it costs the others. I'd like to know what it is before we decide what she is." So, in the end, would everyone. The signature is how the knowing starts.
+
+**Choices:**
+- Ask the guardian ad litem where she stands for February — Ms. Wexford has been reading a parallel file. → **gal123**
+
+## [gal123] The guardian ad litem
+
+*Day 27 — Sunday, January 31, 2027*
+
+Ms. Wexford's position, delivered with a lawyer's economy: she will tell the court that Yasmin's mother is located, engaged, and the proper decision-maker for the evaluation; that no surrogate is needed; and that if any appointment were contemplated over that record, the facility's own coordinator would be disqualified by the regulation's plain terms. (§ 300.519(d)(2)(i)) Then she turns her pencil toward you. "My support assumes the chair gets used, counselor's client. The evaluation is the point of the chair. If February finds the consent still unsigned, my speech writes itself differently."
+
+Allies in this system are conditional in proportion to their honesty. Hers is the honest kind.
+
+**Choices:**
+- Build the February packet — and count the days the district's clock still has. → **thirty_days**
+
+## [thirty_days] The metronome
+
+*Day 29 — Tuesday, February 2, 2027*
+
+Count it as the regulation frames it: once a district determines a child needs a surrogate, the state must make reasonable efforts to assign one within thirty days. (34 C.F.R. § 300.519(h)) Your letters landed inside that window — which is why the determination is being revisited rather than executed — but windows close, processes resume, and February 25 is the date after which the dependency court, not the district, becomes the room where the question gets answered for good.
+
+The packet is nearly built. What it proves, in order: a mother locatable all along; efforts spent on a stale address; a candidate forbidden and a candidate unnecessary; a daughter's own sentence; and a signature — or its absence, which will also be evidence, of something.
+
+**Choices:**
+- Spend the remaining weeks the way the case has taught you: on paper, in advance. → **consent_stall_check**
+
+## [consent_stall] Thinking, at length
+
+*Day 30 — Wednesday, February 3, 2027*
+
+The weeks of thinking have a texture Yasmin can feel from across the county. The evaluation does not begin — consent is the gate, and the gate is yours now, which makes the waiting yours too. Her grades continue their slide. A teacher, not unkindly, asks her whether 'the paperwork' is done yet, and she answers with the sentence that will reach you by phone and stay with you: "Everyone fought about who gets to sign. Nobody signed."
+
+Ms. Viteri does not push. She observes, once, that winning a chair and declining to sit in it produces a specific documentary result: a file in which the obstacle to the child's evaluation is no longer an institution. Courts read such files with great attention to whose name the obstacle carries.
+
+**Choices:**
+- Carry the unsigned form into February, and let the review read it. → **yasmin_school_day**
+
+## [consent_stall_check] The form's status
+
+*Day 30 — Wednesday, February 3, 2027*
+
+Before the packet closes, Ms. Viteri asks the only question that decides February's ending: the consent form — signed, or still thinking? Everything else in the file has been built. The chair was recovered with letters; the evaluation waits on a signature; and the review will read whichever fact your hand has made true.
+
+There is no fourth option in which the form decides itself.
+
+**Choices:**
+- It is signed. The evaluation is already being scheduled — I decided it as a parent. → **yasmin_school_day**  _(REQUIRES: consentGiven)_
+- It is still unsigned. I won the right to decide, and I am still deciding. → **yasmin_school_day**  _(REQUIRES-NOT: consentGiven)_
+
+## [yasmin_school_day] Her school day
+
+*Day 33 — Saturday, February 6, 2027*
+
+Yasmin's school day, as her teachers describe it in the letters Ms. Viteri collects: first period arrives before her brain does; reading assignments cost her triple and repay her half; the frustration that adults keep minuting as *attitude* has a rhythm any evaluator would recognize as a hypothesis. The evaluation — consented or not, scheduled or not — is the only instrument in the story built to convert that rhythm into knowledge.
+
+Whatever February decides about decision-makers, this is what the deciding is for. The packet closes with her teachers' letters on top, where they belong.
+
+**Choices:**
+- One administrative crusade remains, and it is the one that started everything: the address. → **address_fix**
+
+## [address_fix] Four stamps
+
+*Day 36 — Tuesday, February 9, 2027*
+
+You correct your address the way addresses should be corrected and almost never are: in writing, four times, to the agency, the district, the facility, and the court — each with a request for written confirmation, each confirmation filed when it lands. It is an afternoon of envelopes to prevent a year of returned mail. The district's confirmation arrives with an attachment you did not request: a memo to its own staff, adding a verification step when a parent's mail is returned and the child has a placement file. Your case, anonymized, has become a procedure. That is what winning looks like at the systems level: a checkbox somebody else will now have to double-check.
+
+With the packet complete, Ms. Viteri drafts the February ask.
+
+**Choices:**
+- Read the draft findings. Then the last call before court. → **packet123**  _(FLAG: addressFixed)_
+
+## [packet123] The ask
+
+*Day 40 — Saturday, February 13, 2027*
+
+The ask is written as findings, in the order a judge can adopt them: that the child's mother is identified, located, and in continuous documented contact; that the surrogate determination rested on a stale address and a six-month-old checkbox; that the mother's written assertion of her role was served within the assignment window; that the evaluation consent has been exercised by the parent (or, in the version of this packet no one wants to file, remains pending by the parent's own hand); and that notices in this case shall issue to the corrected address in every system that touches Yasmin's education.
+
+It accuses no one of anything worse than architecture. Architecture, properly documented, is quite enough.
+
+**Choices:**
+- One whiteboard session — the determinations February will actually make. → **viteri_whiteboard**
+
+## [viteri_whiteboard] What February decides
+
+*Day 43 — Tuesday, February 16, 2027*
+
+The review is a permanency hearing, and its determinations are the statute's: continuing necessity of placement, plan compliance, progress, and reasonable efforts. (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) "The school question rides inside those words," Ms. Viteri says. "A court deciding whether the agency made reasonable efforts is entitled to hear that its school arm spent the winter appointing a stranger to replace a mother who was sitting in its own visitor log. And a court deciding *your* progress will read your January. Everything you filed is about to be weighed as parenting. Which, in the end, is what it was."
+
+The agency's report arrives the next day. You read it for its school chapter first, the way everyone now reads everything.
+
+**Choices:**
+- Read the report. → **report123**
+
+## [report123] The report's school chapter
+
+*Day 45 — Thursday, February 18, 2027*
+
+The agency's report is, on the case plan, fair: your housing, your therapy, your fourteen visits, all credited. Its school chapter is three sentences — the district's determination described, the mother's objection 'noted,' the matter 'pending district process.' A winter of returned envelopes, forbidden candidates, and a daughter's verbatim sentence, compressed by summary into the passive voice. Reports compress; that is their nature and their defense.
+
+Which is why the packet exists: to be in the room, uncompressed, when the determinations are made. Ms. Viteri drafts the motion paragraph that will either end the surrogate question in open court or expose exactly how it survived.
+
+**Choices:**
+- Draft it as an order: the determination withdrawn or vacated; notices to the corrected address; the parent's consent authority noted on the record. → **review_motion**
+
+## [review_motion] Drafted as an order
+
+*Day 47 — Saturday, February 20, 2027*
+
+The motion is two pages. It asks the court to note the parent's availability on the record, to direct that education notices issue to the corrected address, and to record the disposition of the surrogate determination — withdrawn by the district, or, if the district insists on standing on it, decided by the court on the full file. For a ward of the State, the judge's own appointment power (§ 300.519(c)) is acknowledged in a footnote: the machinery exists; this record does not call for it.
+
+Whatever February does, it will now do it about documents. That transformation — from weather to documents — is the entire product of your January.
+
+**Choices:**
+- The night before, Yasmin calls. Let her have the last word before the court has its. → **yasmin_call**
+
+## [yasmin_call] Her last word
+
+*Day 49 — Monday, February 22, 2027*
+
+"If the judge asks," Yasmin says, "tell her the school mom thing was weird but the test part is real. I still want the test." A pause, filled with fifteen years of accumulated precision. "And tell her you live somewhere. She should have that address."
+
+You promise both messages, verbatim. Some exhibits a mother carries without a folder.
+
+**Choices:**
+- Sleep. Tomorrow, the chair. → **night_before123**
+
+## [night_before123] The folder, squared
+
+*Day 51 — Wednesday, February 24, 2027*
+
+The packet, in order: July's form; two returned envelopes; fourteen signatures in a visitor log; four January letters with their receipts; a regulation with the relevant lines marked; a volunteer's honest sentence; a supervisor's open file; a daughter's page; a signed consent, or its unsigned ghost; four address confirmations. It is not a large folder, as case files go. It is large enough to hold a winter in which a mother was declared missing at her own daughter's school while visiting her every week — and to end the declaration.
+
+Tomorrow the court makes its determinations. The chair will be filled — by its owner, by a bridge, or by a mistake. By now, which of those it is has already been decided by the paper. The hearing is where the paper is read aloud.
+
+**Choices:**
+- Go to court. → **review_day**
+
+## [review_day] Thursday, February 25
+
+*Day 52 — Thursday, February 25, 2027*
+
+The permanency hearing makes its determinations (42 Pa.C.S. § 6351(f)) — and your case plan, fairly read, is found to be progressing. Then the school question is reached, on the fullest paper it has ever had, and the court addresses the surrogate determination directly, because the packet gives it no passive voice to hide in.
+
+The chair is filled now. By whom — and whether the evaluation it exists to authorize is moving — is the sum of your January and February, read back to you as an order.
+
+**Choices:**
+- The file holds a located mother who wrote in time, the agency's own record of her fourteen visits, and a signed consent — the determination is withdrawn on the record and the chair was never anyone else's. → **end_signature**  _(REQUIRES: locatedInWriting; REQUIRES: consentGiven)_
+- The file holds a located mother and a recovered chair — and an unsigned consent form, two months into the thinking. → **end_withheld**  _(REQUIRES: locatedInWriting; REQUIRES-NOT: consentGiven)_
+- The file holds a mother's silence and a district's process — completed with the qualified volunteer, because the forbidden name was at least challenged and struck. → **end_season**  _(REQUIRES: conflictRaised; REQUIRES-NOT: locatedInWriting)_
+- The file holds returned envelopes, a checkbox, and a process that filled the chair from inside the institution the chair watches. → **end_filled_wrong**
+
+## [end_signature] Ending — Her Mother's Signature
+
+*Day 52 — Thursday, February 25, 2027*
+
+**Ending.**
+
+**Debrief:** The surrogate determination is withdrawn on the record — the district's counsel uses the word *moot*, which is institutions' dialect for *ended by a mother's paperwork*. The court's order notes your availability and corrected address as findings, directs education notices accordingly, and records that the evaluation consent has been exercised by the parent: the evaluation is scheduled, with your name on its distribution list, and Yasmin's own sentence — *I have a mom* — quoted in the colloquy by a judge who reads packets. The empty chair is filled by its owner, in open court, in writing.
+
+Name the machinery exactly. The regulation protects children when no parent can be identified, when a parent cannot be located after reasonable efforts, for wards of the State, and for unaccompanied youth (34 C.F.R. § 300.519(a)) — and every one of those predicates is a *fact to be proven*, not a mood to be presumed from returned mail. You disproved the predicate with the system's own documents: a visitor log, an October review, four January letters. You also policed the rule's boundary — the bar on surrogates employed by an agency involved in the child's care (§ 300.519(d)(2)(i)) — before it needed policing at a hearing. And you did the thing the chair exists for: you decided, and signed. The record was requested along the way (55 Pa. Code § 3130.44(d)), which is why February argued from the file instead of about it.
+
+What no strategy controls: the evaluation's findings, which may help Yasmin enormously or complicate her year; the dependency case's deeper road, which continues through your plan and its reviews; a district whose next stale form is already in a drawer somewhere. Yasmin remains placed tonight. But in every file that touches her education, her mother now exists — located, addressed, and signing — and the checkbox that erased her has been corrected in four systems and quoted in a court order. Permanence, in paperwork, is what repeated correction is called.
+
+## [end_withheld] Ending — The Consent Withheld (partial)
+
+*Day 52 — Thursday, February 25, 2027*
+
+**Ending.**
+
+**Debrief:** The court ends the surrogate question completely — your January saw to that; the determination is withdrawn, your role is noted, the chair is yours beyond argument. And then the hearing arrives at the evaluation, and the room's attention settles on the unsigned form in your folder. The judge's questions are gentle and exact. The order that results records your consent authority, directs the district to hold the evaluation open for a further thirty days, and states — in the findings, where your daughter will someday be able to read it — that the evaluation awaits the parent's decision. The obstacle has a name now, and the name is not an institution's.
+
+Do this ending the courtesy of precision. What you won was real and hard: a false predicate dismantled (34 C.F.R. § 300.519(a)), a forbidden candidate identified, a record built. The regulation's entire purpose is that a child whose parent exists should have decisions made by that parent — and that purpose is not served by the decision never being made. An evaluation is a measurement, requestable by a parent and gated by a parent's consent (34 C.F.R. § 300.301(b), (c)); declining to measure a struggling child's difficulty does not protect her from a label. It protects the label *struggling*, which she already wears, from ever being replaced by an explanation.
+
+Partial — and the most self-correcting ending in this batch, because the obstacle and the remedy are the same person, holding the same pen. Thirty days are on the order. Yasmin's sentence — *I still want the test* — is in the file, verbatim, waiting for her mother's signature to agree with it. Sign it, or refuse it on the record with reasons; either is a decision a court can respect. What the system cannot use, and a daughter cannot use, is the chair kept warm and empty at the same time.
+
+## [end_season] Ending — The Kind Stranger's Season (partial)
+
+*Day 52 — Thursday, February 25, 2027*
+
+**Ending.**
+
+**Debrief:** Mrs. Skye was appointed in late January, and she has been — as she promised a mother she had never met she would be — conscientious: she attended the meetings, asked the teachers the right questions, and consented to the evaluation in February after reading everything twice. The evaluation is underway. It will probably help Yasmin. And every one of its decisions was made, for a full season, by a kind stranger, because a mother's existence never got itself filed in the one office that was appointing her replacement. The review notes your objection to the facility candidate — the one written thing you did — and the appointment record reflects it: the qualified volunteer serves, not the institution's own coordinator. Your single intervention is visible in the outcome's shape, like a handprint in drying concrete.
+
+Read the counterfactual the way the file does. The regulation's predicate — a parent who cannot be located after reasonable efforts (34 C.F.R. § 300.519(a), (b)) — was false the whole season, and the proof of its falseness was sitting in a visitor log with your signature in it, fourteen times. Nothing was required to defeat the appointment but a dated letter asserting three facts. The objection you did file proves the paper would have been read: it struck the forbidden candidate (§ 300.519(d)(2)(i)) without argument. Paper works even when it is the only page. Imagine, the file says silently, a whole letter.
+
+Partial, and genuinely recoverable: a surrogate serves the child's education, not the parent's erasure — Mrs. Skye herself will tell the district, in writing, that a located mother ends her necessity, and parents re-enter these processes at exactly this point in real cases, with the evaluation's next stage (the program it recommends) decided at a table with the right chair filled. What the season cost is also real: a semester of decisions in a file that will describe your daughter's education as having been guided, during her mother's documented weekly visits, by an appointee. The file forgets nothing. Neither, after this winter, will you.
+
+## [end_filled_wrong] Ending — The Empty Chair, Filled Wrong
+
+*Day 52 — Thursday, February 25, 2027*
+
+**Ending.**
+
+**Debrief:** The facility's education coordinator was appointed surrogate in late January, and the appointment file contains no objection — because none was filed, by anyone, although the mother's name was in the visitor log of the appointee's own building the whole time. As surrogate she has consented to the evaluation of a child her institution houses, attended the school meetings in a room where her own program's performance is part of the context, and signed, in her two capacities, documents that will be difficult to disentangle for as long as Yasmin's record is read. The review notes the appointment as a district process, completed. The conflict that the regulation spells out in a single sentence never entered the record, because records do not raise their own objections.
+
+The sentence deserves to be read in the ending it governed: a surrogate may not be an employee of the state or local education agency, *or of any other agency that is involved in the education or care of the child*, and must have no conflicting interest. (34 C.F.R. § 300.519(d)(2)) It is not a technicality. It is the rule that keeps the watched from appointing their own watcher. Its enforcement mechanism, in a case where the district's own process produced the appointment, was a written objection from the one person positioned to file it — a person the process had already, conveniently and falsely, declared unfindable under § 300.519(a).
+
+Not sealed, because appointments can be revisited and parents located — and she is now, undeniably, located, by the crude expedient of being in this courtroom. But the evaluation's founding decisions were made inside the conflict, and later corrections argue uphill against signed consents. The doctrine of this scenario fits in the space between two facts: the system declared a weekly-visiting mother missing, and then filled her chair from inside the institution, in six weeks, without a single piece of paper objecting. Paper is not a courtesy in this system. It is the only immune response it has.

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 87 — The Second Letter (a fictional composite)",
+  "startNode": "start",
+  "startCash": 140,
+  "tier": "Foundation",
+  "summary": "The Bureau upheld the indicated report — but the order that says so carries two short clocks of its own, and a piece of evidence arrived too late for the first hearing.",
+  "startDateISO": "2026-03-02"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, March 2, 2026",
+   "dayOffset": 0,
+   "title": "The Letter With Two Clocks",
+   "body": [
+    "Your name is Sylvie Marchand. You work as an aide at the preschool two bus rides from your apartment, and your daughter Fern, five, is the light you organize every shift around. Last winter an indicated report of child abuse was filed against you after Fern's fall at the playground produced two medical readings that did not agree. You appealed it. A hearing officer heard the case, and the Bureau of Hearings and Appeals has now ruled.",
+    "The order in today's mail upholds the report. Your name stays on the registry, and the letter says plainly what that can mean for work in a childcare facility or a school. But the last page of the order is not only bad news. It describes what a person who disagrees may do next — and both of the things it describes run on clocks measured in days, not months.",
+    "The family is fictional — a composite. No real person's story appears here. What is real is the shape of the paper: an order, a mailing date, and a short window that starts whether you are ready or not."
+   ],
+   "choices": [
+    {
+     "text": "Read the last page again, slowly, and write down the two dates it gives you",
+     "next": "legal_aid",
+     "setFlags": [
+      "datesKept"
+     ],
+     "note": "Fifteen days to ask the Secretary to reconsider. Thirty days to perfect an appeal to Commonwealth Court. Both counted from the mailing date — today. You write them on the folder in ink."
+    }
+   ]
+  },
+  {
+   "id": "legal_aid",
+   "kicker": "Day 1 — Tuesday, March 3, 2026",
+   "dayOffset": 1,
+   "title": "The Legal Aid Line",
+   "body": [
+    "The legal aid intake worker does not waste your minutes. \"Two clocks,\" she says. \"Asking for reconsideration and appealing to Commonwealth Court are different doors. Reconsideration goes back to the Secretary with something the Bureau got wrong or never saw. The court appeal is a judge reading the record that already exists — the court does not take new evidence.\"",
+    "\"And one warning,\" she adds. \"Asking for reconsideration does not stop the court clock. Families lose the second door all the time because they were politely waiting at the first one.\" (The two windows are stated in the order itself, from 23 Pa.C.S. § 6341(g): 15 calendar days from the mailing date to request reconsideration or appeal, and 30 calendar days from the mailing date to perfect an appeal to Commonwealth Court.)"
+   ],
+   "choices": [
+    {
+     "text": "Ask what could possibly be new — the hearing already happened",
+     "next": "mailbox",
+     "note": "\"Anything the Bureau never saw,\" she says. \"Start with your own mailbox. Agencies mail things. So do doctors.\""
+    }
+   ]
+  },
+  {
+   "id": "mailbox",
+   "kicker": "Day 3 — Thursday, March 5, 2026",
+   "dayOffset": 3,
+   "title": "What Arrived Late",
+   "body": [
+    "At the bottom of the mailbox stack, under a grocery circular, is a thick envelope from the county agency, postmarked during your hearing week. Inside is the evidence packet the agency provided for your appeal — the investigation evidence, including material that could help you, which the agency must provide to a person making an appeal. (23 Pa.C.S. § 6341(c.2)(4)) One page was never mentioned at your hearing: a follow-up letter from Fern's pediatrician, written after a second examination, reading the injury as consistent with the playground fall you described.",
+    "It is not a magic page. It does not prove anything by itself. But the Bureau decided your case without ever seeing it, and a reconsideration request exists for exactly that shape of wrong."
+   ],
+   "choices": [
+    {
+     "text": "Take the packet and the letter to the legal aid clinic this week",
+     "next": "clinic",
+     "setFlags": [
+      "evidenceFound"
+     ],
+     "addHidden": [
+      "Investigation packet — late-arriving pediatric follow-up letter identified, never considered at the hearing"
+     ],
+     "note": "You paper-clip the letter to the front of the packet. For the first time since the order arrived, the folder feels like it is pointing somewhere."
+    },
+    {
+     "text": "Put the packet in the drawer — the hearing is over and you are tired",
+     "next": "clinic",
+     "note": "The drawer closes. The letter is still in the world, and the clocks are still running — but nobody's request will carry it anywhere from a drawer."
+    }
+   ]
+  },
+  {
+   "id": "clinic",
+   "kicker": "Day 5 — Saturday, March 7, 2026",
+   "dayOffset": 5,
+   "title": "The Clinic's Two Pages",
+   "body": [
+    "Ms. Delvecchio, the clinic attorney, reads the order, then the pediatrician's letter, then the order again. \"This is a reconsideration with a spine,\" she says. \"Not 'please look again.' It is: here is evidence in the agency's own packet that the Bureau never addressed, and here is the page. We attach the letter, we cite the packet, and we file it well inside fifteen days.\"",
+    "\"One more page,\" she says, sliding a short form across. \"We also renew, in writing, the request for the complete investigation file — everything, not the excerpts. Records in the agency's file are to be released on request (55 Pa. Code § 3130.44(d)), and if this goes further, we will want the whole record, not the highlights.\" Copies cost $10 you did not budget."
+   ],
+   "choices": [
+    {
+     "text": "Sign the reconsideration request with the letter attached, and the written request for the complete file",
+     "next": "daycare_office",
+     "cash": -10,
+     "setFlags": [
+      "reconDrafted",
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Reconsideration — drafted with the unconsidered pediatric letter attached; complete investigation file requested in writing"
+     ],
+     "note": "Two signatures. The request now exists as paper, dated, with the new page riding on its back."
+    },
+    {
+     "text": "Ask to come back next week and sign — you need to think it over",
+     "next": "clinic_late",
+     "note": "Thinking is free. This particular calendar charges for it by the day. And it spends the rest of your week — the director, the shift board, the quiet evenings — whether you spend them or not."
+    }
+   ]
+  },
+  {
+   "id": "clinic_late",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "Seven Days Later",
+   "body": [
+    "You are back at the clinic on day twelve of fifteen. Ms. Delvecchio does not scold you; she moves faster. \"We can still make it,\" she says, \"if we sign today and file today. What we cannot do is miss anything else — not a page, not a date.\" The reconsideration is drafted the same way it would have been a week ago, with the pediatrician's letter attached and the written request for the complete file renewed. It is simply drafted against a wall now instead of against a calendar."
+   ],
+   "choices": [
+    {
+     "text": "Sign both pages now and file today",
+     "next": "filing_day",
+     "cash": -10,
+     "setFlags": [
+      "reconDrafted",
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Reconsideration — signed and filed on day twelve of fifteen; complete file requested in writing"
+     ],
+     "note": "The clerk's stamp lands like a small, kind hammer. Filed. Inside the window, with three days to spare and no margin left anywhere else."
+    }
+   ]
+  },
+  {
+   "id": "daycare_office",
+   "kicker": "Day 7 — Monday, March 9, 2026",
+   "dayOffset": 7,
+   "title": "The Director's Office",
+   "body": [
+    "Your director calls you in with the careful voice people use around registry letters. The center runs clearances on a cycle, and your name's status is not a secret the schedule can keep. She is not unkind. She is also not able to promise anything: what she can do is tell you, honestly, that a pending reconsideration with a filed date is a different conversation than a closed file — and that the conversation will happen with or without your paperwork in it."
+   ],
+   "choices": [
+    {
+     "text": "Tell her the truth with dates: the order, the filed reconsideration, the hearing to come",
+     "next": "shift_board",
+     "setFlags": [
+      "directorTold"
+     ],
+     "addHidden": [
+      "Employment — director informed in writing of the filed reconsideration and its dates"
+     ],
+     "note": "She writes the dates in the schedule book. \"Then we wait for paper,\" she says, \"instead of rumors.\""
+    },
+    {
+     "text": "Say as little as possible and hope the cycle is slow",
+     "next": "shift_board",
+     "note": "Silence is also a schedule. It just isn't one you get to see."
+    }
+   ]
+  },
+  {
+   "id": "shift_board",
+   "kicker": "Day 9 — Wednesday, March 11, 2026",
+   "dayOffset": 9,
+   "title": "The Shift Board",
+   "body": [
+    "Filing day and your hearing-prep day will both land on workdays; the board at the center is a grid of other people's emergencies. Your supervisor can swap your filing-day shift if she knows by Friday — the swap costs you a Saturday, which costs you $15 in bus fare and Fern's cousin's birthday. Keeping quiet costs nothing today."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the swap in writing and take the Saturday",
+     "next": "folder_night",
+     "cash": -15,
+     "setFlags": [
+      "shiftSwapped"
+     ],
+     "note": "The swap is initialed on the board. A small square of paper that means: you will be standing in the right room on the right day."
+    },
+    {
+     "text": "Keep the shift and plan to file on your lunch break",
+     "next": "folder_night",
+     "note": "The courthouse is forty minutes away. Lunch is thirty. You do the arithmetic and decide not to look at it again."
+    }
+   ]
+  },
+  {
+   "id": "folder_night",
+   "kicker": "Day 11 — Friday, March 13, 2026",
+   "dayOffset": 11,
+   "title": "The Folder on the Table",
+   "body": [
+    "The night before filing, the folder gets its once-over: the order with the two dates in ink on its last page, the packet, the pediatrician's letter paper-clipped to the reconsideration, the receipt for copies. Fern is asleep. The kitchen clock is loud in the way kitchen clocks are at 11 p.m.",
+    "Nothing in the folder guarantees an outcome. What it guarantees is smaller and real: if anyone, at any desk, asks what you did and when you did it, the answer will not depend on your memory."
+   ],
+   "choices": [
+    {
+     "text": "Close the folder and sleep — filing day is tomorrow",
+     "next": "filing_day",
+     "note": "You set two alarms. The folder waits by the door like a dog that knows the route."
+    }
+   ]
+  },
+  {
+   "id": "filing_day",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "Day Twelve of Fifteen",
+   "body": [
+    "The Bureau's office is quieter than you expected, and the clerk is faster. Everything now depends on what is in your hands: a reconsideration that exists as a drafted, signed document is a filing. A reconsideration that exists as an intention is a story you will tell later, to no one who can act on it."
+   ],
+   "choices": [
+    {
+     "text": "File the reconsideration request, with the pediatrician's letter attached",
+     "next": "recon_filed",
+     "setFlags": [
+      "reconFiled"
+     ],
+     "note": "Stamped, copied, receipted. Day twelve of fifteen. The first clock is beaten, and the second door was never needed — yet.",
+     "requiresFlags": [
+      "reconDrafted"
+     ]
+    },
+    {
+     "text": "File only a notice of appeal to Commonwealth Court and skip reconsideration",
+     "next": "court_filed",
+     "note": "A valid door — but the court reads the record that exists, and the letter in your folder is not in it."
+    }
+   ]
+  },
+  {
+   "id": "recon_filed",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "The Receipt",
+   "body": [
+    "The receipt has a date stamp, a docket line, and absolutely no opinion about your case, which is what makes it beautiful. Ms. Delvecchio photographs it for the file and hands you the folder. \"Now the Secretary reads,\" she says. \"Reconsideration can end three ways: denied, granted with the order changed, or granted with a new hearing ordered. If the answer is no, the court door was already counted and calendared — nothing about today spent it carelessly.\"",
+    "On the bus home you realize your shoulders have been somewhere up around your ears since March 2. They come down about an inch."
+   ],
+   "choices": [
+    {
+     "text": "Go home and wait for the Secretary's answer on paper",
+     "next": "waiting_weeks",
+     "note": "Waiting is different when the thing being waited for has a receipt."
+    }
+   ]
+  },
+  {
+   "id": "waiting_weeks",
+   "kicker": "Day 25 — Friday, March 27, 2026",
+   "dayOffset": 25,
+   "title": "The Waiting Weeks",
+   "body": [
+    "Reconsideration is read by people, on their schedule, in a queue of other people's emergencies. The weeks pass at preschool speed: Fern learns to write her name with the letters in an order of her own choosing, the clearance cycle at the center ticks one notch closer, and your director — who has the dates in her schedule book because you gave them to her — says only, \"Paper's moving, then,\" when you pass in the hall.",
+    "You check the mailbox the way everyone in this story checks the mailbox: like it owes you money. On day forty, it pays."
+   ],
+   "choices": [
+    {
+     "text": "Open the envelope from the Secretary's office",
+     "next": "answer_letter",
+     "note": "Thick envelope. Thick is good. Denials are traditionally one page."
+    }
+   ]
+  },
+  {
+   "id": "answer_letter",
+   "kicker": "Day 40 — Saturday, April 11, 2026",
+   "dayOffset": 40,
+   "title": "The Answer, On Paper",
+   "body": [
+    "The Secretary's order arrives on day forty. You read it standing at the mailbox, the way all important reading in this story gets done.",
+    "The reconsideration is GRANTED. The order says, in the flat language of bureaus, that the final order did not address material evidence contained in the agency's own packet, and that the matter is returned for a new hearing at which the complete record — including the pediatrician's follow-up letter — will be considered. The indicated report is not erased today. The registry entry stands while the new hearing is pending. But the decision that kept it there has been un-decided, by the system, on paper, because of a page you carried into the right office inside the right fifteen days."
+   ],
+   "choices": [
+    {
+     "text": "Call the clinic and start preparing for the new hearing",
+     "next": "hearing_prep",
+     "note": "\"Now we build the hearing the first one should have been,\" Ms. Delvecchio says. \"Starting with the whole file — which, you may recall, somebody requested in writing.\""
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep",
+   "kicker": "Day 47 — Saturday, April 18, 2026",
+   "dayOffset": 47,
+   "title": "Preparing the Hearing That Should Have Been",
+   "body": [
+    "The complete investigation file arrives because it was requested in writing weeks ago. In it, fairly read, is the whole story: the first examination, the playground aide's incident note, and the follow-up letter that reconciles them. Preparation is not dramatic. It is a timeline on one page, the letter tabbed, the incident note tabbed, your own account written in your own words while it is still yours to write.",
+    "At the preschool, your director has the new hearing date in the schedule book, because you told her the truth with dates in March."
+   ],
+   "choices": [
+    {
+     "text": "Walk into the new hearing with the complete record",
+     "next": "end_recon",
+     "note": "Whatever the hearing officer decides this time, it will be decided about the whole file. That was the fight. It is already won."
+    }
+   ]
+  },
+  {
+   "id": "end_recon",
+   "kicker": "Day 55 — Sunday, April 26, 2026",
+   "dayOffset": 55,
+   "title": "Ending — A New Hearing, On the Whole Record",
+   "body": [
+    "The new hearing is not shown; this story ends where its real work ended — at the moment the system agreed to decide again, this time about everything. The indicated report remains in place pending that hearing, and the hearing officer could rule either way on the complete record. Sylvie keeps her folder, her dates, and her job conversation honest and current.",
+    "What changed is the ground: the Bureau's decision no longer rests on a partial record, because one parent read the last page of an order, counted fifteen days correctly, and carried one unconsidered page into the right office in time."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE WIN, NAMED HONESTLY — This is a partial win, and it is the best this story offers. The reconsideration was granted and a new hearing ordered; the report was NOT expunged by this ending, and no ending in this scenario expunges it — that decision belongs to the new hearing, on the complete record.",
+    "THE LAW IN THE BEATS — The two windows come from 23 Pa.C.S. § 6341(g): within 15 calendar days of the mailing date of the Bureau's final order, a party may request reconsideration by the Secretary or appeal; and within 30 calendar days of the mailing date, an appeal to Commonwealth Court must be perfected. Asking for reconsideration does not extend the court clock — which is why the clinic calendared both from day one. The evidence packet's arrival reflects the agency's duty under § 6341(c.2)(4) to provide a person making an appeal with the investigation evidence, including potentially exculpatory evidence. The complete-file request rests on 55 Pa. Code § 3130.44(d): agency records are released upon request.",
+    "THE HIGHEST-LEVERAGE MOVE — The written record request (§ 3130.44(d)), made at the clinic table before anyone knew whether it would matter. The complete file is what the new hearing will now be fought over.",
+    "WHAT NO STRATEGY CONTROLS — The Secretary could have denied reconsideration; hearing officers weigh evidence as they find it; employers make their own decisions on their own cycles. The route controlled only what was Sylvie's: the dates, the filing, the page, the folder. Outcomes also turn on workers, officials, and luck — never on whether a parent deserved better."
+   ]
+  },
+  {
+   "id": "court_filed",
+   "kicker": "Day 20 — Sunday, March 22, 2026",
+   "dayOffset": 20,
+   "title": "The Longer Road",
+   "body": [
+    "The notice of appeal to Commonwealth Court is filed inside its thirty days, and it is a real filing — the court will read the case. But a court on appeal reads the record that was made below: the transcripts, the packet as it stood, the Bureau's reasoning. It does not take new evidence, and the pediatrician's follow-up letter — sitting in your folder, unread by any deciding body — is not something the court can weigh.",
+    "Your lawyer is honest on the courthouse steps: \"We can argue the Bureau misread what it had. We cannot argue about the letter. On appeal, it does not exist.\""
+   ],
+   "choices": [
+    {
+     "text": "Take the appeal forward on the record that exists",
+     "next": "end_court",
+     "note": "The appeal proceeds. It will be decided about a smaller record than the one in your folder."
+    }
+   ]
+  },
+  {
+   "id": "end_court",
+   "kicker": "Day 90 — Sunday, May 31, 2026",
+   "dayOffset": 90,
+   "title": "Ending — The Court Reads a Smaller Record",
+   "body": [
+    "The appeal runs its course on the record as it stood when the Bureau ruled: no follow-up letter, no second examination weighed, because no filing ever put them in front of a deciding body. The court reviews what the Bureau had — and reviews the Bureau's reading of it deferentially. The report stands.",
+    "The door Sylvie chose was a real door. It was simply the one that could not carry the page that mattered. The reconsideration window — fifteen days, printed on the last page of the order — closed on March 17, while a stronger argument waited in a kitchen drawer and then in a folder, unfiled."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHY THIS ENDING — An appeal to Commonwealth Court under 23 Pa.C.S. § 6341(g) must be perfected within 30 calendar days of the mailing date of the Bureau's final order, and the court reviews the existing record; it does not receive new evidence. The reconsideration request — the only route that could put the unconsidered letter in front of a decision-maker — had to be filed within 15 calendar days of the same mailing date. Filing the appeal did not preserve the letter, and skipping reconsideration spent the only window that could use it.",
+    "THE LAW THAT WAS AVAILABLE — Same § 6341(g) clocks; the agency's duty to provide the investigation evidence, § 6341(c.2)(4); and the record release on request, 55 Pa. Code § 3130.44(d). All three were in the story. Only the clocks were used.",
+    "WHAT NO STRATEGY CONTROLS — Nothing in this ending turns on Sylvie's worth as a parent. It turns on which of two printed windows a piece of paper was carried through, and when. The system is not described as cruel here; it is described as literal — which, on day sixteen, amounts to the same weather."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s87';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

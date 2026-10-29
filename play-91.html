@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 91 — After the Order (a fictional composite)",
+  "startNode": "start",
+  "startCash": 130,
+  "tier": "Hard",
+  "summary": "The goal has already been changed to 'another planned permanent living arrangement' for a fourteen-year-old. Post-permanency, a mother, a teenager with opinions, and one more hearing at which the determinations still have to be made.",
+  "startDateISO": "2027-01-11"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 11, 2027",
+   "dayOffset": 0,
+   "title": "The Goal With the Long Name",
+   "body": [
+    "Your name is Lucretia Moss. Your son Emory is fourteen, taller than you since October, and living in a foster home with a family he describes, in the tone teenagers reserve for weather reports, as 'fine.'",
+    "At the last permanency review, the court changed his goal. Not to adoption — Emory's age and Emory's stated wishes made that a poor fit — but to the longest phrase in the outcome list: another planned permanent living arrangement (42 Pa.C.S. § 6351(f.1)). In plain terms: the plan stopped being 'home' and became 'somewhere, planned, permanent, other.' The case did not close. Cases like Emory's rarely close; they continue, with reviews every six months (§ 6351(e)(3)(i)), at which the court must still make its determinations (§ 6351(f)) — including how much progress has been made toward alleviating the circumstances that brought him into care.",
+    "The next hearing is March 15. In January, 'APPLA' sounds like a destination. Emory, on the phone, has begun calling it 'the long name,' and asking what would have to be true for the plan to have a shorter one.",
+    "The family is fictional — a composite. The long name is real, and so is what it takes to shorten it."
+   ],
+   "choices": [
+    {
+     "text": "Start answering Emory's question like it's a research project, not a hope",
+     "next": "clinic_call",
+     "note": "Because at a permanency hearing, it is one. The determinations are the rubric. The file is the exam."
+    }
+   ]
+  },
+  {
+   "id": "clinic_call",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "dayOffset": 2,
+   "title": "The Clinic's Rubric",
+   "body": [
+    "The parent-defense clinic attorney, Ms. Whitfield, does not deal in hopes either; she deals in the statute's list. \"At the hearing, the court determines: is Emory safe and protected; is the placement still necessary; how is compliance with the plan; how much progress toward alleviating the original circumstances (§ 6351(f)(1), (2), (3)). Then it chooses the outcome (§ 6351(f.1)). APPLA is an outcome a court picks when the record gives it nothing better that fits a fourteen-year-old's life.",
+    "\"So between now and March 15, our job is to make the record give it something better: your progress, documented; housing, documented; and Emory's own voice, in the file, where determinations get made. Courts hear children. Paper makes sure of it.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask for the first concrete step",
+     "next": "worker_meeting",
+     "note": "\"Read your own file,\" she says. \"All of it. You'd be amazed what the progress section says about a woman it hasn't updated since October.\""
+    }
+   ]
+  },
+  {
+   "id": "worker_meeting",
+   "kicker": "Day 4 — Friday, January 15, 2027",
+   "dayOffset": 4,
+   "title": "The New Worker's Questions",
+   "body": [
+    "Emory's case has a new worker — the third — who meets you with a laptop and the particular honesty of a person reading a file she did not write. The file's summary of you is four months old and ends mid-sentence, in spirit if not in fact: 'Mother engaged but progress limited.' Since that sentence: you finished the first course, renewed the lease, and kept every dinner visit. None of it is in her laptop. All of it is in your folder."
+   ],
+   "choices": [
+    {
+     "text": "Hand her a written update with the certificates attached, and keep the copy",
+     "next": "records",
+     "setFlags": [
+      "updateFiled"
+     ],
+     "addHidden": [
+      "Agency file — mother's written progress update filed, updating a four-month-old summary"
+     ],
+     "note": "She scans it into the file while you sit there. The summary of you is now partly written by you. That is not vanity; that is the record correcting itself."
+    },
+    {
+     "text": "Tell her everything and trust the laptop to remember",
+     "next": "records",
+     "note": "Laptops remember what is typed into them. Conversations are typed, later, by other people, in summary, from memory. The story has views."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 6 — Sunday, January 17, 2027",
+   "dayOffset": 6,
+   "title": "Reading Your Own File",
+   "body": [
+    "Ms. Whitfield's second step costs $10 and a signature: request the complete agency record, in writing. Agency records are released on request (55 Pa. Code § 3130.44(d)). For a post-permanency case the file is the case: two years of reviews, ratings, visit notes, and the plan documents that produced the long name. You cannot argue with a file you haven't read, and you cannot fix progress entries that nobody told you were wrong."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written request for the complete record",
+     "next": "emory_letter",
+     "cash": -10,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Record — complete agency file requested in writing in the post-permanency phase"
+     ],
+     "note": "The request is stamped and copied. When the file arrives it will be heavier than Emory was at birth, and you will read it at the kitchen table with a pencil, like an editor with a grievance and a deadline."
+    },
+    {
+     "text": "Skip it — two years of paper won't change March",
+     "next": "emory_letter",
+     "note": "It might not. But the March hearing will be decided from inside that paper, and one side will have read all of it."
+    }
+   ]
+  },
+  {
+   "id": "emory_letter",
+   "kicker": "Day 10 — Thursday, January 21, 2027",
+   "dayOffset": 10,
+   "title": "Emory's Letter, In His Own Hand",
+   "body": [
+    "Emory has written a letter. It is one page, in pencil, in the handwriting of a boy who types everything: he likes the foster family; he is not asking anyone to pretend otherwise; he wants the plan to include living with his mother again 'on a schedule that is written down,' starting with overnights, and he wants the court to know that this is his idea and he has 'thought about it since November.'",
+    "A fourteen-year-old's wishes are not a garnish in his own permanency case. They are evidence about what arrangement fits his life — but only if the letter reaches the file through the proper channels instead of living in your purse."
+   ],
+   "choices": [
+    {
+     "text": "Help him send it through his lawyer and the case team, and file a copy with the court record",
+     "next": "school_counselor",
+     "setFlags": [
+      "childVoice"
+     ],
+     "addHidden": [
+      "Child's voice — Emory's own letter filed through counsel, in the record before the hearing"
+     ],
+     "note": "Filed. Whatever the court decides, it will decide it having heard from the person the long name is about."
+    },
+    {
+     "text": "Keep the letter safe in your purse to show the judge if there's a chance",
+     "next": "school_counselor",
+     "note": "Purses do not testify. Letters in files do. The chance, if it comes, will come in a form that punishes the difference."
+    }
+   ]
+  },
+  {
+   "id": "school_counselor",
+   "kicker": "Day 13 — Sunday, January 24, 2027",
+   "dayOffset": 13,
+   "title": "The Counselor Who Keeps Receipts",
+   "body": [
+    "Emory's school counselor has the other half of his year: grades recovered from the fall's crater, attendance near-perfect since January, the machine-shop elective where he is, she says, 'the kid other kids ask.' She will write it — counselors in this story write things when asked in writing, with a date, for a named hearing. March 15 gives her all three."
+   ],
+   "choices": [
+    {
+     "text": "Ask her, in writing, for a letter for the March 15 hearing",
+     "next": "mentor",
+     "setFlags": [
+      "schoolLetter"
+     ],
+     "addHidden": [
+      "School — counselor's letter on grades, attendance, and stability obtained for the hearing"
+     ],
+     "note": "Signed, on letterhead, with the attendance numbers in a table. Judges read tables the way teenagers read texts: first, and completely."
+    },
+    {
+     "text": "Mention it to the worker and let the system carry it",
+     "next": "mentor",
+     "note": "The system carries many things. Unrequested letters are not among its demonstrated skills."
+    }
+   ]
+  },
+  {
+   "id": "mentor",
+   "kicker": "Day 16 — Wednesday, January 27, 2027",
+   "dayOffset": 16,
+   "title": "The Mentor From the Machine Shop",
+   "body": [
+    "The community mentor program paired Emory with a retired machinist who treats reliability as a moral category. His letter is two paragraphs and devastating in the way of plain men: Emory has missed one Saturday in five months, his own choice; the boy talks about his mother's dinners, her lease, her course certificates, 'like a kid reading a forecast he's decided to believe in.'",
+    "A mentor's letter proves nothing alone. In a file, beside a school letter and a teenager's own page, it becomes a chord."
+   ],
+   "choices": [
+    {
+     "text": "Ask him to sign the letter and send a copy for the court file",
+     "next": "bus_talk",
+     "setFlags": [
+      "mentorLetter"
+     ],
+     "addHidden": [
+      "Mentor — signed letter on Emory's reliability and stated wishes added to the record"
+     ],
+     "note": "He signs it with a machinist's pencil, in block letters, and asks if courts prefer ink. 'Courts prefer filed,' you say, and he nods like that's a tolerance he respects."
+    }
+   ]
+  },
+  {
+   "id": "bus_talk",
+   "kicker": "Day 20 — Sunday, January 31, 2027",
+   "dayOffset": 20,
+   "title": "The Bus Ride Inventory",
+   "body": [
+    "On the bus to the dinner visit, you inventory March 15 the way Ms. Whitfield taught you: determinations are made from the file. Yours now contains: your update, the complete record (read, with corrections penciled), Emory's letter, the school's table, the mentor's two paragraphs. The file's remaining thin places are equally listable: housing proof is a verbal assurance from your landlord, and the final parenting course — the teenagers one, the one that actually fits this case — ends March 1, unfiled until the certificate prints."
+   ],
+   "choices": [
+    {
+     "text": "Treat the thin places as the next two errands, in order",
+     "next": "housing_proof",
+     "note": "Errands with deadlines. The story's love language, by now, in two counties."
+    }
+   ]
+  },
+  {
+   "id": "housing_proof",
+   "kicker": "Day 22 — Tuesday, February 2, 2027",
+   "dayOffset": 22,
+   "title": "The Lease, Renewed",
+   "body": [
+    "Your landlord is a man who communicates in nods. The lease renewal is real — signed in December, through next December — but to a court, a nod is not a housing record. What the file needs is the renewal itself, copied, and a one-line letter: tenant, address, term, rent current. He signs it at the kitchen table of the duplex while his dog supervises, in the manner of landlords since the invention of leases."
+   ],
+   "choices": [
+    {
+     "text": "Get the signed letter and a copy of the renewal into the packet",
+     "next": "services_done",
+     "setFlags": [
+      "housingProof"
+     ],
+     "addHidden": [
+      "Housing — signed landlord letter and lease renewal filed; rent current"
+     ],
+     "note": "Housing: documented. The file's second thin place is now a page with a signature instead of a hope with a nod."
+    },
+    {
+     "text": "Tell the court the lease is renewed — he'll confirm if asked",
+     "next": "services_done",
+     "note": "Courts ask files, not landlords. A confirmation nobody requested, from a man of nods, is weather."
+    }
+   ]
+  },
+  {
+   "id": "services_done",
+   "kicker": "Day 29 — Tuesday, February 9, 2027",
+   "dayOffset": 29,
+   "title": "The Last Certificate",
+   "body": [
+    "The parenting-teenagers course ends March 1: eight Saturdays of a curriculum that finally matches your actual child — curfews, phones, the negotiation of a household with a person who is nearly a man. The certificate costs $15 to print officially, which is absurd, and you pay it, because the certificate is the exhibit and the exhibit is the argument: progress toward alleviating the original circumstances (§ 6351(f)(3)), in the specific, unglamorous, completable form the plan demanded."
+   ],
+   "choices": [
+    {
+     "text": "Pay for the official certificate and file it the day it prints",
+     "next": "folder_audit",
+     "cash": -15,
+     "setFlags": [
+      "servicesDone"
+     ],
+     "addHidden": [
+      "Services — final course certificate filed; plan services complete"
+     ],
+     "note": "Filed March 2. The plan's service list is now, for the first time, a list of finished things."
+    },
+    {
+     "text": "Bring the course workbook to the hearing instead",
+     "next": "folder_audit",
+     "note": "Workbooks show effort. Certificates show completion. Determinations, you have learned, are made about the second word."
+    }
+   ]
+  },
+  {
+   "id": "folder_audit",
+   "kicker": "Day 33 — Saturday, February 13, 2027",
+   "dayOffset": 33,
+   "title": "The Folder Audit",
+   "body": [
+    "Ms. Whitfield audits the packet against the statute's list, one finger per determination. Safety: the file's own recent notes support it. Necessity: the contested one — your progress is the argument. Compliance: complete, with certificates. Progress: documented, dated, rising. The outcome menu: she taps § 6351(f.1) and says the sentence the whole winter was for: 'We are going to ask the court to change the outcome — stepped return, written into the order, with overnights starting in April.'",
+    "\"Not because you're owed it,\" she says. \"Because the record now supports it better than it supports the long name. That's the only currency this building accepts, and we've spent two months minting it.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask what could still go wrong, and write that list down too",
+     "next": "visit_dinner",
+     "setFlags": [
+      "packetBuilt"
+     ],
+     "note": "The list is short and honest: a judge's caution, an agency's inertia, a teenager's bad week in the wrong week. All real. None of them paper-shaped. The paper is done."
+    }
+   ]
+  },
+  {
+   "id": "visit_dinner",
+   "kicker": "Day 36 — Tuesday, February 16, 2027",
+   "dayOffset": 36,
+   "title": "Dinner Visits, Logged",
+   "body": [
+    "The dinner visits run twice a week now, at your table, with Emory's homework spread beside the plates and his phone face-down by house rule — his rule, announced in January like a treaty. The visit notes, kept by the agency, are kind and vague. Kind and vague, in a file, weighs about half of specific."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, for the log to note the homework, the rule, and the on-time endings",
+     "next": "sister_call",
+     "setFlags": [
+      "visitLog"
+     ],
+     "addHidden": [
+      "Visit log — dinner visits documented specifically, in writing, at the parent's request"
+     ],
+     "note": "The note gets specific. Specific notes are the ones that get quoted in courtrooms. You have been quoted before; it cuts both ways; this time it cuts yours."
+    }
+   ]
+  },
+  {
+   "id": "sister_call",
+   "kicker": "Day 44 — Wednesday, February 24, 2027",
+   "dayOffset": 44,
+   "title": "Your Sister Asks the Odds",
+   "body": [
+    "Your sister — Emory's aunt, his emergency contact, his second dinner table — asks the family question: what are the odds? You give her the clinic's answer, because by now it is yours too: 'The odds are a record. We built the best one the facts allowed. A judge reads it on March 15 and makes determinations. Nobody honest gives you a number.'",
+    "'Then we cook on the 15th either way,' she says. Family, in this system, is logistics plus casserole."
+   ],
+   "choices": [
+    {
+     "text": "Tell her the hearing time and keep cooking",
+     "next": "letter_to_emory",
+     "note": "March 15, 10 a.m. She writes it on the recipe card. Some calendars are paper in the ways that count."
+    }
+   ]
+  },
+  {
+   "id": "letter_to_emory",
+   "kicker": "Day 50 — Tuesday, March 2, 2027",
+   "dayOffset": 50,
+   "title": "A Letter You Don't File",
+   "body": [
+    "The night you write it, Emory is at the foster home, and the letter is not for a file: it is for a fourteen-year-old who asked a court, in pencil, for a written-down schedule with his mother. It says you are proud of the letter he wrote. It says whatever March 15 decides, the plan for his life includes you showing up, in writing and in person, at the volume he can verify. It says the long name never fooled either of you about what he is to you.",
+    "Some paper is evidence. Some is just true. A complete life, like a complete file, contains both kinds, kept in their proper folders."
+   ],
+   "choices": [
+    {
+     "text": "Mail it in the morning and finish the hearing folder",
+     "next": "hearing_prep",
+     "note": "Mailed. The folder, by contrast, is all evidence — and it is finished."
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep",
+   "kicker": "Day 55 — Sunday, March 7, 2027",
+   "dayOffset": 55,
+   "title": "The Week Before the Hearing",
+   "body": [
+    "The packet is assembled in the statute's order, because hearings are read in the statute's order: safety, necessity, compliance, progress, outcome. Emory's letter is tabbed second, after your update, because Ms. Whitfield believes judges are readers and readers remember beginnings. Your testimony outline is three sentences long. Everything else you might say is already in the exhibits, with page numbers."
+   ],
+   "choices": [
+    {
+     "text": "Sleep, and be at the courthouse early",
+     "next": "courthouse",
+     "note": "Early is a strategy in buildings where your name is called from a list by people holding files."
+    }
+   ]
+  },
+  {
+   "id": "courthouse",
+   "kicker": "Day 60 — Friday, March 12, 2027",
+   "dayOffset": 60,
+   "title": "The Hallway Bench",
+   "body": [
+    "The hallway bench outside the courtroom is the system's true waiting room, and every family on it is holding a folder. Emory is there with his foster mother, who has brought his letter's twin — his school report card, 'for the file, whichever way it goes,' she says, with the grace of a woman who understands her exact role in a boy's life and performs it kindly. His lawyer nods at your packet's tabs with professional approval.",
+    "The clerk calls the case. The determinations are about to be made from a file. This time, you know what's in it, because you wrote half of it."
+   ],
+   "choices": [
+    {
+     "text": "Go in and let the file be read",
+     "next": "hearing",
+     "note": "Two months of errands, one winter of paper. The reading takes twenty minutes."
+    }
+   ]
+  },
+  {
+   "id": "hearing",
+   "kicker": "Day 63 — Monday, March 15, 2027",
+   "dayOffset": 63,
+   "title": "The Six-Month Hearing",
+   "body": [
+    "The judge works the statute's list aloud. Compliance: complete, certificates in evidence. Progress: documented and rising, school and mentor and the boy's own letter all in the file. The agency's position is read from its report — a report whose progress section was updated, in January, by the mother sitting at the table. The judge looks at Emory's letter for a long moment, and then at Emory.",
+    "What the court chooses from the outcome menu (42 Pa.C.S. § 6351(f.1)) now depends on what it was given to choose with."
+   ],
+   "choices": [
+    {
+     "text": "Ask the court to change the outcome: reunification, stepped, with overnights written into the order",
+     "next": "out_goal",
+     "note": "Your lawyer makes the ask in the statute's language, exhibit by exhibit. The file answers every question the bench asks. That sound — a record answering — is two months of errands, audible.",
+     "requiresFlags": [
+      "servicesDone",
+      "childVoice"
+     ]
+    },
+    {
+     "text": "Ask only for APPLA to continue with expanded visits and your role enlarged",
+     "next": "out_expanded",
+     "note": "A smaller ask, made from a record that could have carried a bigger one. Courts usually grant what is asked, and note what wasn't."
+    },
+    {
+     "text": "Let the agency's report carry the hearing",
+     "next": "out_same",
+     "note": "Reports carry hearings the way rivers carry boats: in their own direction, at their own speed."
+    }
+   ]
+  },
+  {
+   "id": "out_goal",
+   "kicker": "Day 63 — Monday, March 15, 2027",
+   "dayOffset": 63,
+   "title": "The Outcome, Changed",
+   "body": [
+    "The judge makes the determinations on the record: compliance complete; progress toward alleviating the original circumstances substantial and documented; the arrangement that fits this child's life is no longer the long name. The outcome under § 6351(f.1) is changed: the goal is reunification, on a stepped schedule written into the order — overnights beginning in April, expanding through the summer, with the next review set and the conditions listed one by one.",
+    "Emory reads the schedule over your shoulder in the hallway, at his full height, and says the most teenage sentence available: 'Okay. That's actually written down.' It is. That was the entire technology: written down."
+   ],
+   "choices": [
+    {
+     "text": "Walk out with the order and its dates",
+     "next": "goal_order",
+     "note": "April overnights. Summer expansion. A review date. A shorter name for the plan, at last."
+    }
+   ]
+  },
+  {
+   "id": "out_expanded",
+   "kicker": "Day 63 — Monday, March 15, 2027",
+   "dayOffset": 63,
+   "title": "The Outcome, Enlarged",
+   "body": [
+    "The court continues the long-named goal — and enlarges everything inside it: unsupervised dinner visits extended to full weekends monthly, Lucretia named in the plan as the placement's partner for school and medical decisions, a mentoring role formalized, the next review in six months with the progress determinations noted favorably on the record.",
+    "It is more than January promised and less than the record could have carried. The judge remarks, almost in passing, that the file showed a family mid-return; the ask, however, is what a court grants, and the ask was for enlargement."
+   ],
+   "choices": [
+    {
+     "text": "Walk out with the enlarged order",
+     "next": "expanded_order",
+     "note": "Weekends, in writing. A door opened exactly as wide as it was asked to be."
+    }
+   ]
+  },
+  {
+   "id": "out_same",
+   "kicker": "Day 63 — Monday, March 15, 2027",
+   "dayOffset": 63,
+   "title": "The Outcome, Renewed",
+   "body": [
+    "The hearing takes eleven minutes. The agency's report is adopted in its particulars; the determinations recite the plan's continuation; the goal with the long name is renewed for another six months, with the standard encouragement to continue progress. Emory's letter is in the file — someone mentions it — but an unargued file is a quiet one, and the court rules on what is presented to it.",
+    "In the hallway, Emory shrugs with the whole-body fluency of fourteen. 'Six more months of the long name,' he says. His foster mother drives him to school. The next review is in September (§ 6351(e)(3)(i)). The file, at least, is heavier now — if anyone chooses to argue from it."
+   ],
+   "choices": [
+    {
+     "text": "Walk out with the September date circled",
+     "next": "same_order",
+     "note": "September. The file will keep. The question is whether the ask will change."
+    }
+   ]
+  },
+  {
+   "id": "goal_order",
+   "kicker": "Day 66 — Thursday, March 18, 2027",
+   "dayOffset": 66,
+   "title": "The Order, At the Kitchen Table",
+   "body": [
+    "The order goes on the refrigerator under the April calendar, where Emory will see it at Easter with his own overnights listed in a judge's prose. Your sister reads it twice and puts the recipe card beside it. Determinations, made from a record, in a courtroom — and their natural habitat turns out to be a refrigerator door."
+   ],
+   "choices": [
+    {
+     "text": "Start April",
+     "next": "end_goal",
+     "note": "April: two overnights. May: four. The schedule is written down. Emory checked."
+    }
+   ]
+  },
+  {
+   "id": "expanded_order",
+   "kicker": "Day 66 — Thursday, March 18, 2027",
+   "dayOffset": 66,
+   "title": "The Order, At the Kitchen Table",
+   "body": [
+    "The enlarged order goes on the refrigerator: one weekend a month, decision rights named, the favorable determinations in black and white. It is a real improvement in Emory's actual life — more mother, more say, more record — filed under a goal whose name still doesn't say 'home.' Both of those things are true, and the refrigerator, like the file, holds them without flinching."
+   ],
+   "choices": [
+    {
+     "text": "Start the first weekend",
+     "next": "end_expanded",
+     "note": "A weekend, in writing. The next review's record starts accumulating tonight."
+    }
+   ]
+  },
+  {
+   "id": "same_order",
+   "kicker": "Day 70 — Monday, March 22, 2027",
+   "dayOffset": 70,
+   "title": "The Order, At the Kitchen Table",
+   "body": [
+    "The renewed order goes in the folder, behind January's. Nothing in Emory's week changes. What changed, invisibly, is the file: it now contains a teenager's letter, a school table, a mentor's paragraphs, a landlord's signature, a final certificate — an argument, assembled and unmade before a court. Files keep. The next hearing's outcome will be chosen from this file plus whatever the spring adds."
+   ],
+   "choices": [
+    {
+     "text": "Start September's file tonight",
+     "next": "end_same",
+     "note": "September is six months of errands away. You know the route now. Knowing it was most of the cost."
+    }
+   ]
+  },
+  {
+   "id": "end_goal",
+   "kicker": "Day 70 — Monday, March 22, 2027",
+   "dayOffset": 70,
+   "title": "Ending — The Goal Moves Back: Reunification, With Dates",
+   "body": [
+    "Emory's plan has a shorter name. Overnights begin in April under an order a judge signed, with the conditions listed and the review date set — not a promise, not a hope, a schedule. He will still be, for a while, a child with two addresses. But the arrangement the system now plans for is the one he asked for in pencil: home, stepped, written down.",
+    "Lucretia keeps the folder. The determinations that changed the goal were made from it — her update, her certificates, her landlord's signature, his letter. Post-permanency turned out not to be after anything. It was the same work, at a longer wavelength: the record, argued from, on time."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE WIN, NAMED HONESTLY — A partial win, and the best this scenario offers: the (f.1) outcome changed from another planned permanent living arrangement back to reunification on a stepped schedule. Emory is not home tonight, the case is not closed, and conditions attach. What changed is the plan's direction and its dates — which, in a permanency case, is the substance judges actually control.",
+    "THE LAW IN THE BEATS — Permanency hearings recur within six months (42 Pa.C.S. § 6351(e)(3)(i)) and must make the determinations in § 6351(f) — including (f)(2) compliance and (f)(3) progress toward alleviating the original circumstances — before choosing an outcome from § 6351(f.1)'s menu. A goal once changed can be changed again on a later record; the menu is chosen from each time, on the file then before the court. The complete-record work rests on 55 Pa. Code § 3130.44(d).",
+    "THE HIGHEST-LEVERAGE MOVE — The written record request in January (§ 3130.44(d)): it exposed the four-month-old summary, which made the update necessary, which made the determinations arguable. Post-permanency cases are won in the file's present tense.",
+    "WHAT NO STRATEGY CONTROLS — The judge's caution, the agency's inertia, a teenager's spring. The route controlled the record and the ask. Note what decided this ending: both. A record without an ask is the third ending; an ask without a record is a speech. The system, at its best-functioning, grants documented requests."
+   ]
+  },
+  {
+   "id": "end_expanded",
+   "kicker": "Day 70 — Monday, March 22, 2027",
+   "dayOffset": 70,
+   "title": "Ending — APPLA, With Her Name Back In It",
+   "body": [
+    "The long name stays, and nearly everything inside it improved: weekends, decisions, a formal role, favorable determinations on the record that the next review will start from. Emory's life got measurably more mother in it, and his file got measurably more honest.",
+    "What it did not get was the change of direction — because the change was never asked for. Courts in this system grant requests; they rarely upgrade them. The record Lucretia built could have carried the bigger ask, which is precisely what makes this ending a middle one: the loss is located in a single sentence that was not said in a courtroom, on a day when everything needed to support it was already in the room."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE WIN, NAMED HONESTLY — A partial outcome below the best: real gains, honestly labeled. The (f) determinations were favorable and are now precedent inside this case; the (f.1) outcome is unchanged. If Lucretia asks in September with this record plus a spring of kept weekends, she asks from strength — the scenario's consolation, and its lesson, are the same fact.",
+    "THE LAW IN THE BEATS — Same § 6351 frame: (e)(3)(i)'s six-month rhythm, (f)'s determinations, (f.1)'s menu, and the practical rule this batch teaches alongside the statute — the outcome chosen is chosen from the requests actually made, on the record actually built. The record request remains 55 Pa. Code § 3130.44(d).",
+    "WHAT NO STRATEGY CONTROLS — Nothing external decided this ending. That is its discomfort and its use: sometimes the binding constraint is not the worker, the judge, or the clock, but the size of the request a parent believes she is allowed to make. The file said otherwise. Files, unlike fears, can be checked."
+   ]
+  },
+  {
+   "id": "end_same",
+   "kicker": "Day 77 — Monday, March 29, 2027",
+   "dayOffset": 77,
+   "title": "Ending — The Long Name, Renewed",
+   "body": [
+    "Another six months under the longest phrase in the outcome list. Emory's life continues: school, the machine shop, dinners on Tuesdays and Thursdays, a foster family that is kind, a mother who is present and documented and — in the only forum where it had to be argued — unheard, because the argument was never made out loud.",
+    "Nothing was decided against Lucretia in this ending, which is the bleakest thing about it. The hearing ran on the agency's paper because hers, though built, was never presented. The determinations were made from a file whose best pages sat in a folder on a hallway bench."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHY THIS ENDING — Permanency outcomes are chosen at hearings, from presented records and stated requests (42 Pa.C.S. § 6351(f), (f.1)). An unargued record does not argue itself. The scenario's January–March work — the § 3130.44(d) request, the update, the letters, the certificates — remains in the file and remains usable in September; what was spent was six months of a fourteen-year-old's life, which is the one currency this system never refunds.",
+    "WHAT NO STRATEGY CONTROLS — The judge cannot be faulted in this ending for failing to grant what was not requested; the agency cannot be faulted for its report carrying an unopposed hearing. The lesson is structural, not moral: in this forum, presence is not participation. The file must be argued from, by name, exhibit by exhibit, in the room, on the day."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s91';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+{
+  "meta": {
+    "title": "The First 90 Days",
+    "subtitle": "Scenario 48 \u2014 The Spare Room (a fictional composite)",
+    "startDateISO": "2026-04-06",
+    "startNode": "start",
+    "startCash": 120,
+    "tier": "Foundation",
+    "summary": "You are Gwen. Your son Hugo, nine, has been in a foster home for two weeks while you finish a treatment program. Your father has a spare room, a steady pension, and a heart condition he manages like a train schedule. Between his offer and Hugo's bed in that room stands a home study \u2014 and everything a study can get wrong on paper."
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "kicker": "Day 0 \u2014 Monday, April 6, 2026",
+      "dayOffset": 0,
+      "title": "Your father's kitchen",
+      "body": [
+        "Your father Walter keeps a list on his refrigerator of everything his cardiologist has ever told him, in chronological order, and he follows it the way he followed a bus route for thirty-one years: exactly. He pours coffee and says the thing he has clearly rehearsed.",
+        "\"The spare room is Hugo's. It was always going to be Hugo's, since before any of this. You finish your program. The boy sleeps under my roof. Tell them.\" You are two weeks into the program that is the center of your case, and Hugo is two weeks into a foster home across town with a kind family, the Delacroix family."
+      ],
+      "choices": [
+        {
+          "text": "\"I will, Pop. In writing \u2014 so it lands in the file, not just in a phone call.\"",
+          "next": "tell_in_writing",
+          "setFlags": [
+            "kinNamedWritten"
+          ],
+          "addHidden": [
+            "named-kin"
+          ]
+        },
+        {
+          "text": "\"I will, Pop.\" You will tell Hugo's worker, Mr. Solberg, when you see him Thursday.",
+          "next": "tell_thursday"
+        }
+      ]
+    },
+    {
+      "id": "tell_thursday",
+      "kicker": "Day 3 \u2014 Thursday, April 9, 2026",
+      "dayOffset": 3,
+      "title": "Thursday, in passing",
+      "body": [
+        "You tell Mr. Solberg in the hallway after your visit with Hugo, while he is balancing a coffee and a laptop bag, and he says \"That's great, I'll note it\" the way people do in hallways. A week later, at your program review, you learn what the note became: one line \u2014 \"maternal grandfather may be resource.\" No address. No phone. The study clock has not started, because as far as the paperwork is concerned, there is barely a person to study.",
+        "The fix is unglamorous and entirely within your power."
+      ],
+      "choices": [
+        {
+          "text": "Write it properly this time: a letter to the agency with his full name, address, phone, and the words \"I am asking for a kinship home study.\"",
+          "next": "tell_in_writing",
+          "setFlags": [
+            "kinNamedWritten"
+          ],
+          "addHidden": [
+            "named-kin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tell_in_writing",
+      "kicker": "Day 3 \u2014 Thursday, April 9, 2026",
+      "dayOffset": 3,
+      "title": "The letter",
+      "body": [
+        "However it got there, the file now holds a letter with a person's name, address, and telephone number, and a request a supervisor can route: kinship home study, maternal grandfather. Walter gets a call within days \u2014 not because the system is fast, but because a named, reachable person is the one thing every system knows how to process.",
+        "The study has three parts, Mr. Solberg explains: background clearances, a home visit, and interviews. \"It's not a test he passes by being a good man,\" he says. \"It's a list. We go down the list.\""
+      ],
+      "choices": [
+        {
+          "text": "\"Then get him the list. All of it, up front \u2014 not one surprise at a time.\"",
+          "next": "phone_interview",
+          "setFlags": [
+            "listRequested"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phone_interview",
+      "kicker": "Day 4 \u2014 Friday, April 10, 2026",
+      "dayOffset": 4,
+      "title": "The phone interview",
+      "body": [
+        "Mr. Solberg calls Walter the next afternoon, and you listen on the extension your father insists on holding six inches from his ear. The worker asks about the house, the heart, the spare room, and Hugo \u2014 in that order, which Walter later reports with approval: 'He asked about the boy last and longest.'",
+        "At the end, Mr. Solberg says the sentence that separates a study from a rumor: 'I'm going to send you the requirements list. Everything on it. At once.'"
+      ],
+      "choices": [
+        {
+          "text": "Thank him, and tell your father to clear the kitchen table. Paper is coming.",
+          "next": "the_list"
+        }
+      ]
+    },
+    {
+      "id": "the_list",
+      "kicker": "Day 5 \u2014 Saturday, April 11, 2026",
+      "dayOffset": 5,
+      "title": "The list",
+      "body": [
+        "To Mr. Solberg's credit, the list arrives as one document: clearances for Walter and any adult in the home, income verification, a medical statement from his doctor, and the home itself \u2014 sleeping arrangements, safety items, medications secured. Walter reads it twice at the kitchen table with a pencil, the way he used to read route changes.",
+        "\"Medicines,\" he says. \"Mine are in the bathroom cabinet. Boy could reach them on a chair.\" He says it before any worker does. That will matter more than he knows."
+      ],
+      "choices": [
+        {
+          "text": "Help him start on the fixable things this weekend \u2014 the list is a ladder if you climb it before the visit, and a verdict if you read it after.",
+          "next": "fix_weekend"
+        }
+      ]
+    },
+    {
+      "id": "fix_weekend",
+      "kicker": "Day 6 \u2014 Sunday, April 12, 2026",
+      "dayOffset": 6,
+      "title": "Saturday work",
+      "body": [
+        "The weekend becomes a project with a nine-year-old's name on it. A lockbox for the medications, screwed to the closet shelf. A handrail for the basement stairs, which Walter has been meaning to fix since 2019 and now fixes in an afternoon with his neighbor's drill. Hugo's room gets the bed from the attic, clean sheets, and the shelf of model buses moved down to eye level.",
+        "None of it is expensive. All of it is the difference between a study that reports problems and a study that reports solutions."
+      ],
+      "choices": [
+        {
+          "text": "Spend $25 at the hardware store and keep the receipt in the study folder.",
+          "next": "clearances",
+          "cash": -25,
+          "setFlags": [
+            "homeFixed"
+          ]
+        },
+        {
+          "text": "Do the work with what is in the garage \u2014 lockbox from your brother, rail repaired not replaced.",
+          "next": "clearances",
+          "cash": -8,
+          "setFlags": [
+            "homeFixed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clearances",
+      "kicker": "Day 9 \u2014 Wednesday, April 15, 2026",
+      "dayOffset": 9,
+      "title": "Paper that travels slowly",
+      "body": [
+        "Walter's clearances go in with his fingerprints on a Tuesday. His doctor's statement takes longer \u2014 the cardiologist's office faxes it to the wrong number once, because medical offices are where faxes go to be reborn as mysteries. You learn the study's least dramatic rule: nothing is submitted until somebody confirms it arrived.",
+        "You call the agency twice that week. The second call finds the fax. Persistence is not a personality trait in this system; it is a tracking method."
+      ],
+      "choices": [
+        {
+          "text": "Ask Mr. Solberg for a checklist of what is still missing, in writing, so the study has a finish line you can see.",
+          "next": "program_letter",
+          "setFlags": [
+            "checklistKept"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "program_letter",
+      "kicker": "Day 10 \u2014 Thursday, April 16, 2026",
+      "dayOffset": 10,
+      "title": "Your side of the file",
+      "body": [
+        "A kinship study examines the caregiver. Your case examines you. Your program counselor's letter \u2014 attendance, phase progress, a drug screen history as clean as the program keeps \u2014 goes into the same review packet, because a judge deciding whether Hugo moves to his grandfather is also, always, deciding how this story is trending.",
+        "You are not the placement. You are the reason the placement is a bridge instead of a destination. The letter says so in a counselor's flat, credible prose."
+      ],
+      "choices": [
+        {
+          "text": "Ask Mr. Solberg for the study checklist anyway \u2014 and put in your own written request for the case record under 55 Pa. Code \u00a7 3130.44(d), so the study's paper reaches you too.",
+          "next": "checklist",
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "addHidden": [
+            "record-request"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "checklist",
+      "kicker": "Day 12 \u2014 Saturday, April 18, 2026",
+      "dayOffset": 12,
+      "title": "The finish line",
+      "body": [
+        "The written checklist says: clearances \u2014 received. Medical statement \u2014 received. Home visit \u2014 scheduled. One interview \u2014 Walter's, and one with you. Your program counselor will send attendance verification directly. For the first time since Hugo left your apartment, a piece of this case has an end you can point at.",
+        "The home visit is set for next week. Walter asks if he should bake. You tell him caseworkers have seen everything and pie is not on the list. He bakes anyway."
+      ],
+      "choices": [
+        {
+          "text": "Be there for the visit if the agency allows \u2014 a daughter who shows up is data too.",
+          "next": "home_visit"
+        }
+      ]
+    },
+    {
+      "id": "home_visit",
+      "kicker": "Day 16 \u2014 Wednesday, April 22, 2026",
+      "dayOffset": 16,
+      "title": "The walk-through",
+      "body": [
+        "Mr. Solberg walks the house with his list, and the house answers him: medications locked, handrail solid, Hugo's bed made, smoke detectors beeping their small green assent. He opens the bathroom cabinet out of professional habit and finds toothpaste and a man who planned ahead. \"Your father fixed these before I flagged them,\" he says, and writes for a while.",
+        "What a home study records is not a house. It is whether the adults around a problem move toward it or wait to be told."
+      ],
+      "choices": [
+        {
+          "text": "Walk him out. Ask the only question that matters: \"What happens at the review on April 30th?\"",
+          "next": "hugo_visit"
+        }
+      ]
+    },
+    {
+      "id": "hugo_visit",
+      "kicker": "Day 18 \u2014 Friday, April 24, 2026",
+      "dayOffset": 18,
+      "title": "Hugo, inspecting",
+      "body": [
+        "The agency arranges Hugo's next visit at Walter's house \u2014 part visit, part quiet evidence. Hugo inspects the spare room with the seriousness of a building department: the bed, the shelf, the model bus at eye level. He tests the handrail twice, like a man who has seen a worker do it.",
+        "On the porch he asks his grandfather whether the school bus that stops at the corner is 'his bus.' It is the right route for Hugo's same school \u2014 a fact you confirm with the district that week, in writing, because school continuity is a sentence judges underline."
+      ],
+      "choices": [
+        {
+          "text": "Confirm it in writing: same school, same route, stop at the corner.",
+          "next": "before_review",
+          "setFlags": [
+            "schoolConfirmed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "before_review",
+      "kicker": "Day 20 \u2014 Sunday, April 26, 2026",
+      "dayOffset": 20,
+      "title": "Before the review",
+      "body": [
+        "What happens depends on the study being finished \u2014 reports written, approvals signed \u2014 and on the recommendation the agency carries into the courtroom. Yours is assembling well. One piece remains that is yours alone: a short written statement to the court supporting the placement, so the judge hears your voice asking for your father's home, not just the agency's voice reporting it.",
+        "Parents are parties in their children's cases. Parties may be heard. The smallest version of that right is a page with your name on it, filed before the hearing instead of wished for after it."
+      ],
+      "choices": [
+        {
+          "text": "Write it: one page \u2014 the program, the plan, your father, and what Hugo asks for when he calls you (his room at Pop's).",
+          "next": "voss_call",
+          "setFlags": [
+            "motherStatement"
+          ]
+        },
+        {
+          "text": "You will speak at the review instead. Writing feels like homework from a system that already took your son.",
+          "next": "voss_call"
+        }
+      ]
+    },
+    {
+      "id": "voss_call",
+      "kicker": "Day 21 \u2014 Monday, April 27, 2026",
+      "dayOffset": 21,
+      "title": "Mrs. Delacroix calls",
+      "body": [
+        "Mrs. Delacroix \u2014 Hugo's foster mother \u2014 calls you the week before the review, which foster parents are not required to do and the good ones do anyway. 'He talks about the room,' she says. 'If the court moves him, we'll pack his things properly and I'll send the bus shelf photo with him. I wanted you to hear that from me.'",
+        "Foster parents receive notice of hearings and may be heard at them (42 Pa.C.S. \u00a7 6336.1). What Mrs. Delacroix will say, if asked, is that Hugo is ready and the grandfather is real. Support like that cannot be bought or faked \u2014 but it can be welcomed, in writing, so it reaches the file."
+      ],
+      "choices": [
+        {
+          "text": "Thank her in a letter the agency gets a copy of. Bridges get built from both banks.",
+          "next": "walter_letter"
+        }
+      ]
+    },
+    {
+      "id": "walter_letter",
+      "kicker": "Day 22 \u2014 Tuesday, April 28, 2026",
+      "dayOffset": 22,
+      "title": "Walter's page",
+      "body": [
+        "Walter writes his own statement for the court, one page, in handwriting like a route manifest: the house, the heart ('managed, see doctor's letter'), the room, the years he has known his grandson, and the last line, which he reads to you twice to make sure it is spelled right: 'I am not a backup plan. I am his grandfather.'",
+        "It is not a legal document. Courts are moved by legal documents that have a pulse. Your own statement is already filed; his will sit beside it, and the pair of them say what the study alone cannot: this placement has two generations asking for it."
+      ],
+      "choices": [
+        {
+          "text": "File his page with yours. Then sleep. Tomorrow is paperwork's last mile.",
+          "next": "the_review"
+        }
+      ]
+    },
+    {
+      "id": "the_review",
+      "kicker": "Day 24 \u2014 Thursday, April 30, 2026",
+      "dayOffset": 24,
+      "title": "The review",
+      "body": [
+        "The courtroom version of your father's spare room is a two-page report: clearances clear, medical managed, home safe, fixes made before they were findings. Mr. Solberg presents it. Mrs. Delacroix, Hugo's foster mother, tells the judge Hugo talks about his grandfather's model buses \"like church.\"",
+        "The judge reads the report's last page, where the recommendation lives."
+      ],
+      "choices": [
+        {
+          "text": "Wait for the sentence the whole spring has been walking toward.",
+          "next": "the_drive"
+        }
+      ]
+    },
+    {
+      "id": "the_drive",
+      "kicker": "Day 24 \u2014 Thursday, April 30, 2026",
+      "dayOffset": 24,
+      "title": "The drive to court",
+      "body": [
+        "Walter drives, because Walter always drives, and parks with the care of a man for whom parking was once a profession. In the courthouse hallway, Hugo's file goes past on a cart \u2014 two inches thick already, for a nine-year-old who has done nothing but be loved in inconvenient circumstances.",
+        "Everything the spring built is in those two inches: your letter, his list, the lockbox receipt, the fax that was found. The judge is about to read the last page first, the way judges do. The last page is the recommendation."
+      ],
+      "choices": [
+        {
+          "text": "Take your seat.",
+          "next": "outcome"
+        }
+      ]
+    },
+    {
+      "id": "outcome",
+      "kicker": "Day 24 \u2014 Thursday, April 30, 2026",
+      "dayOffset": 24,
+      "title": "The recommendation",
+      "body": [
+        "What the judge can order depends on what the study can support \u2014 a finished study with an approval, or an unfinished one with a promise."
+      ],
+      "choices": [
+        {
+          "text": "The study is complete and approved \u2014 clearances, medical, home, your statement \u2014 and the agency recommends the move.",
+          "next": "end_move",
+          "requiresFlags": [
+            "homeFixed",
+            "checklistKept",
+            "motherStatement"
+          ]
+        },
+        {
+          "text": "The study is nearly there, but a piece of paper is still traveling.",
+          "next": "end_study"
+        }
+      ]
+    },
+    {
+      "id": "end_move",
+      "kicker": "Day 24 \u2014 Thursday, April 30, 2026",
+      "dayOffset": 24,
+      "title": "Ending \u2014 The Spare Room, Occupied",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The court orders Hugo placed with his grandfather, effective this weekend, with your program schedule written into the order so visits and overnights build toward home. Walter, who dressed for court in his route-supervisor tie, accepts the judge's thanks with the nod of a man who has been handed a route he intends to run on time. Hugo's bed \u2014 the one from the attic, with the model buses at eye level \u2014 gets its boy.",
+        "Nothing in this scenario required money, connections, or a brilliant legal move. It required the kinship basics, in order: the relative named in writing with a way to reach him; the study treated as a list to climb before the visit instead of a verdict to fear after it; every slow-moving paper tracked until somebody confirmed it arrived; and your own voice in the file asking for it. Courts can only approve the homes that paper makes visible. Walter was ready in March. The study's job \u2014 and yours \u2014 was making the file able to see it.",
+        "What no strategy controls: the clearances and the judge. A clearance can surface something a family did not know it had to answer, and no letter fixes that overnight. This story's grandfather had a clean record and a managed heart. Another family's story has more chapters. The sequence still matters: it is how those chapters get found early, answered in writing, and weighed as facts \u2014 instead of arriving as surprises at the hearing."
+      ]
+    },
+    {
+      "id": "end_study",
+      "kicker": "Day 38 \u2014 Thursday, May 14, 2026",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Approved in Principle (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The judge praises the study's progress, approves your father as a placement resource in principle, and sets the move for the next review \u2014 fourteen days out \u2014 when the last verification is filed. Hugo spends two more weeks with the Delacroix family, who send him to Walter's for Sunday dinner in the meantime with the court's blessing. It is a good outcome wearing a waiting room's clothes.",
+        "The lesson is about paper travel time. Somewhere between the cardiologist's fax, the clearance office, and the report writer's desk, this case kept losing days it could not see \u2014 and the only instrument that finds lost days is a checklist, requested in writing, checked by a person who calls twice. Ask for the study's finish line early: what is missing, who holds it, and what date it is due. A study with a visible finish line finishes. A study without one becomes weather \u2014 everybody discusses it, nobody can schedule around it.",
+        "This ending is a partial win, and a common one: the placement is approved, the boy is loved in both houses, and the only cost was time. Name the cost anyway. In a child's calendar, two weeks is not a rounding error \u2014 and the next family over, the one that tracks its paper from day one, is the reason this scenario exists."
+      ]
+    }
+  ]
+}

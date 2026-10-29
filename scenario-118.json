@@ -1,0 +1,515 @@
+{
+  "meta": {
+    "title": "The First 90 Days",
+    "subtitle": "Scenario 118 \u2014 Sixty Days from a Signature (a fictional composite)",
+    "startDateISO": "2026-10-05",
+    "startNode": "start",
+    "startCash": 150,
+    "tier": "Hard",
+    "summary": "You are Darnell. Your son Khalil, eleven, has been in foster care four months, and his new school reads his frustration as defiance. You have asked twice, out loud, for him to be evaluated. Out loud is where requests go to disappear."
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "kicker": "Day 0 \u2014 Monday, October 5, 2026",
+      "dayOffset": 0,
+      "title": "The suspension notice",
+      "body": [
+        "The call comes from Mrs. Greer, Khalil's foster mother, who delivers school news the way she delivers everything \u2014 completely, and slightly out of breath. Khalil is suspended for two days. A reading passage, a worksheet he could not start, a chair that ended up on its side. Eleven years old, four months into foster care, in a school where nobody yet knows that he reads two years below the room he sits in \u2014 because nobody has ever tested where he reads at all.",
+        "\"I told them at the meeting in September,\" you say, \"and I told the counselor on the phone. I asked them to evaluate him.\" Mrs. Greer is gentle: \"Did you ever write it down, hon?\" You did not. You asked the way parents ask \u2014 out loud, in rooms, trusting the room."
+      ],
+      "choices": [
+        {
+          "text": "Call your lawyer before you call the school. Asking is about to become a discipline.",
+          "next": "lawyer118"
+        }
+      ]
+    },
+    {
+      "id": "lawyer118",
+      "kicker": "Day 1 \u2014 Tuesday, October 6, 2026",
+      "dayOffset": 1,
+      "title": "Asking, in writing",
+      "body": [
+        "Ms. Ashby has a whiteboard habit: she writes the rule before she discusses the case. First line: either a parent or the school may initiate a request for an initial evaluation to find out whether a child is a child with a disability. (34 C.F.R. \u00a7 300.301(b)) Your September asks were real. They were also unwritten, undated, and \u2014 she says this without cruelty \u2014 unprovable.",
+        "Second line: once the school has your signed consent, the evaluation must be conducted within 60 days of receiving it \u2014 or within the timeframe your state establishes, if the state has set its own. (34 C.F.R. \u00a7 300.301(c)(1)) \"Two clocks,\" Ms. Ashby says. \"The request starts nothing until it's paper. The consent starts the clock. We do both, dated, with copies.\""
+      ],
+      "choices": [
+        {
+          "text": "Draft the letter at her table: dated, signed, one page \u2014 request for a full initial evaluation, and a request for the consent form.",
+          "next": "consent_form",
+          "setFlags": [
+            "writtenRequest"
+          ],
+          "addHidden": [
+            "Education \u2014 initial evaluation requested by parent in writing, dated"
+          ]
+        },
+        {
+          "text": "Call the school counselor once more first \u2014 a relationship is worth one more conversation before it becomes correspondence.",
+          "next": "phone_loop"
+        }
+      ]
+    },
+    {
+      "id": "phone_loop",
+      "kicker": "Day 2 \u2014 Wednesday, October 7, 2026",
+      "dayOffset": 2,
+      "title": "Noted",
+      "body": [
+        "The counselor is warm, busy, and fluent in the dialect of the unrecorded. She will absolutely raise it with the team. She remembers your September call \u2014 she thinks. Something will be noted. The call ends with everyone thanked and nothing dated, and Khalil's file acquires no new page.",
+        "That evening Mrs. Greer sets a plate down and says the thing foster mothers are positioned to say: \"Paper, Darnell. The school runs on it, the agency runs on it. Give them paper.\""
+      ],
+      "choices": [
+        {
+          "text": "Write the letter. Date it, sign it, keep a copy, send it so it leaves a trail.",
+          "next": "consent_form",
+          "setFlags": [
+            "writtenRequest"
+          ],
+          "addHidden": [
+            "Education \u2014 initial evaluation requested by parent in writing, dated, after two undocumented verbal requests"
+          ]
+        },
+        {
+          "text": "Give the team meeting a chance to happen. Chasing paper feels like accusing people who mean well.",
+          "next": "drift"
+        }
+      ]
+    },
+    {
+      "id": "drift",
+      "kicker": "Day 6 \u2014 Sunday, October 11, 2026",
+      "dayOffset": 6,
+      "title": "The team will meet",
+      "body": [
+        "Weeks pass at the speed of other people's priorities. The team meeting is scheduled, then folded into a larger meeting, then described as having happened \u2014 in a corridor, between other agenda items, with a conclusion nobody writes down: *continue to monitor*. Khalil's reading does not improve under monitoring. His behavior record, which is the only document growing, grows.",
+        "October becomes November. The suspension count reaches three. Each one is documented, dated, stamped, and filed \u2014 the school's paperwork machinery works beautifully, aimed at the wrong target."
+      ],
+      "choices": [
+        {
+          "text": "At the November visit, say it plainly to Khalil: \"I should have written the letter. I'm writing it now.\"",
+          "next": "late_letter",
+          "setFlags": [
+            "writtenRequest"
+          ]
+        },
+        {
+          "text": "Keep trusting the corridor. The permanency hearing is coming, and surely the court will ask why nobody evaluated him.",
+          "next": "suspension3"
+        }
+      ]
+    },
+    {
+      "id": "consent_form",
+      "kicker": "Day 9 \u2014 Wednesday, October 14, 2026",
+      "dayOffset": 9,
+      "title": "The consent form",
+      "body": [
+        "The consent form arrives through Mrs. Greer on Wednesday, October 14, 2026 \u2014 the school moved at the speed schools move when a request exists in writing. It is one page: evaluation areas, a signature line, and a date line that matters more than the rest of the document combined. The day this signature is received starts the federal clock: the evaluation conducted within 60 days of consent, or within the state's own timeframe if it sets one. (34 C.F.R. \u00a7 300.301(c)(1)) Counted on the federal measure, day sixty is Sunday, December 13, 2026.",
+        "Your permanency hearing is Thursday, December 17, 2026. Signed today, the evaluation can land before it. Signed next week, it cannot. The form does not know about your hearing. The calendar does."
+      ],
+      "choices": [
+        {
+          "text": "Sign it today, date it today, hand it back through Mrs. Greer today \u2014 and photograph your copy.",
+          "next": "district_reply",
+          "setFlags": [
+            "consentSigned"
+          ],
+          "addHidden": [
+            "Education \u2014 consent signed and returned the day the form arrived; clock running"
+          ]
+        },
+        {
+          "text": "Sign it next week, after payday and the visit and the shift swap settle. A week is a week.",
+          "next": "district_reply",
+          "setFlags": [
+            "consentSigned",
+            "consentLate"
+          ],
+          "addHidden": [
+            "Education \u2014 consent returned a week after the form arrived; clock started late"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "district_reply",
+      "kicker": "Day 12 \u2014 Saturday, October 17, 2026",
+      "dayOffset": 12,
+      "title": "Received, and stamped",
+      "body": [
+        "The district's acknowledgment comes back with the rarest ornament in public administration: a received stamp, with a date on it. Whatever else this case becomes, the evaluation now has a paper birthday, and a paper deadline, and both are in your folder rather than in your memory of a phone call.",
+        "Ms. Ashby adds the second document to the folder's front: a short letter from you to the evaluation team \u2014 your own observations, dated, in your words. What Khalil reads at your visits. Where the frustration starts. The team is required to build the evaluation out of more than its own tests; a parent's dated notes are part of the material a real evaluation is made from, and more to the point, they are the part only you can supply."
+      ],
+      "choices": [
+        {
+          "text": "Write the observations letter tonight: three visits, two books, one worksheet, all dated.",
+          "next": "visit_notes",
+          "setFlags": [
+            "parentInput"
+          ]
+        },
+        {
+          "text": "Let the testers test. Your notes are a father's worry, not data.",
+          "next": "eval_track"
+        }
+      ]
+    },
+    {
+      "id": "visit_notes",
+      "kicker": "Day 16 \u2014 Wednesday, October 21, 2026",
+      "dayOffset": 16,
+      "title": "What a father sees",
+      "body": [
+        "The letter writes itself out of the visit notebook you have kept since June: the graphic novel he reads fluently because the pictures carry the plot; the chapter book he 'forgets' at the bottom of his bag; the homework sheet he crumpled in August with the sentence you have thought about since \u2014 \"I'm not doing the baby page.\"",
+        "It goes to the evaluation team, the school counselor, and your folder. Somewhere across town, a file that said only *defiant* gains a dimension."
+      ],
+      "choices": [
+        {
+          "text": "Now ask for the other file \u2014 the agency's \u2014 so the court reads the same dates you do.",
+          "next": "records118"
+        }
+      ]
+    },
+    {
+      "id": "eval_track",
+      "kicker": "Day 16 \u2014 Wednesday, October 21, 2026",
+      "dayOffset": 16,
+      "title": "The quiet weeks",
+      "body": [
+        "Testing weeks look like nothing from the outside: a nice professional, a quiet room, a boy who reports only that \"the lady let me read the comic ones and the hard ones.\" The evaluation is moving through its machinery at the speed the clock allows, and there is nothing for a father to do but attend visits and not become a rumor in his own case.",
+        "Ms. Ashby uses the quiet for the second file. The agency's case record \u2014 its school correspondence included \u2014 is releasable to you on request. (55 Pa. Code \u00a7 3130.44(d)) What the agency's file says about September matters: it is where your two spoken requests went, or didn't."
+      ],
+      "choices": [
+        {
+          "text": "Sign the written record request and send it, dated, copies kept.",
+          "next": "records118",
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "addHidden": [
+            "Record \u2014 agency record requested in writing, including school correspondence"
+          ]
+        },
+        {
+          "text": "Leave the agency file alone. The evaluation is the fight; don't open a second front.",
+          "next": "testing_day2"
+        }
+      ]
+    },
+    {
+      "id": "records118",
+      "kicker": "Day 24 \u2014 Thursday, October 29, 2026",
+      "dayOffset": 24,
+      "title": "What September became",
+      "body": [
+        "The record arrives in a fat envelope, and page order tells the story before you read a word. Your September meeting: minuted as *father expressed concerns re: behavior expectations*. Your September phone call: *parent called re: homework*. The word evaluation appears in the agency's file for the first time on the page that copies your October letter.",
+        "It would be easy to read this as malice. Ms. Ashby reads it as weather: \"Spoken words condense. Written words precipitate. Your October letter is the first thing in this file that can start a clock, and it did. Keep the envelope \u2014 the permanency hearing is where dates go to be believed.\""
+      ],
+      "choices": [
+        {
+          "text": "Put the envelope's key pages in the hearing packet, in date order, with the received stamp on top.",
+          "next": "testing_day2",
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "addHidden": [
+            "Record \u2014 agency file shows verbal evaluation requests recorded as general concerns; written request is the first clock-starting document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "testing_day2",
+      "kicker": "Day 38 \u2014 Thursday, November 12, 2026",
+      "dayOffset": 38,
+      "title": "The hard ones",
+      "body": [
+        "Khalil emerges from the second testing session with a sticker and a review: \"She said I don't have to read out loud if I don't want. Can all school be like that?\" The evaluation is doing the thing evaluations exist to do \u2014 finding the shape of the problem under the behavior \u2014 and the behavior, at school, has already begun to change around the edges, because one adult in that building now has a hypothesis that is not *defiance*.",
+        "There are five weeks left on the federal measure of the clock. The report, when it comes, will either be a document the December hearing reads \u2014 or a rumor the December hearing hears about."
+      ],
+      "choices": [
+        {
+          "text": "Send the evaluator a dated thank-you with one factual addition: the visit-notebook page about the 'baby page' worksheet.",
+          "next": "khalil_talk",
+          "cash": -3
+        },
+        {
+          "text": "Wait for the machinery. It is moving; don't lean on it.",
+          "next": "khalil_talk"
+        }
+      ]
+    },
+    {
+      "id": "late_letter",
+      "kicker": "Day 40 \u2014 Saturday, November 14, 2026",
+      "dayOffset": 40,
+      "title": "A letter, late",
+      "body": [
+        "The letter goes in November \u2014 dated, signed, correct in every particular except its relationship to the calendar. The school responds properly; a consent form follows; testing will be scheduled. Every deadline the letter can start, it starts \u2014 six weeks after it could have, with a permanency hearing five weeks away and a sixty-day clock that will not be hurried by remorse.",
+        "Ms. Ashby files the letter and the consent stamp where the court will see them, and says the thing she is paid to say at exactly this pitch: \"Late paper is still paper. It converts your December from a verdict into a progress report. But it is a conversion, not an erasure.\""
+      ],
+      "choices": [
+        {
+          "text": "Sign the consent the day it arrives \u2014 the lesson has been paid for once already.",
+          "next": "hearing_prep",
+          "setFlags": [
+            "consentSigned",
+            "consentLate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suspension3",
+      "kicker": "Day 45 \u2014 Thursday, November 19, 2026",
+      "dayOffset": 45,
+      "title": "The third suspension",
+      "body": [
+        "The third suspension comes with a new document: a behavior plan, written by the school, proposing consequences in ascending order for a boy whose core difficulty has still never been measured. The agency's court report will quote it. Reports like quoting plans; plans sound like somebody is handling it.",
+        "At the December permanency hearing, the question *why has this child never been evaluated* will be asked in a room where the answer *his father requested it twice* exists only in your memory \u2014 and memory, Ms. Ashby told you in October, is not a page the court can turn to."
+      ],
+      "choices": [
+        {
+          "text": "Arrive at the hearing with the truth and no exhibits, and learn what that combination is worth.",
+          "next": "hearing_prep"
+        }
+      ]
+    },
+    {
+      "id": "khalil_talk",
+      "kicker": "Day 50 \u2014 Tuesday, November 24, 2026",
+      "dayOffset": 50,
+      "title": "His side of the worksheet",
+      "body": [
+        "At the visit, Khalil explains the chair. Not excuses \u2014 mechanics. \"The words swim when everybody's watching. Then Jaylen laughs, then I'm already mad before I know I'm mad.\" He says the testing lady let him read in a room with a door, and he read four pages without swimming.",
+        "You write it down in front of him, dated, in his words \u2014 and he watches you do it, and something about being transcribed, accurately, by his father, lands on him like a hand on a shoulder. Whether or not this page ever reaches a file, it has already done one piece of its work."
+      ],
+      "choices": [
+        {
+          "text": "Ask his permission to include his words in your letter to the IEP team, if a team is convened.",
+          "next": "waiting",
+          "setFlags": [
+            "childVoice"
+          ]
+        },
+        {
+          "text": "Keep the page in the notebook. Some paper is for the family, not the file.",
+          "next": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "waiting",
+      "kicker": "Day 58 \u2014 Wednesday, December 2, 2026",
+      "dayOffset": 58,
+      "title": "The last quiet week",
+      "body": [
+        "December opens with the evaluation in its final week on the federal count. The agency's report for the permanency hearing is already being drafted somewhere \u2014 from the file as it stands, which means, as of tonight, it says what agency reports say in the absence of an evaluation: *school functioning remains a concern; father's advocacy noted*.",
+        "Everything now depends on a date arithmetic problem you solved in October, with a signature. Either the report exists before the hearing, or the hearing is told about a report."
+      ],
+      "choices": [
+        {
+          "text": "Call Ms. Ashby and build the hearing packet either way: request, consent stamp, clock, and whatever the school produces.",
+          "next": "ashby_clock"
+        }
+      ]
+    },
+    {
+      "id": "ashby_clock",
+      "kicker": "Day 62 \u2014 Sunday, December 6, 2026",
+      "dayOffset": 62,
+      "title": "Count it forward",
+      "body": [
+        "Ms. Ashby does the arithmetic on the whiteboard one final time, in marker, the way she did in October. Consent received: Wednesday, October 14, 2026. The federal measure: the evaluation conducted within 60 days of that receipt, or within the state's own timeframe if the state sets one. (34 C.F.R. \u00a7 300.301(c)(1)) Day sixty: Sunday, December 13, 2026. The hearing: Thursday, December 17.",
+        "\"Notice what the arithmetic does not contain,\" she says. \"Effort. Sympathy. How busy the school was. A clock is the only participant in this case that cannot be lobbied \u2014 which is why we started it early, on paper, where everyone can see it running.\""
+      ],
+      "choices": [
+        {
+          "text": "Photograph the whiteboard for the folder. Then go see your son.",
+          "next": "report_fork"
+        }
+      ]
+    },
+    {
+      "id": "report_fork",
+      "kicker": "Day 66 \u2014 Thursday, December 10, 2026",
+      "dayOffset": 66,
+      "title": "December 10",
+      "body": [
+        "Thursday, December 10, 2026. What the school issues today depends, with total precision, on when a one-page form was signed in October \u2014 on whether day sixty falls before the hearing or after it."
+      ],
+      "choices": [
+        {
+          "text": "The report is issued today \u2014 inside the window the signature bought.",
+          "next": "report_ready",
+          "requiresNoFlags": [
+            "consentLate"
+          ]
+        },
+        {
+          "text": "The testing is done; the written report is not \u2014 its window runs past the hearing.",
+          "next": "report_pending",
+          "requiresFlags": [
+            "consentLate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report_ready",
+      "kicker": "Day 66 \u2014 Thursday, December 10, 2026",
+      "dayOffset": 66,
+      "title": "The report",
+      "body": [
+        "The evaluation report is eleven pages, and its finding is a sentence you read four times: Khalil has a specific learning disability in basic reading \u2014 the words swim for a documented, testable, teachable reason. He is eligible. An IEP team will be convened, and services will be written into a plan with the force of a program behind it.",
+        "The chair, the worksheet, the 'baby page' \u2014 all of it re-reads, in the report's level light, as a boy asking for help in the only dialect he had. You were right in September. The difference between September and now is not rightness. It is paper."
+      ],
+      "choices": [
+        {
+          "text": "Convened means scheduled \u2014 ask for the IEP meeting date in writing, and for the report to go to the agency and the court packet today.",
+          "next": "iep_meeting",
+          "setFlags": [
+            "iepConvened"
+          ]
+        },
+        {
+          "text": "Read it once more at the kitchen table. Some victories deserve a minute before they become exhibits.",
+          "next": "iep_meeting"
+        }
+      ]
+    },
+    {
+      "id": "report_pending",
+      "kicker": "Day 66 \u2014 Thursday, December 10, 2026",
+      "dayOffset": 66,
+      "title": "Testing done, report not",
+      "body": [
+        "The testing is complete \u2014 two sessions, a file of protocols \u2014 but the written report is still inside the school's window, because the window started a week later than it could have. The evaluator is apologetic and precise: the report will issue the week after the permanency hearing, comfortably inside the deadline the October signature actually set.",
+        "Ms. Ashby is blunter. \"We will tell the court the evaluation exists and what its clock says. Courts can continue a question; they cannot find facts from a report that doesn't exist yet. We ask for a step, not a leap \u2014 and we bring the consent stamp, so the court can see exactly whose week this was.\""
+      ],
+      "choices": [
+        {
+          "text": "Build the packet around the stamp: request, consent, clock, testing log \u2014 and a written ask for a dated step at the next review.",
+          "next": "hearing_prep"
+        }
+      ]
+    },
+    {
+      "id": "iep_meeting",
+      "kicker": "Day 71 \u2014 Tuesday, December 15, 2026",
+      "dayOffset": 71,
+      "title": "The team",
+      "body": [
+        "The IEP meeting is a school table with your chair kept for you \u2014 you attend by phone from a break room, on speaker, with Mrs. Greer in the room itself, and it works anyway, because the report does the talking. Reading services, four sessions a week. A plan for the frustration moments that is a plan, not a punishment. Your observations letter is in the team's folder; Khalil's sentence about the swimming words is quoted in the present-levels page, with his permission, in quotation marks.",
+        "Ms. Ashby's remaining task is plumbing: the signed IEP and the evaluation report go into the permanency packet, so that on Thursday the judge reads a school plan with dates on it \u2014 not a concern with adjectives on it."
+      ],
+      "choices": [
+        {
+          "text": "Sign the IEP, keep your copy, and confirm the packet copy went to the agency in writing.",
+          "next": "hearing_prep",
+          "setFlags": [
+            "packetFiled"
+          ],
+          "cash": -6
+        },
+        {
+          "text": "Sign, and trust the school to forward its own paperwork to the agency.",
+          "next": "hearing_prep",
+          "setFlags": [
+            "packetFiled"
+          ],
+          "note": "Mrs. Greer confirms the packet copy reached the agency \u2014 trust, verified once, in writing."
+        }
+      ]
+    },
+    {
+      "id": "hearing_prep",
+      "kicker": "Day 72 \u2014 Wednesday, December 16, 2026",
+      "dayOffset": 72,
+      "title": "The packet",
+      "body": [
+        "The packet is thin or thick depending on the autumn you chose: a father's dated request; a consent form with a received stamp; a sixty-day count; an evaluation report or the space where it will be; an IEP with services and dates, or a testing log and a promise. Ms. Ashby arranges what exists in date order, the way judges forgive everything except confusion.",
+        "\"Tomorrow the court makes the permanency determinations \u2014 placement's necessity, your compliance, your progress, and the agency's efforts. (42 Pa.C.S. \u00a7 6351(f)) School is about to become one of the places those determinations are read from. Let's make sure it's read accurately.\""
+      ],
+      "choices": [
+        {
+          "text": "Sleep badly, arrive early, bring the folder.",
+          "next": "outcome118"
+        }
+      ]
+    },
+    {
+      "id": "outcome118",
+      "kicker": "Day 73 \u2014 Thursday, December 17, 2026",
+      "dayOffset": 73,
+      "title": "Thursday, December 17",
+      "body": [
+        "The permanency hearing opens with the agency's report, and the school chapter is read aloud \u2014 in whichever version your autumn wrote. The judge's determinations are the statute's: whether placement remains necessary, whether the plan has been complied with, what progress has been made toward the circumstances that brought Khalil here, and whether reasonable efforts were made to finalize the plan. (42 Pa.C.S. \u00a7 6351(f)(1), (2), (3), (5.1))",
+        "Into those determinations now falls the education record \u2014 the whole of it, or the hole where it should be."
+      ],
+      "choices": [
+        {
+          "text": "The record holds a dated request, a consent signed the day it arrived, an evaluation completed inside its window, an IEP with services running, and a father's observations in the file \u2014 advocacy with stamps on it.",
+          "next": "end_evaluated",
+          "requiresFlags": [
+            "writtenRequest",
+            "consentSigned",
+            "packetFiled"
+          ]
+        },
+        {
+          "text": "The record holds an evaluation that exists but a report that doesn't \u2014 a clock started a week late, ticking past today's hearing.",
+          "next": "end_late",
+          "requiresFlags": [
+            "consentLate"
+          ]
+        },
+        {
+          "text": "The record holds suspensions, a behavior plan, and a father's unprovable memory of asking.",
+          "next": "end_discipline"
+        }
+      ]
+    },
+    {
+      "id": "end_evaluated",
+      "kicker": "Day 73 \u2014 Thursday, December 17, 2026",
+      "dayOffset": 73,
+      "title": "Ending \u2014 Evaluated, and Heard",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The findings come in the statute's order, and the school chapter does real work in them. On progress toward alleviating the circumstances of placement (42 Pa.C.S. \u00a7 6351(f)(3)), the court cites the evaluation itself: a father who identified his son's core difficulty, pursued it through the correct machinery, in writing, until the machinery produced services \u2014 is a circumstance of this case changing in front of the court. The order is a stepped return: expanded visits now, Khalil home by spring if the steps hold, the IEP traveling with him to whichever school serves your neighborhood, its services uninterrupted by the move.",
+        "Hold the honest shape of this win. The evaluation did not reunify this family; the court did, on a record. What the paper did was convert *father's concerns* \u2014 the file's September phrase \u2014 into findings a judge could act on: a dated request under 34 C.F.R. \u00a7 300.301(b), a consent whose stamp started the 60-day clock in \u00a7 300.301(c)(1), a report inside that window, a plan with services and dates. The agency record you requested (55 Pa. Code \u00a7 3130.44(d)) is what let the hearing argue from the file's own pages about when you asked, instead of from anyone's recollection.",
+        "What no strategy controls: the evaluator's finding itself \u2014 a report can come back *no disability found*, and this route's honesty depends on saying so. A different judge could weigh the same packet and order a slower step. What the strategy controlled was narrower and real: when the system finally looked at Khalil, it looked because his father had asked in the only dialect the system files \u2014 and the looking happened in time to matter."
+      ]
+    },
+    {
+      "id": "end_late",
+      "kicker": "Day 73 \u2014 Thursday, December 17, 2026",
+      "dayOffset": 73,
+      "title": "Ending \u2014 The Report Arrives Late (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The court does what courts do with a clock that is still running: it continues the question. The evaluation is credited as underway \u2014 the consent stamp is in the packet, the testing log is real, the evaluator's date is written into the order \u2014 and the stepped return is deferred to a review set for the spring, when the report and the IEP will exist as documents instead of as expectations. Khalil stays with Mrs. Greer. Nothing was denied. Everything was postponed, by the width of one week in October.",
+        "Read the arithmetic without flinching. The federal measure gives the school 60 days from consent, or the state's own timeframe if it sets one. (34 C.F.R. \u00a7 300.301(c)(1)) A consent signed the day the form arrived puts day sixty on Sunday, December 13, 2026 \u2014 before the hearing. A consent signed a week later puts the report's deadline after it, and a permanency hearing cannot find facts from a report that does not exist yet, however sympathetic the room. The request letter suffered the same physics: the November version was a fine letter. The October version would have been a finding.",
+        "This ending is partial, and it is genuinely recoverable \u2014 more recoverable than most. The report will issue; the IEP will be written; the spring review will read a complete school file, and the record you can request under 55 Pa. Code \u00a7 3130.44(d) will show a father whose paper, once he learned its price, never ran late again. The scenario's lesson is not that a week is fatal. It is that in this system a week is a unit of your child's life, and the calendar does not round."
+      ]
+    },
+    {
+      "id": "end_discipline",
+      "kicker": "Day 73 \u2014 Thursday, December 17, 2026",
+      "dayOffset": 73,
+      "title": "Ending \u2014 Discipline Instead",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The hearing reads the school chapter the school wrote: three suspensions, a behavior plan, *functioning remains a concern*. Nobody in the room is lying. The documents are accurate, stamped, and entirely about a boy whose reading was never measured \u2014 because the request to measure it lives in two memories and no file. The court continues placement, notes the behavior plan as the school's response, and the permanency determinations are made from a record in which *defiance* has paperwork and *disability* has a father's say-so. (42 Pa.C.S. \u00a7 6351(f))",
+        "The debrief owes you the unflinching version. The right was never obscure: a parent may initiate a request for an initial evaluation. (34 C.F.R. \u00a7 300.301(b)) The machinery was never unwilling: when the request finally exists in writing, schools produce consent forms in days. What failed was the dialect. September's asks were spoken in rooms that minuted them as *concerns* and *homework* \u2014 and a system that runs on paper cannot be blamed, in any way a court can act on, for failing to file what it was never handed.",
+        "It is not over \u2014 evaluations can be requested in December as well as September, and this scenario's worst ending is still only a season, not a sentence. But notice what the delay cost beyond time: the behavior record written in the evaluation's absence will now be quoted in rooms for years, long after a report explains it. First drafts are sticky. Write yours."
+      ]
+    }
+  ]
+}

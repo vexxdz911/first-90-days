@@ -1,0 +1,347 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 87 — The Second Letter (a fictional composite)",
+  "startNode": "start",
+  "startCash": 140,
+  "tier": "Foundation",
+  "summary": "The Bureau upheld the indicated report — but the order that says so carries two short clocks of its own, and a piece of evidence arrived too late for the first hearing.",
+  "startDateISO": "2026-03-02"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, March 2, 2026",
+   "dayOffset": 0,
+   "title": "The Letter With Two Clocks",
+   "body": [
+    "Your name is Sylvie Marchand. You work as an aide at the preschool two bus rides from your apartment, and your daughter Fern, five, is the light you organize every shift around. Last winter an indicated report of child abuse was filed against you after Fern's fall at the playground produced two medical readings that did not agree. You appealed it. A hearing officer heard the case, and the Bureau of Hearings and Appeals has now ruled.",
+    "The order in today's mail upholds the report. Your name stays on the registry, and the letter says plainly what that can mean for work in a childcare facility or a school. But the last page of the order is not only bad news. It describes what a person who disagrees may do next — and both of the things it describes run on clocks measured in days, not months.",
+    "The family is fictional — a composite. No real person's story appears here. What is real is the shape of the paper: an order, a mailing date, and a short window that starts whether you are ready or not."
+   ],
+   "choices": [
+    {
+     "text": "Read the last page again, slowly, and write down the two dates it gives you",
+     "next": "legal_aid",
+     "setFlags": [
+      "datesKept"
+     ],
+     "note": "Fifteen days to ask the Secretary to reconsider. Thirty days to perfect an appeal to Commonwealth Court. Both counted from the mailing date — today. You write them on the folder in ink."
+    }
+   ]
+  },
+  {
+   "id": "legal_aid",
+   "kicker": "Day 1 — Tuesday, March 3, 2026",
+   "dayOffset": 1,
+   "title": "The Legal Aid Line",
+   "body": [
+    "The legal aid intake worker does not waste your minutes. \"Two clocks,\" she says. \"Asking for reconsideration and appealing to Commonwealth Court are different doors. Reconsideration goes back to the Secretary with something the Bureau got wrong or never saw. The court appeal is a judge reading the record that already exists — the court does not take new evidence.\"",
+    "\"And one warning,\" she adds. \"Asking for reconsideration does not stop the court clock. Families lose the second door all the time because they were politely waiting at the first one.\" (The two windows are stated in the order itself, from 23 Pa.C.S. § 6341(g): 15 calendar days from the mailing date to request reconsideration or appeal, and 30 calendar days from the mailing date to perfect an appeal to Commonwealth Court.)"
+   ],
+   "choices": [
+    {
+     "text": "Ask what could possibly be new — the hearing already happened",
+     "next": "mailbox",
+     "note": "\"Anything the Bureau never saw,\" she says. \"Start with your own mailbox. Agencies mail things. So do doctors.\""
+    }
+   ]
+  },
+  {
+   "id": "mailbox",
+   "kicker": "Day 3 — Thursday, March 5, 2026",
+   "dayOffset": 3,
+   "title": "What Arrived Late",
+   "body": [
+    "At the bottom of the mailbox stack, under a grocery circular, is a thick envelope from the county agency, postmarked during your hearing week. Inside is the evidence packet the agency provided for your appeal — the investigation evidence, including material that could help you, which the agency must provide to a person making an appeal. (23 Pa.C.S. § 6341(c.2)(4)) One page was never mentioned at your hearing: a follow-up letter from Fern's pediatrician, written after a second examination, reading the injury as consistent with the playground fall you described.",
+    "It is not a magic page. It does not prove anything by itself. But the Bureau decided your case without ever seeing it, and a reconsideration request exists for exactly that shape of wrong."
+   ],
+   "choices": [
+    {
+     "text": "Take the packet and the letter to the legal aid clinic this week",
+     "next": "clinic",
+     "setFlags": [
+      "evidenceFound"
+     ],
+     "addHidden": [
+      "Investigation packet — late-arriving pediatric follow-up letter identified, never considered at the hearing"
+     ],
+     "note": "You paper-clip the letter to the front of the packet. For the first time since the order arrived, the folder feels like it is pointing somewhere."
+    },
+    {
+     "text": "Put the packet in the drawer — the hearing is over and you are tired",
+     "next": "clinic",
+     "note": "The drawer closes. The letter is still in the world, and the clocks are still running — but nobody's request will carry it anywhere from a drawer."
+    }
+   ]
+  },
+  {
+   "id": "clinic",
+   "kicker": "Day 5 — Saturday, March 7, 2026",
+   "dayOffset": 5,
+   "title": "The Clinic's Two Pages",
+   "body": [
+    "Ms. Delvecchio, the clinic attorney, reads the order, then the pediatrician's letter, then the order again. \"This is a reconsideration with a spine,\" she says. \"Not 'please look again.' It is: here is evidence in the agency's own packet that the Bureau never addressed, and here is the page. We attach the letter, we cite the packet, and we file it well inside fifteen days.\"",
+    "\"One more page,\" she says, sliding a short form across. \"We also renew, in writing, the request for the complete investigation file — everything, not the excerpts. Records in the agency's file are to be released on request (55 Pa. Code § 3130.44(d)), and if this goes further, we will want the whole record, not the highlights.\" Copies cost $10 you did not budget."
+   ],
+   "choices": [
+    {
+     "text": "Sign the reconsideration request with the letter attached, and the written request for the complete file",
+     "next": "daycare_office",
+     "cash": -10,
+     "setFlags": [
+      "reconDrafted",
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Reconsideration — drafted with the unconsidered pediatric letter attached; complete investigation file requested in writing"
+     ],
+     "note": "Two signatures. The request now exists as paper, dated, with the new page riding on its back."
+    },
+    {
+     "text": "Ask to come back next week and sign — you need to think it over",
+     "next": "clinic_late",
+     "note": "Thinking is free. This particular calendar charges for it by the day. And it spends the rest of your week — the director, the shift board, the quiet evenings — whether you spend them or not."
+    }
+   ]
+  },
+  {
+   "id": "clinic_late",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "Seven Days Later",
+   "body": [
+    "You are back at the clinic on day twelve of fifteen. Ms. Delvecchio does not scold you; she moves faster. \"We can still make it,\" she says, \"if we sign today and file today. What we cannot do is miss anything else — not a page, not a date.\" The reconsideration is drafted the same way it would have been a week ago, with the pediatrician's letter attached and the written request for the complete file renewed. It is simply drafted against a wall now instead of against a calendar."
+   ],
+   "choices": [
+    {
+     "text": "Sign both pages now and file today",
+     "next": "filing_day",
+     "cash": -10,
+     "setFlags": [
+      "reconDrafted",
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Reconsideration — signed and filed on day twelve of fifteen; complete file requested in writing"
+     ],
+     "note": "The clerk's stamp lands like a small, kind hammer. Filed. Inside the window, with three days to spare and no margin left anywhere else."
+    }
+   ]
+  },
+  {
+   "id": "daycare_office",
+   "kicker": "Day 7 — Monday, March 9, 2026",
+   "dayOffset": 7,
+   "title": "The Director's Office",
+   "body": [
+    "Your director calls you in with the careful voice people use around registry letters. The center runs clearances on a cycle, and your name's status is not a secret the schedule can keep. She is not unkind. She is also not able to promise anything: what she can do is tell you, honestly, that a pending reconsideration with a filed date is a different conversation than a closed file — and that the conversation will happen with or without your paperwork in it."
+   ],
+   "choices": [
+    {
+     "text": "Tell her the truth with dates: the order, the filed reconsideration, the hearing to come",
+     "next": "shift_board",
+     "setFlags": [
+      "directorTold"
+     ],
+     "addHidden": [
+      "Employment — director informed in writing of the filed reconsideration and its dates"
+     ],
+     "note": "She writes the dates in the schedule book. \"Then we wait for paper,\" she says, \"instead of rumors.\""
+    },
+    {
+     "text": "Say as little as possible and hope the cycle is slow",
+     "next": "shift_board",
+     "note": "Silence is also a schedule. It just isn't one you get to see."
+    }
+   ]
+  },
+  {
+   "id": "shift_board",
+   "kicker": "Day 9 — Wednesday, March 11, 2026",
+   "dayOffset": 9,
+   "title": "The Shift Board",
+   "body": [
+    "Filing day and your hearing-prep day will both land on workdays; the board at the center is a grid of other people's emergencies. Your supervisor can swap your filing-day shift if she knows by Friday — the swap costs you a Saturday, which costs you $15 in bus fare and Fern's cousin's birthday. Keeping quiet costs nothing today."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the swap in writing and take the Saturday",
+     "next": "folder_night",
+     "cash": -15,
+     "setFlags": [
+      "shiftSwapped"
+     ],
+     "note": "The swap is initialed on the board. A small square of paper that means: you will be standing in the right room on the right day."
+    },
+    {
+     "text": "Keep the shift and plan to file on your lunch break",
+     "next": "folder_night",
+     "note": "The courthouse is forty minutes away. Lunch is thirty. You do the arithmetic and decide not to look at it again."
+    }
+   ]
+  },
+  {
+   "id": "folder_night",
+   "kicker": "Day 11 — Friday, March 13, 2026",
+   "dayOffset": 11,
+   "title": "The Folder on the Table",
+   "body": [
+    "The night before filing, the folder gets its once-over: the order with the two dates in ink on its last page, the packet, the pediatrician's letter paper-clipped to the reconsideration, the receipt for copies. Fern is asleep. The kitchen clock is loud in the way kitchen clocks are at 11 p.m.",
+    "Nothing in the folder guarantees an outcome. What it guarantees is smaller and real: if anyone, at any desk, asks what you did and when you did it, the answer will not depend on your memory."
+   ],
+   "choices": [
+    {
+     "text": "Close the folder and sleep — filing day is tomorrow",
+     "next": "filing_day",
+     "note": "You set two alarms. The folder waits by the door like a dog that knows the route."
+    }
+   ]
+  },
+  {
+   "id": "filing_day",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "Day Twelve of Fifteen",
+   "body": [
+    "The Bureau's office is quieter than you expected, and the clerk is faster. Everything now depends on what is in your hands: a reconsideration that exists as a drafted, signed document is a filing. A reconsideration that exists as an intention is a story you will tell later, to no one who can act on it."
+   ],
+   "choices": [
+    {
+     "text": "File the reconsideration request, with the pediatrician's letter attached",
+     "next": "recon_filed",
+     "setFlags": [
+      "reconFiled"
+     ],
+     "note": "Stamped, copied, receipted. Day twelve of fifteen. The first clock is beaten, and the second door was never needed — yet.",
+     "requiresFlags": [
+      "reconDrafted"
+     ]
+    },
+    {
+     "text": "File only a notice of appeal to Commonwealth Court and skip reconsideration",
+     "next": "court_filed",
+     "note": "A valid door — but the court reads the record that exists, and the letter in your folder is not in it."
+    }
+   ]
+  },
+  {
+   "id": "recon_filed",
+   "kicker": "Day 12 — Saturday, March 14, 2026",
+   "dayOffset": 12,
+   "title": "The Receipt",
+   "body": [
+    "The receipt has a date stamp, a docket line, and absolutely no opinion about your case, which is what makes it beautiful. Ms. Delvecchio photographs it for the file and hands you the folder. \"Now the Secretary reads,\" she says. \"Reconsideration can end three ways: denied, granted with the order changed, or granted with a new hearing ordered. If the answer is no, the court door was already counted and calendared — nothing about today spent it carelessly.\"",
+    "On the bus home you realize your shoulders have been somewhere up around your ears since March 2. They come down about an inch."
+   ],
+   "choices": [
+    {
+     "text": "Go home and wait for the Secretary's answer on paper",
+     "next": "waiting_weeks",
+     "note": "Waiting is different when the thing being waited for has a receipt."
+    }
+   ]
+  },
+  {
+   "id": "waiting_weeks",
+   "kicker": "Day 25 — Friday, March 27, 2026",
+   "dayOffset": 25,
+   "title": "The Waiting Weeks",
+   "body": [
+    "Reconsideration is read by people, on their schedule, in a queue of other people's emergencies. The weeks pass at preschool speed: Fern learns to write her name with the letters in an order of her own choosing, the clearance cycle at the center ticks one notch closer, and your director — who has the dates in her schedule book because you gave them to her — says only, \"Paper's moving, then,\" when you pass in the hall.",
+    "You check the mailbox the way everyone in this story checks the mailbox: like it owes you money. On day forty, it pays."
+   ],
+   "choices": [
+    {
+     "text": "Open the envelope from the Secretary's office",
+     "next": "answer_letter",
+     "note": "Thick envelope. Thick is good. Denials are traditionally one page."
+    }
+   ]
+  },
+  {
+   "id": "answer_letter",
+   "kicker": "Day 40 — Saturday, April 11, 2026",
+   "dayOffset": 40,
+   "title": "The Answer, On Paper",
+   "body": [
+    "The Secretary's order arrives on day forty. You read it standing at the mailbox, the way all important reading in this story gets done.",
+    "The reconsideration is GRANTED. The order says, in the flat language of bureaus, that the final order did not address material evidence contained in the agency's own packet, and that the matter is returned for a new hearing at which the complete record — including the pediatrician's follow-up letter — will be considered. The indicated report is not erased today. The registry entry stands while the new hearing is pending. But the decision that kept it there has been un-decided, by the system, on paper, because of a page you carried into the right office inside the right fifteen days."
+   ],
+   "choices": [
+    {
+     "text": "Call the clinic and start preparing for the new hearing",
+     "next": "hearing_prep",
+     "note": "\"Now we build the hearing the first one should have been,\" Ms. Delvecchio says. \"Starting with the whole file — which, you may recall, somebody requested in writing.\""
+    }
+   ]
+  },
+  {
+   "id": "hearing_prep",
+   "kicker": "Day 47 — Saturday, April 18, 2026",
+   "dayOffset": 47,
+   "title": "Preparing the Hearing That Should Have Been",
+   "body": [
+    "The complete investigation file arrives because it was requested in writing weeks ago. In it, fairly read, is the whole story: the first examination, the playground aide's incident note, and the follow-up letter that reconciles them. Preparation is not dramatic. It is a timeline on one page, the letter tabbed, the incident note tabbed, your own account written in your own words while it is still yours to write.",
+    "At the preschool, your director has the new hearing date in the schedule book, because you told her the truth with dates in March."
+   ],
+   "choices": [
+    {
+     "text": "Walk into the new hearing with the complete record",
+     "next": "end_recon",
+     "note": "Whatever the hearing officer decides this time, it will be decided about the whole file. That was the fight. It is already won."
+    }
+   ]
+  },
+  {
+   "id": "end_recon",
+   "kicker": "Day 55 — Sunday, April 26, 2026",
+   "dayOffset": 55,
+   "title": "Ending — A New Hearing, On the Whole Record",
+   "body": [
+    "The new hearing is not shown; this story ends where its real work ended — at the moment the system agreed to decide again, this time about everything. The indicated report remains in place pending that hearing, and the hearing officer could rule either way on the complete record. Sylvie keeps her folder, her dates, and her job conversation honest and current.",
+    "What changed is the ground: the Bureau's decision no longer rests on a partial record, because one parent read the last page of an order, counted fifteen days correctly, and carried one unconsidered page into the right office in time."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE WIN, NAMED HONESTLY — This is a partial win, and it is the best this story offers. The reconsideration was granted and a new hearing ordered; the report was NOT expunged by this ending, and no ending in this scenario expunges it — that decision belongs to the new hearing, on the complete record.",
+    "THE LAW IN THE BEATS — The two windows come from 23 Pa.C.S. § 6341(g): within 15 calendar days of the mailing date of the Bureau's final order, a party may request reconsideration by the Secretary or appeal; and within 30 calendar days of the mailing date, an appeal to Commonwealth Court must be perfected. Asking for reconsideration does not extend the court clock — which is why the clinic calendared both from day one. The evidence packet's arrival reflects the agency's duty under § 6341(c.2)(4) to provide a person making an appeal with the investigation evidence, including potentially exculpatory evidence. The complete-file request rests on 55 Pa. Code § 3130.44(d): agency records are released upon request.",
+    "THE HIGHEST-LEVERAGE MOVE — The written record request (§ 3130.44(d)), made at the clinic table before anyone knew whether it would matter. The complete file is what the new hearing will now be fought over.",
+    "WHAT NO STRATEGY CONTROLS — The Secretary could have denied reconsideration; hearing officers weigh evidence as they find it; employers make their own decisions on their own cycles. The route controlled only what was Sylvie's: the dates, the filing, the page, the folder. Outcomes also turn on workers, officials, and luck — never on whether a parent deserved better."
+   ]
+  },
+  {
+   "id": "court_filed",
+   "kicker": "Day 20 — Sunday, March 22, 2026",
+   "dayOffset": 20,
+   "title": "The Longer Road",
+   "body": [
+    "The notice of appeal to Commonwealth Court is filed inside its thirty days, and it is a real filing — the court will read the case. But a court on appeal reads the record that was made below: the transcripts, the packet as it stood, the Bureau's reasoning. It does not take new evidence, and the pediatrician's follow-up letter — sitting in your folder, unread by any deciding body — is not something the court can weigh.",
+    "Your lawyer is honest on the courthouse steps: \"We can argue the Bureau misread what it had. We cannot argue about the letter. On appeal, it does not exist.\""
+   ],
+   "choices": [
+    {
+     "text": "Take the appeal forward on the record that exists",
+     "next": "end_court",
+     "note": "The appeal proceeds. It will be decided about a smaller record than the one in your folder."
+    }
+   ]
+  },
+  {
+   "id": "end_court",
+   "kicker": "Day 90 — Sunday, May 31, 2026",
+   "dayOffset": 90,
+   "title": "Ending — The Court Reads a Smaller Record",
+   "body": [
+    "The appeal runs its course on the record as it stood when the Bureau ruled: no follow-up letter, no second examination weighed, because no filing ever put them in front of a deciding body. The court reviews what the Bureau had — and reviews the Bureau's reading of it deferentially. The report stands.",
+    "The door Sylvie chose was a real door. It was simply the one that could not carry the page that mattered. The reconsideration window — fifteen days, printed on the last page of the order — closed on March 17, while a stronger argument waited in a kitchen drawer and then in a folder, unfiled."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHY THIS ENDING — An appeal to Commonwealth Court under 23 Pa.C.S. § 6341(g) must be perfected within 30 calendar days of the mailing date of the Bureau's final order, and the court reviews the existing record; it does not receive new evidence. The reconsideration request — the only route that could put the unconsidered letter in front of a decision-maker — had to be filed within 15 calendar days of the same mailing date. Filing the appeal did not preserve the letter, and skipping reconsideration spent the only window that could use it.",
+    "THE LAW THAT WAS AVAILABLE — Same § 6341(g) clocks; the agency's duty to provide the investigation evidence, § 6341(c.2)(4); and the record release on request, 55 Pa. Code § 3130.44(d). All three were in the story. Only the clocks were used.",
+    "WHAT NO STRATEGY CONTROLS — Nothing in this ending turns on Sylvie's worth as a parent. It turns on which of two printed windows a piece of paper was carried through, and when. The system is not described as cruel here; it is described as literal — which, on day sixteen, amounts to the same weather."
+   ]
+  }
+ ]
+}

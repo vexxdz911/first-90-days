@@ -1,0 +1,725 @@
+{
+  "meta": {
+    "title": "The First 90 Days",
+    "subtitle": "Scenario 126 \u2014 In Her Own Words (a fictional composite)",
+    "startDateISO": "2027-03-01",
+    "startNode": "start",
+    "startCash": 130,
+    "tier": "Complex",
+    "summary": "You are Shirley Trejo. Your daughter Destiny, sixteen, is being moved to a new foster home in two weeks. She has three demands \u2014 her school, her classes, and an answer about her medication \u2014 and one discovery: in the agency's reports, everything she says is being paraphrased. 'Some reluctance' is about to meet the girl who actually said it."
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "kicker": "Day 0 \u2014 Monday, March 1, 2027",
+      "dayOffset": 0,
+      "title": "The move",
+      "body": [
+        "Mrs. Asare is closing her foster home \u2014 her own mother's illness, another county, a life rearranging itself the way lives do, with two weeks' notice to everyone it touches. Destiny, sixteen, nine months into care, will move on Monday, March 15. The options on the table are a family foster home \u2014 Mrs. Halden's, across the district line \u2014 or a group placement nearer, which Destiny has already described, in the visit room, at full volume, as 'a facility with better PR.'",
+        "You are Shirley Trejo. You have been housed for six months, employed for five, and compliant with a plan whose hardest requirement \u2014 stability \u2014 you have finally, expensively, achieved. April's permanency hearing is five weeks out. And your daughter has just informed you, with a barrister's calm, that she has demands."
+      ],
+      "choices": [
+        {
+          "text": "Hear them in order. She has clearly rehearsed this.",
+          "next": "destiny_reaction"
+        }
+      ]
+    },
+    {
+      "id": "destiny_reaction",
+      "kicker": "Day 0 \u2014 Monday, March 1, 2027",
+      "dayOffset": 0,
+      "title": "Three demands",
+      "body": [
+        "\"One: I keep my school. Junior year is not a draft, Mom. My AP classes are there, my counselor is there, and I am not starting over in a building where nobody knows me in March of junior year. Two: fix my classes \u2014 they dropped my AP enrollment in January and nobody can tell me why, which means nobody tried. Three: somebody asks Dr. Iyer, in writing, why the evening pill eats my evenings \u2014 I fall asleep at eight like a toddler and my grades are eating it \u2014 and the answer comes back to *me*, not to a file.\"",
+        "A pause. \"And zero \u2014 before one. Whatever gets decided, it gets decided with my actual words in the room. Not the summary. I've seen the summary.\" She has. That is the next scene."
+      ],
+      "choices": [
+        {
+          "text": "Ask her what the summary says.",
+          "next": "backstory126"
+        }
+      ]
+    },
+    {
+      "id": "backstory126",
+      "kicker": "Day 1 \u2014 Tuesday, March 2, 2027",
+      "dayOffset": 1,
+      "title": "How Destiny got here",
+      "body": [
+        "The record, fairly and briefly: your eviction last spring, the couch-surfing summer, Destiny's attendance collapsing as the family's address did \u2014 a sixteen-year-old cannot get to school from a different couch every week, and the petition, when it came, described the result accurately. She entered care on June 12, 2026. The fifteen-month date on her case \u2014 the point where the law's termination-petition question arrives, with its exceptions \u2014 is Sunday, September 12, 2027. (42 U.S.C. \u00a7 675(5)(E)) Not this spring's fight. But the reason this spring's record matters more than it looks.",
+        "Mrs. Asare's home gave Destiny a year of ordinary life: her school, her counselor, her AP track, her friends. The move threatens all of it \u2014 not through anyone's decision, but through the usual mechanism: nobody deciding, in writing, in time."
+      ],
+      "choices": [
+        {
+          "text": "Your lawyer, Mr. Yusuf, gets the three demands and demand zero. Ask him how each becomes paper.",
+          "next": "lawyer126"
+        }
+      ]
+    },
+    {
+      "id": "lawyer126",
+      "kicker": "Day 2 \u2014 Wednesday, March 3, 2027",
+      "dayOffset": 2,
+      "title": "Three fights, four papers",
+      "body": [
+        "Mr. Yusuf maps the demands to machinery with a advocate's economy. The school: a placement change triggers the same federal structure as any other \u2014 she remains in her school of origin unless a determination, based on all factors relating to her best interest, decides otherwise (20 U.S.C. \u00a7 6311(g)(1)(E)(i)) \u2014 and the determination must be *asked for in writing* before the move, or the default decides it by envelope. Transportation has its own written procedures and its own three funding doors: agency reimbursement, district payment, or shared. (\u00a7 6312(c)(5)(B))",
+        "The classes: a records problem \u2014 her file, requested by name, from every school that has held it. The medication: a questions problem \u2014 her questions, in writing, through counsel and her guardian ad litem, to the prescriber, whose answers then exist. And demand zero, which he calls the master key: \"A written statement, in her words, filed verbatim with the agency and the court. Paraphrase is how institutions digest people. Verbatim is how they stay people.\" The agency's whole record, he adds, is hers to request as a party's parent (55 Pa. Code \u00a7 3130.44(d)) \u2014 school correspondence included, which is where the AP decision will be hiding."
+      ],
+      "choices": [
+        {
+          "text": "Start with the agency meeting already scheduled \u2014 the move paperwork. Bring a notebook; take the paraphrase home in writing.",
+          "next": "caseworker_meet"
+        }
+      ]
+    },
+    {
+      "id": "caseworker_meet",
+      "kicker": "Day 3 \u2014 Thursday, March 4, 2027",
+      "dayOffset": 3,
+      "title": "Expressed reluctance",
+      "body": [
+        "Ms. Kaminski runs the meeting kindly and efficiently: the Halden home is approved and available; the group placement is the fallback; transportation 'will be worked out'; school 'will be addressed by the districts.' Then you ask the question you came for \u2014 how Destiny's position will be recorded \u2014 and Ms. Kaminski, meaning no harm at all, shows you the draft report's sentence, which becomes this scenario's Exhibit A the moment you read it:",
+        "*Youth expresses some reluctance regarding the placement change.* Sixteen years old, three demands, a barrister's calm \u2014 compressed into *some reluctance*, the way a concert becomes *some noise* in a police log. Destiny, reading it over your shoulder that evening by phone, is quiet for a moment. Then: \"Write mine down. All of it. I'll sign it.\""
+      ],
+      "choices": [
+        {
+          "text": "Take the sentence home as evidence of the problem \u2014 and check your own chapter of the case before you build hers.",
+          "next": "paraphrase"
+        }
+      ]
+    },
+    {
+      "id": "paraphrase",
+      "kicker": "Day 4 \u2014 Friday, March 5, 2027",
+      "dayOffset": 4,
+      "title": "Some reluctance",
+      "body": [
+        "You sit with the sentence longer than it deserves, because it deserves exactly that. *Some reluctance* is not a lie. It is the truth with its spine removed \u2014 a paraphrase, the file's native dialect, in which a teenager's three specific, winnable demands became a mood. Moods cannot be granted. Demands can. The distance between the report's sentence and Destiny's Tuesday-night voice is the precise distance this scenario exists to close, and it is closed the way it is always closed: her words, verbatim, signed, filed, receipted.",
+        "First, though \u2014 your own standing. April's determinations will weigh your progress beside her wishes, and the packet must be honest about both."
+      ],
+      "choices": [
+        {
+          "text": "Inventory your own chapter quickly: housing, work, the plan \u2014 documented, all of it.",
+          "next": "shirley_progress"
+        }
+      ]
+    },
+    {
+      "id": "shirley_progress",
+      "kicker": "Day 5 \u2014 Saturday, March 6, 2027",
+      "dayOffset": 5,
+      "title": "Your chapter",
+      "body": [
+        "Your record, as the file will tell it: housed since September \u2014 a lease, renewed once; employed since October, part-time become full; the parenting program completed in December; visits, including the hard winter ones, attended. The permanency determinations (42 Pa.C.S. \u00a7 6351(f)) will find what they find, but they will not find drift. A mother whose chapter reads *stable* can spend her credibility on her daughter's three demands instead of defending her own \u2014 a luxury nine months of work bought, and April is when it gets spent.",
+        "Mr. Yusuf's phrase for the packet writes itself: *the mother's progress, documented; the daughter's wishes, verbatim; the system's defaults, contested in writing.* Three sections. Hers is the middle one, and it is the one she is about to write herself."
+      ],
+      "choices": [
+        {
+          "text": "Destiny writes her statement at your kitchen table on Saturday. Bring the good pens and no edits.",
+          "next": "statement_draft"
+        }
+      ]
+    },
+    {
+      "id": "statement_draft",
+      "kicker": "Day 6 \u2014 Sunday, March 7, 2027",
+      "dayOffset": 6,
+      "title": "Her draft",
+      "body": [
+        "She writes it in one sitting, in a hand that gets steadier as it goes: who she is; where she goes to school and what she is studying; what the AP classes mean (the words *college applications* appear, underlined once); what the evening medication does to her evenings, in her own precise accounting; what she is asking \u2014 the school kept, the classes restored, the questions answered, the Halden home welcomed *if* the first three travel with her \u2014 and what she is not asking, which is to be treated as a problem of logistics. Two pages. She signs it, dates it, and writes under the signature: *These are my words. Please file them as mine.*",
+        "Your instinct \u2014 every mother's instinct, and every advocate's temptation \u2014 is to wrap it in a covering letter that strengthens it. Mr. Yusuf counsels the harder discipline: file it as it stands, with a one-line cover that adds nothing but its routing: *Statement of Destiny Trejo, filed verbatim at her request.*"
+      ],
+      "choices": [
+        {
+          "text": "File it verbatim \u2014 agency, court, GAL, school \u2014 with receipts, exactly as written.",
+          "next": "statement_filed",
+          "setFlags": [
+            "statementVerbatim"
+          ],
+          "addHidden": [
+            "Child's stated wishes \u2014 written statement filed verbatim with agency and court"
+          ]
+        },
+        {
+          "text": "Wrap it in your own letter instead: a mother's summary, citing her points in order \u2014 warmer, more persuasive, and in your voice.",
+          "next": "summarized_path",
+          "setFlags": [
+            "statementSummarized"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "statement_filed",
+      "kicker": "Day 7 \u2014 Monday, March 8, 2027",
+      "dayOffset": 7,
+      "title": "Verbatim, receipted",
+      "body": [
+        "The filing takes an afternoon and four stamps. The guardian ad litem, Mr. Ibe, calls that evening with the driest sentence in the case: \"In nine months, this file has contained eleven professional summaries of your daughter. It now contains one document by her. I have watched judges read both kinds. Only one kind gets quoted.\"",
+        "Destiny's own review is shorter: \"Good. Now the school.\""
+      ],
+      "choices": [
+        {
+          "text": "The school: ask, in writing, for the best-interest determination on the Halden placement \u2014 before March 15.",
+          "next": "school_front"
+        },
+        {
+          "text": "The school: ask, in writing, for the determination \u2014 before the default does it by envelope.",
+          "next": "school_front"
+        }
+      ]
+    },
+    {
+      "id": "summarized_path",
+      "kicker": "Day 7 \u2014 Monday, March 8, 2027",
+      "dayOffset": 7,
+      "title": "A mother's summary",
+      "body": [
+        "Your covering letter is a good letter \u2014 clear, organized, every demand in order \u2014 and it makes the filing's central mistake with the best intentions: Destiny's two pages are enclosed, but the document the file will quote is yours. Her voice becomes an attachment to her mother's advocacy. The paraphrase machine has not been defeated; it has been given a better class of paraphrase, with a signature it can cite.",
+        "Mr. Ibe, reading it, is gentle and exact: \"The court will now read that *you* say she wants these things. It would have read that *she* says so. In this system, that is not a nuance. It is the whole exhibit.\" The statement can still be re-filed verbatim \u2014 paper, unlike pride, allows second drafts."
+      ],
+      "choices": [
+        {
+          "text": "Re-file her pages verbatim, one-line cover, receipts \u2014 and let the file hold both versions as the lesson.",
+          "next": "statement_filed",
+          "setFlags": [
+            "statementVerbatim"
+          ]
+        },
+        {
+          "text": "Let the letter stand. April is close, and the school fight needs the hours.",
+          "next": "school_front"
+        }
+      ]
+    },
+    {
+      "id": "school_front",
+      "kicker": "Day 8 \u2014 Tuesday, March 9, 2027",
+      "dayOffset": 8,
+      "title": "Before March 15",
+      "body": [
+        "The written request goes to the agency and both districts' points of contact: a placement change is set for March 15; Destiny is to remain in her school of origin unless a determination based on all factors relating to her best interest decides otherwise (20 U.S.C. \u00a7 6311(g)(1)(E)(i)); the parent requests that determination be made, with Destiny's statement and her counselor's input in front of it, and that enrollment be held meanwhile.",
+        "It is the same letter this library's parents keep writing, because the default it answers is the same default: a move processed as a change of address, with a school attached as an afterthought. The letter makes the school the subject. Subjects get meetings. Afterthoughts get envelopes."
+      ],
+      "choices": [
+        {
+          "text": "Attach her statement and ask for the counselor, Ms. Petrides, to be heard in it.",
+          "next": "destiny_school_day",
+          "setFlags": [
+            "bidAsked"
+          ]
+        },
+        {
+          "text": "Send the request to the agency alone \u2014 the districts will take their cue from the case file.",
+          "next": "destiny_school_day"
+        }
+      ]
+    },
+    {
+      "id": "destiny_school_day",
+      "kicker": "Day 9 \u2014 Wednesday, March 10, 2027",
+      "dayOffset": 9,
+      "title": "The empty seat",
+      "body": [
+        "Destiny's school day, which the determination will be about: AP English, where her essay is pinned \u2014 actually pinned \u2014 inside the classroom door; the counselor's office, where her junior-year plan lives in a folder with her name spelled right; and in third period, the seat she was removed from in January, when the school's schedule audit dropped her AP enrollment *for administrative reasons* and seated her, for six weeks now, in the standard track, where she is earning A's she describes as 'participation trophies with homework.'",
+        "The dropped enrollment is not a decision anyone remembers making. It has the fingerprints of every default in this library: a flag, a code, a consequence. Recovering it is a records problem. She has already told you the solution's shape: *nobody tried* means *nobody requested the file by name*."
+      ],
+      "choices": [
+        {
+          "text": "Request the files \u2014 the agency's whole record, and the school records by name from both schools.",
+          "next": "records126"
+        }
+      ]
+    },
+    {
+      "id": "records126",
+      "kicker": "Day 10 \u2014 Thursday, March 11, 2027",
+      "dayOffset": 10,
+      "title": "By name",
+      "body": [
+        "The requests go out in writing: the agency's case record under the regulation (55 Pa. Code \u00a7 3130.44(d)), with the school correspondence and the January enrollment decision expressly named; and to the schools, through counsel, Destiny's complete record including the transfer file from her fall move and the audit trail of the AP drop.",
+        "Lists get answered. Adjectives get acknowledged. The January decision has hidden inside the second category for six weeks; the requests move it, this week, into the first."
+      ],
+      "choices": [
+        {
+          "text": "File them with receipts and read what comes back for the sentence that dropped her.",
+          "next": "transcript_gap",
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "cash": -8,
+          "addHidden": [
+            "Record \u2014 agency record and school records requested in writing, enrollment decision named"
+          ]
+        },
+        {
+          "text": "Ask Ms. Kaminski to pull the school correspondence informally \u2014 faster, warmer, off the record.",
+          "next": "transcript_gap"
+        }
+      ]
+    },
+    {
+      "id": "transcript_gap",
+      "kicker": "Day 12 \u2014 Saturday, March 13, 2027",
+      "dayOffset": 12,
+      "title": "The missing midterm",
+      "body": [
+        "The production explains the AP drop with bureaucratic clarity: at the January schedule audit, Destiny's file lacked her fall midterm grades from the prior school \u2014 the transfer file had been requested in the fall *as a whole*, arrived without them, and was never followed up by name. A missing document became a scheduling flag; the flag became a drop; the drop became six weeks of standard-track A's. The midterm grades themselves, requested now *by name*, arrive from the prior school in three days, with her AP teacher's fall recommendation attached \u2014 a document that has existed since November, in a drawer, endorsing exactly the enrollment January cancelled for its absence.",
+        "Nobody erred, in the sense of choosing this. Everybody erred, in the sense of a system where a file's completeness is nobody's named job \u2014 until a parent makes it hers, in writing, by name."
+      ],
+      "choices": [
+        {
+          "text": "Take the completed file to Ms. Petrides and ask for the AP decision to be re-made on it.",
+          "next": "halden_meet"
+        }
+      ]
+    },
+    {
+      "id": "halden_meet",
+      "kicker": "Day 13 \u2014 Sunday, March 14, 2027",
+      "dayOffset": 13,
+      "title": "Mrs. Halden",
+      "body": [
+        "Mrs. Halden's home is warm, organized, and twenty-five minutes from Destiny's school in the wrong district \u2014 the geography of this whole spring. She is candid in the way that makes placements work: \"I asked for teenagers because I remember being one. I can drive her to her school in the mornings if the plan says so \u2014 I'm up anyway, and it's one trip. What I can't do is be the plan by myself and have nobody write it down. I've seen that movie.\"",
+        "She is, in the vocabulary of the file she is entering, a *factor* \u2014 and like every factor in this library, she is asking to be considered in writing rather than assumed in passing."
+      ],
+      "choices": [
+        {
+          "text": "Note the offer \u2014 mornings, in a plan, on paper \u2014 and say the goodbye that this move is built on.",
+          "next": "asare_goodbye",
+          "setFlags": [
+            "haldenOffer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "asare_goodbye",
+      "kicker": "Day 13 \u2014 Sunday, March 14, 2027",
+      "dayOffset": 13,
+      "title": "The goodbye",
+      "body": [
+        "The goodbye at Mrs. Asare's is the cost side of every placement move, paid in a kitchen: the room Destiny has had for nine months, the house rules on the fridge she helped write, a foster mother packing the good snacks into the bag 'for the road, which is twenty minutes, but still.' Stability in this system is always somebody's kitchen, and moves are always, whatever the paperwork says, evictions from one.",
+        "Destiny cries exactly once, in the car, briefly, and then returns to her brief: \"School. Classes. The pill questions. In that order \u2014 and my words, Mom. Zero before one.\""
+      ],
+      "choices": [
+        {
+          "text": "March 15. The move.",
+          "next": "move_day"
+        }
+      ]
+    },
+    {
+      "id": "move_day",
+      "kicker": "Day 14 \u2014 Monday, March 15, 2027",
+      "dayOffset": 14,
+      "title": "Monday, March 15",
+      "body": [
+        "The move happens the way approved moves do: bags, a caseworker, a new room, a new kitchen's rules explained kindly. Destiny is placed at Mrs. Halden's. Her schooling, as of this morning, exists in the held state your written request created: no enrollment change, pending the determination \u2014 or, in the autumns where the letter wasn't written, in the default's hands, which are also a kind of hands.",
+        "One demand housed. Three to go, and April gathering at the end of them like a deadline with a gavel."
+      ],
+      "choices": [
+        {
+          "text": "Demand three: her questions for Dr. Iyer. Draft them with her, word for word.",
+          "next": "med_front"
+        }
+      ]
+    },
+    {
+      "id": "med_front",
+      "kicker": "Day 16 \u2014 Wednesday, March 17, 2027",
+      "dayOffset": 16,
+      "title": "Her questions",
+      "body": [
+        "Destiny's questions for the prescriber, drafted at Halden's kitchen table and edited by their author to within an inch of their lives: *What is the evening medication for, in my case specifically? Why evenings? What happens to my alertness is documented \u2014 is it expected, and is it acceptable? What are the alternatives \u2014 timing, dose, a different medication \u2014 and what would trying one involve? Who decides changes, and how am I told?* Five questions. No adjectives. Mr. Ibe reviews them and says what GALs say when a client has done his job for him: \"Send them exactly like that.\"",
+        "The sending is the decision: in writing, through counsel and the GAL, so the answers exist \u2014 or aloud at the team meeting, where questions go to be *noted*."
+      ],
+      "choices": [
+        {
+          "text": "Send them in writing \u2014 to Dr. Iyer, copies to the agency and the file, her name on them as their author.",
+          "next": "pharmacy_refill",
+          "setFlags": [
+            "medReview"
+          ],
+          "addHidden": [
+            "Medical \u2014 child's written questions to prescriber sent through counsel and guardian ad litem"
+          ]
+        },
+        {
+          "text": "Raise them at the team meeting \u2014 faces, voices, a conversation like a family would have.",
+          "next": "pharmacy_refill"
+        }
+      ]
+    },
+    {
+      "id": "pharmacy_refill",
+      "kicker": "Day 17 \u2014 Thursday, March 18, 2027",
+      "dayOffset": 17,
+      "title": "The information sheet",
+      "body": [
+        "A small scene with a long shadow: the refill pickup, where the pharmacy's patient information sheet \u2014 folded into the bag, as it has been folded into every bag since October \u2014 is read, for the first time, by its patient. Destiny reads it twice at Halden's counter. *May cause drowsiness. Effects on alertness are common in the first weeks and usually diminish.* \"I've had twenty-two first weeks,\" she says. The sheet goes into her folder \u2014 not as evidence against anyone, but as the document that converts her *feeling flattened* from a mood into a documented side effect with a literature.",
+        "Her folder is becoming the second-most complete file in this case. She intends it to become the first."
+      ],
+      "choices": [
+        {
+          "text": "What the questions produce depends on how they were sent. The file knows.",
+          "next": "med_fork"
+        }
+      ]
+    },
+    {
+      "id": "med_fork",
+      "kicker": "Day 20 \u2014 Sunday, March 21, 2027",
+      "dayOffset": 20,
+      "title": "Sent, or noted",
+      "body": [
+        "Late March. The prescriber's office responds \u2014 or the team meeting's minutes circulate \u2014 and the difference between the two paper trails is, once again, the whole story in miniature."
+      ],
+      "choices": [
+        {
+          "text": "The written questions draw a written answer: three pages, point by point, from Dr. Iyer's office.",
+          "next": "adeyemi_reply",
+          "requiresFlags": [
+            "medReview"
+          ]
+        },
+        {
+          "text": "The meeting's minutes record one line \u2014 *youth raised medication concerns; team to follow up* \u2014 and follow-up has no address.",
+          "next": "med_meeting",
+          "requiresNoFlags": [
+            "medReview"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "med_meeting",
+      "kicker": "Day 21 \u2014 Monday, March 22, 2027",
+      "dayOffset": 21,
+      "title": "Follow up",
+      "body": [
+        "The follow-up follows the trajectory of follow-ups: it is mentioned at the next meeting as pending, and at the one after as part of a general medication review 'the agency conducts periodically,' whose date is a rumor with a quarter attached to it. Destiny's questions, which existed in final form at a kitchen table in March, exist in the official file as a *concern* \u2014 the paraphrase machine's second course. Her evenings remain eaten. Her grades continue to pay for them in the currency of first-period alertness.",
+        "Mr. Yusuf's post-mortem is one line: \"A question asked aloud joins the minutes. A question sent in writing joins the evidence. She deserved evidence.\""
+      ],
+      "choices": [
+        {
+          "text": "The classes, at least, are a paper fight already in motion: the completed file is with Ms. Petrides.",
+          "next": "march_counselor"
+        }
+      ]
+    },
+    {
+      "id": "adeyemi_reply",
+      "kicker": "Day 22 \u2014 Tuesday, March 23, 2027",
+      "dayOffset": 22,
+      "title": "Point by point",
+      "body": [
+        "Dr. Iyer's reply is what written questions are for: the indication, specific to Destiny; the evening timing's rationale, and its known cost; and \u2014 on the strength of the documented school-day sedation, her own statement, and the information sheet's twenty-two first weeks \u2014 an agreed change: the dose adjusted and its timing trialed earlier, with a two-week review and the results to be reported to Destiny, her mother, and counsel in writing. Her covering line goes in the packet whole: *The patient's own report was the clearest account of the problem in the chart.*",
+        "A sixteen-year-old asked five questions in writing and a physician answered them in writing. Nothing about that sentence is ordinary in this system, which is why it is an exhibit."
+      ],
+      "choices": [
+        {
+          "text": "Demand two remains: the classes. Ms. Petrides has the completed file now.",
+          "next": "march_counselor"
+        }
+      ]
+    },
+    {
+      "id": "march_counselor",
+      "kicker": "Day 24 \u2014 Thursday, March 25, 2027",
+      "dayOffset": 24,
+      "title": "The counselor's desk",
+      "body": [
+        "Ms. Petrides reads the completed file the way counselors read when a student's year is at stake: the midterm grades, the fall AP recommendation, the January audit's paper trail \u2014 the flag, the drop, the six weeks. Her verdict is procedural and complete: the drop was an administrative error produced by an incomplete file; the file is now complete; the enrollment decision will be re-made on it, with Destiny's spring grades (straight A's in the standard track, a fact she reads aloud with the flatness it deserves) counted as what they are \u2014 evidence the placement was wrong, not that the student was.",
+        "A friend texts Destiny during the meeting \u2014 the group chat, mid-emoji \u2014 and Destiny, watching her year being reassembled by paper, answers with the scenario's most economical sentence: *it's moving. it's all just paper that moves.*"
+      ],
+      "choices": [
+        {
+          "text": "The re-made decision lands within the week.",
+          "next": "destiny_letter_friend"
+        }
+      ]
+    },
+    {
+      "id": "destiny_letter_friend",
+      "kicker": "Day 25 \u2014 Friday, March 26, 2027",
+      "dayOffset": 25,
+      "title": "The group chat",
+      "body": [
+        "The social stakes, itemized by their owner in the chat the adults will never read: the AP classroom is not a class, it is a *cohort* \u2014 the same fourteen students, two years, one running joke per subject; the counselor's folder is where her college list lives; the school is the one address that has been constant since before the eviction. *If I switch schools in March of junior year,* she writes, *I don't lose credits. I lose the people who know what the credits mean.*",
+        "It is the best statement of the appropriateness factor anyone produces in this case, and it exists only in a chat log. The determination meeting will hear its filed cousin \u2014 her statement \u2014 which is why statements get filed: so that the best sentences have somewhere official to live."
+      ],
+      "choices": [
+        {
+          "text": "The AP decision arrives.",
+          "next": "ap_decision"
+        }
+      ]
+    },
+    {
+      "id": "ap_decision",
+      "kicker": "Day 27 \u2014 Sunday, March 28, 2027",
+      "dayOffset": 27,
+      "title": "Reinstated",
+      "body": [
+        "The re-made decision reinstates Destiny's AP enrollment, with a support plan for the six lost weeks and her midterm grades entered where they belonged since January. It is not a dramatic document. It cites the completed file, the counselor's review, and the fall recommendation \u2014 three pieces of paper that existed, in drawers, while a girl sat in the wrong classroom earning evidence she should never have had to produce.",
+        "Demand two: granted, on paper, by the paper. One demand left at full size, and it is the first one: the school itself, whose determination meeting is now scheduled \u2014 because it was requested, in writing, before the move."
+      ],
+      "choices": [
+        {
+          "text": "Prepare for the determination meeting: her statement, the counselor, the Halden transport offer \u2014 in that order.",
+          "next": "bid_meeting126"
+        }
+      ]
+    },
+    {
+      "id": "bid_meeting126",
+      "kicker": "Day 29 \u2014 Tuesday, March 30, 2027",
+      "dayOffset": 29,
+      "title": "The determination",
+      "body": [
+        "The meeting has the shape these meetings have when they are done on purpose: both districts, the agency, Mr. Ibe, and \u2014 by phone, at her own request, in her own words \u2014 Destiny, whose filed statement is in the packet because she filed it. The factors are walked: the appropriateness of the current setting (a junior-year cohort, an AP track just restored, a counselor relationship of two years) against proximity (twenty-five minutes, one district line) and the transition cost of a March school change in the year colleges read.",
+        "Then the last box, as always: transportation \u2014 the place principles go to be priced, and the reason Mrs. Halden's kitchen-table offer matters more than most testimony."
+      ],
+      "choices": [
+        {
+          "text": "Put the transport plan on the table in writing: Halden's mornings as offered, the district's afternoon route, the mileage shared under the written procedures \u2014 reimbursement, district, or shared cost.",
+          "next": "transport_plan126",
+          "setFlags": [
+            "transportArranged"
+          ]
+        },
+        {
+          "text": "Argue the factors and trust the room to solve the ride, as rooms promise to.",
+          "next": "transport_plan126"
+        }
+      ]
+    },
+    {
+      "id": "transport_plan126",
+      "kicker": "Day 30 \u2014 Wednesday, March 31, 2027",
+      "dayOffset": 30,
+      "title": "Three doors",
+      "body": [
+        "The plan, in whichever state of completeness your choices left it, is a one-page document with three names in it: a foster mother who offered mornings and meant it, a district with written procedures for exactly this ride, and an agency with a reimbursement door the statute describes (20 U.S.C. \u00a7 6312(c)(5)(B)). Determinations do not fail because factors are weak, in this library's experience. They fail because the last box stays empty while everyone admires the factors.",
+        "Whatever its state, the determination now goes into the agency's report for April \u2014 where it will meet Destiny's wishes, in whichever form the file holds them."
+      ],
+      "choices": [
+        {
+          "text": "Mr. Yusuf marks the longer clock \u2014 September 12, 2027 \u2014 and what April's orders mean for it.",
+          "next": "fifteen_months"
+        }
+      ]
+    },
+    {
+      "id": "fifteen_months",
+      "kicker": "Day 31 \u2014 Thursday, April 1, 2027",
+      "dayOffset": 31,
+      "title": "The longer clock",
+      "body": [
+        "Mr. Yusuf's whiteboard, one line: *September 12, 2027 \u2014 fifteen of twenty-two.* At that date the termination-petition question arrives unless an exception is documented \u2014 relative care, a documented compelling reason, or services not provided. (42 U.S.C. \u00a7 675(5)(E)) \"April is not that fight,\" he says. \"April is where the record that fight will read gets written. A daughter whose school was kept, whose classes were restored, whose questions were answered, whose words are in the file verbatim \u2014 with a mother documented stable behind her \u2014 is a September that argues itself. A file of paraphrases and defaults argues the other side's. We are not filing for September. We are filing *April*, correctly, which is the only way September ever gets filed.\"",
+        "The report arrives three days later. You open it at the school chapter, the way everyone in this library has learned to open everything."
+      ],
+      "choices": [
+        {
+          "text": "Read the report's account of Destiny.",
+          "next": "report126"
+        }
+      ]
+    },
+    {
+      "id": "report126",
+      "kicker": "Day 33 \u2014 Saturday, April 3, 2027",
+      "dayOffset": 33,
+      "title": "The report's Destiny",
+      "body": [
+        "The agency's report for the permanency hearing covers the case's whole spring: your progress, credited; the placement with Mrs. Halden, described; the school determination, in its made-or-defaulted state; the AP restoration, noted or not. And in its center, the passage you turn to first: the youth's wishes \u2014 in the version this file has earned. Quoted, cited, and attributed to their author \u2014 or summarized in the dialect of Exhibit A, *some reluctance*, now doing duty for a girl who filed two pages.",
+        "Reports compress. That is their nature and their defense. Which is why the packet exists, and why what the packet contains \u2014 verbatim or paraphrase \u2014 is about to become the hearing's weather."
+      ],
+      "choices": [
+        {
+          "text": "Check the quotation, if there is one, against the filed original. Word by word.",
+          "next": "report_quote_check"
+        }
+      ]
+    },
+    {
+      "id": "report_quote_check",
+      "kicker": "Day 34 \u2014 Sunday, April 4, 2027",
+      "dayOffset": 34,
+      "title": "Word by word",
+      "body": [
+        "The check takes four minutes and is the most quietly satisfying procedure in the case: the statement as filed, laid beside the report's use of it. In the autumn where the statement was filed verbatim, the report quotes it accurately \u2014 institutions quote what they cannot paraphrase without embarrassment, and a signed, receipted original is exactly that. In the autumn where only a mother's letter exists, the report quotes the letter, and Destiny's own two pages sit in an appendix nobody opens aloud.",
+        "Either way, the check itself goes in the packet: a one-page exhibit titled, in Mr. Yusuf's flattest prose, *Comparison of filed statement and report summary*. Judges read exhibits with titles like that first."
+      ],
+      "choices": [
+        {
+          "text": "Mr. Ibe's position, final form.",
+          "next": "ibe_position"
+        }
+      ]
+    },
+    {
+      "id": "ibe_position",
+      "kicker": "Day 35 \u2014 Monday, April 5, 2027",
+      "dayOffset": 35,
+      "title": "The guardian ad litem",
+      "body": [
+        "Mr. Ibe's position for April is filed in writing, and it is built the way his client's case was built: from her documents. He supports the school arrangement the determination produced, the AP restoration, the medication change if it exists \u2014 and he closes with the sentence he has been saving since the evening the statement was filed: \"The court has before it, for once, not a summary of this young person's wishes but the wishes themselves, at pages 1\u20132 of the packet. The guardian ad litem joins them.\"",
+        "A GAL joining a child's verbatim statement is a small thing in the law and a large thing in a hearing room: it means the paraphrase era of this file is over, and everyone in the room knows whose paperwork ended it."
+      ],
+      "choices": [
+        {
+          "text": "Assemble the packet: progress, verbatim, determinations \u2014 in the statute's order.",
+          "next": "packet126"
+        }
+      ]
+    },
+    {
+      "id": "packet126",
+      "kicker": "Day 36 \u2014 Tuesday, April 6, 2027",
+      "dayOffset": 36,
+      "title": "In order",
+      "body": [
+        "The packet's order mirrors the hearing's determinations: your progress, documented (necessity and the mother's chapter); her statement, verbatim (the wishes); the school determination and its transport terms; the completed school file and the AP restoration; the prescriber's answers or the meeting's one-line minute; the GAL's joinder; and the September date, noted once, as context for why paper mattered this spring.",
+        "It is, Mr. Yusuf says, closing the folder, the first file in this case that describes the family it is about. Tomorrow the court makes its determinations from it \u2014 or from the summaries it was built to replace."
+      ],
+      "choices": [
+        {
+          "text": "Draft the findings language. Then sleep.",
+          "next": "yusuf_findings"
+        }
+      ]
+    },
+    {
+      "id": "yusuf_findings",
+      "kicker": "Day 37 \u2014 Wednesday, April 7, 2027",
+      "dayOffset": 37,
+      "title": "Findings, drafted",
+      "body": [
+        "The drafted ask is findings-shaped, because findings are what judges sign: that the youth's stated wishes, filed verbatim, be noted on the record; that the school arrangement \u2014 of origin with its transport terms, or as determined \u2014 be stated in the order where defaults cannot edit it; that the medication review's results and the prescriber's reporting be directed in terms; that the AP restoration be noted so the next file inherits the correction, not the error.",
+        "\"Orders are the only summaries in this system that outrank paraphrase,\" Mr. Yusuf says. \"Tomorrow we ask the court to do the summarizing \u2014 from her words.\""
+      ],
+      "choices": [
+        {
+          "text": "The night before April 8.",
+          "next": "night_before126"
+        }
+      ]
+    },
+    {
+      "id": "night_before126",
+      "kicker": "Day 37 \u2014 Wednesday, April 7, 2027",
+      "dayOffset": 37,
+      "title": "Zero before one",
+      "body": [
+        "Destiny, by phone from Halden's kitchen, delivers the final instruction in the case, and it is the one she opened with in March: \"Zero before one, Mom. If they read anything of mine, make sure it's mine.\" You promise \u2014 with the packet's second page already dog-eared from the number of times you have checked that it is there, word for word, signature and all.",
+        "Tomorrow the court will determine necessity, compliance, progress, and efforts. Somewhere inside those four determinations, a sixteen-year-old will either be quoted or summarized. The difference was decided in March, at a kitchen table, by whether a statement got filed as written. Sleep on that; it is the whole scenario."
+      ],
+      "choices": [
+        {
+          "text": "Go to court.",
+          "next": "hearing126"
+        }
+      ]
+    },
+    {
+      "id": "hearing126",
+      "kicker": "Day 38 \u2014 Thursday, April 8, 2027",
+      "dayOffset": 38,
+      "title": "Thursday, April 8",
+      "body": [
+        "The permanency hearing makes its determinations \u2014 continuing necessity of placement, compliance, progress toward alleviating the circumstances, and reasonable efforts to finalize the plan. (42 Pa.C.S. \u00a7 6351(f)(1), (2), (3), (5.1)) Your chapter is found as documented. Then the court turns to the youth's position, and the room hears it in the form the file holds.",
+        "What is ordered \u2014 about her school, her classes, her medicine, and the words themselves \u2014 is the sum of the spring's paper, read back as findings."
+      ],
+      "choices": [
+        {
+          "text": "The court reads her statement into the record herself \u2014 pages 1\u20132, verbatim \u2014 and orders the spring her words described: school kept with its transport terms, classes restored, the medication change and its reporting directed.",
+          "next": "end_quoted",
+          "requiresFlags": [
+            "statementVerbatim",
+            "medReview"
+          ]
+        },
+        {
+          "text": "She is heard \u2014 quoted, credited, her school kept on the strength of her own pages \u2014 but the medicine question was only ever asked aloud, and its answer is a follow-up no order can quote.",
+          "next": "end_heard_late",
+          "requiresFlags": [
+            "statementVerbatim",
+            "recordsRequested"
+          ],
+          "requiresNoFlags": [
+            "medReview"
+          ]
+        },
+        {
+          "text": "Her wishes reach the court as summaries \u2014 her mother's letter, the report's dialect \u2014 accurate in outline, weightless in the room; the classes return on the records, and everything else arrives softened.",
+          "next": "end_summarized",
+          "requiresFlags": [
+            "recordsRequested"
+          ],
+          "requiresNoFlags": [
+            "statementVerbatim"
+          ]
+        },
+        {
+          "text": "The file speaks about her all morning in the third person, and she \u2014 present, silent, done asking \u2014 lets it.",
+          "next": "end_silent"
+        }
+      ]
+    },
+    {
+      "id": "end_quoted",
+      "kicker": "Day 38 \u2014 Thursday, April 8, 2027",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Quoted, Not Paraphrased",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The judge reads the statement aloud \u2014 not all of it; the two sentences that carry it \u2014 and the room hears a sixteen-year-old's prose do what prose does when it has been filed correctly: it becomes the record's own voice. The order follows her text like a shadow follows a person. School of origin: kept, with the transport terms (Mrs. Halden's mornings, the district's afternoon route, the mileage shared under the written procedures) stated in the order itself, where defaults cannot edit them. (20 U.S.C. \u00a7 6311(g)(1)(E)(i); \u00a7 6312(c)(5)(B)) AP enrollment: noted as restored on the completed record. Medication: the prescriber's agreed change and its written reporting to Destiny, her mother, and counsel are directed in terms. And the findings note, as a finding, that *the youth's statement, filed verbatim at pages 1\u20132 of the packet, is adopted as the statement of her position* \u2014 the sentence that ends the paraphrase era of this file for good.",
+        "Name the machinery without inflation. No statute in this scenario promises a teenager her school, her classes, or her evenings back. What the paper did: a best-interest determination was *requested in writing before the default ran*, with her factors and her voice in front of it; school records were requested *by name*, which is the only way files complete themselves; questions to a prescriber were *sent*, so answers exist; the agency record was requested (55 Pa. Code \u00a7 3130.44(d)), so the hearing argued from the file instead of about it. And underneath all of it, demand zero \u2014 the one she insisted on first: her words, verbatim, signed, receipted. Institutions can paraphrase a wish into a mood. They cannot paraphrase a filed document without the filing showing.",
+        "What no strategy controls: September 12, 2027, when the fifteen-month question arrives (42 U.S.C. \u00a7 675(5)(E)) \u2014 April's order does not answer it; it equips it. Destiny remains in care tonight, at a kind woman's house across a district line, doing homework at a table her statement helped defend. But her file now says what she says, in her words, quoted by a judge \u2014 and every future summary of this case will have to start from that page. That is what winning looks like at sixteen: not the system's surrender, but its accurate transcription."
+      ]
+    },
+    {
+      "id": "end_heard_late",
+      "kicker": "Day 38 \u2014 Thursday, April 8, 2027",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Heard, Except About the Medicine (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "She is heard \u2014 that part of the spring's work lands completely. The statement is quoted in the findings; the school is kept on the determination her words helped build; the AP restoration is noted; Mrs. Halden's transport terms are ordered. And then the medication chapter is reached, and the file's offering is a meeting minute: *youth raised medication concerns; team to follow up.* The court directs the follow-up \u2014 a written response from the prescriber within thirty days \u2014 in the tone of a judge assigning homework she can see should have been done in March. Destiny's evenings, meanwhile, remain on the old schedule for another month of first-periods.",
+        "The accounting is surgical. Everything that was filed, landed: the verbatim statement (the hearing quoted it), the record requests (the classes exist because the file was completed *by name*), the determination letter (the school exists because it was asked for before the default). The one thing that was asked aloud \u2014 five precise questions, drafted to perfection at a kitchen table \u2014 joined the minutes instead of the evidence, because minutes are where spoken questions are filed by systems. A question's force is not in its phrasing. It is in its postage.",
+        "Partial, with the remedy dated and ordered: the prescriber's written answer is now a court-directed document with a deadline, and when it lands it will land in a file that has learned to keep things. Destiny's spring is two-thirds the one she demanded \u2014 school, classes, her own words on the record \u2014 with the third arriving late, by order, in May. In this library's accounting that is a strong partial. It is also a precise lesson: she did everything right except put one envelope in the mail, and the envelope was the difference between an answer and a follow-up."
+      ]
+    },
+    {
+      "id": "end_summarized",
+      "kicker": "Day 38 \u2014 Thursday, April 8, 2027",
+      "dayOffset": 38,
+      "title": "Ending \u2014 The Summary of Her (partial)",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The hearing is kind, competent, and conducted entirely in paraphrase. Her mother's letter is read and credited \u2014 *the mother reports the youth wishes to remain at her school* \u2014 the report's *some reluctance* has been upgraded, by advocacy, to a clearly stated preference, at one remove. The classes are restored for good: the records fight was fought in writing and it shows, the completed file being the one unambiguous victory in the room. The school determination, argued from summaries of her position rather than from her position, lands in the middle the way such arguments do: she will remain at her school through June, the arrangement revisited for the fall \u2014 a reprieve, not a ruling, with the transport terms left to be 'worked out' by the parties who worked out the paraphrase.",
+        "Read the mechanics plainly, because Destiny already has. Her words existed \u2014 two pages, signed, specific. Their evidentiary force depended entirely on their *form*: filed verbatim, they would have been quoted; enclosed under a mother's summary, they were accurately described and permanently discounted, the way all secondhand things are discounted in rooms that weigh paper. The principle that reports may be examined and their makers questioned (42 Pa.C.S. \u00a7 6341(d)(2)) has a mirror image this ending exists to teach: a person's own statement, unfiled, is just another report about her \u2014 and she has enough of those.",
+        "Partial, and unusually fixable: verbatim statements can be filed at any review, and the fall revisit is already calendared \u2014 a date by which two pages, filed as written, can convert a reprieve into an order. What the spring cost is the spring: a semester of being summarized, in a case whose subject understood the difference before any of the adults did. She told everyone, in March, exactly what she needed. Zero before one. The file now knows she was right \u2014 which is the paraphrase of a lesson she should never have had to teach it."
+      ]
+    },
+    {
+      "id": "end_silent",
+      "kicker": "Day 38 \u2014 Thursday, April 8, 2027",
+      "dayOffset": 38,
+      "title": "Ending \u2014 Third Person",
+      "ending": true,
+      "body": [],
+      "debrief": [
+        "The hearing speaks about Destiny for forty minutes, in the third person, in her presence. The report's dialect prevails because nothing was ever filed to compete with it: her wishes are *some reluctance*; her school is transferred by the default the unwritten determination left in charge; her AP file remains incomplete in whatever drawer keeps it; her medication is *managed by the team*, a body that has never been defined. By the hearing's second half she has stopped correcting the record under her breath. The system's final victory over a person is not disagreement. It is the moment she stops expecting the record to contain her.",
+        "The debrief is the scenario's first scene, read backward. Every instrument in it was free and printed somewhere: a best-interest determination requestable in writing before a move (20 U.S.C. \u00a7 6311(g)(1)(E)(i)); transportation procedures with named funding doors (\u00a7 6312(c)(5)(B)); records releasable on request, completable by name (55 Pa. Code \u00a7 3130.44(d)); a prescriber reachable by letter; a guardian ad litem whose entire function is amplification. And beneath the instruments, the girl herself \u2014 the most precise advocate in the case \u2014 whose advocacy failed for the oldest reason in this library: it was spoken, warmly received, and summarized. Systems do not run on the memory of having been told. They run on what was filed.",
+        "Not sealed \u2014 she is sixteen, reviews recur, statements can be filed at any of them, and a girl who drafts demands like a barrister will not stay silent forever because one spring failed her. But the spring is spent: a school lost by default, evenings lost to an unasked question, and a file that will describe her, for years, in a dialect she never spoke. The doctrine fits in her own four words, which this ending exists to make unforgettable by their absence from the record: *zero before one.*"
+      ]
+    }
+  ]
+}

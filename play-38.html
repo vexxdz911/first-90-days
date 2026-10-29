@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Card in the Door",
+  "subtitle": "Scenario 38 — The Card in the Door (a fictional composite)",
+  "startDateISO": "2026-04-06",
+  "startNode": "start",
+  "startCash": 165,
+  "tier": "Foundation",
+  "summary": "A worker's card in the door and one unexplained Tuesday — the first phone call, made on paper, decides the file's first draft."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, April 6, 2026",
+   "dayOffset": 0,
+   "title": "Wedged in the Door",
+   "body": [
+    "You come up the walk with a grocery bag on each arm and find it at eye level, wedged where the door meets the frame: a county business card. On the back, in pen: 'Please call — Mr. Tomasetti,' and a number. Your daughter Anaya, six, is at the table inside doing what she calls homework and is mostly drawing horses.",
+    "The card says nothing else. Cards never do. Everything the card doesn't say is currently being said by your imagination, at volume."
+   ],
+   "choices": [
+    {
+     "text": "Put the groceries away, sit down, and look at the card like a document instead of an omen",
+     "next": "n2",
+     "note": "It has a name, an agency, a number. Three facts. Fear will supply the rest for free, and bill you later."
+    },
+    {
+     "text": "Call the number immediately, from the doorstep, groceries still in hand",
+     "next": "n2",
+     "note": "Calling fast feels like cooperation. Calling informed is cooperation. They are not the same call."
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "kicker": "Day 1 — Tuesday, April 7, 2026",
+   "dayOffset": 1,
+   "title": "Nine Minutes",
+   "body": [
+    "Before any call, the house assembles its own facts. Your sister Luz meets Anaya's bus every school day — her shift ends at three, the bus comes at three-twenty. Last Tuesday, Luz's own bus broke down across town. Anaya waited at the stop, alone, for nine minutes, watched — it turns out — by a neighbor who did not know the arrangement, and who did the arithmetic a stranger does.",
+    "Nine minutes, once, with a reason. That is the whole event. What it becomes depends on the paper it lands on."
+   ],
+   "choices": [
+    {
+     "text": "Write down Tuesday's timeline tonight — times, the broken bus, the nine minutes",
+     "next": "records",
+     "setFlags": [
+      "timelineWritten"
+     ],
+     "note": "Written tonight, it is a record. Written next week, it is a reconstruction. Files can smell the difference."
+    },
+    {
+     "text": "Keep it in your head — it's simple, and true",
+     "next": "records",
+     "note": "Simple and true are qualities of the event. The file will grade the telling, not the event."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 2 — Wednesday, April 8, 2026",
+   "dayOffset": 2,
+   "title": "Know Your Own File First",
+   "body": [
+    "There is a file already — an intake summary with the report's sentences in it. You can answer a file you haven't read, the way you can answer a letter you haven't opened: energetically, and at a disadvantage.",
+    "You make the request in writing: a copy of the record the agency holds about this report."
+   ],
+   "choices": [
+    {
+     "text": "File the written request for the intake summary from your record",
+     "next": "prep",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records — parent requested the intake summary in writing before the first interview"
+     ],
+     "note": "Under 55 Pa. Code § 3130.44(d), the record is released on request. The summary is one line: 'Child, 6, observed unsupervised at bus stop, Tuesday.' No nine minutes. No broken bus. One line is what you are answering."
+    },
+    {
+     "text": "Skip it — you'll find out what it says at the visit",
+     "next": "prep",
+     "note": "You will find out the way the summary's author intended: as a conclusion already formed, in a room where you are the guest."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 3 — Thursday, April 9, 2026",
+   "dayOffset": 3,
+   "title": "Schedules, Gathered",
+   "body": [
+    "The proof of an arrangement is schedules: Luz's work schedule showing three o'clock, the transit alert about her bus that Tuesday (still in her phone, timestamped), and your own shift roster. Separately, they are clutter in three pockets. Together, assembled, they are an arrangement with one bad day in it — which is what actually happened.",
+    "Assembling things is a job. It is about to be yours."
+   ],
+   "choices": [
+    {
+     "text": "Assemble them: Luz's schedule, the transit alert, your roster, the timeline",
+     "next": "eve",
+     "setFlags": [
+      "proofGathered"
+     ],
+     "addHidden": [
+      "Proof — sister's schedule, transit disruption alert, and parent's roster collected"
+     ],
+     "note": "Four documents. The nine minutes shrink back to their actual size, on paper, with timestamps."
+    },
+    {
+     "text": "Decide you can explain the arrangement better than paper can",
+     "next": "eve",
+     "note": "You probably can, out loud, once. Paper explains it every time the file is opened, including times you are not in the room."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 4 — Friday, April 10, 2026",
+   "dayOffset": 4,
+   "title": "The Call, Rehearsed",
+   "body": [
+    "Tomorrow you call Mr. Tomasetti. Anaya is asleep; the folder is thin; the phone is a small black door. You can treat the call as a conversation — warm, human, forgettable — or as the first document of the case, which, functionally, it is: he will write a summary of it before his coffee cools.",
+    "What he writes will begin with what you give him to write with."
+   ],
+   "choices": [
+    {
+     "text": "Plan the call as a document: facts first, timeline offered, everything confirmed in writing after",
+     "next": "split",
+     "setFlags": [
+      "callPlanned"
+     ],
+     "note": "Short, dated, checkable. The call becomes an exhibit instead of an anecdote."
+    },
+    {
+     "text": "Plan to be natural — people respond to people",
+     "next": "split",
+     "note": "They do. Files respond to paper. You are about to meet both, in that order."
+    }
+   ]
+  },
+  {
+   "id": "split",
+   "kicker": "Day 5 — Saturday, April 11, 2026",
+   "dayOffset": 5,
+   "title": "The First Call",
+   "body": [
+    "He answers on the second ring, and he is not a villain; he is a man with a caseload, reading from a one-line summary. 'We had a report your daughter was alone at the bus stop.' The call will go one of two ways, and the difference is not tone.",
+    "It is whether, when he hangs up, there exists a piece of paper with your name on it that says what you said."
+   ],
+   "choices": [
+    {
+     "text": "Give the short account — and then confirm the call in writing, timeline and schedules attached",
+     "next": "p1",
+     "setFlags": [
+      "callConfirmed"
+     ],
+     "addHidden": [
+      "Response — parent confirmed the first call in writing, with timeline and schedules attached"
+     ],
+     "note": "His summary and your letter land in the file on the same day, saying the same things. The file's first draft of your family is co-authored."
+    },
+    {
+     "text": "Give the short account, warmly, and let the call be the record",
+     "next": "u1",
+     "addHidden": [
+      "Response — parent's account given by phone; no written confirmation sent"
+     ],
+     "note": "He writes it up kindly. Kindly is not the same as precisely. One word in his summary will do quiet damage for months."
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kicker": "Day 7 — Monday, April 13, 2026",
+   "dayOffset": 7,
+   "title": "His Summary, and Yours Beside It",
+   "body": [
+    "Two days later he calls back — a different call than it would have been. 'Your letter's in the file,' he says. 'The timeline checks out with the transit alert.' The home visit is scheduled, and he tells you what it will cover, because people tell you more when you've shown them paper.",
+    "Luz will be there. The arrangement will be demonstrated, not described."
+   ],
+   "choices": [
+    {
+     "text": "Ask him to note in the file that the visit is by agreement, at a set time",
+     "next": "p2",
+     "note": "Noted. Small sentences in files are load-bearing."
+    },
+    {
+     "text": "Thank him and prepare the house within an inch of its life",
+     "next": "p2",
+     "note": "The house is fine. The file is what he's grading, and the file is already better than the house needs to be."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kicker": "Day 8 — Tuesday, April 14, 2026",
+   "dayOffset": 8,
+   "title": "The Visit, Demonstrated",
+   "body": [
+    "Luz comes at three. At three-twenty, on the dot, she walks the route to the stop with Anaya while Mr. Tomasetti watches the choreography that happens every school day: the wave from the corner, the key, the snack, the horses. He asks Luz two questions and writes down her answers next to yours, where they agree, because you gave them to him in the same words twice — once on the phone, once on paper.",
+    "Before he leaves, he describes the arrangement back to you, and suggests putting it in the file as the plan."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the plan as he described it — in writing, with the backup arrangement named",
+     "next": "p3",
+     "setFlags": [
+      "planInWriting"
+     ],
+     "note": "A plan in writing is a plan you can be measured against — which cuts both ways, and both ways are fairer than being measured against a summary of a phone call."
+    },
+    {
+     "text": "Agree warmly and skip the writing part",
+     "next": "u3",
+     "addHidden": [
+      "Plan — arrangement agreed verbally at the visit; no written copy to parent"
+     ],
+     "note": "Warm agreement, cool record. If the arrangement is ever described by someone else, the file will contain a plan-shaped space."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kicker": "Day 10 — Thursday, April 16, 2026",
+   "dayOffset": 10,
+   "title": "The Backup Gets Tested",
+   "body": [
+    "On Thursday, Luz's shift changes with four hours' notice — the arrangement's first weather. The backup in the written plan is the neighbor across the hall, Mrs. Harkins, who has known Anaya since she was two. She meets the bus. It is noted in the plan's own log line, in the file, as the plan working.",
+    "Plans are not proven by the weeks nothing happens. They are proven by the Thursday something does."
+   ],
+   "choices": [
+    {
+     "text": "Log the afternoon in your own notes tonight — date, time, who met the bus",
+     "next": "p4",
+     "setFlags": [
+      "ownNotes"
+     ],
+     "note": "Your notes and the file's now agree. Agreement between records is the quietest form of winning."
+    },
+    {
+     "text": "Skip the notes — the day worked out",
+     "next": "p4",
+     "note": "It did. Worked-out days still benefit from being written down, because the next reader was not there."
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kicker": "Day 12 — Saturday, April 18, 2026",
+   "dayOffset": 12,
+   "title": "Closing, In Preparation",
+   "body": [
+    "Mr. Tomasetti calls: the investigation is concluding. The determination will be that the report is not supported — a single brief lapse in an otherwise documented arrangement, already addressed by the family. He offers to send the closing summary.",
+    "Your folder and his have been saying the same things for two weeks. That is not an accident. That is the whole method."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the closing summary in writing, for your folder",
+     "next": "p5",
+     "setFlags": [
+      "copyFiled"
+     ],
+     "note": "It arrives in three days. Your side of this story now lives in two buildings, saying the same thing."
+    },
+    {
+     "text": "Let his file be the only copy",
+     "next": "p5",
+     "note": "His file is a fine home for it. Yours would have been a second one."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kicker": "Day 14 — Monday, April 20, 2026",
+   "dayOffset": 14,
+   "title": "The Last Paragraph",
+   "body": [
+    "The closing summary arrives. It is accurate in every paragraph but the last, where the arrangement is described as 'created in response to agency involvement' — as if Luz, the schedules, the three-twenty bus, began the day the card landed in your door. They didn't. The file's own earlier pages prove they didn't — if anyone reads them in order.",
+    "There is a line for your signature: acknowledgment of receipt."
+   ],
+   "choices": [
+    {
+     "text": "Read it all, sign the acknowledgment — and attach a one-line note with the arrangement's real history",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "One line: 'Family arrangement predates the report; see intake response, April.' The last paragraph now argues with a footnote, and the footnote is right."
+    },
+    {
+     "text": "Sign it at the door — it's closed, that's what matters",
+     "next": "end_partial",
+     "note": "It is closed. The summary's version stands unamended: an arrangement 'created in response to agency involvement.' Nobody will ever know it wasn't — but the file."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 16 — Wednesday, April 22, 2026",
+   "dayOffset": 16,
+   "title": "The Call, On Paper",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The investigation closed as unfounded, and the file — unusually — reads like the family it describes: an arrangement that existed, one bad Tuesday, a backup that worked on its first test. What won was not charm on a phone call. It was that the call existed in two forms, his summary and your letter, and they agreed, because you wrote yours.",
+    "The record inside this story: under 55 Pa. Code § 3130.44(d), the one-line intake summary came from your record, on request — which is how you knew the file's question was nine minutes long before you answered it. Everything after was the same move at different scales: timeline, schedules, plan, correction. In writing, dated, filed.",
+    "Notice what the written plan did when Luz's shift changed: it converted a second 'lapse' into a demonstration. Unwritten arrangements cannot do that. They can only be described, afterwards, by whoever holds the pen.",
+    "Honesty requires this: Mr. Tomasetti read the paper fairly, and a different worker summarizes your letter as 'father is fixated on documentation,' and the same moves curdle. Workers vary. The paper doesn't guarantee the reader. It guarantees only that the reader meets your version in your words, first, in order."
+   ]
+  },
+  {
+   "id": "u1",
+   "kicker": "Day 7 — Monday, April 13, 2026",
+   "dayOffset": 7,
+   "title": "Routinely",
+   "body": [
+    "His summary of the call is kind, professional, and one word wrong. The one line in the file now reads: 'Father states daughter is met at bus by sister; one lapse occurred.' But in his spoken summary to his supervisor — the part that gets typed into the assessment — the sentence became: 'child routinely waits at bus stop.'",
+    "Routinely. Nine minutes, once, with a broken bus — and the file's adverb says it happens all the time. Adverbs are how files exaggerate without lying."
+   ],
+   "choices": [
+    {
+     "text": "Call him and ask how the arrangement gets described accurately — in writing",
+     "next": "u2",
+     "note": "There is a way. It is the way it always was. It now has to correct a sentence instead of preventing one."
+    },
+    {
+     "text": "Let it go — he meant well, and the visit will clear it up",
+     "next": "u2",
+     "note": "The visit will be conducted by a man reading his own summary on the way to your door. It clears up what it confirms."
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "kicker": "Day 8 — Tuesday, April 14, 2026",
+   "dayOffset": 8,
+   "title": "The Repair Door",
+   "body": [
+    "He is plain on the phone: bring the paper — Luz's schedule, the transit alert, your timeline — and the summary can be corrected before the file hardens. Supervisors read files, not memories of phone calls.",
+    "It is the same door as before, with the draught coming through: your account, in writing, this week."
+   ],
+   "choices": [
+    {
+     "text": "Assemble it and send the written account — timeline, schedules, transit alert — today",
+     "next": "p3",
+     "setFlags": [
+      "accountSent"
+     ],
+     "addHidden": [
+      "Response — parent's written account with schedules provided after the first summary"
+     ],
+     "note": "It lands in the file behind his summary, dated. Files are read in order; your paper will sit right behind the word 'routinely' and correct it forever."
+    },
+    {
+     "text": "Tell him you'll explain it all at the visit, face to face",
+     "next": "u3",
+     "addHidden": [
+      "Response — explanation deferred to the home visit; documentation not yet provided"
+     ],
+     "note": "Face to face is warmer. It is also, to the file, indistinguishable from not yet."
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "kicker": "Day 10 — Thursday, April 16, 2026",
+   "dayOffset": 10,
+   "title": "The Plan, Handed Down",
+   "body": [
+    "At the visit — Luz at work, because nobody scheduled around her — the arrangement is described by the person who wasn't there to see it, to the person who wrote 'routinely.' The plan that arrives is pre-written: daily check-in calls for a month, the bus stop arrangement 'to be monitored,' a review in sixty days.",
+    "Anaya's afternoons have not changed. What changed is who authored the plan about them, and how much trust its terms assume."
+   ],
+   "choices": [
+    {
+     "text": "Read the plan carefully and ask what would end the check-ins early",
+     "next": "u4",
+     "note": "A fair question, and a fair answer: a clean month, documented. Documented is doing heavy lifting in that sentence."
+    },
+    {
+     "text": "Sign it to get the meeting over with",
+     "next": "u4",
+     "note": "It is signed either way. The difference is whether you know what it says."
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "kicker": "Day 12 — Saturday, April 18, 2026",
+   "dayOffset": 12,
+   "title": "A Clean Month, Documented",
+   "body": [
+    "He offers the door plainly: one month of afternoons, documented — Luz's arrivals logged, the backup named in writing, any late day explained the same day — and the check-ins end early and the summary gets rewritten with the arrangement described as it actually is.",
+    "It is the same work as the letter would have been. It is simply later, and louder, and done under supervision instead of at a kitchen table."
+   ],
+   "choices": [
+    {
+     "text": "Do the month in writing — log every afternoon, name the backup, send the packet at month's end",
+     "next": "p5",
+     "setFlags": [
+      "packetSent"
+     ],
+     "addHidden": [
+      "Documentation — parent submitted a documented month of the bus-stop arrangement"
+     ],
+     "note": "The packet goes in complete. Whatever the closing letter concludes, the file's last word about Anaya's afternoons will be yours and dated."
+    },
+    {
+     "text": "Do the month and trust the check-in calls to speak for themselves",
+     "next": "u5",
+     "note": "Check-in calls speak in checkboxes. Your packet would have spoken in sentences."
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "kicker": "Day 14 — Monday, April 20, 2026",
+   "dayOffset": 14,
+   "title": "Sixty Days",
+   "body": [
+    "The month passes cleanly — because the afternoons were never the problem the one line imagined. Luz meets the bus; the backup covers once; the horses multiply on the refrigerator.",
+    "What remains open is the shape of the ending: whether the file closes this chapter with your documentation in it, or with one adverb and a plan you didn't write and nothing in your hand at all."
+   ],
+   "choices": [
+    {
+     "text": "Wait for the closing summary",
+     "next": "end_partial",
+     "note": "It will come. They always come. The question was only ever what would be in the file when it was written."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 16 — Wednesday, April 22, 2026",
+   "dayOffset": 16,
+   "title": "Routinely, In the File",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The investigation closed eventually — the afternoons were always sound — but it closed on the system's schedule and the system's terms: a plan handed down instead of demonstrated, a month of check-ins, and a file whose first draft of your family contains the word 'routinely,' uncorrected, where nine documented minutes should have been. Anaya stayed home throughout. What was lost was authorship.",
+    "The record inside this story: under 55 Pa. Code § 3130.44(d), the intake summary was yours for the asking, early — answering the one line with paper attached is a different call than answering it from memory and warmth.",
+    "Phone calls end. Their summaries don't. The first call in a case is a document whether you write it or not — the only choice is whose handwriting it's in.",
+    "Honesty requires this: Mr. Tomasetti offered a genuine repair door, and many workers would not have. A different office reads 'routinely' and escalates. You cannot choose the reader. You can choose whether your afternoons exist in the file before the reader forms an opinion."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s38';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

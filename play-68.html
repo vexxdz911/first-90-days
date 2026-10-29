@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "startCash": 120,
+  "startDateISO": "2027-01-11",
+  "startNode": "start",
+  "subtitle": "Scenario 68 — Ten Minutes in the Hallway (a fictional composite)",
+  "summary": "A delivery driver, a daughter taken on a Monday evening, and an appointed lawyer with forty cases and ten minutes — what she knows on Wednesday is exactly what he hands her.",
+  "tier": "Foundation",
+  "title": "The First 90 Days"
+ },
+ "nodes": [
+  {
+   "body": [
+    "Your name is Karl Hale. You drive a delivery truck, and your daughter Selin is six. This evening a work emergency ran long — a broken-down truck, a route that still had to finish — and Selin was left with a neighbor's teenage son, a boy you had not cleared with anyone. A mandated reporter called. The county agency came.",
+    "The caseworker, Mr. Petrov, tells you his report will say the home was empty at 6:00 p.m. and Selin unsupervised for the evening. What nobody asks about — not Petrov, not anyone — is your mother. She was in your home that evening. She made Selin dinner, and she left at 7:00 p.m., when the teenager arrived. Her text is still on your phone: \"Left at seven, love. She ate well.\"",
+    "Selin is taken into custody tonight. Petrov hands you a paper with a hearing on it: Wednesday, January 13, 2027 — a shelter care hearing, which the law requires within 72 hours of a child being taken into custody. (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)) Your sister, on the phone, says the only thing she knows: \"You get a lawyer, I think.\""
+   ],
+   "choices": [
+    {
+     "next": "counsel_news",
+     "note": "Names, times, your mother's text. Paper remembers what shock forgets.",
+     "setFlags": [
+      "removed"
+     ],
+     "text": "Write down the evening as you know it — times, names, who was where — while it is still tonight"
+    },
+    {
+     "next": "counsel_news",
+     "note": "Understandable. The evening is already in your head — which is exactly where it can do the least good on Wednesday.",
+     "setFlags": [
+      "removed"
+     ],
+     "text": "Hold the paper and try to sleep — tomorrow is for lawyers"
+    }
+   ],
+   "dayOffset": 0,
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 11, 2027",
+   "title": "The Evening the Truck Ran Long"
+  },
+  {
+   "body": [
+    "The courthouse phone rings a long time. Then a clerk tells you something nobody said last night: you have a lawyer. Because you cannot afford to hire one, the court has appointed counsel for you — that is your right under the law, not anyone's kindness (42 Pa.C.S. § 6337), and it includes counsel at the shelter care hearing itself. (§ 6332(a)) Her name is Ms. Nakamura.",
+    "Her office is kind and blunt: she carries forty cases. She will meet you ten minutes before tomorrow's hearing. She will have the agency's report. What she will not have — what no lawyer in her position can manufacture on a Tuesday afternoon — is any fact that lives only in your head, your phone, or your mother's kitchen."
+   ],
+   "choices": [
+    {
+     "next": "grandmother_call",
+     "note": "\"Anything in writing,\" the paralegal says. \"She reads faster than anyone can talk.\"",
+     "setFlags": [
+      "counselContacted"
+     ],
+     "text": "Ask the office what she will need from you tomorrow, and write the answer down"
+    },
+    {
+     "next": "grandmother_call",
+     "note": "It is her job. It is also forty jobs. Discovery is not her afternoon, and tomorrow she has ten minutes.",
+     "text": "Assume she will have the file and find the facts herself — that is her job"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "counsel_news",
+   "kicker": "Day 1 — Tuesday, January 12, 2027",
+   "title": "You Already Have a Lawyer"
+  },
+  {
+   "body": [
+    "You call your mother to ask whether she could take Selin if the court allows it. She says yes before you finish the sentence. Then she says the thing that has been sitting unasked since last night: \"I was there until seven, Karl. I made her dinner. Nobody from that agency has called me. Nobody asked me anything.\"",
+    "The agency's account says the home was empty at six. Your mother was standing in it at six, cooking. She is willing to come to court, or to answer a phone, and her number is a number you have known by heart since you were Selin's age — which is a different thing from it being written anywhere a lawyer can use it."
+   ],
+   "choices": [
+    {
+     "next": "write_page",
+     "note": "Three lines. The most important evidence in this case now exists outside your memory.",
+     "setFlags": [
+      "grandmotherFact"
+     ],
+     "text": "Write her name, her number, and 'there until 7:00' at the top of a clean sheet of paper"
+    },
+    {
+     "next": "write_page",
+     "note": "It won't get lost. It will just be in the one place Wednesday's hearing cannot reach: inside you, unspoken, while a judge reads a report.",
+     "text": "Thank her and keep it in your head — a fact that clear won't get lost"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "grandmother_call",
+   "kicker": "Day 1 — Tuesday, January 12, 2027",
+   "title": "The Fact Nobody Asked About"
+  },
+  {
+   "body": [
+    "Kitchen table, Tuesday night. Tomorrow you meet your lawyer for ten minutes in a courthouse hallway, and then a judge decides where Selin sleeps tomorrow night, based on what is in front of the court — the agency's report, and whatever your side puts beside it.",
+    "You have two ways to prepare. One is a single page: the timeline of Monday evening, who was where and when, your mother present until 7:00 p.m., and the names and phone numbers of everyone who can say so. The other is your voice, in a hallway, talking fast."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "File — parent's one-page timeline, handed to counsel before the shelter care hearing"
+     ],
+     "cash": -5,
+     "next": "courthouse_morning",
+     "note": "Five dollars of copies at the corner store. One page, in order, that a stranger with forty cases can absorb in ninety seconds.",
+     "setFlags": [
+      "pageWritten"
+     ],
+     "text": "Write the one-page summary tonight — timeline, grandmother until 7:00, witness names and phone numbers"
+    },
+    {
+     "next": "courthouse_morning",
+     "note": "Ten minutes is not a long time. It is ten minutes, in a hallway, with a docket calling — and talking fast is how the most important sentence ends up fourth.",
+     "text": "Plan to just tell her everything in the hallway — ten minutes is a long time when you talk fast"
+    },
+    {
+     "next": "courthouse_morning",
+     "note": "The grievance is real, and it is three pages long. The fact that can change Wednesday is one line, and it is not in them.",
+     "text": "Write three pages about the neighbor, the teenager, and the call that started this — the context matters most"
+    }
+   ],
+   "dayOffset": 1,
+   "id": "write_page",
+   "kicker": "Day 1 — Tuesday, January 12, 2027",
+   "title": "One Page, Tonight"
+  },
+  {
+   "body": [
+    "The courtroom list is long and Selin's hearing is one line on it. Ms. Nakamura arrives carrying a stack of files that reaches her elbow — forty cases is not a figure of speech in this building, it is a physical object she is holding.",
+    "She finds you, checks her watch, and says the truest sentence anyone will say to you this week: \"We have ten minutes. Tell me what I don't know.\""
+   ],
+   "choices": [
+    {
+     "next": "hallway",
+     "note": "Something in her shoulders changes. A client who hands her paper is a client she can actually represent in ten minutes.",
+     "text": "Tell her you have one page for her, in order, and that the first line is the one that matters"
+    },
+    {
+     "next": "hallway",
+     "note": "She does. The order of her morning does not include a fact she has never been told.",
+     "text": "Wait to be asked — she knows the order of her morning and the shape of these hearings"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "courthouse_morning",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "title": "The Courthouse Morning"
+  },
+  {
+   "body": [
+    "Ten minutes, a vending machine, a bench, her pen. This is the whole of your legal preparation: not an office, not an afternoon — a hallway, on the morning of the hearing, with the courtroom door already open down the corridor.",
+    "Everything you have — the timeline, your mother's seven o'clock, the report's empty house at six — has to fit through this door, in this order, starting with the sentence she needs first. Or the ten minutes can be spent on how unfair it all is. That is true too. It just isn't first."
+   ],
+   "choices": [
+    {
+     "next": "hearing",
+     "note": "She reads the top line twice. Then she is a different lawyer: \"She can answer a phone at eleven? Then we ask the court to hear her.\"",
+     "requiresFlags": [
+      "pageWritten"
+     ],
+     "setFlags": [
+      "witnessNamed"
+     ],
+     "text": "Hand her the page and name the witness first — \"My mother was there until seven. The report says the home was empty at six.\""
+    },
+    {
+     "next": "hearing",
+     "note": "She listens with real sympathy and takes two notes, both about the neighbor. The witness's name is never spoken. The clock eats the rest.",
+     "text": "Spend the ten minutes on the grievance — the neighbor, the teenager, the call that started this"
+    },
+    {
+     "next": "hearing",
+     "note": "Appointed counsel is real counsel — but she can only argue what she knows. Silence treats a right as if it were nothing, and she walks in knowing the report and nothing else.",
+     "text": "Say very little — she's the lawyer; second-guessing her in her own hallway helps no one"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "hallway",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "title": "Ten Minutes in the Hallway"
+  },
+  {
+   "body": [
+    "A small courtroom. The agency's lawyer presents Mr. Petrov's report: the home empty at 6:00 p.m., Selin unsupervised for an evening, placement to continue while things are sorted out. This hearing asks one narrow question — where Selin stays while the case is decided — and it is being answered, so far, by one document.",
+    "The judge turns to Ms. Nakamura. And she hesitates — a half-second, flipping between the report and whatever you gave her in the hallway. That half-second is the whole case, arriving. What happens in it depends on what is in her hand and what you ask her, now, to put on the record."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Transcript — grandmother named on the record at shelter care as present until 7:00 p.m."
+     ],
+     "next": "hearing_win",
+     "note": "Through counsel, in the room, before findings: grandmother's name enters the transcript, and the record request goes in under 55 Pa. Code § 3130.44(d) — the record \"shall be released upon request.\"",
+     "requiresFlags": [
+      "witnessNamed"
+     ],
+     "setFlags": [
+      "recordsRequested",
+      "grandmotherOnRecord"
+     ],
+     "text": "Ask her to put it on the record now: call grandmother, and file counsel's written request for the agency record before any findings are made"
+    },
+    {
+     "next": "hearing_placed",
+     "note": "She is. And the half-second closes, the way half-seconds do, and the hearing proceeds on the only account it has been given.",
+     "text": "Let the moment pass — she hesitates, but she is the professional in the room"
+    },
+    {
+     "next": "hearing_placed",
+     "note": "The judge stops you, firmly and not unkindly: through your lawyer, in order, or not at all. A fact shouted out of turn is a disruption. The same fact, through counsel, is evidence.",
+     "text": "Stand and try to tell the judge about your mother yourself, out of turn"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "hearing",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "title": "The Shelter Care Hearing"
+  },
+  {
+   "body": [
+    "The judge allows the call. On speaker, in a quiet courtroom, your mother says it plainly: she was in the home until 7:00 p.m.; she made Selin dinner; the house was not empty at six, because she was standing in it. The agency's lawyer looks at the report, and then at Mr. Petrov, and cannot reconcile the 6:00 p.m. entry with the woman on the phone.",
+    "The court finds the agency's account incomplete on the very fact the removal rested on, and declines to continue it. Selin will not go to strangers tonight: she is released to her grandmother's care at home, with grandmother staying in the home as the approved backup, while the petition moves toward adjudication on Monday, January 25, 2027. Ten minutes in a hallway just outweighed a report."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Order — shelter care not sustained; Selin released to grandmother's care pending adjudication, the agency's 6:00 p.m. account found incomplete"
+     ],
+     "next": "win_week1",
+     "note": "\"The record,\" she says. \"We asked for it on the record. When it comes, we read it before the agency's lawyer does.\"",
+     "text": "Ask Nakamura, before anyone leaves, what could still undo this at adjudication — and write it down"
+    },
+    {
+     "addHidden": [
+      "Order — shelter care not sustained; Selin released to grandmother's care pending adjudication, the agency's 6:00 p.m. account found incomplete"
+     ],
+     "next": "win_week1",
+     "note": "Your mother cries a little, holding her phone like a trophy. She was the whole case. She almost wasn't in it.",
+     "text": "Thank your mother in the hallway and ask Nakamura what happens next"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "hearing_win",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "title": "A Voice on the Phone"
+  },
+  {
+   "body": [
+    "The judge rules on what is in front of the court, and what is in front of the court is a report: an empty home at six, an unsupervised evening. Shelter care is sustained. Selin will go to a foster placement across town while the case moves toward adjudication on Monday, January 25, 2027.",
+    "Outside, Nakamura is already being pulled toward her next courtroom. The fact that could have changed this morning — a grandmother, in that home, until seven — was true all day. It was simply never in the room."
+   ],
+   "choices": [
+    {
+     "next": "placed_week1",
+     "note": "\"Proof, early,\" she says over her shoulder. \"Not proof on the morning. Early.\" It is good advice, arriving one hearing late.",
+     "text": "Ask Nakamura, before she leaves, what adjudication will need — and write her answer down"
+    },
+    {
+     "next": "placed_week1",
+     "note": "The next hearing is a place. Whether it is a place where late facts can still land is a different question, and January is about to teach it.",
+     "text": "Take the visit paper and go — the next hearing is the place to fix this"
+    }
+   ],
+   "dayOffset": 2,
+   "id": "hearing_placed",
+   "kicker": "Day 2 — Wednesday, January 13, 2027",
+   "title": "Sustained, on the Report as Written"
+  },
+  {
+   "body": [
+    "Selin sleeps in her own bed. Your mother stays the first nights, an approved presence in the home, and Mr. Petrov's check-in visit is brief and almost surprised. But home is not closed: the petition is still filed, adjudication is Monday, January 25, and the agency will come to it with its report — now carrying a hole in the middle of it.",
+    "Ms. Nakamura has one call scheduled with you this week. One call, an overloaded lawyer, an adjudication in nine days: the hallway lesson applies to phone calls too."
+   ],
+   "choices": [
+    {
+     "next": "win_record",
+     "note": "Eleven minutes, three items, all three answered. This is what using appointed counsel well actually looks like: not more of her time — better-ordered time.",
+     "setFlags": [
+      "agendaCall"
+     ],
+     "text": "Make the one scheduled call with a written agenda — the record request, grandmother's statement, the adjudication date"
+    },
+    {
+     "next": "win_record",
+     "note": "She does listen kindly. Kindness is not the scarce resource here; her calendar is. The agenda is still sitting on your counter when the call ends.",
+     "text": "Call and talk through how the week felt — she listens kindly, and the agenda waits"
+    }
+   ],
+   "dayOffset": 5,
+   "id": "win_week1",
+   "kicker": "Day 5 — Saturday, January 16, 2027",
+   "title": "Home, With a File Still Open"
+  },
+  {
+   "body": [
+    "The agency file arrives because it was asked for the right way: in writing, through counsel, on the record — the record that \"shall be released upon request.\" (55 Pa. Code § 3130.44(d)) The regulation is not to be read to protect agency employees' privacy as a basis for withholding it. (§ 3130.44(f))",
+    "And there, inside the agency's own file, is the case in two lines. One entry says the home was empty at 6:00 p.m. Another note — the worker's own, from that same evening — is timed 7:15 p.m. The file contradicts itself, in the agency's own handwriting. Nobody had to take your word for anything."
+   ],
+   "choices": [
+    {
+     "addHidden": [
+      "Record — agency file released on counsel's written request (§ 3130.44(d)); the 6:00 p.m. 'empty home' entry contradicts the worker's own 7:15 p.m. note"
+     ],
+     "next": "win_prep",
+     "note": "Two lines, flagged, in the file both lawyers will now carry into adjudication. This is what the day-2 request was for.",
+     "setFlags": [
+      "recordRead"
+     ],
+     "text": "Go through it with Nakamura page by page and mark the contradiction together"
+    },
+    {
+     "next": "win_prep",
+     "note": "Wednesday went your way on a phone call. Adjudication will be decided on documents. The drawer is not a document strategy.",
+     "text": "Skim it for the worst parts and put it in a drawer — Wednesday already went your way"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "win_record",
+   "kicker": "Day 8 — Tuesday, January 19, 2027",
+   "title": "The Record Arrives"
+  },
+  {
+   "body": [
+    "The packet is ready: your mother's signed statement, your work schedule showing the emergency that ran long, and the marked pages of the agency's own record. Adjudication is Monday. The packet can reach Nakamura's office today — where she can read it at a desk, build the argument, and have it in front of the agency's lawyer before the weekend.",
+    "Or it can travel the way facts traveled on day 2 in the other version of this story: in your hand, in a hallway, on the morning."
+   ],
+   "choices": [
+    {
+     "cash": -10,
+     "next": "win_adjud",
+     "note": "Bus fare and copies. She calls that evening — the first time in this case a lawyer has called you with time to spare, because you gave her some.",
+     "setFlags": [
+      "packetDelivered"
+     ],
+     "text": "Deliver the packet to Nakamura's office today, three days before the hearing"
+    },
+    {
+     "next": "win_adjud",
+     "note": "Same papers, different physics. She takes them with a look you have learned to read. What saves Monday, if anything does, will be the record built on day 2 — not this envelope.",
+     "text": "Bring the packet Monday morning — same papers, hallway timing"
+    }
+   ],
+   "dayOffset": 11,
+   "id": "win_prep",
+   "kicker": "Day 11 — Friday, January 22, 2027",
+   "title": "Delivered Before, Not During"
+  },
+  {
+   "body": [
+    "Adjudication is the hearing that decides the facts, and the burden is the agency's: the court may find a child dependent only from clear and convincing evidence. (42 Pa.C.S. § 6341(c)) You do not have to prove innocence or fitness. The agency has to prove its case — and its case is the report with the empty house at six.",
+    "The agency's lawyer has now read what you read on day 8: the 6:00 p.m. entry, the 7:15 p.m. note, a grandmother on the transcript from day 2. The hearing is short, the way hearings are short when the paper has already had the argument."
+   ],
+   "choices": [
+    {
+     "next": "end_win",
+     "note": "The contradiction is not argued from memory or grievance. It is two lines of the agency's own file, requested on day 2, marked on day 8, delivered on day 11.",
+     "requiresFlags": [
+      "recordsRequested"
+     ],
+     "text": "Let Nakamura put the corrected record — the 6:00 entry against the 7:15 note — in front of the judge"
+    },
+    {
+     "next": "end_win",
+     "note": "Day 2 is why there is a corrected record to rest on. The hallway built the trial before the trial existed.",
+     "text": "Rest on what the court already decided on day 2, and let the corrected record speak in Nakamura's hands"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "win_adjud",
+   "kicker": "Day 14 — Monday, January 25, 2027",
+   "title": "Adjudication — The Corrected Record"
+  },
+  {
+   "body": [
+    "The visit is in a room at the agency office: a couch, a toy kitchen, a clock everyone can see. Selin runs to you and asks, carefully, when she can sleep at home, and whether Grandma knows where she is. A worker sits in the corner, kind and quiet, writing.",
+    "Adjudication is Monday, January 25, 2027. Your mother still has not been asked anything by anyone except you. Her account of Monday evening exists exactly where it existed on day 2: in her kitchen, and in yours."
+   ],
+   "choices": [
+    {
+     "cash": -12,
+     "next": "placed_call",
+     "note": "\"What the court can be shown,\" she says. It is the hallway lesson again, from the other side of a sustained order.",
+     "text": "Take the bus to the visit and ask the worker what adjudication will turn on"
+    },
+    {
+     "next": "placed_call",
+     "note": "Selin holds the blanket for the whole hour. It goes in the visit notes as a blanket. Comfort is real; it is just not evidence, and this month runs on evidence.",
+     "text": "Ride with your sister, and bring Selin's own blanket from home"
+    }
+   ],
+   "dayOffset": 5,
+   "id": "placed_week1",
+   "kicker": "Day 5 — Saturday, January 16, 2027",
+   "title": "One Hour, Across Town"
+  },
+  {
+   "body": [
+    "Ms. Nakamura's one scheduled call comes and goes the way overloaded calls do: visits, services, dates, her next courtroom already audible in the background. There is no written record request in this version of the file — nothing was asked for on the record on day 2, and the agency's file stays where it lives, unrequested and unread by anyone on your side.",
+    "Near the end of the call, there is an opening to tell her about your mother. It is the same opening there was in the hallway. It has the same ten minutes' worth of competition."
+   ],
+   "choices": [
+    {
+     "next": "placed_late_fact",
+     "note": "\"Why is this the first—\" She stops herself. \"Get it to me in writing. This week.\" A fact, finally handed over — eleven days after it was needed first.",
+     "text": "Tell her at the end of the call that your mother was there until seven, and promise her a written statement"
+    },
+    {
+     "next": "placed_late_fact",
+     "note": "They can wait. Waiting is precisely what they have been doing, and courts are where waited-for facts go to be called late.",
+     "text": "Focus the call on the visit schedule and services — court facts can wait for the court day"
+    }
+   ],
+   "dayOffset": 8,
+   "id": "placed_call",
+   "kicker": "Day 8 — Tuesday, January 19, 2027",
+   "title": "A Call Without an Agenda"
+  },
+  {
+   "body": [
+    "On Friday, your mother writes it: one page, her name, her number, dinner, seven o'clock. It is the same page that could have existed on day 1, in the same handwriting, with the same truth in it.",
+    "But adjudication is Monday. Nakamura is in another trial. The agency's lawyer has never seen this statement and has had no reason to reconsider anything. Your mother, who works weekends, cannot be in court on Monday. The page is real. The page is also, in every way this system measures time, late."
+   ],
+   "choices": [
+    {
+     "next": "placed_adjud",
+     "note": "It joins the file, stamped with a date that tells its own story: January 22, for a fact about January 11, first needed on January 13.",
+     "text": "Deliver the statement to Nakamura's office Friday evening anyway — paper, dated, even if late"
+    },
+    {
+     "next": "placed_adjud",
+     "note": "A hallway again. The building is consistent, at least: it keeps offering the same ten minutes, and the same lesson about what they can and cannot carry.",
+     "text": "Bring it Monday morning, to hand over in the hallway before the hearing"
+    }
+   ],
+   "dayOffset": 11,
+   "id": "placed_late_fact",
+   "kicker": "Day 11 — Friday, January 22, 2027",
+   "title": "The Statement, Written at Last"
+  },
+  {
+   "body": [
+    "The burden is still the agency's — dependency must be proven by clear and convincing evidence (42 Pa.C.S. § 6341(c)) — and on the report's biggest claim, the agency's case is quietly thinner than it was: a statement now exists that nobody can put a live witness behind today. But the agency does not need its biggest claim. It proves the narrower one, the true one: after 7:00 p.m., a six-year-old was with a teenager her father had not cleared with anyone, because a work emergency ran long.",
+    "The court finds Selin dependent on the proven ground. At disposition, before a disposition that keeps a child out of the home, the court must enter findings on the record — that continuation in the home would be contrary to the child's welfare, and whether reasonable efforts were made to prevent removal (42 Pa.C.S. § 6351(b)) — and the judge makes them, on the record, from the narrower case. Selin's placement continues. The next permanency hearing must be held within six months of her removal, and within six months of each permanency hearing after that. (§ 6351(e)(3)(i))"
+   ],
+   "choices": [
+    {
+     "next": "end_placed",
+     "note": "This time it goes on the record, in the room, dated. It is the first fact about your mother the transcript of this case has ever contained — fourteen days in.",
+     "text": "Ask Nakamura to state on the record that grandmother is available as a placement resource going forward"
+    },
+    {
+     "next": "end_placed",
+     "note": "A list, a date, a file that now — finally — contains your mother's name. The work of the next six months starts from a record that is only now complete.",
+     "text": "Hear the six-month date, write it down, and ask exactly what has to change by then"
+    }
+   ],
+   "dayOffset": 14,
+   "id": "placed_adjud",
+   "kicker": "Day 14 — Monday, January 25, 2027",
+   "title": "Adjudication — The Narrower Case"
+  },
+  {
+   "body": [
+    "The confirmation letter arrives Tuesday, and it is almost anticlimactic: on the corrected record, the agency withdraws the petition rather than try to carry it — and had it tried, a petition the agency cannot prove is dismissed and the child discharged. (42 Pa.C.S. § 6341(a)) Selin has, in fact, been home since Wednesday night, January 13: released from the shelter care hearing to her grandmother's care, sleeping in her own bed, with her grandmother in the spare room for the first nights as the approved backup.",
+    "Read the shape of it honestly, because the shape is the lesson. The trial did not win this case. There barely was a trial. This case was won on day 2, in a hallway, in ten minutes, by one page handed to an overloaded lawyer in the right order — witness first — and by a request spoken on the record before the findings were made. Everything after that was the record doing the work."
+   ],
+   "dayOffset": 15,
+   "debrief": [
+    "WHAT THE FILE SAID (the hidden record, revealed): Four artifacts decided this case, and all four were built in the first forty-eight hours. The parent's one-page timeline, handed to counsel before the shelter care hearing, put the evening in order where a lawyer with forty cases could use it. Grandmother named on the record at shelter care as present until 7:00 p.m. turned a memory into testimony the court could hear. The agency file, released on counsel's written request under § 3130.44(d), showed the 6:00 p.m. 'empty home' entry contradicting the worker's own 7:15 p.m. note — the agency's file refuting the agency's report. And the order itself — shelter care not sustained, Selin released to grandmother's care pending adjudication — was written while the facts were still fresh enough to be checked by phone.",
+    "THE LAW UNDER THIS PATH: The shelter care hearing came within 72 hours of Selin being taken into custody, as required (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)), and Karl had counsel there — his right to counsel, appointed because he could not afford one (42 Pa.C.S. § 6337; § 6332(a)). The agency record was his to obtain: it \"shall be released upon request\" (55 Pa. Code § 3130.44(d)). At adjudication the burden never moved: a child may be found dependent only from clear and convincing evidence (42 Pa.C.S. § 6341(c)); the parent does not have to prove innocence or fitness to win, and a petition that is not proven is dismissed and the child discharged (§ 6341(a)).",
+    "THE HONEST PART: This ending was not a verdict that Karl is a perfect parent — the work emergency was real, the uncleared teenager was real, and a different judge could have weighed a grandmother's phone testimony differently, or a busier morning could have swallowed the ten minutes whole. Outcomes in this system turn on workers, judges, resources, and luck as much as on anything a parent does. What was in Karl's control was narrower and he did all of it: the fact existed on paper, in his lawyer's hand, in the right order, before the findings were made."
+   ],
+   "ending": true,
+   "id": "end_win",
+   "kicker": "Day 15 — Tuesday, January 26, 2027",
+   "title": "Shelter Care Denied — Selin Goes Home Tonight"
+  },
+  {
+   "body": [
+    "Selin's placement continues past adjudication. The visit schedule has a rhythm now. The next permanency hearing sits within six months on a calendar that suddenly measures this family in months instead of days, and the first thirty of those days were decided in the first three.",
+    "Your mother's statement is in the file now. It says exactly what it would have said on January 12. Everyone who reads the file from here on will know she was in that home until seven o'clock on the evening that started all of this. The file knows it on day 15. The court needed it on day 2."
+   ],
+   "dayOffset": 15,
+   "debrief": [
+    "WHAT THE FILE SAID (the hidden record, revealed): The facts in this ending are identical to the facts in the other one — a grandmother in the home until 7:00 p.m., a report claiming an empty house at six, a worker's own 7:15 p.m. note sitting unread in the agency's file. What differed was never the facts. It was their location and their timing: the timeline was never written on day 1, the witness was never named in the hallway or on the record on day 2, and no written request for the agency record was made before findings were entered, so the contradiction inside the agency's own file surfaced for no one. The statement that finally arrived on day 11 proved the point and changed nothing, because the record it needed to enter had closed in stages — at shelter care, and again at adjudication.",
+    "THE LAW UNDER THIS PATH: The clocks all ran exactly as the law sets them: a shelter care hearing within 72 hours (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)), with appointed counsel as of right (42 Pa.C.S. § 6337; § 6332(a)) — counsel Karl had, and barely used, which the law cannot do for a parent. The agency record was available all along on request (55 Pa. Code § 3130.44(d)); it simply was never requested in time. At adjudication the agency still bore the burden of clear and convincing evidence (42 Pa.C.S. § 6341(c)), and it carried that burden on the narrower, true ground. Before the disposition that kept Selin placed, the court entered its § 6351(b) findings on the record, and the permanency clock now runs in six-month intervals. (§ 6351(e)(3)(i))",
+    "THE HONEST PART: This ending is not a finding that Karl loves his daughter less, or tried less hard, than the father in the other ending — he is the same man, with the same mother, the same job, and the same facts. The difference was a page unwritten, a name unspoken in a ten-minute hallway, and the ordinary luck of an overloaded lawyer's morning. Workers, judges, calendars, and luck hold pieces of every outcome in this system. The piece that was his — putting the fact on paper, in his lawyer's hand, before the record closed — is the piece this scenario exists to show, because it is the piece that can be done differently on day 1 of the next case."
+   ],
+   "ending": true,
+   "id": "end_placed",
+   "kicker": "Day 15 — Tuesday, January 26, 2027",
+   "title": "Seventy-Two Hours Become Thirty Days"
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s68';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

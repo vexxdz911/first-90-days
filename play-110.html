@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 110 — Unstable, On Paper (a fictional composite)",
+  "startDateISO": "2026-10-19",
+  "startNode": "start",
+  "startCash": 160,
+  "tier": "Hard",
+  "summary": "At month nine a landlord's non-renewal moves Charise into her cousin's spare room — signed, receipted, applied from — while the plan's housing line still reads 'unstable housing.'"
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, October 19, 2026",
+   "dayOffset": 0,
+   "title": "The Non-Renewal",
+   "body": [
+    "Your name is Charise. Your daughter Naledi is five, and she has been in foster care for nine months — long enough that her plan has seasons in it, and that the word 'housing' on that plan has been, until now, the quiet line: a small apartment, a lease in your name, rent paid.",
+    "The envelope on Monday, October 19, 2026 ends the quiet. Your landlord will not renew the lease. The letter is short, businesslike, and final: the tenancy ends on the date it names, Wednesday, November 18, 2026, and the apartment is to be vacated by then. It gives no reason it is required to defend, and this story will not invent one for it.",
+    "What everyone in your case will later call 'the housing situation' begins here — not with Naledi, not with the plan, but with a landlord's letter and thirty days."
+   ],
+   "choices": [
+    {
+     "text": "Read the letter twice, and keep it — it is now a case document",
+     "next": "letter_close",
+     "note": "Kept, dated, uncreased. The first document of the housing chapter is the one that ends the old housing."
+    }
+   ]
+  },
+  {
+   "id": "letter_close",
+   "kicker": "Day 2 — Wednesday, October 21, 2026",
+   "dayOffset": 2,
+   "title": "The Night Behind the Letter",
+   "body": [
+    "You know, and the landlord may know, what sits behind the non-renewal in the building's memory: the night, nine months ago, when Naledi was removed — the police presence in the hallway, the neighbors' doors opening and closing. It is the texture of why this apartment stopped feeling available to you, and probably to him.",
+    "It is also, your lawyer will later say, a thing this story does not litigate: nobody will prove a landlord's motive in Naledi's review, and nobody needs to. What the review will weigh is not why the lease ended. It is what your housing is, on paper, when the room convenes — and what paper says so.",
+    "Thirty days. The plan's housing line currently says your address. By the review, it will say something else. The only question this scenario asks is whether that something is written by your documents or by a summary's default word."
+   ],
+   "choices": [
+    {
+     "text": "Start the search the way searches actually start — with who you know",
+     "next": "search_days",
+     "note": "The lists are long and the month is short. Both of those are facts. Neither is the ending."
+    }
+   ]
+  },
+  {
+   "id": "search_days",
+   "kicker": "Day 4 — Friday, October 23, 2026",
+   "dayOffset": 4,
+   "title": "Four Days of Doors",
+   "body": [
+    "Four days of the search, Monday, October 19, 2026 to Friday, October 23, 2026: two buildings with waiting lists measured in seasons, one room whose rent would take the whole paycheck the plan also counts, a cousin's couch offered and refused — not from pride, but because a couch is exactly the word the file is waiting to write about you.",
+    "Then your cousin Alma calls back. Alma has a house, a spare room with a door, and a proposal she makes in the plainest language anyone uses in this scenario: 'You take the room. You pay rent, like a tenant. We write it down, like adults. Naledi has a room to come home to when the court says so.'",
+    "A doubled-up household, the system calls arrangements like Alma's, when it calls them anything kind at all. What it becomes in the file depends entirely on the paper it generates."
+   ],
+   "choices": [
+    {
+     "text": "Go and look at the room, and at the arrangement, with clear eyes",
+     "next": "fern_door",
+     "note": "A room with a door. In housing paper, doors matter more than intentions."
+    }
+   ]
+  },
+  {
+   "id": "fern_door",
+   "kicker": "Day 6 — Sunday, October 25, 2026",
+   "dayOffset": 6,
+   "title": "A Room With a Door",
+   "body": [
+    "The room is small, clean, and Naledi-sized in the ways that count: space for a small bed, a window, a door that closes. Alma's house has the other things a plan reads for — a kitchen, a bathroom, a school route no worse than the apartment's. Alma herself is steady, employed, and entirely willing to be looked at by anyone the case sends to look.",
+    "What Alma offers can be done two ways, and the two ways are different arrangements in the file's eyes even though they are identical in the house's. It can be written: a room agreement, signed, with rent, a start date, and signatures. Or it can be familial: a handshake, a key, and everyone's good faith.",
+    "Good faith fills a house. Signatures fill a file. The review will only ever see one of those rooms."
+   ],
+   "choices": [
+    {
+     "text": "Decide how the arrangement will exist — on paper, or on trust",
+     "next": "agreement_choice",
+     "note": "Alma will sign anything true. The question is whether anyone asks her to."
+    }
+   ]
+  },
+  {
+   "id": "agreement_choice",
+   "kicker": "Day 8 — Tuesday, October 27, 2026",
+   "dayOffset": 8,
+   "title": "Sign It Like a Lease",
+   "body": [
+    "There is a version of this move that costs an evening: a one-page room agreement — Alma as householder, you as occupant of the named room, rent in a named amount, starting on a named date, utilities and shared spaces described in two honest sentences — signed by both of you, dated, copied.",
+    "There is another version that costs nothing: you move in as family, pay what you can when you can, and trust that anyone who needs to understand the arrangement will come and see it, the way Alma sees it."
+   ],
+   "choices": [
+    {
+     "text": "Write and sign the room agreement with Alma, dated, before you move a single box",
+     "next": "agreement_signed",
+     "cash": -4,
+     "setFlags": [
+      "agreementSigned"
+     ],
+     "addHidden": [
+      "Housing — signed, dated room agreement with cousin; rent and start date stated"
+     ],
+     "note": "Four dollars of copies. The agreement does not make the room more real. It makes the room legible — to readers who will never stand in it."
+    },
+    {
+     "text": "Move in as family — a handshake and a key are enough between cousins",
+     "next": "handshake_only",
+     "note": "Between cousins, they are. Between a parent and a summary line, they are not the same instrument at all."
+    }
+   ]
+  },
+  {
+   "id": "agreement_signed",
+   "kicker": "Day 10 — Thursday, October 29, 2026",
+   "dayOffset": 10,
+   "title": "Tenant, on Paper",
+   "body": [
+    "The agreement is signed on Tuesday, October 27, 2026, effective Thursday, October 29, 2026: the room, the rent, the date, two signatures. Alma files her copy in a kitchen drawer with the house's other important paper, which is exactly where tenancy paper belongs, and you keep yours with Naledi's plan.",
+    "You are now, in documentary fact, a tenant in a named room at a named rent from a named date. A summary writer who wants to call that arrangement something else will have to write around a signed page to do it. Summary writers can write around pages — but it is slower, and it leaves marks."
+   ],
+   "choices": [
+    {
+     "text": "Move in, and set up the rent the way the agreement says",
+     "next": "move_day",
+     "note": "Moving costs what moving costs. The agreement costs four dollars. Guess which one the file will remember."
+    }
+   ]
+  },
+  {
+   "id": "handshake_only",
+   "kicker": "Day 10 — Thursday, October 29, 2026",
+   "dayOffset": 10,
+   "title": "Family, in Person",
+   "body": [
+    "You move in as family, and in person the arrangement is everything Alma promised: the room is yours, Naledi's small bed fits, the kitchen is shared without friction. Anyone standing in the house would call it stable without hesitating.",
+    "Nobody who decides anything in Naledi's case will ever stand in the house. They will stand in rooms with files in them, and in the files, an unwritten arrangement has the documentary weight of a rumor — true, warmly believed, and exactly as provable as any other rumor."
+   ],
+   "choices": [
+    {
+     "text": "Move in, and set up the rent the way families do",
+     "next": "move_day",
+     "note": "The house is real. The question the next eight weeks ask is whether the file will ever be told, in a form it can keep."
+    }
+   ]
+  },
+  {
+   "id": "move_day",
+   "kicker": "Day 12 — Saturday, October 31, 2026",
+   "dayOffset": 12,
+   "title": "Rent, With a Receipt",
+   "body": [
+    "The first rent is due under your arrangement in the week of Saturday, October 31, 2026, and here the scenario offers its smallest, most repeated choice, because this one will recur monthly and each recurrence is a document: pay in a way that generates paper, or pay in a way that generates gratitude.",
+    "A receipt book costs little. A dated receipt, signed by Alma, stating rent for the named room for a named month, is a tenancy proving itself one month at a time. Cash handed across a kitchen, between cousins who trust each other, proves itself to exactly the two people who already believe it."
+   ],
+   "choices": [
+    {
+     "text": "Pay by receipt from the first month — dated, signed, room and month named",
+     "next": "receipts_kept",
+     "cash": -5,
+     "setFlags": [
+      "receiptsKept"
+     ],
+     "addHidden": [
+      "Housing — rent paid by dated, signed receipts naming the room and month"
+     ],
+     "note": "Five dollars for the receipt book. Each receipt is boring, dated, and cumulative — the three virtues of housing paper."
+    },
+    {
+     "text": "Pay across the kitchen, in cash, the way family does",
+     "next": "receipts_none",
+     "note": "Alma would swear to every payment, and mean it, and be believed personally — in a room that weighs attachments, not oaths from cousins."
+    }
+   ]
+  },
+  {
+   "id": "receipts_kept",
+   "kicker": "Day 14 — Monday, November 2, 2026",
+   "dayOffset": 14,
+   "title": "A Tenancy, Accumulating",
+   "body": [
+    "Receipt one joins the agreement in your papers. It is a small page, and together the two pages already answer the only housing question a file is competent to ask: where does she live, since when, at what rent, proved how? Most housing lines in most files are written with less evidence than you now hold, because most housing is never challenged. Yours is about to be — which is why the evidence matters, and why nobody builds it after the challenge arrives."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the second half of stability — the applications",
+     "next": "applications_choice",
+     "note": "A doubled-up room answers where you live. The plan will also ask where this goes next. Lists are how that answer gets dated."
+    }
+   ]
+  },
+  {
+   "id": "receipts_none",
+   "kicker": "Day 14 — Monday, November 2, 2026",
+   "dayOffset": 14,
+   "title": "Paid, and Unprovable",
+   "body": [
+    "The rent is paid. Alma knows it, you know it, the house's whole economy knows it. The file knows nothing, because nothing told it, in any form it keeps. If the arrangement is ever described by someone else, their description will have one advantage yours lacks: it will be written down.",
+    "What can still be built is the forward half of the housing story: the applications, with their dates. Paper started later is worth less than paper started first, and infinitely more than paper never started."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the second half of stability — the applications",
+     "next": "applications_choice",
+     "note": "Applications are the rare housing document whose date is stamped by somebody else's office. That is their entire value."
+    }
+   ]
+  },
+  {
+   "id": "applications_choice",
+   "kicker": "Day 16 — Wednesday, November 4, 2026",
+   "dayOffset": 16,
+   "title": "Two Lists, Two Stamps",
+   "body": [
+    "There are two housing lists you can realistically join this month, and both offices do the same kind thing with paperwork: they stamp the application copy with the date it was received. An application stamped Friday, November 6, 2026, say, is a fact with an office behind it: on that date, this mother, from this address, applied, and is pending.",
+    "Applying costs fares and a morning each. Not applying costs nothing, and leaves the file's housing story ending at a cousin's spare room — a story a summary can finish with one word."
+   ],
+   "choices": [
+    {
+     "text": "Apply to both lists and keep the date-stamped copies",
+     "next": "applications_done",
+     "cash": -8,
+     "setFlags": [
+      "applicationsDated"
+     ],
+     "addHidden": [
+      "Housing — applications to two housing lists, date-stamped copies kept"
+     ],
+     "note": "Eight dollars of fares. Two stamps, two dates, two offices agreeing that your housing has a future tense as well as a present one."
+    },
+    {
+     "text": "Settle into Alma's first — the lists will still be there next month",
+     "next": "waiting_only",
+     "note": "They will be. Their stamps will then say next month, and a review that convenes before next month will read a file with no applications in it."
+    }
+   ]
+  },
+  {
+   "id": "applications_done",
+   "kicker": "Day 18 — Friday, November 6, 2026",
+   "dayOffset": 18,
+   "title": "Pending, With Dates",
+   "body": [
+    "Both applications are in by Friday, November 6, 2026, stamped, copied, filed behind the agreement and the receipt. Your housing paper now says a complete sentence: lease ended by a landlord's letter on a stated date; room agreement signed, rent receipted; applications pending at two offices since a stamped date. Present housing, proved. Future housing, dated. It is not a house of your own. It is also not, in any honest vocabulary, nothing.",
+    "What the plan's housing line says, meanwhile, is about to be shown to you — and it was not written from this paper."
+   ],
+   "choices": [
+    {
+     "text": "Go to the plan meeting and hear the housing line read aloud",
+     "next": "plan_line",
+     "note": "Bring the folder. Hearing a line and answering a line are different events, and folders decide which one happens."
+    }
+   ]
+  },
+  {
+   "id": "waiting_only",
+   "kicker": "Day 18 — Friday, November 6, 2026",
+   "dayOffset": 18,
+   "title": "Settled, Unstamped",
+   "body": [
+    "Alma's room is home in every way a home is home at the end of a day. In the file's way, it is an address with no applications behind it — a present with no dated future, which summary language has a word for, and the word is not 'settled.'",
+    "The plan meeting is coming, and with it the first reading of the housing line since the landlord's letter. You will hear, there, what the file currently believes your housing is."
+   ],
+   "choices": [
+    {
+     "text": "Go to the plan meeting and hear the housing line read aloud",
+     "next": "plan_line",
+     "note": "You know where you live. The meeting is where you learn where the file thinks you live."
+    }
+   ]
+  },
+  {
+   "id": "plan_line",
+   "kicker": "Day 21 — Monday, November 9, 2026",
+   "dayOffset": 21,
+   "title": "Unstable, On the Line",
+   "body": [
+    "At the plan meeting on Monday, November 9, 2026, the updated plan is read, and the housing line reads, in full: 'Mother's housing unstable following loss of lease; currently staying with relative.' Staying. Not renting, not tenanted, not receipted, not applied-anywhere. One adjective — unstable — doing the work of your landlord's letter, your cousin's room, and your two stamped applications, and doing it wrong in a specific direction.",
+    "Your worker is not hostile about it. The line was drafted from the non-renewal and a note that you had 'gone to family.' Nobody in the drafting chain had your agreement in front of them, because your agreement was in your folder, and folders do not attend drafting chains. Reviews do, though. The review is where this line will be weighed — as a finding about your housing, not as a summary of your folder."
+   ],
+   "choices": [
+    {
+     "text": "Note the line word for word, and ask your lawyer what the file itself says",
+     "next": "records_fork",
+     "addHidden": [
+      "Plan housing line — 'unstable housing,' drafted without the agreement, receipts or applications"
+     ],
+     "note": "Word for word. Corrections are built out of the exact sentences they correct."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 24 — Thursday, November 12, 2026",
+   "dayOffset": 24,
+   "title": "Ask for the Housing Entries",
+   "body": [
+    "You have had a lawyer throughout Naledi's case, as the law provides (42 Pa.C.S. § 6337). Ms. Solano asks the question this scenario has been walking toward: 'What do the file's housing entries actually say — not the plan line, the entries under it? Dates, sources, all of it.'",
+    "You do not have to guess. A party may request the case record, and the material in it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). A written request for the housing entries and the draft review summary shows you the exact text — and the exact dates — your paper has to answer, weeks before the review reads it."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written request for the record — housing entries and draft summary",
+     "next": "record_arrives",
+     "cash": -3,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record — requested in writing, including housing entries and draft review summary"
+     ],
+     "note": "Signed, dated, copied. Whatever the entries say about your housing, you are about to be able to quote it instead of dreading it."
+    },
+    {
+     "text": "Prepare from the plan line alone — you heard it read aloud",
+     "next": "no_record",
+     "note": "You heard one line. The entries under it — their dates, their sources, what they omit — are the lock your correction has to fit."
+    }
+   ]
+  },
+  {
+   "id": "record_arrives",
+   "kicker": "Day 29 — Tuesday, November 17, 2026",
+   "dayOffset": 29,
+   "title": "What the Entries Omit",
+   "body": [
+    "The packet arrives on Tuesday, November 17, 2026. The housing entries are all true, the way omissions are true: the landlord's letter, noted. The lease's end, noted. 'Mother residing with cousin,' noted — undated, unsourced, one line. Of the agreement, the receipts, and the applications, the entries say nothing, because nothing had ever been filed where entries are written from. The draft review summary then does what summaries do with an undated line: it keeps the adjective. 'Unstable housing,' carried forward, gathering the authority of print.",
+    "Beside it, Ms. Solano lays your folder: agreement, receipts, stamps. 'The file's housing story is a story with its second half missing,' she says. 'We are not going to argue that the first half is false. We are going to file the second half, before the review has to decide housing from half a story.'"
+   ],
+   "choices": [
+    {
+     "text": "Decide how the second half is filed — in writing before the review, or aloud at it",
+     "next": "correction_choice",
+     "note": "A draft is a mercy if you see it in time. This one arrived in time. Time is not the same as using it."
+    }
+   ]
+  },
+  {
+   "id": "no_record",
+   "kicker": "Day 29 — Tuesday, November 17, 2026",
+   "dayOffset": 29,
+   "title": "One Line, Heard Once",
+   "body": [
+    "Without the entries, you know the adjective and nothing under it: not which dates the file holds, not whether the draft summary has already hardened the line, not what your correction must quote to displace it. Ms. Solano is honest: 'We can still object at the review. We will be answering sentences we are hearing in full for the first time, in the room that has already read them.'",
+    "The correction itself can still be assembled from your folder. What is missing is the target's exact wording — and corrections, like keys, are cut to locks."
+   ],
+   "choices": [
+    {
+     "text": "Decide how the correction is delivered — in writing before the review, or aloud at it",
+     "next": "correction_choice",
+     "note": "Your folder is real either way. The question is whether the review meets it as a filing or as a surprise."
+    }
+   ]
+  },
+  {
+   "id": "correction_choice",
+   "kicker": "Day 33 — Saturday, November 21, 2026",
+   "dayOffset": 33,
+   "title": "Correct It Where It Lives",
+   "body": [
+    "Ms. Solano drafts the correction the way durable things are drafted in this series: the landlord's letter first (the loss was a landlord's act, dated); the signed room agreement (a tenancy, dated, at a named rent); the receipts (the tenancy performing, monthly); the stamped applications (a future, dated, pending at two offices). One page of chronology, attachments behind it, asking that the housing entries and the summary line be corrected to describe the arrangement the documents describe — before the review.",
+    "Filing it costs copies and a trip. Raising the same papers at the review costs nothing today, and prices them tomorrow as an argument instead of as the record."
+   ],
+   "choices": [
+    {
+     "text": "File the written correction before the review, with the agreement, receipts and applications attached",
+     "next": "correction_filed",
+     "cash": -5,
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "addHidden": [
+      "Written correction — housing chronology filed before the review with agreement, receipts and applications"
+     ],
+     "note": "Stamped, copied, in the file before the next summary is drafted from it. The adjective now has competition with dates on."
+    },
+    {
+     "text": "Raise it at the review — the papers are real, and the room will see them",
+     "next": "correction_oral",
+     "note": "The room will. Rooms see late paper the way they hear late objections: politely, and at a discount they never state."
+    }
+   ]
+  },
+  {
+   "id": "correction_filed",
+   "kicker": "Day 35 — Monday, November 23, 2026",
+   "dayOffset": 35,
+   "title": "Filed, Not Just Said",
+   "body": [
+    "The correction goes in, and the file does with filed paper what it does: the draft summary is amended before the review packet is assembled. The housing paragraph now carries the chronology — lease ended by landlord's letter; doubled-up tenancy under a signed agreement at Alma's, rent receipted; applications pending, stamped — and the adjective, deprived of its empty file to live in, is gone from the draft. In its place, the system's own flattest compliment: 'Housing documented as below.'",
+    "Documented. Not praised, not excused — documented, which in a review is the adjective that does the work."
+   ],
+   "choices": [
+    {
+     "text": "Keep the arrangement exactly as documented until the review",
+     "next": "visits_meanwhile",
+     "note": "Receipts monthly, applications pending, the room Naledi-sized. A corrected file still has to be lived up to, monthly, in paper."
+    }
+   ]
+  },
+  {
+   "id": "correction_oral",
+   "kicker": "Day 35 — Monday, November 23, 2026",
+   "dayOffset": 35,
+   "title": "Real, and Unfiled",
+   "body": [
+    "The papers stay in your folder, real and complete, awaiting their room. Ms. Solano warns you once, without drama: 'At the review, the summary will be read first. It always is. We will be the second account of your housing, and second accounts are cross-examined by the first one's adjective.'",
+    "Nothing is lost yet. Everything is priced differently. The review will now decide housing as a contest between a printed line and a folder produced live — a contest printed lines win more often than folders deserve."
+   ],
+   "choices": [
+    {
+     "text": "Keep the arrangement running until the review",
+     "next": "visits_meanwhile",
+     "note": "The house, at least, does not know it is undocumented. Alma's dinners proceed as if stability were a fact. In the house, it is one."
+    }
+   ]
+  },
+  {
+   "id": "visits_meanwhile",
+   "kicker": "Day 40 — Saturday, November 28, 2026",
+   "dayOffset": 40,
+   "title": "Visits, From Alma's Door",
+   "body": [
+    "The weeks before the review run from Alma's door: visits with Naledi — a puzzle rebuilt at a visit-room table, a school song performed twice — buses caught from the new address, screens and meetings kept from the new address. On Saturday, November 28, 2026 the second rent receipt joins the first, and the arrangement acquires the one property no single document can give it: duration, in paper.",
+    "It is worth pausing on the shape of your situation: your housing, as lived, has been stable for weeks. Your housing, as filed, is stable only if the correction was filed — because in this system stability is not a condition of a household. It is a condition of a record about a household."
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the review with Ms. Solano",
+     "next": "review_prep",
+     "addHidden": [
+      "Compliance — visits and plan steps kept from the doubled-up address; rent receipts continuing"
+     ],
+     "note": "Kept, from the new door, with the receipts to show the door was the same one every time."
+    }
+   ]
+  },
+  {
+   "id": "review_prep",
+   "kicker": "Day 45 — Thursday, December 3, 2026",
+   "dayOffset": 45,
+   "title": "The Framework, Plainly",
+   "body": [
+    "Ms. Solano prepares you in the framework the review will actually use. At a review of this kind the court determines, among the findings the law lists, the continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)). Housing sits inside several of those at once — which is why one adjective on a summary line is not a small thing.",
+    "'And one more piece,' she says, 'because it is in your file whether we raise it or not. Housing assistance was a service in Naledi's plan. The plan promised help with housing costs and referrals. What the record shows, so far, is a landlord's letter and your own paper — the assistance itself is a documented gap. If a filing question ever arises on the federal timeline — at fifteen of the most recent twenty-two months, the filing duty changes unless an exception is documented, including where services the agency was required to provide were not provided (42 U.S.C. § 675(5)(E)) — then whether that gap is documented, on this record, will matter. Exceptions are not hopes. They are documents. So we document.'"
+   ],
+   "choices": [
+    {
+     "text": "Assemble the final packet — letter, agreement, receipts, applications, correction",
+     "next": "packet_assembly",
+     "note": "Five kinds of paper, one chronology. The packet does not argue that a cousin's spare room is a palace. It argues that it is documented."
+    }
+   ]
+  },
+  {
+   "id": "packet_assembly",
+   "kicker": "Day 48 — Sunday, December 6, 2026",
+   "dayOffset": 48,
+   "title": "Date Order, Again",
+   "body": [
+    "The packet takes an evening: the landlord's letter, the signed agreement, the receipts in their months, the two stamped applications, the housing entries beside the filed correction. Copied, paginated, plain. Ms. Solano adds the plan's own housing-assistance line, highlighted — the service the plan promised, beside the gap the record shows.",
+    "Yours goes in the folder — this month, at the front, where the next summary writer, if summaries must be written about your housing again, will meet the whole story first."
+   ],
+   "choices": [
+    {
+     "text": "File the packet copies and go to the review",
+     "next": "review",
+     "cash": -5,
+     "addHidden": [
+      "Review packet — housing chronology and plan-service line filed in date order"
+     ],
+     "note": "Every page in it existed before the review was convened, and most existed before the summary line was drafted. Sequence is the argument."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 52 — Thursday, December 10, 2026",
+   "dayOffset": 52,
+   "title": "The Review",
+   "body": [
+    "The review convenes on Thursday, December 10, 2026. The report is read the way reports are read: as the case, by people who were not at Alma's kitchen table for any of it. The housing paragraph arrives, and what happens next depends, with a precision this scenario has been honest about since a landlord's letter, on what your choices put into the file before the reading started. Ms. Solano rises.",
+    "Choose the presentation the record you actually built can carry."
+   ],
+   "choices": [
+    {
+     "text": "Present the documented housing — agreement, receipts, stamped applications, and the correction filed before today",
+     "next": "end_win",
+     "requiresFlags": [
+      "agreementSigned",
+      "applicationsDated",
+      "recordsRequested",
+      "correctionFiled"
+     ],
+     "note": "This presentation exists because the tenancy, its performance, its future, and its correction all exist as dated paper filed before the room convened."
+    },
+    {
+     "text": "Present the folder at the review — real papers, produced live against the printed line",
+     "next": "end_line_stands",
+     "note": "The folder is real. So is the discount rooms apply to paper they meet for the first time at speaking speed."
+    },
+    {
+     "text": "Accept the room's suggestion — enter a shelter placement to be counted as housed",
+     "next": "end_shelter",
+     "note": "A bed in a shelter would satisfy the line's vocabulary. It would also end the arrangement Alma's house actually provides."
+    }
+   ]
+  },
+  {
+   "id": "end_win",
+   "kicker": "Day 59 — Thursday, December 17, 2026",
+   "dayOffset": 59,
+   "title": "Ending — Stable, On the Record",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the record, revealed): A complete housing chronology, in dated paper. A landlord's non-renewal letter ending the tenancy on Wednesday, November 18, 2026 — a landlord's act, not a mother's failure. A signed, dated room agreement at Alma's from Thursday, October 29, 2026, rent receipted monthly, a room with a door kept Naledi-sized. Two housing applications, date-stamped Friday, November 6, 2026, pending at two offices. The case record, requested in writing, showing housing entries that omitted all of it — and a correction, filed before the review with every attachment, that put the second half of the story into the file. At the review, the court recorded the doubled-up arrangement as stable housing with applications pending, and the summary line was corrected on the record: the adjective 'unstable' no longer describes this mother's housing in any copy of the file.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The review weighed housing inside the determinations the law assigns it — continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) — and on a documented record, the housing findings could be made truthfully. The record request (55 Pa. Code § 3130.44(d)) is what showed the entries' omissions while the draft was still correctable, and counsel (42 Pa.C.S. § 6337) filed the correction where summaries are written from. The plan's promised housing assistance, and its documented gap, are now also on this record — documented, exactly as the federal timeline's services exception requires any such claim to be if it is ever to matter (42 U.S.C. § 675(5)(E), where at fifteen of the most recent twenty-two months the filing duty changes unless an exception is documented, including services the agency was required to provide but did not; any filing would still have to be proven on its own grounds). Label this win honestly: it is partial. Naledi remains placed and the plan continues. What was won is the truthful record — and what it unlocks: reviews, services, and any future filing question will now start from documented stability instead of from an adjective.",
+    "THE HONEST PART: A different review could have weighed a doubled-up room more skeptically even on this paper; a landlord in another story renews, and the whole chapter never happens; Alma herself — her house, her steadiness, her willingness to sign — is a piece of luck no strategy manufactures, and this debrief will not pretend the packet created her. Housing lists move at their own pace, and pending may mean pending for a long while yet. What your choices controlled was narrower: when the lease was lost through no act of yours, the arrangement that replaced it was documented as it was built — signed, receipted, applied from, and corrected into the file before a summary could finish the story with one word. Outcomes in this system turn on workers, judges, landlords, and luck as much as on any parent's choices. This one turned, in part, on a receipt book and two date stamps — which is not a small thing to have turned on."
+   ]
+  },
+  {
+   "id": "end_line_stands",
+   "kicker": "Day 59 — Thursday, December 17, 2026",
+   "dayOffset": 59,
+   "title": "Ending — The Line Stands",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the record, revealed): At the review, the summary's housing line was read first, as summary lines are: 'unstable housing.' The folder — to the extent your choices built one — was produced against it live: real papers, in several cases, but unfiled, or incomplete, or unattached to the entries they answered. The room heard two accounts of the same household and credited the one that had been in the file when the packet was assembled. The line stands into the next review cycle: housing will be reported as unstable, services and findings will be built on that description, and the arrangement at Alma's — stable in the house, month after month — will have to be reintroduced, as a correction, to every future reader who meets the line first.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Nothing in this ending failed for lack of a right. The housing entries were requestable in writing (55 Pa. Code § 3130.44(d)); counsel (42 Pa.C.S. § 6337) could have filed a one-page chronology with the agreement, receipts, and stamped applications attached at any point in the eight weeks; and the review's own framework (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) makes housing findings from evidence — which is to say, from paper in the file, not from paper in a folder produced at speaking speed. A correction filed before a review settles; the same correction produced at a review contests, and contested housing reads, to cautious rooms, as unstable housing with an argument attached. The line is now the argument's target for the next cycle instead of its casualty in this one.",
+    "THE HONEST PART: Let this debrief be as fair as the line was not: your housing, as lived, was stable — a room with a door, rent paid, a child-sized corner kept ready, applications a stamp away. The gap in this ending is not between a good household and a bad one. It is between a household and its documentation, and documentation gaps are taxed, in this system, entirely to the parent — never to the summary that created the need for them. A different worker might have visited Alma's, seen the room, and written it up truthfully unprompted; some do. Yours drafted from a landlord's letter and a note, and the file inherited the difference. The correction can still be filed tomorrow, with the same attachments, and the next review will read a truer file. It cannot retroactively make this review have decided housing on the truth."
+   ]
+  },
+  {
+   "id": "end_shelter",
+   "kicker": "Day 59 — Thursday, December 17, 2026",
+   "dayOffset": 59,
+   "title": "Ending — Housed, by Definition",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the record, revealed): The room's suggestion was taken: a shelter placement, accepted so that the housing line could be satisfied in its own vocabulary. The line is satisfied. It now reads, in substance, housed — shelter. And the arrangement that was actually stable — Alma's room, the signed or unsigned agreement, the receipts or their absence, Naledi's corner kept ready — is ended, its paper trail stopping in the month the definition won. Future summaries will record a mother who left a relative's stable room for a shelter bed in order to be counted as housed, and none of them will record that the counting was the reason.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): This ending is not produced by a rule that prefers shelters — no such rule is stated anywhere in this scenario, because none is in its verified law. It is produced by a vocabulary: a summary line that could describe a doubled-up tenancy only as 'unstable,' answered not by documenting the tenancy but by abandoning it for an arrangement the vocabulary already had a box for. The instruments that answer a line with paper existed throughout (the record on request, 55 Pa. Code § 3130.44(d); counsel to file the correction, 42 Pa.C.S. § 6337), and the review framework itself (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) decides from evidence — evidence a documented tenancy would have supplied. Definitions, unopposed by documents, quietly become decisions. That, and not any fact about Alma's house, is this ending.",
+    "THE HONEST PART: Be clear about what was traded, because the file will not be: shelter is not nothing. For a mother with no Alma, it is safety, an address, a door that locks, and this debrief does not rank it beneath anyone's spare room as a place to sleep. The loss here is specific to this story: a stable, documented-or-documentable family arrangement was exchanged for a categorical one, at a cost — Naledi's room at her cousin's, the tenancy's accumulating months, the applications' address — that the housing line never priced, because lines do not price things. They only classify them. What classifies a household, in the end, should be the household, proved on paper. In this ending the paper was never given the chance to out-argue the adjective, and the adjective, satisfied at last, is the only winner in the file."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s110';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

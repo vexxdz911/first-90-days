@@ -1,0 +1,705 @@
+{
+  "meta": {
+    "title": "The First 90 Days",
+    "subtitle": "Scenario 129 — The Year in a Folder (a fictional composite)",
+    "startDateISO": "2025-09-08",
+    "startNode": "start",
+    "startCash": 150,
+    "tier": "Hard",
+    "summary": "A mother whose son entered care as an infant plays a full year of services, visits, and reviews — and discovers that the folder she keeps, page by dated page, is the argument that brings him home at the month-thirteen review."
+  },
+  "nodes": [
+    {
+      "id": "start",
+      "kicker": "Day 0 — Monday, September 8, 2025",
+      "dayOffset": 0,
+      "title": "Month Zero",
+      "body": [
+        "Your name is Edurne. Your son Unai was born in August, and in September — after a postpartum crisis that this story treats the way the file should have: as a medical event with a paper trail — the court placed him in foster care and handed you a service plan with nine boxes on it.",
+        "Nine boxes, twelve months, one folder. The foster mother, Mrs. Beltran, sends a photo every Friday. Your lawyer, Mr. Olano, says the sentence you will hear in every room this year, so hear it from him first: the court can only act on what is in the record. Counsel is your right in this case (42 Pa.C.S. § 6337). The record, starting today, is partly yours to write."
+      ],
+      "choices": [
+        {
+          "text": "Start the folder today: plan, orders, every paper, in date order",
+          "next": "folder",
+          "setFlags": [
+            "folderKept"
+          ],
+          "addHidden": [
+            "Parent's parallel folder started at month zero"
+          ],
+          "note": "A folder is a memory that can be handed to a judge."
+        },
+        {
+          "text": "Rely on the agency's file — it's the official one",
+          "next": "folder",
+          "note": "It is. It will also be the only one in the room, written in the passive voice."
+        }
+      ]
+    },
+    {
+      "id": "folder",
+      "kicker": "Day 14 — Monday, September 22, 2025",
+      "dayOffset": 14,
+      "title": "Nine Boxes",
+      "body": [
+        "The plan's nine boxes: treatment, parenting course, visitation, housing, employment or benefits, medical follow-through, and three more that blur together on the page. Two of them depend on referrals the agency must send. One depends on a waitlist. All nine depend, in the end, on dates.",
+        "Mr. Olano circles the two referral boxes. 'When a referral is late,' he says, 'the box looks unchecked from a distance. Get the dates.'"
+      ],
+      "choices": [
+        {
+          "text": "Ask the caseworker, in writing, for each referral's date — promised, sent, started",
+          "next": "boxes_detail",
+          "cash": -5,
+          "setFlags": [
+            "referralDates"
+          ],
+          "addHidden": [
+            "Referral chronology requested in writing"
+          ],
+          "note": "Three dates per referral. The difference between them is where cases hide."
+        },
+        {
+          "text": "Trust the plan's timeline — it says services begin within thirty days",
+          "next": "boxes_detail",
+          "note": "Plans say many things. Dates say when."
+        }
+      ]
+    },
+    {
+      "id": "boxes_detail",
+      "kicker": "Day 21 — Monday, September 29, 2025",
+      "dayOffset": 21,
+      "title": "Reading the Plan Like a Contract",
+      "body": [
+        "You and Mr. Olano read the nine boxes the way landlords read leases: for the verbs. 'Parent will attend' is yours. 'Agency will refer' is theirs. Three boxes have their verbs; two are written in a fog of 'as appropriate' that no one will ever be measured against.",
+        "He writes the fog-boxes on an index card. 'These are the ones that come back as surprises,' he says. 'We will ask about them monthly, in writing, until they have dates.'"
+      ],
+      "choices": [
+        {
+          "text": "Start the monthly written check-in on the fog-boxes",
+          "next": "referral_dates",
+          "setFlags": [
+            "fogTracked"
+          ],
+          "addHidden": [
+            "Plan's vague provisions tracked by monthly written check-ins"
+          ],
+          "note": "Fog, pursued monthly, precipitates into dates."
+        },
+        {
+          "text": "The plan is the plan — don't over-lawyer a service plan",
+          "next": "referral_dates",
+          "note": "The plan is a contract the court will enforce from memory of summaries. Over-lawyering is the job."
+        }
+      ]
+    },
+    {
+      "id": "referral_dates",
+      "kicker": "Day 35 — Monday, October 13, 2025",
+      "dayOffset": 35,
+      "title": "The First Visit Room",
+      "body": [
+        "The visit room has a clock, a rug, and a box of toys that Mrs. Beltran supplements from her own house, because Unai has opinions about exactly one rattle. You arrive early. You arrive early every time, because the sign-in sheet is the one document in this building that you author yourself.",
+        "The visit supervisor notes 'mother appropriate and engaged.' Four words a week. By December they will be a paragraph the court has read fifty times."
+      ],
+      "choices": [
+        {
+          "text": "Sign in and out precisely, and keep your own visit log with dates and one line each",
+          "next": "visit_log",
+          "setFlags": [
+            "visitLog"
+          ],
+          "addHidden": [
+            "Visit log kept with dates from the first month"
+          ],
+          "note": "Your log and their sheet, agreeing. Agreement is a kind of evidence."
+        },
+        {
+          "text": "Just be present — the bonding is the point, not the paperwork",
+          "next": "visit_log",
+          "note": "The bonding is the point. The paperwork is how the court finds out."
+        }
+      ]
+    },
+    {
+      "id": "visit_log",
+      "kicker": "Day 63 — Monday, November 10, 2025",
+      "dayOffset": 63,
+      "title": "The Referral That Wasn't",
+      "body": [
+        "The parenting course box is still unchecked at month three, and now the file can say why, because you asked for dates: the plan was signed September 22; the referral was sent November 10; the course's next cohort starts in January. Seven weeks of the plan's twelve months, spent in a mailbox.",
+        "Your caseworker is not defensive when you raise it — she is relieved someone wrote it down. 'Put it in a letter to me,' she says, 'so it's in the file where the review will see it.'"
+      ],
+      "choices": [
+        {
+          "text": "Write the letter: plan date, referral date, cohort date — polite, dated, copied",
+          "next": "winter_visit",
+          "cash": -5,
+          "setFlags": [
+            "gapDocumented"
+          ],
+          "addHidden": [
+            "Referral gap documented by dated letter to the file"
+          ],
+          "note": "The gap is now a fact with dates instead of an impression with adjectives."
+        },
+        {
+          "text": "Raise it verbally at the next team meeting",
+          "next": "winter_visit",
+          "note": "Raised, nodded at, minuted as 'discussed concerns.' Concerns are not dates."
+        }
+      ]
+    },
+    {
+      "id": "winter_visit",
+      "kicker": "Day 77 — Monday, November 24, 2025",
+      "dayOffset": 77,
+      "title": "The Visit Room in Winter",
+      "body": [
+        "December visits smell of wet coats. Unai, four months old, tracks your face the way the developmental chart says he should, and the supervisor writes it down because you have learned to ask, politely, at the end of every visit: 'Will today's note say what he did?'",
+        "Asking about the note is not vanity. The notes are the visit, as far as every future reader is concerned. A parent who asks is a parent whose visits get described carefully."
+      ],
+      "choices": [
+        {
+          "text": "Ask, and add your own line to your log: what he did, what you did, what was said",
+          "next": "gap_letter",
+          "setFlags": [
+            "notesAsked"
+          ],
+          "addHidden": [
+            "Parent confirms each visit note and mirrors it in her own log"
+          ],
+          "note": "Two accounts, agreeing. The file's favorite kind of fact."
+        },
+        {
+          "text": "Don't make it awkward — just enjoy the hour",
+          "next": "gap_letter",
+          "note": "The hour is enjoyed either way. Only one version leaves a careful note behind."
+        }
+      ]
+    },
+    {
+      "id": "gap_letter",
+      "kicker": "Day 91 — Monday, December 8, 2025",
+      "dayOffset": 91,
+      "title": "The Record, Requested",
+      "body": [
+        "Mr. Olano suggests the mirror move at the winter review: request the agency's record of the case in writing — the material is released upon request (55 Pa. Code § 3130.44(d)), with other people's information redacted as the rule provides (55 Pa. Code § 3130.44(f)).",
+        "'You are not accusing anyone of anything,' he says. 'You are asking to read the book the court will read. Everyone should read the book.'"
+      ],
+      "choices": [
+        {
+          "text": "Sign the written request; keep the stamped copy in the folder",
+          "next": "record_back",
+          "cash": -5,
+          "setFlags": [
+            "recordsRequested"
+          ],
+          "addHidden": [
+            "Case record requested in writing under § 3130.44(d)"
+          ],
+          "note": "Requested at month three. The book is coming."
+        },
+        {
+          "text": "Wait until closer to the big review — no need to seem adversarial",
+          "next": "record_back",
+          "note": "Asking for your own record is not adversarial. Waiting, though, is a strategy with a price: the gaps stay invisible until they're old."
+        }
+      ]
+    },
+    {
+      "id": "record_back",
+      "kicker": "Day 120 — Tuesday, January 6, 2026",
+      "dayOffset": 120,
+      "title": "Reading the Book",
+      "body": [
+        "The record confirms the referral gap — and finds a second one: the housing referral was never sent at all, an omission visible only because the file lists what it did send. Your treatment attendance is recorded as 'consistent,' your visits as 'kept, appropriate.'",
+        "The book is not your enemy. Read whole, it is a better witness for you than its summaries were. It just needs its gaps named, in writing, while there is time to close them."
+      ],
+      "choices": [
+        {
+          "text": "File a short written response: the two gaps, with dates, and your attendance record, with dates",
+          "next": "winter_review",
+          "cash": -5,
+          "setFlags": [
+            "responseFiled"
+          ],
+          "addHidden": [
+            "Written response filed naming referral gaps with dates"
+          ],
+          "note": "Two gaps, two dates each, one page. The book now contains its own correction."
+        },
+        {
+          "text": "Tell your lawyer and let him raise it orally at the review",
+          "next": "winter_review",
+          "note": "He raises it well. Orally. The review reads the file the week before, alone."
+        }
+      ]
+    },
+    {
+      "id": "winter_review",
+      "kicker": "Day 140 — Monday, January 26, 2026",
+      "dayOffset": 140,
+      "title": "The Winter Review",
+      "body": [
+        "The winter review is ten minutes long. The judge has read the summaries, which say 'progressing,' and your response — not yet filed — exists only as your lawyer's spoken sentence: 'The record shows two referral gaps, Your Honor, which we will document.'",
+        "The judge nods and writes something. What she writes, you will never see. What you file, she cannot avoid seeing. The difference between those two sentences is the rest of this scenario."
+      ],
+      "choices": [
+        {
+          "text": "Leave court determined: the response gets filed this week, not 'in due course'",
+          "next": "response_filed",
+          "setFlags": [
+            "responsePrompted"
+          ],
+          "addHidden": [
+            "Winter review attended; filing resolve set by the court's nod"
+          ],
+          "note": "'In due course' is where documents go to be forgotten politely."
+        },
+        {
+          "text": "Take the nod as good news and let the lawyer handle timing",
+          "next": "response_filed",
+          "note": "The nod was good news. It was also, unmistakably, a test."
+        }
+      ]
+    },
+    {
+      "id": "response_filed",
+      "kicker": "Day 168 — Monday, February 23, 2026",
+      "dayOffset": 168,
+      "title": "The Housing Box",
+      "body": [
+        "Spring. The housing referral, re-sent after your letter, reaches the top of a waitlist: a two-bedroom near the bus line, available in July, held with a letter on letterhead. It is not a key. It is the dated raw material of the last unchecked box.",
+        "The treatment program sends its own letter: completion expected in June, attendance 'exemplary' — their word, their letterhead."
+      ],
+      "choices": [
+        {
+          "text": "File both letters and ask the agency to note the July unit in the case plan itself",
+          "next": "course_cohort",
+          "cash": -5,
+          "setFlags": [
+            "housingLetter"
+          ],
+          "addHidden": [
+            "Housing and treatment letters filed; plan updated in writing"
+          ],
+          "note": "The plan now says July in the agency's own hand."
+        },
+        {
+          "text": "Keep the letters for the review — a surprise reveal helps",
+          "next": "course_cohort",
+          "note": "Hearings are not theaters. A letter filed in March is read; a letter revealed in June is examined."
+        }
+      ]
+    },
+    {
+      "id": "course_cohort",
+      "kicker": "Day 182 — Monday, March 9, 2026",
+      "dayOffset": 182,
+      "title": "The January Cohort",
+      "body": [
+        "The parenting course finally starts — the one whose referral spent seven weeks in a mailbox. The instructor's sign-in sheet has your name in the first row, because you arrive the way you arrive at visits: early, with a pen that works.",
+        "Eight sessions. Eight signatures. At the end, a certificate with a seal that means nothing to you and everything to a file."
+      ],
+      "choices": [
+        {
+          "text": "Attend all eight, file the certificate the week it issues",
+          "next": "treatment_letter",
+          "setFlags": [
+            "courseDone"
+          ],
+          "addHidden": [
+            "Parenting course completed; certificate filed"
+          ],
+          "note": "Eight signatures, one seal, filed while the ink is still a fact."
+        },
+        {
+          "text": "Miss the rainy one — one absence can't matter",
+          "next": "treatment_letter",
+          "note": "It can. Not because of the absence; because of the blank space where a signature argues by its absence."
+        }
+      ]
+    },
+    {
+      "id": "treatment_letter",
+      "kicker": "Day 196 — Monday, March 23, 2026",
+      "dayOffset": 196,
+      "title": "The Program's Word",
+      "body": [
+        "Your treatment program's counselor writes the letter programs write when attendance has been, in her word, exemplary: dates enrolled, sessions attended, screens clear, prognosis 'excellent, with supports.' It is addressed 'To Whom It May Concern,' which in this system means: to the file.",
+        "Letters like this have a half-life. Filed in February, it is evidence. Produced in June, it is archaeology."
+      ],
+      "choices": [
+        {
+          "text": "File it in February, with a copy to every party",
+          "next": "visit_expand129",
+          "cash": -5,
+          "setFlags": [
+            "treatmentFiled"
+          ],
+          "addHidden": [
+            "Treatment completion letter filed with copies to all parties"
+          ],
+          "note": "Evidence, not archaeology. The half-life is respected."
+        },
+        {
+          "text": "Keep it for the final review — save the good material",
+          "next": "visit_expand129",
+          "note": "Saved material arrives as a claim. Filed material arrives as a fact."
+        }
+      ]
+    },
+    {
+      "id": "visit_expand129",
+      "kicker": "Day 210 — Monday, April 6, 2026",
+      "dayOffset": 210,
+      "title": "Longer Tuesdays",
+      "body": [
+        "Visits expand: two hours, then an afternoon, then — the milestone the supervisor announces without ceremony — a Saturday at Mrs. Beltran's house, where Unai's other life is, so you can learn its geography: the crib, the rattle, the dog's name.",
+        "Expansion is the plan voting with its feet. Each lengthening is a document, and the documents now agree with each other in two folders at once."
+      ],
+      "choices": [
+        {
+          "text": "Log every expanded visit, and write Mrs. Beltran a thank-you she can keep",
+          "next": "plan_noted",
+          "setFlags": [
+            "expansionLogged"
+          ],
+          "addHidden": [
+            "Expanded visits logged; foster caregiver thanked in writing"
+          ],
+          "note": "Gratitude, in writing, in a file — the system reads kindness as stability because, usually, it is."
+        },
+        {
+          "text": "Just live the longer visits — don't document joy",
+          "next": "plan_noted",
+          "note": "Joy documented is not diminished. Joy undocumented is just unproven."
+        }
+      ]
+    },
+    {
+      "id": "plan_noted",
+      "kicker": "Day 224 — Monday, April 20, 2026",
+      "dayOffset": 224,
+      "title": "Month Nine Review",
+      "body": [
+        "The month-nine review is quiet, which veterans of this hallway recognize as a sound: the judge moves through the plan box by box, and your folder and their file tell the same story — seven boxes closed, the course done, housing dated for July, visits a year of kept Tuesdays.",
+        "The judge says the words that set the endgame: 'We'll take the permanency question at the thirteen-month review. I want the record complete by then.' Complete is a standard. It can be met on purpose."
+      ],
+      "choices": [
+        {
+          "text": "Ask Mr. Olano to build the review packet with you: every letter, log, certificate, and the gap chronology",
+          "next": "unit_viewing",
+          "setFlags": [
+            "packetBuilt"
+          ],
+          "addHidden": [
+            "Review packet assembled from the folder and the record"
+          ],
+          "note": "The packet is the year, edited by dates."
+        },
+        {
+          "text": "The file speaks for itself by now — rest on it",
+          "next": "unit_viewing",
+          "note": "Files speak in the order they're read. Packets speak in the order you choose."
+        },
+        {
+          "text": "Consider the folder finished — the letters can speak for themselves from here",
+          "next": "end_clock129",
+          "note": "Folders finished early have a way of being read as finished cases."
+        }
+      ]
+    },
+    {
+      "id": "unit_viewing",
+      "kicker": "Day 240 — Wednesday, May 6, 2026",
+      "dayOffset": 240,
+      "title": "The Unit",
+      "body": [
+        "The July letter becomes a June viewing: a second-floor two-bedroom with a window over a courtyard, a lease contingent on the review's word. The housing worker photographs the empty rooms for the file — bare floors that read, in this context, like a promise with measurements.",
+        "You photograph them too, from the doorway, where a parent stands in a home that is not yet hers, learning its light."
+      ],
+      "choices": [
+        {
+          "text": "File the lease-contingent letter and the housing worker's photos",
+          "next": "foster_letter",
+          "cash": -5,
+          "setFlags": [
+            "leaseFiled"
+          ],
+          "addHidden": [
+            "Contingent lease and unit documentation filed"
+          ],
+          "note": "Bare floors, dated. The court has seen a thousand promises; measurements are rarer."
+        },
+        {
+          "text": "Wait for the actual keys before troubling the file",
+          "next": "foster_letter",
+          "note": "Keys trouble files pleasantly. Contingencies, filed early, trouble them usefully."
+        }
+      ]
+    },
+    {
+      "id": "foster_letter",
+      "kicker": "Day 258 — Sunday, May 24, 2026",
+      "dayOffset": 258,
+      "title": "Mrs. Beltran's Letter",
+      "body": [
+        "Mrs. Beltran writes to the court — foster parents may, and the good ones do — a page about Unai's year: his first food, his sleep, his laugh at the dog, and the sentence that matters: 'His mother has never missed a Tuesday. I would trust her with him because I have watched her earn it weekly.'",
+        "It is the only document in the file written by someone who had the child and gave him back, weekly, on time, smiling. Judges read those letters twice."
+      ],
+      "choices": [
+        {
+          "text": "Thank her, copy the letter into your packet exactly as written",
+          "next": "month9_review",
+          "setFlags": [
+            "fosterLetter"
+          ],
+          "addHidden": [
+            "Foster caregiver's support letter included in the packet"
+          ],
+          "note": "Exactly as written. Her credibility is the exhibit; editing is not your privilege."
+        },
+        {
+          "text": "Let the letter travel through the agency on its own",
+          "next": "month9_review",
+          "note": "Letters traveling alone sometimes don't. The packet is its escort."
+        }
+      ]
+    },
+    {
+      "id": "month9_review",
+      "kicker": "Day 276 — Thursday, June 11, 2026",
+      "dayOffset": 276,
+      "title": "The Nine-Month Review",
+      "body": [
+        "The nine-month review goes the way the winter one didn't: the judge works from filed paper — the letters, the logs, the gap chronology with its two corrected dates — and her questions are the questions of a court checking a list it expects to complete.",
+        "'We'll take the permanency question at the thirteen-month review,' she says. 'I want the record complete by then.' This time, complete is not a hope. It is an inventory, and most of it is already checked."
+      ],
+      "choices": [
+        {
+          "text": "Treat the sentence as a specification: list everything the record still lacks",
+          "next": "packet_built",
+          "setFlags": [
+            "specListed"
+          ],
+          "addHidden": [
+            "Court's completeness standard converted into a checklist"
+          ],
+          "note": "A specification can be met on purpose. It now will be."
+        },
+        {
+          "text": "Take the good tone as the victory and coast to September",
+          "next": "packet_built",
+          "note": "Tone is weather. The specification was the climate. Coasting is how packets stay unbuilt."
+        }
+      ]
+    },
+    {
+      "id": "packet_built",
+      "kicker": "Day 300 — Sunday, July 5, 2026",
+      "dayOffset": 300,
+      "title": "The Packet, Assembled",
+      "body": [
+        "Mr. Olano spreads the folder and the record side by side on his office table: nine boxes across the top, their closing documents beneath, the two gaps with their dates, the letters in the order the court will want them. 'A packet is an argument,' he says, 'that has stopped needing you in the room.'",
+        "It goes in two weeks before the review, with a one-page summary on top — because the first page of a packet is the only page guaranteed a reading, and the summary makes the rest worth turning."
+      ],
+      "choices": [
+        {
+          "text": "File the packet two weeks early, with a one-page summary Mr. Olano drafts and you sign",
+          "next": "overnights",
+          "cash": -10,
+          "setFlags": [
+            "summaryFiled"
+          ],
+          "addHidden": [
+            "Final packet and signed summary filed two weeks before the review"
+          ],
+          "note": "Filed early, read early, argued last. The correct order."
+        },
+        {
+          "text": "Bring the packet to the hearing and hand it up",
+          "next": "overnights",
+          "note": "Paper delivered on the deadline is a speech. Paper filed early is a record."
+        }
+      ]
+    },
+    {
+      "id": "overnights",
+      "kicker": "Day 322 — Monday, July 27, 2026",
+      "dayOffset": 322,
+      "title": "Overnights",
+      "body": [
+        "August: Unai sleeps at your apartment for the first time since he was six weeks old — the contingent lease signed after the nine-month review, the crib assembled by Mrs. Beltran's husband, who accepts pie as full payment and files a verbal receipt: 'Sturdy.'",
+        "You keep the calendar on the refrigerator anyway. Habits built over a year do not retire on command, and this one has become less a strategy than a description of the household: what happens here gets written down."
+      ],
+      "choices": [
+        {
+          "text": "Log the overnights and the first-week pediatrician visit, and file both",
+          "next": "aftercare_plan",
+          "setFlags": [
+            "overnightsLogged"
+          ],
+          "addHidden": [
+            "Overnight trial logged with pediatric follow-through filed"
+          ],
+          "note": "The trial writes its own evidence, one dated morning at a time."
+        },
+        {
+          "text": "He's home-ish — stop logging and just be his mother",
+          "next": "aftercare_plan",
+          "note": "You are his mother either way. The log is for the one remaining reader: the September court."
+        }
+      ]
+    },
+    {
+      "id": "aftercare_plan",
+      "kicker": "Day 344 — Tuesday, August 18, 2026",
+      "dayOffset": 344,
+      "title": "Aftercare, In Writing",
+      "body": [
+        "The agency proposes aftercare supports — the visiting nurse, the early-intervention screening, the treatment program's alumni group — and for once you are the one saying the sentence: 'Wonderful. Put it in writing, with dates.'",
+        "The caseworker laughs and does. A year ago the system's paper was something done to you. The folder changed the direction of the ink."
+      ],
+      "choices": [
+        {
+          "text": "Get the aftercare plan signed and filed before the review",
+          "next": "packet_audit",
+          "setFlags": [
+            "aftercareWritten"
+          ],
+          "addHidden": [
+            "Aftercare plan reduced to writing and filed"
+          ],
+          "note": "Signed, dated, filed. The case's last document is written the way its first ones should have been."
+        },
+        {
+          "text": "Accept the verbal plan — everyone's aligned now",
+          "next": "packet_audit",
+          "note": "Alignment is a mood. Writing is a commitment with a date on it."
+        }
+      ]
+    },
+    {
+      "id": "packet_audit",
+      "kicker": "Day 366 — Wednesday, September 9, 2026",
+      "dayOffset": 366,
+      "title": "The Audit",
+      "body": [
+        "Two weeks out, you and Mr. Olano audit the packet against the judge's specification, line by line: nine boxes, nine closing documents; two gaps, two chronologies; a year of Tuesdays, signed twice. One page is missing — the treatment program's final discharge summary, promised for Friday.",
+        "An audit that finds nothing is a ritual. An audit that finds one page is a rescue."
+      ],
+      "choices": [
+        {
+          "text": "Chase the discharge summary in writing and file it the day it issues",
+          "next": "night_before129",
+          "cash": -5,
+          "setFlags": [
+            "auditDone"
+          ],
+          "addHidden": [
+            "Packet audited against the court's standard; final document chased in writing"
+          ],
+          "note": "Complete, on purpose, with one rescue to prove the audit worked."
+        },
+        {
+          "text": "Friday's summary can be handed up at the review — close enough",
+          "next": "night_before129",
+          "note": "Handed-up paper is a speech. Filed paper is a record. The audit existed to teach exactly this."
+        }
+      ]
+    },
+    {
+      "id": "night_before129",
+      "kicker": "Day 384 — Sunday, September 27, 2026",
+      "dayOffset": 384,
+      "title": "The Night Before Month Thirteen",
+      "body": [
+        "The packet is filed. The summary is signed. Unai sleeps in the crib in the next room on the last night of the trial that the calendar still calls a trial, and the folder — a year thick, tabbed, in date order — sits on the table like a second, quieter attorney.",
+        "Tomorrow the court reads the book everyone wrote. You just made sure you were one of its authors."
+      ],
+      "choices": [
+        {
+          "text": "Sleep. The year is the preparation.",
+          "next": "final_review",
+          "note": "The folder's last service is a quiet house the night before."
+        }
+      ]
+    },
+    {
+      "id": "final_review",
+      "kicker": "Day 396 — Friday, October 9, 2026",
+      "dayOffset": 396,
+      "title": "The Thirteen-Month Review",
+      "body": [
+        "Entry was Monday, September 8, 2025. Today is the thirteen-month review, and the packet has been in the file for two weeks: nine boxes, each with its closing document; two gaps, each with its dates; a year of Tuesdays.",
+        "The agency's counsel reads the same file and reaches the recommendation first, which is how you know the year worked: return home, with the plan's remaining supports converted to aftercare. The judge looks for a reason in the record to disagree with everyone, and the record — fairly, completely — does not contain one."
+      ],
+      "choices": [
+        {
+          "text": "Ask for the order to say it plainly: return home today, aftercare in writing",
+          "next": "end_home129",
+          "requiresFlags": [
+            "recordsRequested",
+            "packetBuilt",
+            "gapDocumented"
+          ],
+          "note": "Today. The word the whole year was for."
+        },
+        {
+          "text": "Accept whatever the court proposes without asking",
+          "next": "end_trial129",
+          "note": "The court proposes a trial period first. Close, and slower."
+        }
+      ]
+    },
+    {
+      "id": "end_home129",
+      "kicker": "Day 403 — Friday, October 16, 2026",
+      "dayOffset": 403,
+      "title": "Ending — Home at Thirteen Months",
+      "body": [
+        "Unai comes home on a Monday, one year and one week after the Monday he left, with a folder's worth of proof that the year happened the way you said it did. Mrs. Beltran gets a standing Sunday invitation and a photo every Friday, a tradition now running in the other direction.",
+        "The folder goes on a shelf, not into a drawer. Some families keep them forever. It is not a trophy. It is the record, and the record is what brought him home."
+      ],
+      "ending": true,
+      "debrief": [
+        "THE YEAR'S LAW — Counsel throughout (42 Pa.C.S. § 6337); the case record released on request (55 Pa. Code § 3130.44(d)), its redactions governed by § 3130.44(f); and the permanency horizon behind the final review — fifteen of the most recent twenty-two months (42 U.S.C. § 675(5)(E); the parallel state review determination under 42 Pa.C.S. § 6351(f)(9)) — which this route never had to argue about, because the question the court reached first was return.",
+        "THE REAL MECHANIC — Nothing in this scenario turns on a dramatic hearing moment. It turns on referral dates requested in writing, a gap letter the caseworker herself invited, and a packet filed two weeks early. The debriefs of the other endings show the same year at slower speeds: the facts were never the problem; their paper form was the whole contest.",
+        "WHAT NO STRATEGY CONTROLS — Waitlists, cohort schedules, housing stock, and the individual judge. This route's claim is narrow and sufficient: every fact the court needed existed as dated paper before the court needed it. Outcomes also turn on workers, judges, and luck — the folder is how a parent makes sure luck is not carrying the whole case."
+      ]
+    },
+    {
+      "id": "end_trial129",
+      "kicker": "Day 403 — Friday, October 16, 2026",
+      "dayOffset": 403,
+      "title": "Ending — The Trial Period",
+      "body": [
+        "The court orders a trial home placement first: ninety days of overnights stretching into residence, a further review in the new year, the file still open like a door not yet allowed to close.",
+        "It is a good outcome wearing a slower costume. Unai sleeps in his crib, in your home, while the system finishes convincing itself of what your folder already says."
+      ],
+      "ending": true,
+      "debrief": [
+        "A PARTIAL WIN, NAMED HONESTLY — He is home; the case is not closed. What separated this ending from the best one was the last paper discipline: the packet and signed summary filed early (and the flags they require — **recordsRequested**, **packetBuilt**, **gapDocumented**). Hearings ratify records; they rarely assemble them.",
+        "WHAT NO STRATEGY CONTROLS — Judicial caution is a variable no folder eliminates. A trial period is the system hedging; the folder's work is to make the hedge short."
+      ]
+    },
+    {
+      "id": "end_clock129",
+      "kicker": "Day 456 — Tuesday, December 8, 2026",
+      "dayOffset": 456,
+      "title": "Ending — The Fifteenth Month",
+      "body": [
+        "This branch is the year played at the file's pace instead of yours: the letters stopped in spring, the packet was never assembled, and the reviews summarized a plan whose remaining boxes looked — from the distance of a summary — simply open.",
+        "At fifteen of the most recent twenty-two months, the conversation changes its subject: from your progress to the agency's filing duty and its exceptions (42 U.S.C. § 675(5)(E)). The exceptions exist — kinship care, a documented compelling reason, services identified but not provided — but they must be documented to be argued, and documentation is the one crop this branch stopped planting in the spring."
+      ],
+      "ending": true,
+      "debrief": [
+        "THE CLOCK, ARRIVED — Entry September 8, 2025 + 15 months = Tuesday, December 8, 2026 is the horizon this ending approaches (offset 457 ≈ month 15): the filing duty and its three exceptions (42 U.S.C. § 675(5)(E)) become the case's whole subject. The services-not-provided exception was this family's true story — two referrals, one seven weeks late, one never sent — and it was unwinnable in this branch because the dates were never put in writing while they were fresh.",
+        "WHAT NO STRATEGY CONTROLS — Nothing about the mother's effort differs between this ending and the best one. The services were attended, the visits kept, the love constant. Only the paper differs — which is the scenario's entire, deliberate point: in month fifteen, the file is the facts."
+      ]
+    }
+  ]
+}

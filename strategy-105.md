@@ -1,0 +1,52 @@
+# Strategy Guide — Scenario 105: "The Plan in the Wrong Font"
+
+*Game documentation for a fictional simulation in "The First 90 Days" (Tactic Watch). The family, the case, and every choice below are fictional. This guide is general information about how the scenario is built — it is not legal advice for any real case.*
+
+## (1) The win
+
+**Best ending: "The Plan in the Right Font."**
+
+State it honestly: this is a **full** win, and it is labelled as one. Maren returns home to Clarence under the refitted plan — the same plan, reissued as single-page steps with morning scheduling and his notebook system written in as the method — and the case closes on the schedule the court's order sets. Nothing about the win denies the original concern: a newly injured father was assessed, his daughter spent months safely with her aunt, and the record had to prove the fit before the court would act on it. What the route changes is not the diagnosis. It is the paper the case runs on — and therefore what the measurements in the file actually measure.
+
+## (2) The route
+
+Verified by walking the scenario graph from the start node (see the verification note at the end). Key decision points, in order — node title, winning choice, and what it changes:
+
+1. **Six O'Clock** — *Write to Mr. Salas and the program: request a morning section, in writing, and keep the copy.* Sets **morningRequest**; hidden item: morning class section requested in writing. The first dated letter — the correction at step 9 will be built out of letters exactly like this one.
+2. **Four Hours, One Morning** — *Request, in writing, that the battery be split into two morning sessions, with your rehab chart page attached.* Sets **evalFitRequest**. Whether or not the request is granted, it puts the fit question in the file *before* the evaluation measures him — which is what later lets the report be answered instead of merely resented.
+3. **One Page at a Time** — *Sign and send the written request for single-page steps and morning scheduling.* Sets **stepsRequest**; hidden item: plan reissued as single-page steps and morning scheduling requested in writing, rehab chart attached. The plan's format is challenged as a document, not endured as a fate.
+4. **What the File Says** — *Sign the written record request and send it this week.* Cash −10 (you finish the route with $133 of the $170 start). Sets **recordsRequested**. This is the scenario's highest-leverage move: the request under 55 Pa. Code § 3130.44(d) is what surfaces the three "non-compliant" entries while they can still be answered.
+5. **The Weeks the File Travels** — *Write to confirm the check-in — and ask, again in writing, for a morning time.* Sets **paperHabit**. The second dated request is what turns a letter into a pattern — and a pattern is what a correction can prove.
+6. **'Non-Compliant,' Three Times** — *Build the written correction with Ms. Thornbury, attaching every request letter you sent.* This choice is flag-gated on **recordsRequested**. Sets **correctionBuilt**; hidden item: correction drafted from the released record, request letters attached by date. The log's entries are answered by the requests that preceded them, date against date — what the record supports, answered with more record.
+7. **The Correction, Filed** — *Ask what else belongs in the record before the review.* A route choice, not a flag: it moves from correcting the record to completing it.
+8. **The Letter From Rehabilitation** — *Offer the rehabilitation letter into the record, filed with the correction.* Sets **rehabLetter**; hidden item: the provider's functional letter — what he can do, and the conditions under which he does it — offered and filed. The evaluation's true measurement of unfitted hours is now met, inside the file, by a fuller professional account.
+9. **Refitting the Plan** — *Sign the refitted plan, one page at a time, checking each page as you go.* Sets **refitDone**; hidden item: plan refitted in writing — single-page steps, morning scheduling, supplemental evaluation mornings only. The refit happens in a meeting with the filed correction on the table; that is not a coincidence, and the scenario does not pretend it is.
+10. **Two Buses, Morning Light** — *Pay the fees and make the copies.* Cash −27. Completion has arithmetic; the folder that mirrors the record is part of the strategy, not a hobby.
+11. **Measured in the Morning** — *Take the supplement home and file it in the binder, behind the certificate.* Sets **evalSupplement**; hidden item: supplemental findings under fitted conditions filed, prior findings qualified in writing ("prior findings should be read as describing performance under unfitted conditions").
+12. **The Final Review** — *Ask for return home under the refitted plan, and closure on schedule.* This choice is flag-gated: it is only available with **recordsRequested** + **correctionBuilt** + **rehabLetter** all set. It leads to **The Plan in the Right Font**.
+
+Supporting route choices that cost nothing and keep the record honest: writing the shelter-care sentence down at **Seventy-Two Hours** (kinship named on the record), filing Vivian's practice observation at **Practice, at Vivian's Table**, the three-stack inventory at **Inventory Before the Review**, and the home-practice write-up at **Overnights, in Sequence**.
+
+## (3) Why this wins — the law as it is supposed to work
+
+Only principles from the scenario's verified set are stated here:
+
+- **The clocks and counsel at the front end work as written.** Placement is followed by a shelter care hearing not later than 72 hours after the child is taken into care (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)), with the right to counsel and to appointed counsel (42 Pa.C.S. § 6337; § 6332(a)). Vivian's kinship role is named on that first record — and later heard formally, as a potential kinship care resource may be heard on her qualifications under the provision as amended by Act 48 of 2023 (42 Pa.C.S. § 6336.1; definition at 42 Pa.C.S. § 6302).
+- **Agency records are obtainable on request** — 55 Pa. Code § 3130.44(d) ("shall be released upon request"). Step 4 is that right, exercised in writing and early enough to matter. The correction at step 6 is its purpose: entries that scored evenings as refusal are answered by the dated request letters that preceded the evenings, so the certified record supports the corrected account rather than the log's first draft.
+- **Reviews measure the file that exists.** At permanency review the court examines whether placement remains necessary, whether the plan is being followed, what progress has been made, and the efforts to finalize the plan (42 Pa.C.S. § 6351(e)(3)(i); § 6351(f)), and chooses among the outcomes the law lists on those determinations and all the relevant evidence (§ 6351(f.1)). The route wins because, by the final review, the file contains both measurements — the unfitted one and the fitted one, with the provider's letter explaining the difference — and a completed refitted plan to measure.
+- **The honest outside-the-set note:** disability-accommodation law exists beyond this scenario's verified set, and this route deliberately does not rely on it — no accommodation right is asserted anywhere in the scenario. Every win on the route rests on documentation (dated written requests, a requested record, a filed correction, an offered letter) and on the verified dependency mechanics above. In a real case, counsel would assess what additional law applies; the game teaches only the paper discipline it can verify.
+
+## (4) The traps
+
+1. **Enrolling in the 6 p.m. class at "Six O'Clock" and pushing through.** Cost: no **morningRequest** letter exists. The fog-hour absences are logged as non-attendance with nothing in the file to explain them, and the correction at step 6 loses its first attachment.
+2. **Taking the four-hour battery as scheduled at "Four Hours, One Morning"** because questioning it might look like dodging. Cost: no **evalFitRequest**. The report still describes the worst hour — but now there is no dated, pre-evaluation document proving the fit was raised before the measurement, and the report reads as unopposed fact instead of a contested method.
+3. **Asking about single-page steps by phone at "One Page at a Time."** Cost: no **stepsRequest**, and nothing to attach. A warm phone call leaves the nine-page plan — and its accumulating evening entries — exactly as issued.
+4. **Waiting to request the record at "What the File Says."** Cost: no **recordsRequested**, which closes the gated correction choice at "'Non-Compliant,' Three Times" outright — the single most expensive skip in the scenario, because every later document (correction, refit, supplement) is built on the packet it produces.
+5. **Holding the rehabilitation letter at "The Letter From Rehabilitation"** to produce "only if the hearing goes badly." Cost: no **rehabLetter** — the evaluation stands as the file's only professional description, the final-review ask for full return and closure is flag-locked, and the branch runs to "A New Goal, Written From the Old Record."
+
+## (5) What no strategy controls
+
+The injury and its daily timetable — the fog arrives at its hour on the winning route too; the route manages it, it does not cure it. The evaluator's scheduling template. Which supervisor attends the refit meeting. Mr. Salas's caseload, the judge who reads the file, and Vivian's capacity to hold a child's daily life for months — a sum of another person's generosity that no letter creates. The route controls only the paper: that every fit request was written before the failure it predicted, that the record was requested while correction could still change readings, and that the fuller professional account was filed where decisions are made. Outcomes in this system turn on workers, judges, and luck as much as on any parent's choices. The strategy's whole claim is narrower: the file that decided this case described the man at the hours he actually lives in — because he insisted, in dated documents, on being measured there.
+
+---
+*Verification: this route was walked programmatically against `scenario-105.json` — each named choice was followed from the start node in order; every intermediate node and choice exists; every flag-gated choice's requirements were satisfied by flags set earlier on the walk; the walk terminates at the ending node titled "The Plan in the Right Font" after visiting 33 nodes, with $133 of the $170 starting cash remaining.*

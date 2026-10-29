@@ -1,0 +1,325 @@
+# THE FIRST 90 DAYS — Scenario 110: “Unstable, On Paper”
+
+*Human-readable script. This document and `scenario-110.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a mother at month nine of her daughter's foster-care placement whose landlord declines to renew her lease, and who doubles up with a cousin under a signed room agreement, told through letters, receipts, applications, and a review. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier; `REQUIRES NO FLAG: name` means it is only available if that flag was never set. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, October 19, 2026. Day offsets are days since the scenario's start date. Tier: Hard.
+
+## [start] The Non-Renewal
+*Day 0 — Monday, October 19, 2026 — Monday, October 19, 2026 (dayOffset 0)*
+
+Your name is Charise. Your daughter Naledi is five, and she has been in foster care for nine months — long enough that her plan has seasons in it, and that the word 'housing' on that plan has been, until now, the quiet line: a small apartment, a lease in your name, rent paid.
+
+The envelope on Monday, October 19, 2026 ends the quiet. Your landlord will not renew the lease. The letter is short, businesslike, and final: the tenancy ends on the date it names, Wednesday, November 18, 2026, and the apartment is to be vacated by then. It gives no reason it is required to defend, and this story will not invent one for it.
+
+What everyone in your case will later call 'the housing situation' begins here — not with Naledi, not with the plan, but with a landlord's letter and thirty days.
+
+**Choices:**
+- Read the letter twice, and keep it — it is now a case document → **letter_close**
+  - NOTE (shown after choosing): Kept, dated, uncreased. The first document of the housing chapter is the one that ends the old housing.
+
+## [letter_close] The Night Behind the Letter
+*Day 2 — Wednesday, October 21, 2026 — Wednesday, October 21, 2026 (dayOffset 2)*
+
+You know, and the landlord may know, what sits behind the non-renewal in the building's memory: the night, nine months ago, when Naledi was removed — the police presence in the hallway, the neighbors' doors opening and closing. It is the texture of why this apartment stopped feeling available to you, and probably to him.
+
+It is also, your lawyer will later say, a thing this story does not litigate: nobody will prove a landlord's motive in Naledi's review, and nobody needs to. What the review will weigh is not why the lease ended. It is what your housing is, on paper, when the room convenes — and what paper says so.
+
+Thirty days. The plan's housing line currently says your address. By the review, it will say something else. The only question this scenario asks is whether that something is written by your documents or by a summary's default word.
+
+**Choices:**
+- Start the search the way searches actually start — with who you know → **search_days**
+  - NOTE (shown after choosing): The lists are long and the month is short. Both of those are facts. Neither is the ending.
+
+## [search_days] Four Days of Doors
+*Day 4 — Friday, October 23, 2026 — Friday, October 23, 2026 (dayOffset 4)*
+
+Four days of the search, Monday, October 19, 2026 to Friday, October 23, 2026: two buildings with waiting lists measured in seasons, one room whose rent would take the whole paycheck the plan also counts, a cousin's couch offered and refused — not from pride, but because a couch is exactly the word the file is waiting to write about you.
+
+Then your cousin Alma calls back. Alma has a house, a spare room with a door, and a proposal she makes in the plainest language anyone uses in this scenario: 'You take the room. You pay rent, like a tenant. We write it down, like adults. Naledi has a room to come home to when the court says so.'
+
+A doubled-up household, the system calls arrangements like Alma's, when it calls them anything kind at all. What it becomes in the file depends entirely on the paper it generates.
+
+**Choices:**
+- Go and look at the room, and at the arrangement, with clear eyes → **fern_door**
+  - NOTE (shown after choosing): A room with a door. In housing paper, doors matter more than intentions.
+
+## [fern_door] A Room With a Door
+*Day 6 — Sunday, October 25, 2026 — Sunday, October 25, 2026 (dayOffset 6)*
+
+The room is small, clean, and Naledi-sized in the ways that count: space for a small bed, a window, a door that closes. Alma's house has the other things a plan reads for — a kitchen, a bathroom, a school route no worse than the apartment's. Alma herself is steady, employed, and entirely willing to be looked at by anyone the case sends to look.
+
+What Alma offers can be done two ways, and the two ways are different arrangements in the file's eyes even though they are identical in the house's. It can be written: a room agreement, signed, with rent, a start date, and signatures. Or it can be familial: a handshake, a key, and everyone's good faith.
+
+Good faith fills a house. Signatures fill a file. The review will only ever see one of those rooms.
+
+**Choices:**
+- Decide how the arrangement will exist — on paper, or on trust → **agreement_choice**
+  - NOTE (shown after choosing): Alma will sign anything true. The question is whether anyone asks her to.
+
+## [agreement_choice] Sign It Like a Lease
+*Day 8 — Tuesday, October 27, 2026 — Tuesday, October 27, 2026 (dayOffset 8)*
+
+There is a version of this move that costs an evening: a one-page room agreement — Alma as householder, you as occupant of the named room, rent in a named amount, starting on a named date, utilities and shared spaces described in two honest sentences — signed by both of you, dated, copied.
+
+There is another version that costs nothing: you move in as family, pay what you can when you can, and trust that anyone who needs to understand the arrangement will come and see it, the way Alma sees it.
+
+**Choices:**
+- Write and sign the room agreement with Alma, dated, before you move a single box → **agreement_signed**  _(cash −4; FLAG: agreementSigned; HIDDEN + Housing — signed, dated room agreement with cousin; rent and start date stated)_
+  - NOTE (shown after choosing): Four dollars of copies. The agreement does not make the room more real. It makes the room legible — to readers who will never stand in it.
+- Move in as family — a handshake and a key are enough between cousins → **handshake_only**
+  - NOTE (shown after choosing): Between cousins, they are. Between a parent and a summary line, they are not the same instrument at all.
+
+## [agreement_signed] Tenant, on Paper
+*Day 10 — Thursday, October 29, 2026 — Thursday, October 29, 2026 (dayOffset 10)*
+
+The agreement is signed on Tuesday, October 27, 2026, effective Thursday, October 29, 2026: the room, the rent, the date, two signatures. Alma files her copy in a kitchen drawer with the house's other important paper, which is exactly where tenancy paper belongs, and you keep yours with Naledi's plan.
+
+You are now, in documentary fact, a tenant in a named room at a named rent from a named date. A summary writer who wants to call that arrangement something else will have to write around a signed page to do it. Summary writers can write around pages — but it is slower, and it leaves marks.
+
+**Choices:**
+- Move in, and set up the rent the way the agreement says → **move_day**
+  - NOTE (shown after choosing): Moving costs what moving costs. The agreement costs four dollars. Guess which one the file will remember.
+
+## [handshake_only] Family, in Person
+*Day 10 — Thursday, October 29, 2026 — Thursday, October 29, 2026 (dayOffset 10)*
+
+You move in as family, and in person the arrangement is everything Alma promised: the room is yours, Naledi's small bed fits, the kitchen is shared without friction. Anyone standing in the house would call it stable without hesitating.
+
+Nobody who decides anything in Naledi's case will ever stand in the house. They will stand in rooms with files in them, and in the files, an unwritten arrangement has the documentary weight of a rumor — true, warmly believed, and exactly as provable as any other rumor.
+
+**Choices:**
+- Move in, and set up the rent the way families do → **move_day**
+  - NOTE (shown after choosing): The house is real. The question the next eight weeks ask is whether the file will ever be told, in a form it can keep.
+
+## [move_day] Rent, With a Receipt
+*Day 12 — Saturday, October 31, 2026 — Saturday, October 31, 2026 (dayOffset 12)*
+
+The first rent is due under your arrangement in the week of Saturday, October 31, 2026, and here the scenario offers its smallest, most repeated choice, because this one will recur monthly and each recurrence is a document: pay in a way that generates paper, or pay in a way that generates gratitude.
+
+A receipt book costs little. A dated receipt, signed by Alma, stating rent for the named room for a named month, is a tenancy proving itself one month at a time. Cash handed across a kitchen, between cousins who trust each other, proves itself to exactly the two people who already believe it.
+
+**Choices:**
+- Pay by receipt from the first month — dated, signed, room and month named → **receipts_kept**  _(cash −5; FLAG: receiptsKept; HIDDEN + Housing — rent paid by dated, signed receipts naming the room and month)_
+  - NOTE (shown after choosing): Five dollars for the receipt book. Each receipt is boring, dated, and cumulative — the three virtues of housing paper.
+- Pay across the kitchen, in cash, the way family does → **receipts_none**
+  - NOTE (shown after choosing): Alma would swear to every payment, and mean it, and be believed personally — in a room that weighs attachments, not oaths from cousins.
+
+## [receipts_kept] A Tenancy, Accumulating
+*Day 14 — Monday, November 2, 2026 — Monday, November 2, 2026 (dayOffset 14)*
+
+Receipt one joins the agreement in your papers. It is a small page, and together the two pages already answer the only housing question a file is competent to ask: where does she live, since when, at what rent, proved how? Most housing lines in most files are written with less evidence than you now hold, because most housing is never challenged. Yours is about to be — which is why the evidence matters, and why nobody builds it after the challenge arrives.
+
+**Choices:**
+- Turn to the second half of stability — the applications → **applications_choice**
+  - NOTE (shown after choosing): A doubled-up room answers where you live. The plan will also ask where this goes next. Lists are how that answer gets dated.
+
+## [receipts_none] Paid, and Unprovable
+*Day 14 — Monday, November 2, 2026 — Monday, November 2, 2026 (dayOffset 14)*
+
+The rent is paid. Alma knows it, you know it, the house's whole economy knows it. The file knows nothing, because nothing told it, in any form it keeps. If the arrangement is ever described by someone else, their description will have one advantage yours lacks: it will be written down.
+
+What can still be built is the forward half of the housing story: the applications, with their dates. Paper started later is worth less than paper started first, and infinitely more than paper never started.
+
+**Choices:**
+- Turn to the second half of stability — the applications → **applications_choice**
+  - NOTE (shown after choosing): Applications are the rare housing document whose date is stamped by somebody else's office. That is their entire value.
+
+## [applications_choice] Two Lists, Two Stamps
+*Day 16 — Wednesday, November 4, 2026 — Wednesday, November 4, 2026 (dayOffset 16)*
+
+There are two housing lists you can realistically join this month, and both offices do the same kind thing with paperwork: they stamp the application copy with the date it was received. An application stamped Friday, November 6, 2026, say, is a fact with an office behind it: on that date, this mother, from this address, applied, and is pending.
+
+Applying costs fares and a morning each. Not applying costs nothing, and leaves the file's housing story ending at a cousin's spare room — a story a summary can finish with one word.
+
+**Choices:**
+- Apply to both lists and keep the date-stamped copies → **applications_done**  _(cash −8; FLAG: applicationsDated; HIDDEN + Housing — applications to two housing lists, date-stamped copies kept)_
+  - NOTE (shown after choosing): Eight dollars of fares. Two stamps, two dates, two offices agreeing that your housing has a future tense as well as a present one.
+- Settle into Alma's first — the lists will still be there next month → **waiting_only**
+  - NOTE (shown after choosing): They will be. Their stamps will then say next month, and a review that convenes before next month will read a file with no applications in it.
+
+## [applications_done] Pending, With Dates
+*Day 18 — Friday, November 6, 2026 — Friday, November 6, 2026 (dayOffset 18)*
+
+Both applications are in by Friday, November 6, 2026, stamped, copied, filed behind the agreement and the receipt. Your housing paper now says a complete sentence: lease ended by a landlord's letter on a stated date; room agreement signed, rent receipted; applications pending at two offices since a stamped date. Present housing, proved. Future housing, dated. It is not a house of your own. It is also not, in any honest vocabulary, nothing.
+
+What the plan's housing line says, meanwhile, is about to be shown to you — and it was not written from this paper.
+
+**Choices:**
+- Go to the plan meeting and hear the housing line read aloud → **plan_line**
+  - NOTE (shown after choosing): Bring the folder. Hearing a line and answering a line are different events, and folders decide which one happens.
+
+## [waiting_only] Settled, Unstamped
+*Day 18 — Friday, November 6, 2026 — Friday, November 6, 2026 (dayOffset 18)*
+
+Alma's room is home in every way a home is home at the end of a day. In the file's way, it is an address with no applications behind it — a present with no dated future, which summary language has a word for, and the word is not 'settled.'
+
+The plan meeting is coming, and with it the first reading of the housing line since the landlord's letter. You will hear, there, what the file currently believes your housing is.
+
+**Choices:**
+- Go to the plan meeting and hear the housing line read aloud → **plan_line**
+  - NOTE (shown after choosing): You know where you live. The meeting is where you learn where the file thinks you live.
+
+## [plan_line] Unstable, On the Line
+*Day 21 — Monday, November 9, 2026 — Monday, November 9, 2026 (dayOffset 21)*
+
+At the plan meeting on Monday, November 9, 2026, the updated plan is read, and the housing line reads, in full: 'Mother's housing unstable following loss of lease; currently staying with relative.' Staying. Not renting, not tenanted, not receipted, not applied-anywhere. One adjective — unstable — doing the work of your landlord's letter, your cousin's room, and your two stamped applications, and doing it wrong in a specific direction.
+
+Your worker is not hostile about it. The line was drafted from the non-renewal and a note that you had 'gone to family.' Nobody in the drafting chain had your agreement in front of them, because your agreement was in your folder, and folders do not attend drafting chains. Reviews do, though. The review is where this line will be weighed — as a finding about your housing, not as a summary of your folder.
+
+**Choices:**
+- Note the line word for word, and ask your lawyer what the file itself says → **records_fork**  _(HIDDEN + Plan housing line — 'unstable housing,' drafted without the agreement, receipts or applications)_
+  - NOTE (shown after choosing): Word for word. Corrections are built out of the exact sentences they correct.
+
+## [records_fork] Ask for the Housing Entries
+*Day 24 — Thursday, November 12, 2026 — Thursday, November 12, 2026 (dayOffset 24)*
+
+You have had a lawyer throughout Naledi's case, as the law provides (42 Pa.C.S. § 6337). Ms. Solano asks the question this scenario has been walking toward: 'What do the file's housing entries actually say — not the plan line, the entries under it? Dates, sources, all of it.'
+
+You do not have to guess. A party may request the case record, and the material in it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). A written request for the housing entries and the draft review summary shows you the exact text — and the exact dates — your paper has to answer, weeks before the review reads it.
+
+**Choices:**
+- Sign the written request for the record — housing entries and draft summary → **record_arrives**  _(cash −3; FLAG: recordsRequested; HIDDEN + Case record — requested in writing, including housing entries and draft review summary)_
+  - NOTE (shown after choosing): Signed, dated, copied. Whatever the entries say about your housing, you are about to be able to quote it instead of dreading it.
+- Prepare from the plan line alone — you heard it read aloud → **no_record**
+  - NOTE (shown after choosing): You heard one line. The entries under it — their dates, their sources, what they omit — are the lock your correction has to fit.
+
+## [record_arrives] What the Entries Omit
+*Day 29 — Tuesday, November 17, 2026 — Tuesday, November 17, 2026 (dayOffset 29)*
+
+The packet arrives on Tuesday, November 17, 2026. The housing entries are all true, the way omissions are true: the landlord's letter, noted. The lease's end, noted. 'Mother residing with cousin,' noted — undated, unsourced, one line. Of the agreement, the receipts, and the applications, the entries say nothing, because nothing had ever been filed where entries are written from. The draft review summary then does what summaries do with an undated line: it keeps the adjective. 'Unstable housing,' carried forward, gathering the authority of print.
+
+Beside it, Ms. Solano lays your folder: agreement, receipts, stamps. 'The file's housing story is a story with its second half missing,' she says. 'We are not going to argue that the first half is false. We are going to file the second half, before the review has to decide housing from half a story.'
+
+**Choices:**
+- Decide how the second half is filed — in writing before the review, or aloud at it → **correction_choice**
+  - NOTE (shown after choosing): A draft is a mercy if you see it in time. This one arrived in time. Time is not the same as using it.
+
+## [no_record] One Line, Heard Once
+*Day 29 — Tuesday, November 17, 2026 — Tuesday, November 17, 2026 (dayOffset 29)*
+
+Without the entries, you know the adjective and nothing under it: not which dates the file holds, not whether the draft summary has already hardened the line, not what your correction must quote to displace it. Ms. Solano is honest: 'We can still object at the review. We will be answering sentences we are hearing in full for the first time, in the room that has already read them.'
+
+The correction itself can still be assembled from your folder. What is missing is the target's exact wording — and corrections, like keys, are cut to locks.
+
+**Choices:**
+- Decide how the correction is delivered — in writing before the review, or aloud at it → **correction_choice**
+  - NOTE (shown after choosing): Your folder is real either way. The question is whether the review meets it as a filing or as a surprise.
+
+## [correction_choice] Correct It Where It Lives
+*Day 33 — Saturday, November 21, 2026 — Saturday, November 21, 2026 (dayOffset 33)*
+
+Ms. Solano drafts the correction the way durable things are drafted in this series: the landlord's letter first (the loss was a landlord's act, dated); the signed room agreement (a tenancy, dated, at a named rent); the receipts (the tenancy performing, monthly); the stamped applications (a future, dated, pending at two offices). One page of chronology, attachments behind it, asking that the housing entries and the summary line be corrected to describe the arrangement the documents describe — before the review.
+
+Filing it costs copies and a trip. Raising the same papers at the review costs nothing today, and prices them tomorrow as an argument instead of as the record.
+
+**Choices:**
+- File the written correction before the review, with the agreement, receipts and applications attached → **correction_filed**  _(cash −5; FLAG: correctionFiled; HIDDEN + Written correction — housing chronology filed before the review with agreement, receipts and applications)_
+  - NOTE (shown after choosing): Stamped, copied, in the file before the next summary is drafted from it. The adjective now has competition with dates on.
+- Raise it at the review — the papers are real, and the room will see them → **correction_oral**
+  - NOTE (shown after choosing): The room will. Rooms see late paper the way they hear late objections: politely, and at a discount they never state.
+
+## [correction_filed] Filed, Not Just Said
+*Day 35 — Monday, November 23, 2026 — Monday, November 23, 2026 (dayOffset 35)*
+
+The correction goes in, and the file does with filed paper what it does: the draft summary is amended before the review packet is assembled. The housing paragraph now carries the chronology — lease ended by landlord's letter; doubled-up tenancy under a signed agreement at Alma's, rent receipted; applications pending, stamped — and the adjective, deprived of its empty file to live in, is gone from the draft. In its place, the system's own flattest compliment: 'Housing documented as below.'
+
+Documented. Not praised, not excused — documented, which in a review is the adjective that does the work.
+
+**Choices:**
+- Keep the arrangement exactly as documented until the review → **visits_meanwhile**
+  - NOTE (shown after choosing): Receipts monthly, applications pending, the room Naledi-sized. A corrected file still has to be lived up to, monthly, in paper.
+
+## [correction_oral] Real, and Unfiled
+*Day 35 — Monday, November 23, 2026 — Monday, November 23, 2026 (dayOffset 35)*
+
+The papers stay in your folder, real and complete, awaiting their room. Ms. Solano warns you once, without drama: 'At the review, the summary will be read first. It always is. We will be the second account of your housing, and second accounts are cross-examined by the first one's adjective.'
+
+Nothing is lost yet. Everything is priced differently. The review will now decide housing as a contest between a printed line and a folder produced live — a contest printed lines win more often than folders deserve.
+
+**Choices:**
+- Keep the arrangement running until the review → **visits_meanwhile**
+  - NOTE (shown after choosing): The house, at least, does not know it is undocumented. Alma's dinners proceed as if stability were a fact. In the house, it is one.
+
+## [visits_meanwhile] Visits, From Alma's Door
+*Day 40 — Saturday, November 28, 2026 — Saturday, November 28, 2026 (dayOffset 40)*
+
+The weeks before the review run from Alma's door: visits with Naledi — a puzzle rebuilt at a visit-room table, a school song performed twice — buses caught from the new address, screens and meetings kept from the new address. On Saturday, November 28, 2026 the second rent receipt joins the first, and the arrangement acquires the one property no single document can give it: duration, in paper.
+
+It is worth pausing on the shape of your situation: your housing, as lived, has been stable for weeks. Your housing, as filed, is stable only if the correction was filed — because in this system stability is not a condition of a household. It is a condition of a record about a household.
+
+**Choices:**
+- Prepare for the review with Ms. Solano → **review_prep**  _(HIDDEN + Compliance — visits and plan steps kept from the doubled-up address; rent receipts continuing)_
+  - NOTE (shown after choosing): Kept, from the new door, with the receipts to show the door was the same one every time.
+
+## [review_prep] The Framework, Plainly
+*Day 45 — Thursday, December 3, 2026 — Thursday, December 3, 2026 (dayOffset 45)*
+
+Ms. Solano prepares you in the framework the review will actually use. At a review of this kind the court determines, among the findings the law lists, the continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)). Housing sits inside several of those at once — which is why one adjective on a summary line is not a small thing.
+
+'And one more piece,' she says, 'because it is in your file whether we raise it or not. Housing assistance was a service in Naledi's plan. The plan promised help with housing costs and referrals. What the record shows, so far, is a landlord's letter and your own paper — the assistance itself is a documented gap. If a filing question ever arises on the federal timeline — at fifteen of the most recent twenty-two months, the filing duty changes unless an exception is documented, including where services the agency was required to provide were not provided (42 U.S.C. § 675(5)(E)) — then whether that gap is documented, on this record, will matter. Exceptions are not hopes. They are documents. So we document.'
+
+**Choices:**
+- Assemble the final packet — letter, agreement, receipts, applications, correction → **packet_assembly**
+  - NOTE (shown after choosing): Five kinds of paper, one chronology. The packet does not argue that a cousin's spare room is a palace. It argues that it is documented.
+
+## [packet_assembly] Date Order, Again
+*Day 48 — Sunday, December 6, 2026 — Sunday, December 6, 2026 (dayOffset 48)*
+
+The packet takes an evening: the landlord's letter, the signed agreement, the receipts in their months, the two stamped applications, the housing entries beside the filed correction. Copied, paginated, plain. Ms. Solano adds the plan's own housing-assistance line, highlighted — the service the plan promised, beside the gap the record shows.
+
+Yours goes in the folder — this month, at the front, where the next summary writer, if summaries must be written about your housing again, will meet the whole story first.
+
+**Choices:**
+- File the packet copies and go to the review → **review**  _(cash −5; HIDDEN + Review packet — housing chronology and plan-service line filed in date order)_
+  - NOTE (shown after choosing): Every page in it existed before the review was convened, and most existed before the summary line was drafted. Sequence is the argument.
+
+## [review] The Review
+*Day 52 — Thursday, December 10, 2026 — Thursday, December 10, 2026 (dayOffset 52)*
+
+The review convenes on Thursday, December 10, 2026. The report is read the way reports are read: as the case, by people who were not at Alma's kitchen table for any of it. The housing paragraph arrives, and what happens next depends, with a precision this scenario has been honest about since a landlord's letter, on what your choices put into the file before the reading started. Ms. Solano rises.
+
+Choose the presentation the record you actually built can carry.
+
+**Choices:**
+- Present the documented housing — agreement, receipts, stamped applications, and the correction filed before today → **end_win**  _(REQUIRES FLAG: agreementSigned; REQUIRES FLAG: applicationsDated; REQUIRES FLAG: recordsRequested; REQUIRES FLAG: correctionFiled)_
+  - NOTE (shown after choosing): This presentation exists because the tenancy, its performance, its future, and its correction all exist as dated paper filed before the room convened.
+- Present the folder at the review — real papers, produced live against the printed line → **end_line_stands**
+  - NOTE (shown after choosing): The folder is real. So is the discount rooms apply to paper they meet for the first time at speaking speed.
+- Accept the room's suggestion — enter a shelter placement to be counted as housed → **end_shelter**
+  - NOTE (shown after choosing): A bed in a shelter would satisfy the line's vocabulary. It would also end the arrangement Alma's house actually provides.
+
+## [end_win] Ending — Stable, On the Record
+*Day 59 — Thursday, December 17, 2026 — Thursday, December 17, 2026 (dayOffset 59)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): A complete housing chronology, in dated paper. A landlord's non-renewal letter ending the tenancy on Wednesday, November 18, 2026 — a landlord's act, not a mother's failure. A signed, dated room agreement at Alma's from Thursday, October 29, 2026, rent receipted monthly, a room with a door kept Naledi-sized. Two housing applications, date-stamped Friday, November 6, 2026, pending at two offices. The case record, requested in writing, showing housing entries that omitted all of it — and a correction, filed before the review with every attachment, that put the second half of the story into the file. At the review, the court recorded the doubled-up arrangement as stable housing with applications pending, and the summary line was corrected on the record: the adjective 'unstable' no longer describes this mother's housing in any copy of the file.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The review weighed housing inside the determinations the law assigns it — continuing necessity of placement, compliance with the permanency plan, progress toward alleviating the circumstances that caused placement, and whether reasonable efforts were made to finalize the plan (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) — and on a documented record, the housing findings could be made truthfully. The record request (55 Pa. Code § 3130.44(d)) is what showed the entries' omissions while the draft was still correctable, and counsel (42 Pa.C.S. § 6337) filed the correction where summaries are written from. The plan's promised housing assistance, and its documented gap, are now also on this record — documented, exactly as the federal timeline's services exception requires any such claim to be if it is ever to matter (42 U.S.C. § 675(5)(E), where at fifteen of the most recent twenty-two months the filing duty changes unless an exception is documented, including services the agency was required to provide but did not; any filing would still have to be proven on its own grounds). Label this win honestly: it is partial. Naledi remains placed and the plan continues. What was won is the truthful record — and what it unlocks: reviews, services, and any future filing question will now start from documented stability instead of from an adjective.
+- THE HONEST PART: A different review could have weighed a doubled-up room more skeptically even on this paper; a landlord in another story renews, and the whole chapter never happens; Alma herself — her house, her steadiness, her willingness to sign — is a piece of luck no strategy manufactures, and this debrief will not pretend the packet created her. Housing lists move at their own pace, and pending may mean pending for a long while yet. What your choices controlled was narrower: when the lease was lost through no act of yours, the arrangement that replaced it was documented as it was built — signed, receipted, applied from, and corrected into the file before a summary could finish the story with one word. Outcomes in this system turn on workers, judges, landlords, and luck as much as on any parent's choices. This one turned, in part, on a receipt book and two date stamps — which is not a small thing to have turned on.
+
+## [end_line_stands] Ending — The Line Stands
+*Day 59 — Thursday, December 17, 2026 — Thursday, December 17, 2026 (dayOffset 59)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): At the review, the summary's housing line was read first, as summary lines are: 'unstable housing.' The folder — to the extent your choices built one — was produced against it live: real papers, in several cases, but unfiled, or incomplete, or unattached to the entries they answered. The room heard two accounts of the same household and credited the one that had been in the file when the packet was assembled. The line stands into the next review cycle: housing will be reported as unstable, services and findings will be built on that description, and the arrangement at Alma's — stable in the house, month after month — will have to be reintroduced, as a correction, to every future reader who meets the line first.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Nothing in this ending failed for lack of a right. The housing entries were requestable in writing (55 Pa. Code § 3130.44(d)); counsel (42 Pa.C.S. § 6337) could have filed a one-page chronology with the agreement, receipts, and stamped applications attached at any point in the eight weeks; and the review's own framework (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) makes housing findings from evidence — which is to say, from paper in the file, not from paper in a folder produced at speaking speed. A correction filed before a review settles; the same correction produced at a review contests, and contested housing reads, to cautious rooms, as unstable housing with an argument attached. The line is now the argument's target for the next cycle instead of its casualty in this one.
+- THE HONEST PART: Let this debrief be as fair as the line was not: your housing, as lived, was stable — a room with a door, rent paid, a child-sized corner kept ready, applications a stamp away. The gap in this ending is not between a good household and a bad one. It is between a household and its documentation, and documentation gaps are taxed, in this system, entirely to the parent — never to the summary that created the need for them. A different worker might have visited Alma's, seen the room, and written it up truthfully unprompted; some do. Yours drafted from a landlord's letter and a note, and the file inherited the difference. The correction can still be filed tomorrow, with the same attachments, and the next review will read a truer file. It cannot retroactively make this review have decided housing on the truth.
+
+## [end_shelter] Ending — Housed, by Definition
+*Day 59 — Thursday, December 17, 2026 — Thursday, December 17, 2026 (dayOffset 59)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the record, revealed): The room's suggestion was taken: a shelter placement, accepted so that the housing line could be satisfied in its own vocabulary. The line is satisfied. It now reads, in substance, housed — shelter. And the arrangement that was actually stable — Alma's room, the signed or unsigned agreement, the receipts or their absence, Naledi's corner kept ready — is ended, its paper trail stopping in the month the definition won. Future summaries will record a mother who left a relative's stable room for a shelter bed in order to be counted as housed, and none of them will record that the counting was the reason.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): This ending is not produced by a rule that prefers shelters — no such rule is stated anywhere in this scenario, because none is in its verified law. It is produced by a vocabulary: a summary line that could describe a doubled-up tenancy only as 'unstable,' answered not by documenting the tenancy but by abandoning it for an arrangement the vocabulary already had a box for. The instruments that answer a line with paper existed throughout (the record on request, 55 Pa. Code § 3130.44(d); counsel to file the correction, 42 Pa.C.S. § 6337), and the review framework itself (42 Pa.C.S. § 6351(f)(1), (2), (3), (5.1)) decides from evidence — evidence a documented tenancy would have supplied. Definitions, unopposed by documents, quietly become decisions. That, and not any fact about Alma's house, is this ending.
+- THE HONEST PART: Be clear about what was traded, because the file will not be: shelter is not nothing. For a mother with no Alma, it is safety, an address, a door that locks, and this debrief does not rank it beneath anyone's spare room as a place to sleep. The loss here is specific to this story: a stable, documented-or-documentable family arrangement was exchanged for a categorical one, at a cost — Naledi's room at her cousin's, the tenancy's accumulating months, the applications' address — that the housing line never priced, because lines do not price things. They only classify them. What classifies a household, in the end, should be the household, proved on paper. In this ending the paper was never given the chance to out-argue the adjective, and the adjective, satisfied at last, is the only winner in the file.

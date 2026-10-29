@@ -1,0 +1,227 @@
+# THE FIRST 90 DAYS — Scenario 58: “The Missed Screen”
+
+*Human-readable script. This document and `scenario-58.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a parent in recovery whose son is in kinship care: random screens summoned by text, work-shift conflicts, screen logs, and a review hearing, told entirely as scheduling and paperwork. There is no graphic content and no depiction of substance use. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `REQUIRES FLAG: name` means the choice is only available if that flag was set earlier; `REQUIRES NO FLAG: name` means it is only available if that flag was never set. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, April 13, 2026. Day offsets are days since the scenario's start date. Tier: Foundation.
+
+## [start] The Protocol, Said Out Loud
+*Day 0 — Monday, April 13, 2026 — Monday, April 13, 2026 (dayOffset 0)*
+
+Your name is Desirae. You are in recovery, and your recovery, in this case, is mostly a schedule: meetings, check-ins, work, and screens. Your son Leo is five, and he is living with his grandmother Lorraine — kinship care, arranged before this story opens, in the house where his drawings are on the refrigerator.
+
+The screen protocol was explained to you out loud, once, at a meeting: summonses come by text, usually the night before; the collection site is across town and its window is 7 to 9 in the morning; your shift starts at 8:30. The plan says a missed screen is recorded as a failed appearance, and a failed appearance is counted the same as a positive result when compliance is tallied.
+
+Your first screen, on a day off, you completed at the far site without incident. The system recorded it, in its one-line way, and moved on. This story is about the second one — and about the difference between a conflict explained before it happens and a conflict explained after.
+
+**Choices:**
+- Keep the protocol in mind, and go on with the week → **night_text**
+  - NOTE (shown after choosing): Said out loud, once. Nothing about it was handed to you in writing. That detail is doing more work than it should.
+
+## [night_text] The 9:40 Text
+*Day 7 — Monday, April 20, 2026 — Monday, April 20, 2026 (dayOffset 7)*
+
+The text arrives at 9:40 in the evening on Monday, April 20, 2026: screen tomorrow, Tuesday, April 21, 2026, 8:00, at the site across town. Your shift tomorrow starts at 8:30. The buses between the site and your workplace do not consult each other, and neither, tonight, does the arithmetic: the far site and an 8:30 shift cannot both be met — not honestly, not by you, not tomorrow.
+
+You can send a written message tonight — to the caseworker and the program number that sent the summons — documenting the conflict before it happens and asking for the nearer collection site or a later window. Or you can say nothing, set two alarms, and try to make both.
+
+Before, or after. In this system, that is not a detail. It is the whole decision.
+
+**Choices:**
+- Text back tonight, in writing: the site, your 8:30 shift, the conflict — and ask for the nearer site or a later window → **morning_moved**  _(FLAG: screenMoved; HIDDEN + Screen conflict — documented in writing the night before; nearer site or later window requested)_
+  - NOTE (shown after choosing): Sent at 9:52 p.m., with a timestamp you did not have to create — the message carries its own. Asking before is a different act, on paper, than explaining after.
+- Say nothing and try to make both — two alarms, first bus, run → **morning_rush**
+  - NOTE (shown after choosing): Trying is a plan for the morning. It is not a record for the file. Tomorrow will produce one of those anyway — the question is whose wording it uses.
+
+## [morning_moved] The Nearer Window
+*Day 8 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 8)*
+
+The reply comes before your first alarm on Tuesday, April 21, 2026: the nearer collection site, today, in its early window. You go there first, the screen is completed inside the window, and you reach your shift minutes after 8:30 to a supervisor who had already seen your message forwarded the night before — because paper, forwarded, arrives before you do.
+
+Nothing dramatic happened this morning. That is what a documented conflict looks like from inside it: a problem that was written down early enough to be solved as a scheduling problem, instead of recorded later as a character problem.
+
+**Choices:**
+- Keep the reply and the completion slip with your other case papers → **week_after**  _(HIDDEN + Screen — completed at the nearer site inside the window after the written request)_
+  - NOTE (shown after choosing): A reply, a slip, a date. The morning now exists in the file the way it existed in your life: a conflict, raised and resolved.
+
+## [morning_rush] Nine O’Clock, Across Town
+*Day 8 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 8)*
+
+You run the morning honestly and the morning runs out. The first bus is late by minutes that matter; the site across town comes into view at 9:04 on Tuesday, April 21, 2026 — four minutes after its window closed. The screen is not taken. It cannot be taken; windows are windows.
+
+The form at the desk has a line for this, and the line is filled in with the plan's own language: failed appearance. No one at the desk is unkind, and no one writes down the buses, the alarms, or the arithmetic, because the form has no line for arithmetic.
+
+You go to your shift late as well, with a morning that was entirely effort and is now, on paper, entirely something else.
+
+**Choices:**
+- Tell your caseworker what happened today, while it is still today → **week_after**
+  - NOTE (shown after choosing): You tell her the whole morning, accurately. She listens like a person. The form, already filed, listens like a form.
+
+## [week_after] What the Week Wrote Down
+*Day 11 — Friday, April 24, 2026 — Friday, April 24, 2026 (dayOffset 11)*
+
+At the week's check-in, the screen entry is mentioned in passing, in the file's one-line language — and you understand that the file's version of this week and your version are no longer the same document, whichever morning you lived.
+
+Your lawyer raises the question this scenario turns on. You have one because the law provides for counsel in these cases, and for appointed counsel if a parent cannot afford one (42 Pa.C.S. § 6337). Her question is short: “What does the log itself say — the summons times, the sites, the entries? Not the summary. The log.”
+
+**Choices:**
+- Ask how a parent gets the log itself, in writing → **records_fork**
+  - NOTE (shown after choosing): “The same way you get any of your record,” she says. “You ask for it, in writing, and you keep the asking.”
+
+## [records_fork] Ask for the Log
+*Day 15 — Tuesday, April 28, 2026 — Tuesday, April 28, 2026 (dayOffset 15)*
+
+The screen log — every summons, every site, every result entry — is part of your case record, and the record is to be released on request (55 Pa. Code § 3130.44(d)). A written request gets you the log itself, to sit with at your own table and check against your own texts and slips.
+
+Or you can keep working from the check-in summaries and the portal's one-line statuses, which is to say: from other people's shortening of your mornings.
+
+**Choices:**
+- Request the screen log in writing — summonses, sites, and result entries — and keep a copy of the request → **log_arrives**  _(cash −3; FLAG: recordsRequested)_
+  - NOTE (shown after choosing): Three dollars of copies across the errand. The request is dated; the log, when it comes, can be read line by line against your phone.
+- Work from the summaries — the caseworker reads them to you accurately → **no_log**
+  - NOTE (shown after choosing): She does, and she is accurate. Summaries are still selections: someone else decided which lines of your mornings were the story.
+
+## [log_arrives] The Log, on Paper
+*Day 19 — Saturday, May 2, 2026 — Saturday, May 2, 2026 (dayOffset 19)*
+
+The log arrives, and it is illuminating in the specific way of exact things. It records when each summons was sent — including 9:40 in the evening on Monday, April 20, 2026 — which site each screen was assigned to, and what entry each morning received. Times, sites, entries. It is exact about all of them.
+
+What it does not record is reasons. No log does. Reasons live in messages, requests, and replies — which is why the ones you sent, if you sent them, are the other half of this document, and why keeping them matters as much as requesting this half.
+
+**Choices:**
+- Put the log with your texts and slips, in date order → **month_two**  _(HIDDEN + Screen log — summons times, sites, and entries obtained and kept by parent)_
+  - NOTE (shown after choosing): Two halves of the same mornings, both on paper now: what the system recorded, and what you wrote before it recorded anything.
+
+## [no_log] Pending, in the Portal
+*Day 19 — Saturday, May 2, 2026 — Saturday, May 2, 2026 (dayOffset 19)*
+
+Without the log, your mornings exist as statuses: completed, failed appearance, pending. Statuses have no times attached, no sites, no sequence. A summons sent at 9:40 the night before and a summons sent a week ahead wear, in status language, exactly the same clothes.
+
+You know the sequence. Knowing it is your half of a conversation the file is having without you, in a room — the review — where the file's half is the one printed out.
+
+**Choices:**
+- Go on toward month two — and keep every text and slip from here → **month_two**
+  - NOTE (shown after choosing): From here is later than from the start, and earlier than the review. Paper has a way of being worth whatever week it begins in.
+
+## [month_two] The Second Text
+*Day 36 — Tuesday, May 19, 2026 — Tuesday, May 19, 2026 (dayOffset 36)*
+
+Month two brings a second summons cycle — and this time the screen itself goes fine: summoned with notice, completed at the assigned site on Tuesday, May 19, 2026, inside the window, on a day your shift allowed it. You keep the confirmation text. The site issues its dated completion slip.
+
+Then the system's paperwork does to this screen what the buses tried to do to the first one: the result posts late. Days pass. At the agency's end, your file shows the screen's result as not received — a completed screen wearing, in the file, the clothes of a missed one.
+
+A late posting is a small, ordinary system delay. So was an unsent referral, in another family's story. What decides what it becomes is whether anyone can prove, from paper, when the thing actually happened.
+
+**Choices:**
+- Keep the confirmation text and the dated slip, and send a written note that the screen was completed on its date → **paper_kept**  _(cash −8; FLAG: proofKept; HIDDEN + Screen completion — confirmation text and dated slip kept; late posting raised in writing)_
+  - NOTE (shown after choosing): Eight dollars of fares for that screen day, spent either way. The note costs nothing and dates everything: completed, on this date, confirmation attached.
+- Trust the portal to catch up — these things sort themselves out → **portal_only**  _(cash −8)_
+  - NOTE (shown after choosing): Eight dollars of fares, spent either way. Portals do catch up, usually, eventually — on their schedule, in their wording, after the rooms that needed them.
+
+## [paper_kept] Kept: The Confirmation
+*Day 38 — Thursday, May 21, 2026 — Thursday, May 21, 2026 (dayOffset 38)*
+
+Your written note goes in with the confirmation and the slip attached, and the file gains a dated claim it will eventually have to agree with: when the result does post, it posts with the completion date intact — the system's own record conceding, in its own time, that the screen happened when you said it did.
+
+It should not take a note and two attachments to establish that a completed screen was completed. In a file built from postings and statuses, it does. That is not a fact about your credibility. It is a fact about what files are made of.
+
+**Choices:**
+- File the posted result with the note, and turn to the review ahead → **prep**
+  - NOTE (shown after choosing): The pair — your dated note, their late posting — now tells the true story without you having to say a word about it.
+
+## [portal_only] The Portal Says Pending
+*Day 38 — Thursday, May 21, 2026 — Thursday, May 21, 2026 (dayOffset 38)*
+
+The portal says pending. It says it on the day of the check-in, and it is still saying it when the review packet is being assembled. Your completion — real, dated in the world, witnessed by a desk and a slip you did not keep — exists in the system as an absence with a deadline.
+
+Absences, in compliance tallies, do not stay neutral. They get read in the direction the plan's language points, and the plan's language points one way: toward the parent.
+
+**Choices:**
+- Turn to the review ahead, with the phone that holds the summons texts → **prep**
+  - NOTE (shown after choosing): The texts are something. The slip would have been something more. The review will price the difference precisely, because pricing paper is what reviews do.
+
+## [prep] Assemble the Paper
+*Day 50 — Tuesday, June 2, 2026 — Tuesday, June 2, 2026 (dayOffset 50)*
+
+The review is close, and preparation is an assembly job: the summons texts with their 9:40 timestamp, your written replies if you sent them, the screen log if you requested it, the confirmations and slips if you kept them. In date order, they tell a scheduling story with no adjectives in it: conflicts raised before they happened, screens completed inside their windows, postings that lagged behind completions.
+
+Or the same weeks can be carried into the review the way they were lived — as a story about buses, alarms, and effort, told by the person who set the alarms. True stories are this scenario's most common casualty.
+
+**Choices:**
+- Assemble the packet — texts, log, confirmations, slips — in date order, with your lawyer → **packet_ready**  _(FLAG: packetBuilt; HIDDEN + Review packet — summons texts, screen log, and completion confirmations assembled in date order)_
+  - NOTE (shown after choosing): No adjectives. Just times: when they summoned, when you answered, when you appeared, when they posted. Times are hard to argue with.
+- Bring the phone and explain the mornings in person → **story_only**
+  - NOTE (shown after choosing): The phone holds some of it. The rest is in your voice, which is vivid, sincere, and — in a room running on exhibits — unaccompanied.
+
+## [packet_ready] Texts, Log, and Slips
+*Day 52 — Thursday, June 4, 2026 — Thursday, June 4, 2026 (dayOffset 52)*
+
+The packet is thinner than you expected and heavier than it looks: a night-before message with its timestamp, a log with its exact times, a confirmation with its date. Three kinds of paper, each made by a different hand — yours, the system's, the site's — agreeing with each other.
+
+Your lawyer reads it once and says the sentence this scenario has been walking toward: “This doesn't argue that you tried. It shows when everything happened. Reviews believe clocks.”
+
+**Choices:**
+- Make copies, and spend the evening with Leo at Lorraine's, the way evenings should be spent → **review_eve**
+  - NOTE (shown after choosing): Copies made. The packet will do its work in a room; tonight's work is a five-year-old and a refrigerator covered in drawings.
+
+## [story_only] Everything on the Phone
+*Day 52 — Thursday, June 4, 2026 — Thursday, June 4, 2026 (dayOffset 52)*
+
+Your account of these months is accurate in every particular you can name: the 9:40 text, the two alarms, the closed window, the completed screen whose result went missing into a late posting. You can tell it in order, without notes, because you lived it in order.
+
+Its flaw is structural, not personal: it can only be in one room at a time, for as long as you are speaking in it, and the file's one-line version — failed appearance; result not received — is in every room, forever, in print.
+
+**Choices:**
+- Practice the account once, and spend the evening with Leo at Lorraine's → **review_eve**
+  - NOTE (shown after choosing): Practice helps the telling. It does not give the telling a date stamp, an attachment, or a second reader.
+
+## [review_eve] The Night Before the Review
+*Day 55 — Sunday, June 7, 2026 — Sunday, June 7, 2026 (dayOffset 55)*
+
+The night before the review, Lorraine keeps Leo for the evening so you can prepare, and the house is quiet in the particular way of houses where the important paper is already done — or already not done.
+
+Tomorrow the review will tally compliance the way the plan says it is tallied: screens summoned, screens recorded. What the tally will meet, when it reaches your mornings, is either a packet of times or a story about them. You already know which one you are carrying. So, in a sense, does the file.
+
+**Choices:**
+- Take the folder, pay the morning's fare in advance, and go to the review → **review**  _(cash −6)_
+  - NOTE (shown after choosing): Six dollars of fare, set out tonight. Small preparations are still preparations; this whole case has run on them.
+
+## [review] The Review
+*Day 56 — Monday, June 8, 2026 — Monday, June 8, 2026 (dayOffset 56)*
+
+The review on Monday, June 8, 2026 is orderly and brief. The plan's screen line is read the way the file holds it — summonses, entries, tallies — and the tally begins moving toward the conclusion the one-line entries point to.
+
+Then your lawyer asks that the underlying times be put beside the tally before the tally is adopted. What happens next depends, with a precision this scenario has been honest about from its first text message, on what your choices actually put in her hands.
+
+**Choices:**
+- Present the packet — the night-before message, the screen log, and the completion confirmations → **end_win**  _(REQUIRES FLAG: screenMoved; REQUIRES FLAG: recordsRequested; REQUIRES FLAG: packetBuilt)_
+  - NOTE (shown after choosing): Times, in date order, from three different hands. The tally is re-done in the room, out loud, which is where tallies change.
+- Present what paper you have — part of the packet, assembled late → **end_lose**
+  - NOTE (shown after choosing): Part of a timeline answers part of a tally. The one-line entries, whole and printed, answer the rest.
+- Explain the mornings out loud — the alarms, the buses, the late posting → **end_lose**
+  - NOTE (shown after choosing): Every word of it is true. The tally, which runs on entries, keeps its own counsel about truth it cannot attach to anything.
+
+## [end_win] Ending — Documented, Not Positive
+*Day 59 — Thursday, June 11, 2026 — Thursday, June 11, 2026 (dayOffset 59)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the hidden record, revealed): A scheduling record with its times intact: a summons sent at 9:40 in the evening on Monday, April 20, 2026, your written answer that same night documenting the conflict with your 8:30 shift and asking for the nearer site, the nearer site's completed screen, the screen log obtained on request showing summons times, sites, and entries, and — for month two's screen — the confirmation and dated slip that proved completion on Tuesday, May 19, 2026 when the result posted late. At the review, the tally was corrected against its own underlying times: no failed appearance stands for the conflict morning, the late posting was entered as a late posting, and both screens stand as what they were — completed.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The instruments were the verified ones. The screen log was part of your case record, released on request (55 Pa. Code § 3130.44(d)) — requesting it is what let the review compare the tally to the times instead of adopting the tally. Counsel (42 Pa.C.S. § 6337) carried the packet into the room. And the decisive move was the earliest one, and it was generic process, not a citation: a conflict documented in writing before it happened, which converted a morning that the plan's language would have tallied against you into a morning the record describes as a scheduling problem, raised and solved. The plan's default — a missed screen counted the same as a positive result — was never triggered, because on paper there was no miss.
+- THE HONEST PART: Label this win for what it is: a corrected tally, not a finished case. Your screens continue, your recovery continues on its own schedule of meetings and work, Leo is still living at Lorraine's, and the case is still open. A different collection site might never have answered the night-before message; a different supervisor might have read the same packet ungenerously; the buses, on another morning, beat everyone. Workers, sites, and luck all held pieces of this outcome. What your choices changed was the evidence those pieces landed on. Nothing in this ending is a verdict on your recovery — it is a record of two mornings, documented as scheduling facts, which is all they ever were.
+
+## [end_lose] Ending — Positive, By Default
+*Day 59 — Thursday, June 11, 2026 — Thursday, June 11, 2026 (dayOffset 59)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the hidden record, revealed): One-line entries, doing what one-line entries do. A failed appearance for the morning the buses won — recorded without the 9:40 summons, the 8:30 shift, or the arithmetic that made the morning impossible — and a completed screen in month two whose result, posted late, sat in the file as not received when the tally was made. At the review, the plan's default did the rest, exactly as the plan says it does: a failed appearance counted the same as a positive result. No test was failed. No result was positive. The tally is positive anyway — by default, which is to say, by paperwork.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Every instrument that would have prevented this existed and is verified. A written message the night before would have dated the conflict before it happened and asked, on paper, for the nearer site — generic process that costs nothing but nerve. The screen log was available on written request (55 Pa. Code § 3130.44(d)), and would have shown the review the summons times and sites behind the tally's one lines. Counsel (42 Pa.C.S. § 6337) can assemble and present whatever paper exists. What counsel cannot do is manufacture, at the review, a timestamp from a night two months past. Defaults rule wherever documentation doesn't — that sentence, not any fact about you, is this ending.
+- THE HONEST PART: Be clear, because the file was not: you set two alarms, ran for a bus, and completed the screen the system later lost in its own posting queue. Your recovery through these months was a schedule you kept — meetings, shifts, a son at his grandmother's who got his mother on time — and none of that is measured by this tally, in either direction. A kinder site, a caseworker who wrote the conflict into the note herself, a posting that landed on time: any of them changes this ending without you changing anything. Workers, postings, and luck signed it alongside your choices. It records a default, not a relapse, not a character — and the next summons, answered in writing the night it arrives, starts a different paper trail from its first timestamp.

@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 65 — Two Plans (a fictional composite)",
+  "startDateISO": "2026-09-21",
+  "startNode": "start",
+  "startCash": 190,
+  "tier": "Complex",
+  "summary": "Two separated parents, two case plans, two workers, one car — and two files that keep bleeding into each other."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, September 21, 2026",
+   "dayOffset": 0,
+   "title": "Two Plans, One Kitchen Table",
+   "body": [
+    "Your daughter Hattie is four, and she is in foster care — placed before this story opens, in a season neither of you litigates anymore at the kitchen table. You are Trina, her mother. Across the table, with his own mug and his own stack of paper, is Curtis, her father. You are separated. You are also, in the eyes of the case, something more complicated than separated: two parties, two case plans, two workers, two files.",
+    "Your plan runs through Ms. Whelan. His runs through Mr. Murdock. Your obligations are yours; his are his; Hattie is the same small person in both files, which is the only simple sentence in this scenario.",
+    "Tonight the two plans are spread across one kitchen table, because the car, the calendar, and Hattie herself are shared even where the paperwork is not. What happens next depends less on either plan than on whether the two plans ever learn to read each other."
+   ],
+   "choices": [
+    {
+     "text": "Put the two plans side by side and read them as one calendar",
+     "next": "separate_counsel",
+     "note": "Two binders, if you make them. One shoebox, if you don't. The case will be able to tell the difference."
+    }
+   ]
+  },
+  {
+   "id": "separate_counsel",
+   "kicker": "Day 1 — Tuesday, September 22, 2026",
+   "dayOffset": 1,
+   "title": "Two Lawyers, Explained at the Table",
+   "body": [
+    "A practical clarification, delivered by Curtis's lawyer over speakerphone that first evening: you are two parties. Each of you has the right to counsel of your own (42 Pa.C.S. § 6337), each plan is separately your own to satisfy, and neither of you can sign, waive, or explain away anything on the other's behalf. The case will treat you separately even when life doesn't.",
+    "“Which means,” she says, “that the most helpful thing you can do for each other is keep your own paper perfect — and compare it, often, at that table.” The table, the binders, and the car: the case's real infrastructure, named at last."
+   ],
+   "choices": [
+    {
+     "text": "Start with the paper, tonight",
+     "next": "two_binders",
+     "note": "Two parties, two plans, one table. The table is about to become a records office."
+    }
+   ]
+  },
+  {
+   "id": "two_binders",
+   "kicker": "Day 3 — Thursday, September 24, 2026",
+   "dayOffset": 3,
+   "title": "Two Binders or One Shoebox",
+   "body": [
+    "Trina's plan: a parenting program, Friday-morning screens, supervised visits with a make-up slot on Tuesday evenings — the only evening slot the visit center offers. Curtis's plan: a Tuesday-evening group across town, a class with a Friday-morning check-in — also across town, in the other direction — and his own visits, on his own days.",
+    "There is one car. It is registered to neither plan. The plans were each written, carefully and in good faith, by a worker who had read one file. Nobody has yet been assigned to read both.",
+    "You each have a right to counsel in this case (42 Pa.C.S. § 6337) — separate counsel, as separated parties usually have — and you each have your own folder to keep, or not to keep."
+   ],
+   "choices": [
+    {
+     "text": "Give each plan its own binder, its own folder, its own color of tab",
+     "next": "paper_habits",
+     "setFlags": [
+      "ownFolder"
+     ],
+     "cash": -8,
+     "addHidden": [
+      "Each parent keeping their own folder — two binders, separately maintained"
+     ],
+     "note": "Eight dollars of office supplies. The first structural repair in the case, and it fits in a shopping bag."
+    },
+    {
+     "text": "Keep everything together in the shoebox — you share a daughter, after all",
+     "next": "paper_habits",
+     "note": "You do share a daughter. The files, as you are about to learn, share rather more than that."
+    }
+   ]
+  },
+  {
+   "id": "paper_habits",
+   "kicker": "Day 4 — Friday, September 25, 2026",
+   "dayOffset": 4,
+   "title": "House Rules for Paper",
+   "body": [
+    "The house rules get written on an index card and taped inside the cupboard door, in Trina's hand: each parent files their own paper the day it arrives; nothing goes in the other binder, even temporarily; anything that mentions both names gets copied, once, into both.",
+    "Rules like these look like tidiness. They are, in fact, the load-bearing wall of everything that follows — because a file bleed cannot be corrected by people who cannot tell, from their own folders, what their own record ought to say."
+   ],
+   "choices": [
+    {
+     "text": "Lay the two plans out as one calendar",
+     "next": "calendar_beat",
+     "note": "The card goes up. The calendar comes out. The collisions are about to introduce themselves."
+    }
+   ]
+  },
+  {
+   "id": "calendar_beat",
+   "kicker": "Day 6 — Sunday, September 27, 2026",
+   "dayOffset": 6,
+   "title": "The Collision Calendar",
+   "body": [
+    "Laid side by side, the collisions draw themselves. His Tuesday-evening group — mandatory, attendance taken — sits exactly on top of the only Tuesday-evening make-up visit slot you can use when a visit is missed. If Hattie's visit ever needs making up on a Tuesday, one of you must be in two places, and the car must be in three.",
+    "Friday mornings are worse: your screens are across town to the east, his class check-in is across town to the west, both in the same ninety minutes, and there is one car between you and a bus route that serves neither appointment well.",
+    "Neither collision is anyone's defiance. They are two well-made plans that have never met. The question is whether they meet on paper now — or in review reports later, translated into a language of missed appointments."
+   ],
+   "choices": [
+    {
+     "text": "Write it down — both collisions, with dates and times, before either one happens",
+     "next": "deconflict_beat",
+     "addHidden": [
+      "Schedule collisions identified in advance — Tuesday group vs. make-up visit; Friday screens vs. class check-in; one car"
+     ],
+     "note": "A collision predicted in writing is a logistics problem. The same collision, unexplained, is a compliance problem."
+    }
+   ]
+  },
+  {
+   "id": "deconflict_beat",
+   "kicker": "Day 9 — Wednesday, September 30, 2026",
+   "dayOffset": 9,
+   "title": "Letters to Two Workers",
+   "body": [
+    "The repair available is unglamorous and entirely within your power: write to both workers — Ms. Whelan and Mr. Murdock, a copy to each, so each file holds the whole picture — identifying the two collisions in advance and asking, in writing, for the schedules to be de-conflicted: a different make-up slot, a moved check-in, anything decided before a Tuesday or a Friday decides it for you.",
+    "The alternative is the way most families handle it, and it is understandable: manage week to week, swap the car, run late occasionally, and apologize after. Apologies are sincere. They are also, in a file, indistinguishable from excuses — and a file cannot tell which Tuesday an apology belongs to."
+   ],
+   "choices": [
+    {
+     "text": "Send the written de-confliction request to BOTH workers, a copy for each file",
+     "next": "reply_week",
+     "setFlags": [
+      "deconflictLetter"
+     ],
+     "cash": -4,
+     "addHidden": [
+      "Written de-confliction request sent to both workers, copies for both files"
+     ],
+     "note": "Two envelopes, two stamps, one identical page. Each worker now holds the other plan's problem, in writing, before it happens."
+    },
+    {
+     "text": "Handle it week to week — you have always managed, and letters feel like escalation",
+     "next": "reply_week",
+     "note": "Letters are escalation only if the alternative works. The calendar on the table says what the alternative is."
+    }
+   ]
+  },
+  {
+   "id": "reply_week",
+   "kicker": "Day 11 — Friday, October 2, 2026",
+   "dayOffset": 11,
+   "title": "The Workers Reply — or Don't",
+   "body": [
+    "Replies to letters like yours arrive on the system's schedule, which is to say unevenly: one worker answers within the week, practically, with a held alternate slot and a note that she has flagged the Friday problem to the provider; the other file gets a copy placed in it, with action pending a supervisor's calendar.",
+    "Or, on the autumn where no letters went out, this week is simply a week: shifts worked, appointments kept by minutes, nothing in either file about the collisions gathering above both plans like weather neither worker has been asked to forecast."
+   ],
+   "choices": [
+    {
+     "text": "File whatever replies exist, in both folders, and note the silences too",
+     "next": "car_beat",
+     "note": "A pending answer is still a record. It proves the question was asked before the answer was needed."
+    }
+   ]
+  },
+  {
+   "id": "car_beat",
+   "kicker": "Day 13 — Sunday, October 4, 2026",
+   "dayOffset": 13,
+   "title": "One Car, Honestly Described",
+   "body": [
+    "The car is a 2014 sedan with a tire that loses air slowly and a fuel gauge nobody fully trusts. It is also, functionally, a third case plan: every appointment in both files silently assumes it. Neither worker wrote “car” into a plan, because plans do not have a line for the thing everything depends on.",
+    "This week it holds. Both of you make everything, by margins measured in minutes and one memorable sprint across a parking lot. A system that runs on margins like these is not being defied when a margin fails. It is being described — later, by whoever writes the description."
+   ],
+   "choices": [
+    {
+     "text": "Log the week's trips in each folder — who drove, who arrived, when",
+     "next": "bus_plan",
+     "note": "Boring, contemporaneous, and — if a Friday ever goes wrong — the difference between a story and a record."
+    }
+   ]
+  },
+  {
+   "id": "bus_plan",
+   "kicker": "Day 15 — Tuesday, October 6, 2026",
+   "dayOffset": 15,
+   "title": "The Bus Plan, Written Down",
+   "body": [
+    "There is a bus plan now, written on the back of the calendar — routes, transfer times, the honest total in minutes — because a household with one car and two plans needs its contingencies in writing, not in optimism. The bus plan is slower than the car by forty minutes in every direction. It is also, unlike optimism, available on Fridays.",
+    "Curtis reads it twice. “It's a bad plan,” he says. “It's a plan,” you say, “for the day the car isn't.” Both assessments go on the calendar, because both are true and the day is coming."
+   ],
+   "choices": [
+    {
+     "text": "Keep the week, and keep the log",
+     "next": "screens_beat",
+     "note": "Contingencies written down are the difference between a system and a hope."
+    }
+   ]
+  },
+  {
+   "id": "screens_beat",
+   "kicker": "Day 17 — Thursday, October 8, 2026",
+   "dayOffset": 17,
+   "title": "Friday, the First Time",
+   "body": [
+    "Friday morning, the collision's gentler rehearsal: your screen to the east, his check-in to the west, the car doing arithmetic at forty miles an hour. You are both on time — you by four minutes, Curtis by two — and both providers note attendance without comment, the way providers note weather.",
+    "It works, this Friday. It works the way a rope bridge works: honestly, and with no capacity for a second traveler. Both of you understand, driving home in silence, that the question is not whether a Friday will fail. It is what the files will say on the Friday that does."
+   ],
+   "choices": [
+    {
+     "text": "Note both arrivals, with times, in both folders that night",
+     "next": "program_night",
+     "addHidden": [
+      "Friday collision survived — both appointments kept, arrivals logged in both folders"
+     ],
+     "note": "Kept Fridays are evidence too. They establish what the pattern actually is, before a single miss defines it."
+    }
+   ]
+  },
+  {
+   "id": "program_night",
+   "kicker": "Day 19 — Saturday, October 10, 2026",
+   "dayOffset": 19,
+   "title": "His Tuesday Group",
+   "body": [
+    "Curtis's Tuesday group meets in a room with a whiteboard and a sign-in sheet, and he describes it the way you describe your program: ordinary, demanding, and — on the weeks it goes well — the place where his plan's progress is actually made, one signature at a time.",
+    "He is good at it, he admits at the table, in the tone of a man reporting weather in another county. His attendance is perfect. His file, at this moment, is the cleanest version of him that exists anywhere. The scenario asks you to hold that fact, because his file is about to acquire a line his conduct never wrote, from the same week yours does."
+   ],
+   "choices": [
+    {
+     "text": "Note his attendance in the week's log, and wait for the hard week",
+     "next": "his_miss_setup",
+     "note": "Perfect attendance, logged. The hard week is already on the calendar, gathering mechanics and shift changes."
+    }
+   ]
+  },
+  {
+   "id": "his_miss_setup",
+   "kicker": "Day 21 — Monday, October 12, 2026",
+   "dayOffset": 21,
+   "title": "The Week Everything Lands at Once",
+   "body": [
+    "Some weeks are scheduled by an enemy, though none exists: Curtis's employer moves his shift, the car goes in for the tire and stays for the brake line, and his program schedules a make-up session on the one evening that was supposed to be free. You watch the week assemble itself at the kitchen table like weather coming over a hill.",
+    "His screen — his own obligation, on his own plan — is Friday. The car will be on a lift on Friday. The bus to the screening site runs, technically, in the way that aqueducts run: impressively, and not to where he needs to be by when he needs to be there.",
+    "“I'll call Murdock,” he says. “First thing.” Calls, in this system, are the rain of good intentions: real, sincere, and gone by the time anyone reads the ground."
+   ],
+   "choices": [
+    {
+     "text": "Urge him to put the car trouble in writing to Mr. Murdock before Friday",
+     "next": "his_miss",
+     "note": "He nods. Whether the nod becomes a letter is next week's file entry."
+    },
+    {
+     "text": "Let him handle his plan his way — his worker, his call",
+     "next": "his_miss",
+     "note": "His plan, his worker, his call. The files, unfortunately, do not observe the same boundaries."
+    }
+   ]
+  },
+  {
+   "id": "his_miss",
+   "kicker": "Day 24 — Thursday, October 15, 2026",
+   "dayOffset": 24,
+   "title": "The Missed Screen",
+   "body": [
+    "Friday: the car is still on the lift at nine, the screen is at nine-thirty across town, and the arithmetic that worked at forty miles an hour does not work at zero. Curtis misses the screen. He calls Mr. Murdock's office from the repair shop, explains, is told to reschedule, and does — for the following week, which he keeps.",
+    "A missed screen, rescheduled and kept, on a plan being worked in good faith: in the life, that is a bad Friday. In a file, it is a line. Where the line gets written — and in whose file — is the subject of the rest of this scenario."
+   ],
+   "choices": [
+    {
+     "text": "Ask him that night exactly what was said, and write it down, dated",
+     "next": "reschedule_kept",
+     "addHidden": [
+      "Father's missed screen — car on a lift; called worker same day; rescheduled and kept"
+     ],
+     "note": "His miss, his facts, your handwriting, tonight. Contemporaneous notes are the poor family's subpoena."
+    }
+   ]
+  },
+  {
+   "id": "reschedule_kept",
+   "kicker": "Day 26 — Saturday, October 17, 2026",
+   "dayOffset": 26,
+   "title": "The Reschedule, Kept",
+   "body": [
+    "The rescheduled screen happens the following week, and Curtis keeps it, and the result is clean, and the provider's note says exactly that, in the flat dialect of providers. In the life: a miss, a reason, a remedy, a clean result — a closed loop, seven days wide.",
+    "Closed loops, however, close only where they are recorded. The reschedule lives in the provider's records and in Curtis's account at the kitchen table. Whether it lives in his file — attached to the miss, completing the loop — is a question about copying, and copying is this scenario's whole weather system."
+   ],
+   "choices": [
+    {
+     "text": "File the reschedule result in his folder, next to the dated note of the miss",
+     "next": "her_report",
+     "note": "The loop, closed in his folder. Your report, meanwhile, is already in the mail."
+    }
+   ]
+  },
+  {
+   "id": "her_report",
+   "kicker": "Day 28 — Monday, October 19, 2026",
+   "dayOffset": 28,
+   "title": "A Line in the Wrong Report",
+   "body": [
+    "Your review report arrives first — Ms. Whelan's summary of your plan, your progress, your compliance. It is mostly fair, and mostly yours, until the paragraph near the end, which you read twice: “The household's compliance was complicated this month by a missed screen.”",
+    "The household. Your report does not say whose screen it was. It does not need to: a reader of your file — a supervisor, a judge, a stranger reading cold in some later month — will file that sentence under the name on the folder. The name on the folder is yours.",
+    "Curtis stares at the page over your shoulder. “That's my miss,” he says. “In your report.” “Yes,” you say. “Welcome to my file.”"
+   ],
+   "choices": [
+    {
+     "text": "Read the rest of both reports side by side before reacting",
+     "next": "visit_makeup",
+     "addHidden": [
+      "File bleed identified — father's missed screen summarized inside mother's review report"
+     ],
+     "note": "If his worst line is in your file, the next question writes itself: what of yours is in his?"
+    }
+   ]
+  },
+  {
+   "id": "visit_makeup",
+   "kicker": "Day 32 — Friday, October 23, 2026",
+   "dayOffset": 32,
+   "title": "The Tuesday That Tests the Calendar",
+   "body": [
+    "As if scheduled by the scenario itself — which, between us, it was — this week's visit is cut short by a staffing closure at the visit center, and the make-up is offered for Tuesday evening. Tuesday evening: his group's night. The collision the calendar predicted in September arrives in October, on schedule, like a train in a country where trains are a rumor.",
+    "If the de-confliction letters went out, there is a reply in the file — a moved slot, an alternate evening, a problem solved on paper before it became a missed anything. If they did not, there is a choice with no good side: his mandatory group, or your make-up visit, and the car keys on the table between you like a referee."
+   ],
+   "choices": [
+    {
+     "text": "Use whatever the paper provides — the de-conflicted slot, or the least-bad Tuesday",
+     "next": "makeup_outcome",
+     "note": "Either way, tonight writes a line in both files. The only question is which line."
+    },
+    {
+     "text": "One of you skips, and you agree to explain it together afterward",
+     "next": "makeup_outcome",
+     "cash": -12,
+     "note": "Explanations after are the currency this scenario keeps devaluing. You spend twelve dollars on fuel doing it the hard way."
+    }
+   ]
+  },
+  {
+   "id": "makeup_outcome",
+   "kicker": "Day 34 — Sunday, October 25, 2026",
+   "dayOffset": 34,
+   "title": "What Tuesday Wrote",
+   "body": [
+    "Tuesday writes its line either way. In the de-conflicted version, the make-up visit happens in the held alternate slot, both obligations survive, and the visit note is a warm paragraph about a puzzle and a parent who arrived on time. In the collision version, one plan absorbs the evening and the other absorbs the absence, and two files each acquire a sentence whose explanation exists only at a kitchen table, in a conversation nobody filed.",
+    "You compare folders afterward, as has become the custom. The custom, by now, is doing quiet structural work: no line in either file will go unexamined by its owner for long."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the files themselves — both of them, completely",
+     "next": "records_beat65",
+     "note": "Reports have shown you summaries. Summaries have shown you bleed. The files are next."
+    }
+   ]
+  },
+  {
+   "id": "records_beat65",
+   "kicker": "Day 36 — Tuesday, October 27, 2026",
+   "dayOffset": 36,
+   "title": "Asking for Both Files",
+   "body": [
+    "There is a way to see the whole board instead of your half of it: each of you may request your own case record from the agency, and under the regulation it “shall be released upon request” (55 Pa. Code § 3130.44(d)). Your file is yours to request; his is his — neither of you can request the other's, which is precisely why both requests have to happen, on the same week, by design rather than by luck.",
+    "Reading your own file tells you what your record says. Reading both, at one kitchen table, tells you what the case says — including every place the two have been poured into each other."
+   ],
+   "choices": [
+    {
+     "text": "Both of you sign and send your own records requests this week",
+     "next": "file_arrives65",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -6,
+     "addHidden": [
+      "Both parents requested their own complete files under 55 Pa. Code § 3130.44(d)"
+     ],
+     "note": "Two requests, two stamps, one week. The bleed, wherever it is, is about to become visible."
+    },
+    {
+     "text": "Skip it — you have seen enough of your own report already",
+     "next": "partial_view",
+     "note": "You have seen your report. A report is a summary of a file. The file is where summaries come from — and where they can be corrected."
+    }
+   ]
+  },
+  {
+   "id": "file_arrives65",
+   "kicker": "Day 42 — Monday, November 2, 2026",
+   "dayOffset": 42,
+   "title": "Reading Each Other's Paper",
+   "body": [
+    "The two files arrive in the same week and are read at the same table, each by its owner, aloud in the places that matter. Yours holds his missed screen, summarized as a household complication. His — Curtis reads this part twice, in the flat voice of a man reading his own weather — holds a note from your file: a visit described as “ended late; parent reminded about time boundaries,” on a day you remember as a visit that ended when the center closed early.",
+    "Neither line is a lie, exactly. Each is a true sentence filed in the wrong life, where it will do the wrong work: summaries are written from files, reviews are argued from summaries, and no later reader will know which parent a stray line belonged to unless someone separates the records — in writing, with dates."
+   ],
+   "choices": [
+    {
+     "text": "Mark every stray line in both files, with its rightful owner and date",
+     "next": "kitchen_audit",
+     "addHidden": [
+      "Cross-file bleed mapped — his missed screen in her file; her late visit note in his"
+     ],
+     "note": "Two files, four hands, one highlighter each. The map of the bleed is the correction's first draft."
+    }
+   ]
+  },
+  {
+   "id": "kitchen_audit",
+   "kicker": "Day 45 — Thursday, November 5, 2026",
+   "dayOffset": 45,
+   "title": "The Kitchen-Table Audit",
+   "body": [
+    "The audit takes one evening and two highlighters, and its method is a child's method: every line in each file must answer the question whose line are you? Most answer easily. A handful hesitate — a summary phrase here, a ‘household’ there — and the hesitations, marked, become the correction's working list.",
+    "“It's not even that much,” Curtis says, looking at the marked pages. “Four lines. Five.” “Four lines is a review,” you say. “Four lines is exactly a review.”"
+   ],
+   "choices": [
+    {
+     "text": "Take the marked lines one at a time, starting with the visit note",
+     "next": "her_note_his_file",
+     "note": "The smallest line first. Small lines are where patterns hide."
+    }
+   ]
+  },
+  {
+   "id": "partial_view",
+   "kicker": "Day 42 — Monday, November 2, 2026",
+   "dayOffset": 42,
+   "title": "Working from One Report",
+   "body": [
+    "Without the files, you work from what you have: your report's stray paragraph, and Curtis's recollection of a note in his. You know one line is misplaced. You suspect the other. Suspicion, at a review, is a feeling; a file, opened, is an exhibit.",
+    "Curtis looks at the shoebox end of the table for a while. “We can still ask,” he says. “Nothing says the request has an expiration date.” He is right, and the lateness will be its own fact: corrections offered after a review has relied on the bleed repair less than corrections that arrive before one."
+   ],
+   "choices": [
+    {
+     "text": "Send both requests now — late, and anyway",
+     "next": "file_arrives65",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -6,
+     "note": "Late paper is still paper. It simply has to introduce itself as late, and be dated honestly."
+    }
+   ]
+  },
+  {
+   "id": "her_note_his_file",
+   "kicker": "Day 47 — Saturday, November 7, 2026",
+   "dayOffset": 47,
+   "title": "The Late Visit Note",
+   "body": [
+    "Your stray line deserves its own minute, because it is the smaller and more unfair of the two. The visit ended when the center closed early for staffing — a fact the center's own log holds. Somewhere between that log and Curtis's file, the early closing fell off the sentence, and what remained was a mother reminded about boundaries.",
+    "“It's one line,” Curtis says. “In my file it's nothing. In yours it would be a pattern.” That is the whole mechanics of file bleed in one kitchen-table sentence: a line does its damage not where it is true, but where it lands — and it lands wherever the copying carried it."
+   ],
+   "choices": [
+    {
+     "text": "Get the visit center's own log entry for that day, in writing",
+     "next": "two_desks",
+     "cash": -4,
+     "addHidden": [
+      "Visit-center log obtained — the 'late' visit ended at the center's early closing"
+     ],
+     "note": "One page from the center: the closing time, in the center's own hand. Your line now has its other half."
+    },
+    {
+     "text": "Note your memory of the closing and move on to the correction",
+     "next": "two_desks",
+     "note": "Your memory is accurate. The center's log is evidence. At reviews, the difference is the whole game."
+    }
+   ]
+  },
+  {
+   "id": "two_desks",
+   "kicker": "Day 50 — Tuesday, November 10, 2026",
+   "dayOffset": 50,
+   "title": "Two Desks, Visited in Person",
+   "body": [
+    "Before the correction is drafted, you each visit your own worker's office — separately, by appointment, with your folder — and say the same sentence in two rooms: my file contains a line that belongs to the other parent's record, and I would like the correction to be a document, not a conversation. Both workers, to their credit, receive the sentence the same way: professionally, with a note taken and no defensiveness worth recording.",
+    "“Between desks is where it happened,” Ms. Whelan says. “So between desks is where we'll fix it. Put it in writing and I'll attach it in both.” It is the system's own diagnosis, offered from inside it: the fix travels the same route the error did, or it doesn't travel at all."
+   ],
+   "choices": [
+    {
+     "text": "Draft the correction as one document, for both desks",
+     "next": "correction_beat",
+     "note": "One document, two addressees. The error was shared; the repair will be too."
+    }
+   ]
+  },
+  {
+   "id": "correction_beat",
+   "kicker": "Day 52 — Thursday, November 12, 2026",
+   "dayOffset": 52,
+   "title": "Separating the Records, in Writing",
+   "body": [
+    "The correction is a single written document, signed by both of you and filed with both workers, and its structure is the structure of the problem: item one, the missed screen belongs to Curtis's plan and Curtis's file, with its date, its reason, and its rescheduled completion; item two, the visit note belongs to Trina's file, corrected by the center's log where obtained; item three, a request that each report and summary hereafter describe each parent's compliance from that parent's own record.",
+    "It accuses no one. Ms. Whelan and Mr. Murdock each wrote from what crossed their desks; the bleed happened between desks, in the copying, where no villain has ever lived. The correction simply asks the files to be two files again."
+   ],
+   "choices": [
+    {
+     "text": "File the written correction with BOTH workers, copies in both folders",
+     "next": "ack_beat",
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "cash": -6,
+     "addHidden": [
+      "Written correction filed separating the two records, with dates, to both workers"
+     ],
+     "note": "Filed before the reviews. Timing, in this system, is not a courtesy — it is the difference between a correction and an apology."
+    },
+    {
+     "text": "Raise it at the reviews instead — say it in the room, where people can hear it",
+     "next": "ack_beat",
+     "note": "People will hear it. Reviews, however, are argued from reports already written — and the reports were written from the uncorrected files."
+    }
+   ]
+  },
+  {
+   "id": "ack_beat",
+   "kicker": "Day 55 — Sunday, November 15, 2026",
+   "dayOffset": 55,
+   "title": "The Acknowledgments",
+   "body": [
+    "Acknowledgments arrive the way corrections do, unevenly and on paper: one worker confirms the correction is filed and the report amended; the other confirms receipt and undertakes to attach it to the next summary. Filed acknowledgments, or their dated absence, go into both folders.",
+    "This is the least cinematic beat in the scenario and, the lawyers will later say, one of the most important: a correction with an acknowledgment is a closed loop. A correction without one is a letter a parent believes in. Reviews run on loops, not beliefs."
+   ],
+   "choices": [
+    {
+     "text": "Go into the joint-visit week with the correction's status known",
+     "next": "joint_visit",
+     "note": "Known, dated, filed. Whatever the reviews do, they will do it to a record whose state is not a mystery to its owners."
+    }
+   ]
+  },
+  {
+   "id": "joint_visit",
+   "kicker": "Day 57 — Tuesday, November 17, 2026",
+   "dayOffset": 57,
+   "title": "The Joint Visit",
+   "body": [
+    "There is a joint visit this month — both parents, Hattie, a room with a rug and a box of toys that has survived many families. It goes well in the unremarkable way that is, in a file, the most remarkable thing: snacks shared, a puzzle finished, a goodbye managed with a drawing assigned as homework.",
+    "Afterward you compare notes on the bus — separately, into your own folders, a habit now — and learn the visit's paperwork fate: it is noted, warmly and completely, in one file. In the other, there is no entry at all. Not a bad entry. An absence, which a later summary may read as a visit one parent did not attend."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, that the joint visit be noted in both files",
+     "next": "note_followup",
+     "cash": -3,
+     "addHidden": [
+      "Joint visit — went well; noted in only one file; written request to note it in both"
+     ],
+     "note": "One sentence, two envelopes. Absences are corrected the same way errors are: on paper, promptly."
+    },
+    {
+     "text": "Let it stand — the visit happened, and Hattie knows it",
+     "next": "note_followup",
+     "note": "Hattie knows it. Hattie's knowledge, at four, does not get filed. That is not cynicism; it is the filing system."
+    }
+   ]
+  },
+  {
+   "id": "note_followup",
+   "kicker": "Day 60 — Friday, November 20, 2026",
+   "dayOffset": 60,
+   "title": "One Sentence, Requested Twice",
+   "body": [
+    "The request that the joint visit be noted in both files gets its answer in the ordinary two parts: yes, in the file that already held it, the note is confirmed; and in the other file, a short entry is added, dated to the visit and cross-referenced. Two lines, and the visit now exists everywhere it happened — which is to say, everywhere it will ever be read as having happened.",
+    "“We're getting good at this,” Curtis says. “We're getting documented at this,” you say, “which in this building is the same accomplishment.”"
+   ],
+   "choices": [
+    {
+     "text": "Turn to the capstone: the letter through counsel",
+     "next": "joint_letter_beat",
+     "note": "The lawyers have been reading the folders. They have a proposal shaped like the autumn."
+    }
+   ]
+  },
+  {
+   "id": "joint_letter_beat",
+   "kicker": "Day 62 — Sunday, November 22, 2026",
+   "dayOffset": 62,
+   "title": "One Letter, Two Signatures, Through Counsel",
+   "body": [
+    "Your lawyers — each of you has your own, as the case requires (42 Pa.C.S. § 6337) — propose the capstone: one joint letter, through counsel, signed by both parents, confirming the state of the two records as corrected: schedules de-conflicted or noted as in conflict, each parent's compliance described from their own file, the joint visit noted in both.",
+    "It is a short letter and a strange one, in a system built to process parents separately: two parties, acting jointly, about the accuracy of the paperwork that separates them. “It's the most cooperative document in either file,” Curtis's lawyer says, “and it is entirely about boundaries. Those two facts are not in tension. They are the same fact.”"
+   ],
+   "choices": [
+    {
+     "text": "Sign the joint letter through counsel and file it in both cases",
+     "next": "work_beat65",
+     "setFlags": [
+      "jointLetter"
+     ],
+     "cash": -6,
+     "addHidden": [
+      "Joint letter through counsel filed — corrected, separated records confirmed by both parents"
+     ],
+     "note": "One letter, two signatures, two files. The records now agree with the family: separate, and on the same side of the table."
+    },
+    {
+     "text": "Skip the letter — the corrections already say what needs saying",
+     "next": "work_beat65",
+     "note": "They may. The letter's job was never the words; it was the two signatures, in both files, before the reviews."
+    }
+   ]
+  },
+  {
+   "id": "work_beat65",
+   "kicker": "Day 67 — Friday, November 27, 2026",
+   "dayOffset": 67,
+   "title": "Two Jobs, One Payday Problem",
+   "body": [
+    "Parallel pressure, because this scenario believes in it: both employers adjust schedules in the same week — your unit short-staffed, his warehouse entering its season — and both new schedules are survivable only if the de-conflicted appointments stay de-conflicted. Paper that was filed in September is now load-bearing in November, or its absence is.",
+    "You each do the unglamorous thing your folders have taught you: confirm the new schedules to your own worker, in writing, against your own plan, the week they change — not the week they collide."
+   ],
+   "choices": [
+    {
+     "text": "Send both schedule confirmations, each to your own worker, in writing",
+     "next": "money_beat65",
+     "note": "Two short letters. The files now contain the future as well as the past, which is rarer than it should be."
+    }
+   ]
+  },
+  {
+   "id": "money_beat65",
+   "kicker": "Day 70 — Monday, November 30, 2026",
+   "dayOffset": 70,
+   "title": "Payday Arithmetic, Twice",
+   "body": [
+    "Two paychecks, two plans, one car payment, and the month's ordinary arithmetic get done at the table in the manner of a treaty negotiation: fuel allocated like a budget line, the tire replaced before it can star in another Friday, copies and stamps itemized without irony in a household ledger.",
+    "It is not a beat any plan ordered. It is, the folder would say, the substrate every plan silently assumes — and the reason ‘just manage it’ was never a scheduling strategy, only a hope with a fuel gauge."
+   ],
+   "choices": [
+    {
+     "text": "Confirm the month's arrangements in the ledger, and go to Hattie's visit",
+     "next": "hattie_beat",
+     "note": "Arithmetic done is its own kind of compliance. Hattie, meanwhile, has a lighthouse puzzle reaching its decisive phase."
+    }
+   ]
+  },
+  {
+   "id": "hattie_beat",
+   "kicker": "Day 72 — Wednesday, December 2, 2026",
+   "dayOffset": 72,
+   "title": "Hattie, at the Visit",
+   "body": [
+    "Hattie has learned the visit room's geography the way children do, completely and without comment, and she has opinions about the puzzle with the lighthouse. During the visit she lines up the toy cars — there are two, one red, one blue — and drives each on its own road of rug-pattern, with great concentration, in opposite directions, arriving at the same lighthouse.",
+    "“They both get there,” she informs the room, “but on their OWN roads.” Nobody writes this down. Some sentences do not need a file; they need a witness, and the room had two."
+   ],
+   "choices": [
+    {
+     "text": "Write the visit up in your own folder that night — your road, your words",
+     "next": "prep_split",
+     "note": "Her road, her words. His folder will hold his. That is no longer a problem in this house; it is the system working."
+    }
+   ]
+  },
+  {
+   "id": "prep_split",
+   "kicker": "Day 77 — Monday, December 7, 2026",
+   "dayOffset": 77,
+   "title": "Two Reviews, One Week",
+   "body": [
+    "The reviews land in the same week — yours first, his two days later, because the system's calendar has a sense of humor it deploys sparingly. Two reviews means two reports, two summaries, two rooms in which a judge will meet each of you substantially through paper.",
+    "Preparation, in this house, is now a two-desk exercise: your folder, current, on your plan; his folder, current, on his. What each room will actually see depends on the autumn's repairs: whether the schedules were de-conflicted in writing, whether the records were requested and read, whether the bleed was corrected on paper before the reports were written from the files — or whether the reports were written from the bleed, and the reviews will be argued uphill against them."
+   ],
+   "choices": [
+    {
+     "text": "Do a final two-folder check together, each parent auditing the other's dates",
+     "next": "counsel_prep_her",
+     "note": "Each of you checks the other's folder for one thing only: that it contains only its owner's life."
+    }
+   ]
+  },
+  {
+   "id": "counsel_prep_her",
+   "kicker": "Day 79 — Wednesday, December 9, 2026",
+   "dayOffset": 79,
+   "title": "Her Counsel, Her Folder",
+   "body": [
+    "Trina's counsel preparation is a folder audit with a lawyer's questions: Is your compliance described anywhere by someone else's conduct? Is every date in this folder yours? The correction, the acknowledgments, the de-conflicted slots — each is checked against the file copy, because the review will be argued from the agency's paper, and the point of the autumn was to make the agency's paper match yours.",
+    "She closes the folder. “Whatever happens in the room,” she says, “you will not be meeting your own record for the first time. Parents who meet their record in the room are the ones reviews happen to.”"
+   ],
+   "choices": [
+    {
+     "text": "Go home to the second preparation, across the same table",
+     "next": "counsel_prep_his",
+     "note": "His folder is already open. His lawyer is already on the phone."
+    }
+   ]
+  },
+  {
+   "id": "counsel_prep_his",
+   "kicker": "Day 80 — Thursday, December 10, 2026",
+   "dayOffset": 80,
+   "title": "His Counsel, His Folder",
+   "body": [
+    "Curtis's preparation mirrors hers with the symmetry this scenario has been building toward: his miss, his reschedule, his clean result — in his file, in his name, with his folder able to prove every step. The borrowed visit note is checked for its absence the way her report was checked for the stray paragraph: corrections, like errors, are verified or they are rumored.",
+    "“Two folders,” his lawyer says, on speaker, to the whole kitchen. “Two records. Whatever the week brings, it will at least be about the right people.”"
+   ],
+   "choices": [
+    {
+     "text": "Go into the review week",
+     "next": "reviews_week",
+     "note": "Two reviews, one week, and — for the first time in the case — two files that match their owners."
+    }
+   ]
+  },
+  {
+   "id": "reviews_week",
+   "kicker": "Day 82 — Saturday, December 12, 2026",
+   "dayOffset": 82,
+   "title": "The Reviews",
+   "body": [
+    "Your review comes first. The report on the table is either the corrected one — your compliance, from your record, with the missed screen restored to its owner and the visit note restored to its context — or the report as first written, with the stray paragraph still in it, doing its quiet work in a room where you will have minutes to answer a sentence that took a month to write.",
+    "His review, two days later, is the mirror: his miss, his rescheduling, his attendance — or your late visit, riding in his file, coloring a record it does not belong to. Two reviews, one family, and the question the whole autumn asked: are there two files in this case, or one file with two names on it?"
+   ],
+   "choices": [
+    {
+     "text": "Both reviews are argued from the separated records — de-conflicted schedules, corrections filed before the reports were written",
+     "next": "end_two",
+     "requiresFlags": [
+      "deconflictLetter",
+      "correctionFiled",
+      "recordsRequested"
+     ],
+     "note": "The paper arrived before the rooms did. That ordering is the entire strategy."
+    },
+    {
+     "text": "The corrections exist — but a review has already relied on the uncorrected file",
+     "next": "end_untangled",
+     "requiresFlags": [
+      "correctionFiled"
+     ],
+     "requiresNoFlags": [
+      "deconflictLetter"
+     ],
+     "note": "Untangled, at last — and stamped with the date it was untangled, which is after a room already used the tangle."
+    },
+    {
+     "text": "The corrections exist, on a record the schedules never stopped colliding with",
+     "next": "end_untangled",
+     "requiresFlags": [
+      "correctionFiled",
+      "recordsRequested"
+     ],
+     "requiresNoFlags": [
+      "deconflictLetter"
+     ],
+     "note": "The records were separated; the calendar never was. One of the reviews paid for the difference."
+    },
+    {
+     "text": "The reviews are argued from the files as they accumulated — one household, one blended record",
+     "next": "end_one",
+     "requiresNoFlags": [
+      "correctionFiled"
+     ],
+     "note": "No separation was ever filed. The files will now separate the family instead."
+    }
+   ]
+  },
+  {
+   "id": "end_two",
+   "kicker": "Day 89 — Saturday, December 19, 2026",
+   "dayOffset": 89,
+   "title": "Ending — Two Files, Two Records",
+   "body": [
+    "Both reviews conclude the same way, which in this system counts as harmony: each plan on track, each parent's progress described in their own file, in their own name, from their own record. The Tuesday collision is de-conflicted in writing — a standing alternate slot, in both files. The Friday collision has a written arrangement of its own. The missed screen lives where it belongs, rescheduled and kept, in the file of the man who missed it.",
+    "Hattie is still placed at this scenario's curtain, and this debrief will not pretend otherwise. What changed is the accuracy of the ground the case stands on: two parents, separated, each now legible to the system as the person they actually are — which is the minimum condition for either plan, or any plan, to be judged fairly."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORDS HELD (the hidden record, revealed): Two files, repaired into two: the collisions named in writing before they happened, to both workers, with a copy in each file; each parent's own complete record requested and read at one table (55 Pa. Code § 3130.44(d)); the bleed mapped line by line — his missed screen in her report, her misread visit note in his file — and separated by a written correction filed with both workers before the review reports were written; a joint visit re-noted in both files; and one joint letter through counsel (42 Pa.C.S. § 6337), signed by two separated parents, confirming that the records were two records again.",
+    "THE LAW UNDER THIS PATH: No statute in this scenario is exotic, and that is the point. Each parent is a party with their own right to counsel (42 Pa.C.S. § 6337) and their own record, released on their own request (55 Pa. Code § 3130.44(d)). Reviews are argued from reports, and reports are written from files — so the accuracy of each file, and the timing of its correction, is not housekeeping. It is the evidence. Nothing in this ending decides Hattie's placement, and no burden of proof was carried or tested in any hearing this scenario depicts; the reviews continued both plans, on track, which is a procedural outcome, honestly labeled PARTIAL: Hattie is still placed.",
+    "THE HONEST PART: This ending is not a verdict on either parent, and the marriage was never the problem the scenario was about — the paperwork was. Two workers, each conscientious, each reading one file, produced the bleed by ordinary copying; a different pair of workers might have caught every stray line themselves, and a supervisor reading cold might have untangled this record with no correction at all. Workers, judges, and luck hold their pieces of this outcome. What the parents controlled was the asking — in writing, to both desks, before the rooms — and in a system that decides from files, asking early is most of what accuracy ever is."
+   ]
+  },
+  {
+   "id": "end_untangled",
+   "kicker": "Day 89 — Saturday, December 19, 2026",
+   "dayOffset": 89,
+   "title": "Ending — Untangled, Late",
+   "body": [
+    "The records are separated in the end — the correction is filed, the lines are restored to their owners, the files going forward will be two files. But the correction's date is later than one of the reviews, and that review was argued from the uncorrected report: the stray paragraph was read aloud, answered uphill in minutes, and noted by a judge who will remember the answering as much as the error.",
+    "The judge, to her credit, says the fair thing in the room: the correction will be part of the record from today. From today is the operative phrase. Records can be repaired. The order in which a room met the facts cannot."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORDS HELD (the hidden record, revealed): The same bleed as every path in this scenario — his missed screen summarized inside her report, her early-closing visit note riding in his file — discovered, mapped, and corrected in writing, but corrected after at least one review had already been written and argued from the blended version. The correction is real, permanent, and dated. Its date is its limitation.",
+    "THE LAW UNDER THIS PATH: The mechanics are the scenario's verified set, arriving late: each parent's own record on their own request (55 Pa. Code § 3130.44(d)), counsel for each party (42 Pa.C.S. § 6337), and a written correction that any later reader — the next review, a cold-reading supervisor — must now reckon with. Nothing here decided placement, and no hearing in this scenario tested any burden of proof; both plans continue, one of them carrying the memory of a review argued against a sentence that was never its owner's. PARTIAL, honestly: the files are right now, and were wrong when it counted most.",
+    "THE HONEST PART: Late truth is not worthless — it governs every future summary, and future summaries are most of a case — but this ending refuses to call it the same as early truth. A worker who cross-checked the files herself, a review postponed a week, a center log volunteered instead of requested: the luck and the people in this system could have landed this correction on the right side of the review without the parents lifting a pen. They could also, in a different week, have landed it later still. What the parents controlled was the discovery and the filing; the calendar controlled the rest, and the calendar, as ever, does not grade intentions."
+   ]
+  },
+  {
+   "id": "end_one",
+   "kicker": "Day 86 — Wednesday, December 16, 2026",
+   "dayOffset": 86,
+   "title": "Ending — One File, Shared Blame",
+   "body": [
+    "The reviews are brief, in the way of rooms that believe the paper in front of them. Your report's stray paragraph is read as your complication. His file's borrowed visit note is read as his household's pattern. Neither of you says the sentence that would untangle it — it is my line, not hers; it is hers, not mine — in a form the record can keep, because the untangling was never done in the only medium the record keeps: writing, filed, before the reports.",
+    "You leave in the same car, which is also the problem and also not the problem, and Hattie's two plans roll forward as one blended record in which each parent permanently carries the other's worst line — available, now, to every future summary written by anyone."
+   ],
+   "ending": true,
+   "debrief": [
+    "WHAT THE RECORDS HELD (the hidden record, revealed): One blended file wearing two names: a missed screen that belonged to the father, summarized in the mother's report as a household complication; a visit note that belonged to the mother, stripped of its early-closing context and resting in the father's file; a joint visit noted in one record and absent from the other. None of it was malice. All of it was copying — and none of it was ever corrected in writing, so all of it is now simply what the case says happened, to both of you, jointly, forever, in every summary yet to be written.",
+    "THE LAW UNDER THIS PATH: The tools that would have prevented this ending were ordinary and available all autumn: separate counsel for each party (42 Pa.C.S. § 6337), each parent's own record released on their own request (55 Pa. Code § 3130.44(d)), and a written correction filed before the reports were drafted. They remain available now — a correction filed after these reviews still governs the next ones — but this scenario ends where its choices ended: with the reviews argued from the bleed. No placement was decided here and no burden was tested; both plans continue, each now heavier by one borrowed line. That weight, compounded over reviews, is how blended files quietly become outcomes.",
+    "THE HONEST PART: Blame, in this ending's title, is the file's word, not this debrief's. Both parents worked their plans in good faith; the collisions were built by two careful workers who never read each other's plan; the bleed was an artifact of copying, not of character. A supervisor who read both files side by side — as the parents finally did at their kitchen table — could have separated this record in an afternoon. That no one did is a fact about the system's assignments, not about this family's worth. The lesson the scenario leaves is structural, and it is deliberately unglamorous: in a two-party case, accuracy is a filing, and filings have deadlines whether or not anyone announces them."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s65';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

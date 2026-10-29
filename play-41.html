@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Night They Came Twice",
+  "subtitle": "Scenario 41 — The Night They Came Twice (a fictional composite)",
+  "startDateISO": "2026-02-21",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Hard",
+  "summary": "Two workers, two versions of one Saturday-evening agreement — the mother's own written confirmation decides which version the file keeps."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Saturday, February 21, 2026",
+   "dayOffset": 0,
+   "title": "The Store at Dusk",
+   "body": [
+    "The corner store is two doors down, close enough that Cosette Barr watches Caleb make the trip from the front window the way her own mother once watched her: nine years old, sent for milk, tall for his age, instructed to come straight back. Cleo, five, went with him because Cleo goes everywhere Caleb goes, holding the list like a passport.",
+    "They were gone eleven minutes. In the twelfth, a woman Cosette doesn't know was at the store counter asking whose children these were. In the twentieth, there was a knock, and a woman Cosette doesn't know was at her own door instead: Ms. Gable, from the county agency, with a notebook already open.",
+    "It is 7 p.m. on a Saturday. The milk is in the refrigerator. The investigation is in the living room."
+   ],
+   "choices": [
+    {
+     "text": "Let her in, keep the children in earshot, and listen more than you talk",
+     "next": "c2",
+     "note": "Listening is not surrender. It is reconnaissance — and everything she says tonight is about to matter twice."
+    },
+    {
+     "text": "Object — it's Saturday night, the children are home, this can wait until Monday",
+     "next": "c2",
+     "note": "It cannot, from her chair: a report of unsupervised children gets a same-day look. The objection is noted. So is everything after it."
+    }
+   ]
+  },
+  {
+   "id": "c2",
+   "kicker": "Day 1 — Sunday, February 22, 2026",
+   "dayOffset": 1,
+   "title": "What Was Agreed",
+   "body": [
+    "Ms. Gable is brisk and, in her way, fair. She looks at the store from the window. She asks Caleb about the trip (he narrates it like a sports replay). Then she says the sentence the whole case will turn on: 'We're in agreement, then — no more errands alone, and I'll write it up and we'll close this out.' Cosette says yes to exactly that. Gable writes for a while, closes the notebook, and leaves into the dark.",
+    "Agreement is a word two people can carry out of a room in different sizes. Tonight it leaves in hers: a notebook, closed.",
+    "Yours is still available — in the next hour, while the words are exact."
+   ],
+   "choices": [
+    {
+     "text": "Write down tonight's visit verbatim — times, her sentence, your yes — dated and signed",
+     "next": "n2b",
+     "setFlags": [
+      "notesWritten"
+     ],
+     "addHidden": [
+      "Record — parent wrote a verbatim, dated account of the first visit the same night"
+     ],
+     "note": "Eleven lines. It takes nine minutes. It will be the only first-person account of Saturday night in existence that isn't a summary."
+    },
+    {
+     "text": "Trust the agreement — it was simple, and she seemed straight",
+     "next": "n2b",
+     "note": "She probably is. Straight people summarize too, and summaries drift toward the summarizer's institution."
+    }
+   ]
+  },
+  {
+   "id": "n2b",
+   "kicker": "Day 2 — Monday, February 23, 2026",
+   "dayOffset": 2,
+   "title": "Sunday, Quietly",
+   "body": [
+    "Sunday is ordinary, which feels illegal. Caleb is not sent for milk. Cleo holds an imaginary list and walks to the window and back, practicing. Cosette watches the store from the window out of new habit and thinks about the errand the way the file now will: a nine-year-old, a five-year-old, eleven minutes, dusk.",
+    "The truth has texture: the store is two doors down; the trip is a family institution; the woman at the counter was a stranger to all of it. Texture is exactly what summaries remove.",
+    "Tomorrow there is a meeting at the agency. Meetings are where texture goes to be decided about."
+   ],
+   "choices": [
+    {
+     "text": "Decide what Monday needs: not an argument — the record, corrected while it's young",
+     "next": "records",
+     "note": "Files are most correctable before their second reader. Monday is soon. Good."
+    },
+    {
+     "text": "Decide Monday will be a formality — she said they'd close it out",
+     "next": "records",
+     "note": "She did say that. Whether her notebook says it is a question Monday will answer."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 3 — Tuesday, February 24, 2026",
+   "dayOffset": 3,
+   "title": "Your Own Record, First",
+   "body": [
+    "Before Monday's meeting, Cosette requests the file: the intake summary and the visit note. The record is released on request — 55 Pa. Code § 3130.44(d) — and reading it Sunday night, at her own table, is the first time she sees Saturday in the system's handwriting.",
+    "The intake is one line: 'Two children, 9 and 5, unsupervised at retail store, evening.' The visit note is longer, and mostly fair.",
+    "Mostly."
+   ],
+   "choices": [
+    {
+     "text": "File the written request for the intake summary and the visit note",
+     "next": "m1",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records — parent obtained the intake summary and first visit note before the follow-up meeting"
+     ],
+     "note": "What arrives is enough to prepare with: the report's one line, and Gable's note — which Cosette now reads the way editors read, pen in hand."
+    },
+    {
+     "text": "Wait for Monday — reading their notes feels like studying for a test you didn't sign up for",
+     "next": "m1",
+     "note": "It is exactly that test. The only choice is whether you sit it prepared."
+    }
+   ]
+  },
+  {
+   "id": "m1",
+   "kicker": "Day 4 — Wednesday, February 25, 2026",
+   "dayOffset": 4,
+   "title": "What the Note Says",
+   "body": [
+    "Gable's note, read closely: 'Mother cooperative. Children sent to nearby store unaccompanied at dusk; mother states she observed from window. Mother agreed: children will not be sent on errands unaccompanied. Follow-up Monday; anticipate closure.'",
+    "It is accurate. All of it happened, in that order, in those words. Cosette reads it twice more, hunting for the trap, and finds only this: it is the only account that will be in the room Monday. Hers — if she wrote it — is the second. If she didn't, Monday's meeting will be a discussion between a note and a memory."
+   ],
+   "choices": [
+    {
+     "text": "Annotate your copy — where the note is right, where your account adds the window, the eleven minutes, the watching",
+     "next": "prep",
+     "setFlags": [
+      "copyAnnotated"
+     ],
+     "note": "Her note says 'observed from window' already — Gable was fair. The annotation's job is not combat. It's ballast: your words, beside hers, in the same file."
+    },
+    {
+     "text": "Close the folder — the note is fair, Monday will take care of itself",
+     "next": "prep",
+     "note": "The note is fair. Monday, as it happens, will not be run by the woman who wrote it."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 5 — Thursday, February 26, 2026",
+   "dayOffset": 5,
+   "title": "The Neighbor at the Window",
+   "body": [
+    "Mrs. Deveraux, across the street, watched Saturday too — watched Cosette at the window, in fact, for the whole eleven minutes, because her television was broken and the street was the show. Her account exists. Like all accounts, it will matter in proportion to how much of it is on paper.",
+    "And there is the confirmation to draft: a short letter for Monday, asking the agency to confirm in the file what was agreed Saturday — errands, unaccompanied, ended — and nothing else. Short letters, carried into meetings, have a way of becoming file entries."
+   ],
+   "choices": [
+    {
+     "text": "Get Mrs. Deveraux's statement in writing, and draft the confirmation letter tonight",
+     "next": "eve",
+     "setFlags": [
+      "neighborSeen",
+      "confirmReady"
+     ],
+     "addHidden": [
+      "Proof — neighbor's written statement obtained; written confirmation of the agreed terms drafted"
+     ],
+     "note": "Her statement is six lines and mentions the broken television, which is the kind of detail truth has and inventions don't. The letter is five lines. Both fit in one folder."
+    },
+    {
+     "text": "Mention the neighbor at the meeting if it comes up — paper feels like lawyering up",
+     "next": "eve",
+     "note": "It is lawyering up, in the literal sense: it is what the record looks like when a parent builds it on purpose. The meeting will decide whether that's a criticism or a compliment."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 6 — Friday, February 27, 2026",
+   "dayOffset": 6,
+   "title": "The Night Before Monday",
+   "body": [
+    "The folder is ready or it isn't: Gable's note, the intake line, the neighbor's six lines, the confirmation letter, and — if Saturday night went the way it should have — Cosette's own eleven lines, written while the words were warm.",
+    "Across town, a coverage schedule is being made that Cosette can't see: Ms. Gable is off Monday. The meeting will be run by Mr. Venn, who has read the file exactly once, quickly, the way covering workers do.",
+    "He has read Gable's note as broader than she wrote it. Readers do that. It's why files need ballast."
+   ],
+   "choices": [
+    {
+     "text": "Sleep. The folder is the argument, and it's made",
+     "next": "gate",
+     "note": "Whatever Monday holds, it will be met with paper. That was the whole job of the weekend."
+    },
+    {
+     "text": "Rehearse arguments against a broader reading until midnight",
+     "next": "gate",
+     "note": "Arguments against a reading are wind. Paper against a reading is weight. The folder — if it's built — already contains the rebuttal."
+    }
+   ]
+  },
+  {
+   "id": "gate",
+   "kicker": "Day 7 — Saturday, February 28, 2026",
+   "dayOffset": 7,
+   "title": "The Meeting, With a Different Reader",
+   "body": [
+    "Mr. Venn is polite, harried, and reading from Gable's note with a supervisor's summary clipped to it. The summary — which Gable did not write — says: 'Mother agreed to safety plan: children supervised at all times; any recurrence to be addressed by petition.'",
+    "'Supervised at all times' is not in the note. 'Petition' is not in the note. But the summary is on top of the file, and summaries are what covering workers enforce. Venn looks up: 'So — we're agreed on the plan as summarized?'",
+    "This is the decision the weekend built toward. The folder is on the table. So is his summary."
+   ],
+   "choices": [
+    {
+     "text": "Hand him the confirmation letter: the agreed terms as actually agreed Saturday — and ask that the file be corrected to them",
+     "next": "w1",
+     "requiresFlags": [
+      "confirmReady"
+     ],
+     "note": "The letter names the agreement in five lines: errands unaccompanied — ended; no other terms discussed. It is dated this weekend, signed, and now it is in his hands before his summary hardens into the plan."
+    },
+    {
+     "text": "Tell him that's not what was agreed — explain Saturday again, fully, out loud",
+     "next": "h0",
+     "note": "He listens. He nods. He writes two words in the margin of the summary, and they are not your words. They are: 'Mother disputes.'"
+    }
+   ]
+  },
+  {
+   "id": "w1",
+   "kicker": "Day 9 — Monday, March 2, 2026",
+   "dayOffset": 9,
+   "title": "Gable, By Phone",
+   "body": [
+    "Venn does something covering workers don't always do: he calls Gable, on speaker, with Cosette in the room. Gable, from wherever days off happen, is crisp: 'Errands, unaccompanied. That's what we discussed. I wrote closure for Monday.'",
+    "The summary's author is not in the room and never will be. The note's author has just outranked it, live. Venn unclips the summary from the file — a small sound, like a verdict — and writes on the note itself."
+   ],
+   "choices": [
+    {
+     "text": "Ask him to read back what he's writing into the note",
+     "next": "w1b",
+     "note": "He does. Workers who will read back their corrections are workers whose corrections happen. Listen for the errands, and for the absence of the petition."
+    },
+    {
+     "text": "Let him write — pressing feels ungrateful, mid-rescue",
+     "next": "w1b",
+     "note": "Gratitude is a virtue. Verification is a discipline. The file is indifferent to both and records only one."
+    }
+   ]
+  },
+  {
+   "id": "w1b",
+   "kicker": "Day 10 — Tuesday, March 3, 2026",
+   "dayOffset": 10,
+   "title": "Amended, In Ink",
+   "body": [
+    "The amendment, read back: 'Correction per worker Gable, confirmed by phone 2/23: agreed term is that children will not be sent on errands unaccompanied. No supervision plan or petition term was discussed or agreed. File to close following one follow-up visit.' His initials. The date.",
+    "It is not an apology and it is not a victory speech. It is better than both: it is the file, agreeing with Saturday, in ink, before any second reader builds on the summary.",
+    "Cosette asks for a copy for her folder. He makes one without being asked twice."
+   ],
+   "choices": [
+    {
+     "text": "File your copy tonight, with the neighbor's statement and your Saturday lines behind it",
+     "next": "w2",
+     "setFlags": [
+      "amendmentCopied"
+     ],
+     "addHidden": [
+      "Record — parent kept a copy of the corrected file note with her own account and the neighbor's statement"
+     ],
+     "note": "Two buildings, one story. The file's most dangerous page — the summary — no longer exists in either."
+    },
+    {
+     "text": "Let his copy be the record — the correction is what counts",
+     "next": "w2",
+     "note": "The correction counts double if it can be produced in a year, in one page, to a stranger."
+    }
+   ]
+  },
+  {
+   "id": "w2",
+   "kicker": "Day 11 — Wednesday, March 4, 2026",
+   "dayOffset": 11,
+   "title": "The Confirmation, In Writing",
+   "body": [
+    "The formal confirmation letter arrives Wednesday, and it says the agreement in the agency's own letterhead the way Cosette's five lines said it in hers: errands, unaccompanied, ended; follow-up visit Friday; closure to follow.",
+    "Two texts, one agreement, matching. This is what the system looks like when it works — not warmth, exactly. Correspondence.",
+    "Friday's visit remains. It will be conducted by Venn, who now owns this file's truth and seems, if anything, relieved to."
+   ],
+   "choices": [
+    {
+     "text": "Prepare Friday the way Saturday should be: ordinary, documented, nothing to perform",
+     "next": "w2b",
+     "note": "The plan is the week itself, lived visibly: no errands, homework, the window. Documentation of ordinary is a short log and a clear conscience."
+    },
+    {
+     "text": "Prepare Friday like an inspection — the house has never been this ready for anything",
+     "next": "w2b",
+     "note": "Houses can be too ready; children sense stagecraft. The visit grades the week, not the staging."
+    }
+   ]
+  },
+  {
+   "id": "w2b",
+   "kicker": "Day 13 — Friday, March 6, 2026",
+   "dayOffset": 13,
+   "title": "A Week on the Narrow Plan",
+   "body": [
+    "The week complies with itself. Caleb walks to the window once, list in hand, and conducts the errand in pantomime, to general acclaim. Mrs. Deveraux's television gets fixed; she reports this as a loss. Cosette logs the week in five lines — dates, evenings, nothing to report — because a plan this narrow deserves a record as narrow and exact as it is.",
+    "The log is not required. That is rather the point of it: required paper proves compliance; voluntary paper proves authorship.",
+    "Friday comes."
+   ],
+   "choices": [
+    {
+     "text": "Bring the log to Friday's visit — offer it for the file",
+     "next": "w3a",
+     "setFlags": [
+      "complianceLog"
+     ],
+     "addHidden": [
+      "Documentation — parent kept and offered a dated log of the agreed plan's first week"
+     ],
+     "note": "Venn takes it with the air of a man whose file just got easier to close. Correspondence, again — the system's native love language."
+    },
+    {
+     "text": "Keep the week in your head — it was unremarkable",
+     "next": "w3a",
+     "note": "Unremarkable weeks are the goal of every plan ever written. Written down, they are also evidence. In your head, they are a mood."
+    }
+   ]
+  },
+  {
+   "id": "w3a",
+   "kicker": "Day 15 — Sunday, March 8, 2026",
+   "dayOffset": 15,
+   "title": "The Draft Summary",
+   "body": [
+    "Friday's visit is twenty minutes of ordinariness, professionally witnessed. Venn drafts the closing summary at the kitchen table, and — because this file has taught him its reader is attentive — he turns it around when he's done: 'Read it before I file it. Anything wrong, say so now.'",
+    "It is right in every line but one, and the line is small and human: 'Mother initially hostile to Saturday visit.' Cosette was not hostile. She was startled, in a doorway, at 7 p.m., in socks. The difference will matter to some future reader exactly as much as 'supervised at all times' was about to.",
+    "There is a pen on the table."
+   ],
+   "choices": [
+    {
+     "text": "Point to the line, once, with Saturday's own paper beside it — your eleven lines say 'startled,' in your hand, from that night",
+     "next": "w3",
+     "setFlags": [
+      "lineCorrected"
+     ],
+     "note": "He reads your Saturday account — which exists, dated that night — shrugs the shrug of a man caught being approximate, and strikes 'hostile' for 'startled.' One word. In ink. Before filing."
+    },
+    {
+     "text": "Let it stand — the case is closing, and 'hostile' is one word",
+     "next": "w3",
+     "note": "One word is exactly the size of every problem this week contained. Summaries are made of them."
+    }
+   ]
+  },
+  {
+   "id": "w3",
+   "kicker": "Day 16 — Monday, March 9, 2026",
+   "dayOffset": 16,
+   "title": "Sign Here",
+   "body": [
+    "The closing letter follows Monday: investigation closed, report not supported as to supervision, agreement noted and satisfied. The acknowledgment line waits at the bottom — receipt, not agreement — and above it, the summary paragraph, in which the whole case is compressed one final time.",
+    "Everything you have done for nine days has been about what such paragraphs say. This one deserves the nine days' discipline, one last time."
+   ],
+   "choices": [
+    {
+     "text": "Read the whole letter, then sign and file it with the rest",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "Every sentence checks: errands, ended; Saturday, startled; agreement, as agreed. Your name goes under a letter you have actually read, into a folder that holds the whole correction, start to finish."
+    },
+    {
+     "text": "Sign — it's closed, and closed was the goal",
+     "next": "end_partial",
+     "note": "It is closed. The summary paragraph, which you did not read, describes 'a safety plan, complied with' — the plan that never existed, resurrected in summary, where summaries live forever. Venn's amendment is in the file too, one page deeper, where corrections live. Readers read summaries."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 18 — Wednesday, March 11, 2026",
+   "dayOffset": 18,
+   "title": "On Her Own Paper",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The investigation closed on the agreement as it was actually made — errands, unaccompanied, ended — because at the one meeting where a stranger's summary tried to enlarge it, the enlargement met paper: a five-line confirmation, drafted before the meeting, naming the terms as agreed. WIN: the file records Cosette's Saturday, in Cosette's terms, corrected in ink in her presence.",
+    "The record inside this story: under 55 Pa. Code § 3130.44(d), the intake summary and Gable's note came from her record, on request, before the meeting — which is how she knew the note was fair and the summary wasn't, and could aim at the difference instead of at the agency. The neighbor's statement and her own same-night lines did the rest: ballast, in writing, dated.",
+    "Notice the hinge: a covering worker read a supervisor's summary instead of the note. That is not villainy; it is Tuesday, in every office on earth. What defeated it was not argument — the argumentative route exists in this story, and it is longer — but a document that predated the summary.",
+    "Honesty requires this: Gable answered her phone on her day off and told the truth crisply, and Venn unclipped the summary in front of a witness. Different offices let the summary stand and dare you to appeal it. Workers vary, summaries vary. The letter works because it exists before it's needed — which is the only time such letters can be written."
+   ]
+  },
+  {
+   "id": "h0",
+   "kicker": "Day 8 — Sunday, March 1, 2026",
+   "dayOffset": 8,
+   "title": "“Mother Disputes”",
+   "body": [
+    "Venn writes 'mother disputes plan' in the margin and the temperature of the file changes. A dispute, in a file, is not a disagreement — it is a posture, and postures get planned around. He slides a paper across the table: a voluntary placement agreement. The children would stay with Cosette's sister Marla 'until this is sorted out.'",
+    "'It's not a removal,' he says, and that is technically true. 'You'd be agreeing.' The paper has a signature line, a start date, and — Cosette reads it twice, because her weekend taught her to — no end date. 'Sorted out' is not a date.",
+    "Marla is good people. That is not what the paper is asking."
+   ],
+   "choices": [
+    {
+     "text": "Ask what 'sorted out' means, in dates, before anything is signed",
+     "next": "h1",
+     "note": "His answer is honest and useless: 'Until the assessment is complete and a plan is agreed.' The plan, recall, is the thing being disputed."
+    },
+    {
+     "text": "Refuse flatly — no paper, no placement, no plan that wasn't agreed",
+     "next": "h1",
+     "note": "Refusal is also a posture, and the file already has a word for yours. The refusal will be answered procedurally, which is slower and colder than being answered personally."
+    }
+   ]
+  },
+  {
+   "id": "h1",
+   "kicker": "Day 10 — Tuesday, March 3, 2026",
+   "dayOffset": 10,
+   "title": "The Paper With No Date",
+   "body": [
+    "Here is the fork, and it is a real one. Sign, and the children sleep at Marla's tonight under a paper with no end date, while the agency completes an assessment of a plan Cosette never agreed to. Decline, and the agency does by petition what the paper tried to do by signature: the children go to Marla's anyway tonight — as an emergency kinship placement — and a judge reviews it within days.",
+    "Both roads lead to Marla's couch. They differ in everything else: in what the file says Cosette chose, and in whether a court is watching the clock."
+   ],
+   "choices": [
+    {
+     "text": "Sign — Marla's is safe, and fighting looks worse than agreeing",
+     "next": "h2sign",
+     "note": "Signed at 11 a.m. By noon the file reads 'mother agreed to voluntary placement.' Agreed is doing the same work 'disputes' did, in the other direction."
+    },
+    {
+     "text": "Decline in writing — one line, dated: 'I do not agree to placement; the agreed terms were as stated Saturday' — and take the hearing",
+     "next": "h2decline",
+     "setFlags": [
+      "declinedInWriting",
+      "removed"
+     ],
+     "note": "It is the first paper of Cosette's in this file since Saturday, if the weekend's were never written — and it changes the legal weather: now there must be a hearing, quickly, with a judge and a lawyer for her in it."
+    }
+   ]
+  },
+  {
+   "id": "h2sign",
+   "kicker": "Day 11 — Wednesday, March 4, 2026",
+   "dayOffset": 11,
+   "title": "Marla's Couch",
+   "body": [
+    "The children think it's a sleepover for exactly one evening. By the third, Caleb is asking questions with right angles. 'Sorted out' enters its second week without acquiring a date. The assessment proceeds at office pace. Cosette visits daily and is written up as 'engaged,' which she is, and 'compliant,' which is a word files use for people who signed.",
+    "On day twelve, a supervisor asks Venn why the children of a disputed errand report are still placed. Venn has no answer with a date in it. Neither, it turns out, does the paper Cosette signed — which is now the problem, in a system that runs on dates.",
+    "A review is scheduled — not a hearing, because she agreed, and agreement doesn't get hearings. It gets reviews."
+   ],
+   "choices": [
+    {
+     "text": "Write, tonight, the demand the paper should have contained: return by a date, or a hearing — in writing",
+     "next": "h3a",
+     "setFlags": [
+      "returnDemanded"
+     ],
+     "note": "Late paper is weaker than early paper and stronger than no paper, which is the complete taxonomy. It goes in dated, and the review is now about a demand, not a mood."
+    },
+    {
+     "text": "Wait for the review — surely they'll just send them home",
+     "next": "h3a",
+     "note": "Surely is not a scheduling system. The review will consider what's in the file, and the file contains a signature and a summary."
+    }
+   ]
+  },
+  {
+   "id": "h2decline",
+   "kicker": "Day 11 — Wednesday, March 4, 2026",
+   "dayOffset": 11,
+   "title": "The Knock, Again",
+   "body": [
+    "That evening there is a second knock — the night they came twice, eight days later. The petition is granted over the phone by a judge Cosette never sees; the children go to Marla's as an emergency placement, with a hearing now required by law and a clock now running by law.",
+    "Caleb packs like a soldier. Cleo packs the list. Cosette stands in the doorway in her socks again, and this time she does one thing Saturday taught her — or didn't: she watches what she has to put in front of a judge within three days.",
+    "What a shelter care hearing hears is narrow: whether the children must remain out of the home while the case is decided. Narrow, and entirely about risk — which is to say, entirely about paper."
+   ],
+   "choices": [
+    {
+     "text": "Call Marla tonight: the hearing is within days; the children need their routines, their beds' worth of normal, documented",
+     "next": "h3a",
+     "note": "Kinship placement is the system's least-bad door, and Marla holding it open matters. What matters next is what gets carried into the hearing room."
+    },
+    {
+     "text": "Spend the night planning what you'll say to the judge",
+     "next": "h3a",
+     "note": "Saying is the smallest part of a hearing. Exhibits are the rest."
+    }
+   ]
+  },
+  {
+   "id": "h3a",
+   "kicker": "Day 12 — Thursday, March 5, 2026",
+   "dayOffset": 12,
+   "title": "Counsel, in the Hallway",
+   "body": [
+    "The courthouse hallway smells of floor wax and other people's worst weeks. Cosette's lawyer — appointed, because counsel in these hearings is a right, not a luxury — has eleven minutes and a legal pad: 'Tell me what we have. Not what happened. What we have.'",
+    "The inventory is the whole game. Saturday's agreement lives in four possible exhibits: Gable's note (fair, and in the file), Cosette's verbatim lines from that night (if written), Mrs. Deveraux's statement (if gathered), and the summary that enlarged it all (in the file, on top). Two of those four were Cosette's to make. A hearing is where it is decided whether she made them.",
+    "The lawyer looks at whatever the folder holds and does arithmetic judges do."
+   ],
+   "choices": [
+    {
+     "text": "Hand over everything the weekend produced — all of it, copies for counsel",
+     "next": "h3",
+     "note": "Whatever exists, exists. The hearing will now be about documents, which is the only terrain where Saturday can beat the summary."
+    },
+    {
+     "text": "Explain Saturday fully, so counsel can argue it from the heart",
+     "next": "h3",
+     "note": "Heart is admissible nowhere. Counsel nods, writes 'client states she watched from window,' and the file's version remains the only version with a exhibit sticker."
+    }
+   ]
+  },
+  {
+   "id": "h3",
+   "kicker": "Day 13 — Friday, March 6, 2026",
+   "dayOffset": 13,
+   "title": "The Hearing",
+   "body": [
+    "A shelter care hearing comes fast by law — within 72 hours of a removal (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)) — and it feels like it: a small room, a tired judge, the agency's lawyer reading from the file's top page, which is the summary.",
+    "Cosette's counsel rises with whatever the folder held. If the weekend's paper exists — her own dated lines from Saturday night, and a neighbor's signed statement that she watched Cosette watch — the hearing has a second text to read, and judges read texts. If it doesn't, the hearing has her voice, raised in a small room, against a summary in a calm one.",
+    "The judge looks from the file to the folder, and rules on the paper in front of her."
+   ],
+   "choices": [
+    {
+     "text": "Put the weekend's paper to the court: the same-night account and the neighbor's statement",
+     "next": "end_partial",
+     "requiresFlags": [
+      "notesWritten",
+      "neighborSeen"
+     ],
+     "note": "The judge reads both — actually reads, pen moving — and then reads Gable's note against the summary clipped to it. 'The note doesn't say what the summary says,' she observes, to no one in particular, which is how judges say it to everyone. The children are returned tonight — on the plan as filed: Venn's. Supervision terms, check-ins, a review in sixty days. Home, on their paper."
+    },
+    {
+     "text": "Ask for a week — time to get the neighbor's statement and reconstruct Saturday's account properly",
+     "next": "h4",
+     "note": "Continuances at shelter care are measured in days and granted in reluctance. She gets until next week. The children stay at Marla's. The clock that was her right is now also her wait."
+    },
+    {
+     "text": "Argue Saturday from memory — fully, fiercely, the way it deserves",
+     "next": "end_hard",
+     "note": "She does, and it deserves better than it gets: 'The court has the agency's documentation and the mother's testimony,' the judge says, in the formula that means the documentation weighed more. The placement continues. The plan as summarized stands. Adjudication will rehear it all — in weeks, on a file whose top page has not changed."
+    }
+   ]
+  },
+  {
+   "id": "h4",
+   "kicker": "Day 15 — Sunday, March 8, 2026",
+   "dayOffset": 15,
+   "title": "One Week at Marla's",
+   "body": [
+    "The week is a workshop with one product: the paper that Saturday night and Sunday should have made. Mrs. Deveraux, located and willing, writes her six lines — the window, the eleven minutes, the broken television. Cosette reconstructs her account from texts she sent that night (two, timestamped, describing Gable's visit — better than memory, worse than a page written that night).",
+    "Counsel files both ahead of the continued hearing. Late paper, the taxonomy says: weaker than early, stronger than none. The question the judge will answer is whether it's strong enough to move a placement that has already settled into Marla's routines."
+   ],
+   "choices": [
+    {
+     "text": "File both documents before the continued hearing — statement, reconstruction, and the confirmation letter for good measure",
+     "next": "end_partial",
+     "setFlags": [
+      "latePacket"
+     ],
+     "note": "The judge reads them in chambers this time. The ruling, when it comes, is the same shape as the week's: the children come home Thursday — on the plan as the agency filed it. Supervision terms, check-ins, a review in sixty days. The paper was strong enough to bring them home. It was not strong enough to change whose paper they came home under."
+    },
+    {
+     "text": "Let counsel argue the reconstruction orally — filing feels like overkill now",
+     "next": "end_hard",
+     "note": "Oral reconstructions are summaries, and summaries are the other side's weapon, not yours. The judge continues the placement. 'The plan, continued,' she says, and the file closes over Saturday like water."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 18 — Wednesday, March 11, 2026",
+   "dayOffset": 18,
+   "title": "Home, On Their Paper",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The children came home — that is not nothing; it is, in fact, the main thing — but they came home under the agency's paper, not the agreement as it was made Saturday: supervision terms, check-ins, a sixty-day review, 'mother disputes plan' in the margin of the family's file forever. PARTIAL WIN: the kinship door and the hearing did their work; the authorship was lost on the Saturday night it wasn't written down, or the Monday it was argued instead of handed over.",
+    "The verified law inside this ending: a shelter care hearing comes within 72 hours of removal (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)), and counsel at it is a right (42 Pa.C.S. § 6337; § 6332(a)). The law gave Cosette a judge, a lawyer, and a clock. It could not give her the eleven lines from Saturday night. Only Saturday night could.",
+    "Notice what the judge did with paper when paper finally existed: she read Gable's note against its own summary and found the case in the gap. The gap was always there. It needed exhibits to become visible.",
+    "Honesty requires this: another judge weighs a neighbor's broken television differently, and Marla's couch could have become a placement of months if the assessment had found a second thing. Workers vary; judges vary; couches vary. What doesn't vary: hearings rule on the paper in front of them, and paper is made before hearings, or it is not made at all."
+   ]
+  },
+  {
+   "id": "end_hard",
+   "kicker": "Day 18 — Wednesday, March 11, 2026",
+   "dayOffset": 18,
+   "title": "The Plan, Continued",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The placement continued — not because a nine-year-old bought milk, but because at every decision point the file contained exactly one account of Saturday, and it wasn't Cosette's. The summary said 'supervised at all times' and 'petition,' and in the absence of any earlier paper, the summary simply became the plan, and the plan simply continued.",
+    "The verified law inside this ending: the shelter care hearing came within 72 hours, as the law requires (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)), and Cosette had counsel (42 Pa.C.S. § 6337). The system's promises were kept. What failed was not the law; it was the evidence — a neighbor never asked for a statement, a night never written down, a confirmation never drafted. Hearings cannot weigh documents that don't exist.",
+    "Notice the sequence, because it is the whole lesson: the case was lost on Saturday night (unwritten), confirmed on Monday (argued instead of handed over), and merely announced at the hearing. By the time lawyers were in a room, the outcome was already in the file.",
+    "Honesty requires this: some judges dig, some workers correct their own summaries unprompted, and some cases like this end at the first visit. None of that was available to be counted on. The only version of Saturday that attends every meeting is the written one — and in this story, no one wrote it."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s41';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

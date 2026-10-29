@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 58 — The Missed Screen (a fictional composite)",
+  "startDateISO": "2026-04-13",
+  "startNode": "start",
+  "startCash": 120,
+  "tier": "Foundation",
+  "summary": "Random screens by text, a site across town, a shift at 8:30 — a missed screen is tallied like a positive unless the conflict is on paper first."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, April 13, 2026",
+   "dayOffset": 0,
+   "title": "The Protocol, Said Out Loud",
+   "body": [
+    "Your name is Desirae. You are in recovery, and your recovery, in this case, is mostly a schedule: meetings, check-ins, work, and screens. Your son Leo is five, and he is living with his grandmother Lorraine — kinship care, arranged before this story opens, in the house where his drawings are on the refrigerator.",
+    "The screen protocol was explained to you out loud, once, at a meeting: summonses come by text, usually the night before; the collection site is across town and its window is 7 to 9 in the morning; your shift starts at 8:30. The plan says a missed screen is recorded as a failed appearance, and a failed appearance is counted the same as a positive result when compliance is tallied.",
+    "Your first screen, on a day off, you completed at the far site without incident. The system recorded it, in its one-line way, and moved on. This story is about the second one — and about the difference between a conflict explained before it happens and a conflict explained after."
+   ],
+   "choices": [
+    {
+     "text": "Keep the protocol in mind, and go on with the week",
+     "next": "night_text",
+     "note": "Said out loud, once. Nothing about it was handed to you in writing. That detail is doing more work than it should."
+    }
+   ]
+  },
+  {
+   "id": "night_text",
+   "kicker": "Day 7 — Monday, April 20, 2026",
+   "dayOffset": 7,
+   "title": "The 9:40 Text",
+   "body": [
+    "The text arrives at 9:40 in the evening on Monday, April 20, 2026: screen tomorrow, Tuesday, April 21, 2026, 8:00, at the site across town. Your shift tomorrow starts at 8:30. The buses between the site and your workplace do not consult each other, and neither, tonight, does the arithmetic: the far site and an 8:30 shift cannot both be met — not honestly, not by you, not tomorrow.",
+    "You can send a written message tonight — to the caseworker and the program number that sent the summons — documenting the conflict before it happens and asking for the nearer collection site or a later window. Or you can say nothing, set two alarms, and try to make both.",
+    "Before, or after. In this system, that is not a detail. It is the whole decision."
+   ],
+   "choices": [
+    {
+     "text": "Text back tonight, in writing: the site, your 8:30 shift, the conflict — and ask for the nearer site or a later window",
+     "next": "morning_moved",
+     "setFlags": [
+      "screenMoved"
+     ],
+     "addHidden": [
+      "Screen conflict — documented in writing the night before; nearer site or later window requested"
+     ],
+     "note": "Sent at 9:52 p.m., with a timestamp you did not have to create — the message carries its own. Asking before is a different act, on paper, than explaining after."
+    },
+    {
+     "text": "Say nothing and try to make both — two alarms, first bus, run",
+     "next": "morning_rush",
+     "note": "Trying is a plan for the morning. It is not a record for the file. Tomorrow will produce one of those anyway — the question is whose wording it uses."
+    }
+   ]
+  },
+  {
+   "id": "morning_moved",
+   "kicker": "Day 8 — Tuesday, April 21, 2026",
+   "dayOffset": 8,
+   "title": "The Nearer Window",
+   "body": [
+    "The reply comes before your first alarm on Tuesday, April 21, 2026: the nearer collection site, today, in its early window. You go there first, the screen is completed inside the window, and you reach your shift minutes after 8:30 to a supervisor who had already seen your message forwarded the night before — because paper, forwarded, arrives before you do.",
+    "Nothing dramatic happened this morning. That is what a documented conflict looks like from inside it: a problem that was written down early enough to be solved as a scheduling problem, instead of recorded later as a character problem."
+   ],
+   "choices": [
+    {
+     "text": "Keep the reply and the completion slip with your other case papers",
+     "next": "week_after",
+     "addHidden": [
+      "Screen — completed at the nearer site inside the window after the written request"
+     ],
+     "note": "A reply, a slip, a date. The morning now exists in the file the way it existed in your life: a conflict, raised and resolved."
+    }
+   ]
+  },
+  {
+   "id": "morning_rush",
+   "kicker": "Day 8 — Tuesday, April 21, 2026",
+   "dayOffset": 8,
+   "title": "Nine O’Clock, Across Town",
+   "body": [
+    "You run the morning honestly and the morning runs out. The first bus is late by minutes that matter; the site across town comes into view at 9:04 on Tuesday, April 21, 2026 — four minutes after its window closed. The screen is not taken. It cannot be taken; windows are windows.",
+    "The form at the desk has a line for this, and the line is filled in with the plan's own language: failed appearance. No one at the desk is unkind, and no one writes down the buses, the alarms, or the arithmetic, because the form has no line for arithmetic.",
+    "You go to your shift late as well, with a morning that was entirely effort and is now, on paper, entirely something else."
+   ],
+   "choices": [
+    {
+     "text": "Tell your caseworker what happened today, while it is still today",
+     "next": "week_after",
+     "note": "You tell her the whole morning, accurately. She listens like a person. The form, already filed, listens like a form."
+    }
+   ]
+  },
+  {
+   "id": "week_after",
+   "kicker": "Day 11 — Friday, April 24, 2026",
+   "dayOffset": 11,
+   "title": "What the Week Wrote Down",
+   "body": [
+    "At the week's check-in, the screen entry is mentioned in passing, in the file's one-line language — and you understand that the file's version of this week and your version are no longer the same document, whichever morning you lived.",
+    "Your lawyer raises the question this scenario turns on. You have one because the law provides for counsel in these cases, and for appointed counsel if a parent cannot afford one (42 Pa.C.S. § 6337). Her question is short: “What does the log itself say — the summons times, the sites, the entries? Not the summary. The log.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask how a parent gets the log itself, in writing",
+     "next": "records_fork",
+     "note": "“The same way you get any of your record,” she says. “You ask for it, in writing, and you keep the asking.”"
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 15 — Tuesday, April 28, 2026",
+   "dayOffset": 15,
+   "title": "Ask for the Log",
+   "body": [
+    "The screen log — every summons, every site, every result entry — is part of your case record, and the record is to be released on request (55 Pa. Code § 3130.44(d)). A written request gets you the log itself, to sit with at your own table and check against your own texts and slips.",
+    "Or you can keep working from the check-in summaries and the portal's one-line statuses, which is to say: from other people's shortening of your mornings."
+   ],
+   "choices": [
+    {
+     "text": "Request the screen log in writing — summonses, sites, and result entries — and keep a copy of the request",
+     "next": "log_arrives",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "cash": -3,
+     "note": "Three dollars of copies across the errand. The request is dated; the log, when it comes, can be read line by line against your phone."
+    },
+    {
+     "text": "Work from the summaries — the caseworker reads them to you accurately",
+     "next": "no_log",
+     "note": "She does, and she is accurate. Summaries are still selections: someone else decided which lines of your mornings were the story."
+    }
+   ]
+  },
+  {
+   "id": "log_arrives",
+   "kicker": "Day 19 — Saturday, May 2, 2026",
+   "dayOffset": 19,
+   "title": "The Log, on Paper",
+   "body": [
+    "The log arrives, and it is illuminating in the specific way of exact things. It records when each summons was sent — including 9:40 in the evening on Monday, April 20, 2026 — which site each screen was assigned to, and what entry each morning received. Times, sites, entries. It is exact about all of them.",
+    "What it does not record is reasons. No log does. Reasons live in messages, requests, and replies — which is why the ones you sent, if you sent them, are the other half of this document, and why keeping them matters as much as requesting this half."
+   ],
+   "choices": [
+    {
+     "text": "Put the log with your texts and slips, in date order",
+     "next": "month_two",
+     "addHidden": [
+      "Screen log — summons times, sites, and entries obtained and kept by parent"
+     ],
+     "note": "Two halves of the same mornings, both on paper now: what the system recorded, and what you wrote before it recorded anything."
+    }
+   ]
+  },
+  {
+   "id": "no_log",
+   "kicker": "Day 19 — Saturday, May 2, 2026",
+   "dayOffset": 19,
+   "title": "Pending, in the Portal",
+   "body": [
+    "Without the log, your mornings exist as statuses: completed, failed appearance, pending. Statuses have no times attached, no sites, no sequence. A summons sent at 9:40 the night before and a summons sent a week ahead wear, in status language, exactly the same clothes.",
+    "You know the sequence. Knowing it is your half of a conversation the file is having without you, in a room — the review — where the file's half is the one printed out."
+   ],
+   "choices": [
+    {
+     "text": "Go on toward month two — and keep every text and slip from here",
+     "next": "month_two",
+     "note": "From here is later than from the start, and earlier than the review. Paper has a way of being worth whatever week it begins in."
+    }
+   ]
+  },
+  {
+   "id": "month_two",
+   "kicker": "Day 36 — Tuesday, May 19, 2026",
+   "dayOffset": 36,
+   "title": "The Second Text",
+   "body": [
+    "Month two brings a second summons cycle — and this time the screen itself goes fine: summoned with notice, completed at the assigned site on Tuesday, May 19, 2026, inside the window, on a day your shift allowed it. You keep the confirmation text. The site issues its dated completion slip.",
+    "Then the system's paperwork does to this screen what the buses tried to do to the first one: the result posts late. Days pass. At the agency's end, your file shows the screen's result as not received — a completed screen wearing, in the file, the clothes of a missed one.",
+    "A late posting is a small, ordinary system delay. So was an unsent referral, in another family's story. What decides what it becomes is whether anyone can prove, from paper, when the thing actually happened."
+   ],
+   "choices": [
+    {
+     "text": "Keep the confirmation text and the dated slip, and send a written note that the screen was completed on its date",
+     "next": "paper_kept",
+     "setFlags": [
+      "proofKept"
+     ],
+     "addHidden": [
+      "Screen completion — confirmation text and dated slip kept; late posting raised in writing"
+     ],
+     "cash": -8,
+     "note": "Eight dollars of fares for that screen day, spent either way. The note costs nothing and dates everything: completed, on this date, confirmation attached."
+    },
+    {
+     "text": "Trust the portal to catch up — these things sort themselves out",
+     "next": "portal_only",
+     "cash": -8,
+     "note": "Eight dollars of fares, spent either way. Portals do catch up, usually, eventually — on their schedule, in their wording, after the rooms that needed them."
+    }
+   ]
+  },
+  {
+   "id": "paper_kept",
+   "kicker": "Day 38 — Thursday, May 21, 2026",
+   "dayOffset": 38,
+   "title": "Kept: The Confirmation",
+   "body": [
+    "Your written note goes in with the confirmation and the slip attached, and the file gains a dated claim it will eventually have to agree with: when the result does post, it posts with the completion date intact — the system's own record conceding, in its own time, that the screen happened when you said it did.",
+    "It should not take a note and two attachments to establish that a completed screen was completed. In a file built from postings and statuses, it does. That is not a fact about your credibility. It is a fact about what files are made of."
+   ],
+   "choices": [
+    {
+     "text": "File the posted result with the note, and turn to the review ahead",
+     "next": "prep",
+     "note": "The pair — your dated note, their late posting — now tells the true story without you having to say a word about it."
+    }
+   ]
+  },
+  {
+   "id": "portal_only",
+   "kicker": "Day 38 — Thursday, May 21, 2026",
+   "dayOffset": 38,
+   "title": "The Portal Says Pending",
+   "body": [
+    "The portal says pending. It says it on the day of the check-in, and it is still saying it when the review packet is being assembled. Your completion — real, dated in the world, witnessed by a desk and a slip you did not keep — exists in the system as an absence with a deadline.",
+    "Absences, in compliance tallies, do not stay neutral. They get read in the direction the plan's language points, and the plan's language points one way: toward the parent."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the review ahead, with the phone that holds the summons texts",
+     "next": "prep",
+     "note": "The texts are something. The slip would have been something more. The review will price the difference precisely, because pricing paper is what reviews do."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 50 — Tuesday, June 2, 2026",
+   "dayOffset": 50,
+   "title": "Assemble the Paper",
+   "body": [
+    "The review is close, and preparation is an assembly job: the summons texts with their 9:40 timestamp, your written replies if you sent them, the screen log if you requested it, the confirmations and slips if you kept them. In date order, they tell a scheduling story with no adjectives in it: conflicts raised before they happened, screens completed inside their windows, postings that lagged behind completions.",
+    "Or the same weeks can be carried into the review the way they were lived — as a story about buses, alarms, and effort, told by the person who set the alarms. True stories are this scenario's most common casualty."
+   ],
+   "choices": [
+    {
+     "text": "Assemble the packet — texts, log, confirmations, slips — in date order, with your lawyer",
+     "next": "packet_ready",
+     "setFlags": [
+      "packetBuilt"
+     ],
+     "addHidden": [
+      "Review packet — summons texts, screen log, and completion confirmations assembled in date order"
+     ],
+     "note": "No adjectives. Just times: when they summoned, when you answered, when you appeared, when they posted. Times are hard to argue with."
+    },
+    {
+     "text": "Bring the phone and explain the mornings in person",
+     "next": "story_only",
+     "note": "The phone holds some of it. The rest is in your voice, which is vivid, sincere, and — in a room running on exhibits — unaccompanied."
+    }
+   ]
+  },
+  {
+   "id": "packet_ready",
+   "kicker": "Day 52 — Thursday, June 4, 2026",
+   "dayOffset": 52,
+   "title": "Texts, Log, and Slips",
+   "body": [
+    "The packet is thinner than you expected and heavier than it looks: a night-before message with its timestamp, a log with its exact times, a confirmation with its date. Three kinds of paper, each made by a different hand — yours, the system's, the site's — agreeing with each other.",
+    "Your lawyer reads it once and says the sentence this scenario has been walking toward: “This doesn't argue that you tried. It shows when everything happened. Reviews believe clocks.”"
+   ],
+   "choices": [
+    {
+     "text": "Make copies, and spend the evening with Leo at Lorraine's, the way evenings should be spent",
+     "next": "review_eve",
+     "note": "Copies made. The packet will do its work in a room; tonight's work is a five-year-old and a refrigerator covered in drawings."
+    }
+   ]
+  },
+  {
+   "id": "story_only",
+   "kicker": "Day 52 — Thursday, June 4, 2026",
+   "dayOffset": 52,
+   "title": "Everything on the Phone",
+   "body": [
+    "Your account of these months is accurate in every particular you can name: the 9:40 text, the two alarms, the closed window, the completed screen whose result went missing into a late posting. You can tell it in order, without notes, because you lived it in order.",
+    "Its flaw is structural, not personal: it can only be in one room at a time, for as long as you are speaking in it, and the file's one-line version — failed appearance; result not received — is in every room, forever, in print."
+   ],
+   "choices": [
+    {
+     "text": "Practice the account once, and spend the evening with Leo at Lorraine's",
+     "next": "review_eve",
+     "note": "Practice helps the telling. It does not give the telling a date stamp, an attachment, or a second reader."
+    }
+   ]
+  },
+  {
+   "id": "review_eve",
+   "kicker": "Day 55 — Sunday, June 7, 2026",
+   "dayOffset": 55,
+   "title": "The Night Before the Review",
+   "body": [
+    "The night before the review, Lorraine keeps Leo for the evening so you can prepare, and the house is quiet in the particular way of houses where the important paper is already done — or already not done.",
+    "Tomorrow the review will tally compliance the way the plan says it is tallied: screens summoned, screens recorded. What the tally will meet, when it reaches your mornings, is either a packet of times or a story about them. You already know which one you are carrying. So, in a sense, does the file."
+   ],
+   "choices": [
+    {
+     "text": "Take the folder, pay the morning's fare in advance, and go to the review",
+     "next": "review",
+     "cash": -6,
+     "note": "Six dollars of fare, set out tonight. Small preparations are still preparations; this whole case has run on them."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 56 — Monday, June 8, 2026",
+   "dayOffset": 56,
+   "title": "The Review",
+   "body": [
+    "The review on Monday, June 8, 2026 is orderly and brief. The plan's screen line is read the way the file holds it — summonses, entries, tallies — and the tally begins moving toward the conclusion the one-line entries point to.",
+    "Then your lawyer asks that the underlying times be put beside the tally before the tally is adopted. What happens next depends, with a precision this scenario has been honest about from its first text message, on what your choices actually put in her hands."
+   ],
+   "choices": [
+    {
+     "text": "Present the packet — the night-before message, the screen log, and the completion confirmations",
+     "next": "end_win",
+     "requiresFlags": [
+      "screenMoved",
+      "recordsRequested",
+      "packetBuilt"
+     ],
+     "note": "Times, in date order, from three different hands. The tally is re-done in the room, out loud, which is where tallies change."
+    },
+    {
+     "text": "Present what paper you have — part of the packet, assembled late",
+     "next": "end_lose",
+     "note": "Part of a timeline answers part of a tally. The one-line entries, whole and printed, answer the rest."
+    },
+    {
+     "text": "Explain the mornings out loud — the alarms, the buses, the late posting",
+     "next": "end_lose",
+     "note": "Every word of it is true. The tally, which runs on entries, keeps its own counsel about truth it cannot attach to anything."
+    }
+   ]
+  },
+  {
+   "id": "end_win",
+   "kicker": "Day 59 — Thursday, June 11, 2026",
+   "dayOffset": 59,
+   "title": "Ending — Documented, Not Positive",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A scheduling record with its times intact: a summons sent at 9:40 in the evening on Monday, April 20, 2026, your written answer that same night documenting the conflict with your 8:30 shift and asking for the nearer site, the nearer site's completed screen, the screen log obtained on request showing summons times, sites, and entries, and — for month two's screen — the confirmation and dated slip that proved completion on Tuesday, May 19, 2026 when the result posted late. At the review, the tally was corrected against its own underlying times: no failed appearance stands for the conflict morning, the late posting was entered as a late posting, and both screens stand as what they were — completed.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The instruments were the verified ones. The screen log was part of your case record, released on request (55 Pa. Code § 3130.44(d)) — requesting it is what let the review compare the tally to the times instead of adopting the tally. Counsel (42 Pa.C.S. § 6337) carried the packet into the room. And the decisive move was the earliest one, and it was generic process, not a citation: a conflict documented in writing before it happened, which converted a morning that the plan's language would have tallied against you into a morning the record describes as a scheduling problem, raised and solved. The plan's default — a missed screen counted the same as a positive result — was never triggered, because on paper there was no miss.",
+    "THE HONEST PART: Label this win for what it is: a corrected tally, not a finished case. Your screens continue, your recovery continues on its own schedule of meetings and work, Leo is still living at Lorraine's, and the case is still open. A different collection site might never have answered the night-before message; a different supervisor might have read the same packet ungenerously; the buses, on another morning, beat everyone. Workers, sites, and luck all held pieces of this outcome. What your choices changed was the evidence those pieces landed on. Nothing in this ending is a verdict on your recovery — it is a record of two mornings, documented as scheduling facts, which is all they ever were."
+   ]
+  },
+  {
+   "id": "end_lose",
+   "kicker": "Day 59 — Thursday, June 11, 2026",
+   "dayOffset": 59,
+   "title": "Ending — Positive, By Default",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): One-line entries, doing what one-line entries do. A failed appearance for the morning the buses won — recorded without the 9:40 summons, the 8:30 shift, or the arithmetic that made the morning impossible — and a completed screen in month two whose result, posted late, sat in the file as not received when the tally was made. At the review, the plan's default did the rest, exactly as the plan says it does: a failed appearance counted the same as a positive result. No test was failed. No result was positive. The tally is positive anyway — by default, which is to say, by paperwork.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Every instrument that would have prevented this existed and is verified. A written message the night before would have dated the conflict before it happened and asked, on paper, for the nearer site — generic process that costs nothing but nerve. The screen log was available on written request (55 Pa. Code § 3130.44(d)), and would have shown the review the summons times and sites behind the tally's one lines. Counsel (42 Pa.C.S. § 6337) can assemble and present whatever paper exists. What counsel cannot do is manufacture, at the review, a timestamp from a night two months past. Defaults rule wherever documentation doesn't — that sentence, not any fact about you, is this ending.",
+    "THE HONEST PART: Be clear, because the file was not: you set two alarms, ran for a bus, and completed the screen the system later lost in its own posting queue. Your recovery through these months was a schedule you kept — meetings, shifts, a son at his grandmother's who got his mother on time — and none of that is measured by this tally, in either direction. A kinder site, a caseworker who wrote the conflict into the note herself, a posting that landed on time: any of them changes this ending without you changing anything. Workers, postings, and luck signed it alongside your choices. It records a default, not a relapse, not a character — and the next summons, answered in writing the night it arrives, starts a different paper trail from its first timestamp."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s58';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>
