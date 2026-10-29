@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The First Visit</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First Visit",
+  "subtitle": "Scenario 8 — The First Visit (a fictional composite)",
+  "startDateISO": "2026-04-01",
+  "startNode": "start",
+  "startCash": 150,
+  "tier": "Foundation",
+  "summary": "Your child is already placed; visits are the case now — prepare for the hour, and write the day down the day it happens."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Wednesday, April 1, 2026",
+   "dayOffset": 0,
+   "title": "Three Weeks Into Visits",
+   "body": [
+    "Your daughter Wren is six. Three weeks ago, after a night you are still learning how to talk about, she was placed with a foster family across town. That part of the story already happened. It is not re-decided in this scenario, and nothing here pretends otherwise.",
+    "What is happening now is smaller and, in its way, just as consequential: visits. Twice a week, at the family center, supervised, one hour. You have been twice. Both times Wren ran to you. Both times the hour ended like a door closing. A third visit is set for Saturday, April 4, 2026."
+   ],
+   "choices": [
+    {
+     "text": "Read the visit schedule letter again, carefully",
+     "next": "n2",
+     "note": "Arrival time, room number, what you may bring. The letter is short. Its details are not small."
+    },
+    {
+     "text": "Put the letter down — you know how visits go by now",
+     "next": "n2",
+     "note": "You know how they feel. The letter is about how they get recorded."
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "kicker": "Day 1 — Thursday, April 2, 2026",
+   "dayOffset": 1,
+   "title": "What the Supervisor Sees",
+   "body": [
+    "Ms. Onyema supervises your visits — kind, unhurried, and always, always writing. At the last visit she noted the book you brought, the snack, the way Wren settled. She also noted, you are fairly sure, the seven minutes you were late after the bus ran slow.",
+    "Her notes become the visit record. The visit record becomes part of the case record. Judges and workers you will never meet will someday read your parenting in her handwriting."
+   ],
+   "choices": [
+    {
+     "text": "Ask her, next time, what a good visit looks like on paper",
+     "next": "records",
+     "note": "Asking is allowed. Workers answer questions like this more often than parents expect — the asking itself gets noticed, usually well."
+    },
+    {
+     "text": "Decide that love is obvious and needs no stage management",
+     "next": "records",
+     "note": "Love is obvious in the room. The record is built for people who were not in the room."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 1 — Thursday, April 2, 2026",
+   "dayOffset": 1,
+   "title": "The Visit Record, Requested",
+   "body": [
+    "At the agency desk you put in a written request: a copy of the visit records so far, and the visit guidelines — what you may bring, how arrival is timed, how the hour is documented.",
+    "You are not challenging anything. You are studying for the only test in this process that recurs twice a week."
+   ],
+   "choices": [
+    {
+     "text": "File the written request for the visit records and guidelines",
+     "next": "prep",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records — parent requested copies of visit records and guidelines"
+     ],
+     "note": "Under 55 Pa. Code § 3130.44(d), the records are released on request. The copies show two visit summaries — warm ones, mostly — and the late arrival, recorded in the same even hand as the book and the snack."
+    },
+    {
+     "text": "Rely on what Ms. Onyema has told you in the hallway",
+     "next": "prep",
+     "note": "Hallway guidance is real guidance. It is just not guidance you can re-read the night before a visit."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 2 — Friday, April 3, 2026",
+   "dayOffset": 2,
+   "title": "The Bag",
+   "body": [
+    "Friday night, you prepare the way you once prepared Wren's school bag: the library book she asked for (the one with the whale), the crackers she likes, a hair tie because hers always vanishes, and the drawing she made last visit, which she told you to keep and which you are bringing back because she will test whether you kept it.",
+    "Children test the promises that fit in a bag. So, in their way, do visit records."
+   ],
+   "choices": [
+    {
+     "text": "Pack the bag tonight and lay out tomorrow’s clothes — yours and the plan’s",
+     "next": "eve",
+     "cash": -5,
+     "note": "Five dollars of crackers and a library book that costs nothing. Preparation in this price range is mostly attention."
+    },
+    {
+     "text": "Plan to grab things on the way tomorrow",
+     "next": "eve",
+     "note": "Tomorrow has a bus in it. Buses in this story so far are undefeated."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 2 — Friday, April 3, 2026",
+   "dayOffset": 2,
+   "title": "The Night Before, Again",
+   "body": [
+    "You check the letter once more: arrive by 9:45 for the 10:00 visit, Room 2, one hour. Being early is the only part of tomorrow entirely in your hands, and you intend to be early enough that it gets written down.",
+    "Somewhere across town, Wren is being told, or not told, that tomorrow is a visit day. You cannot control which. You can control arriving like a fact."
+   ],
+   "choices": [
+    {
+     "text": "Set the alarm for the earlier bus — the one with margin",
+     "next": "split",
+     "note": "Margin is a form of love that fits on a form."
+    }
+   ]
+  },
+  {
+   "id": "split",
+   "kicker": "Day 3 — Saturday, April 4, 2026",
+   "dayOffset": 3,
+   "title": "Visit Morning",
+   "body": [
+    "Saturday. The bus is — for once — merely slow, not absent. You will make it, but the shape of the morning is up to you: the bag is packed or it isn't, your notes from last visit are reviewed or they aren't, and Ms. Onyema's pen will be ready either way.",
+    "An hour is not long. Everything in it gets weighed."
+   ],
+   "choices": [
+    {
+     "text": "Go as prepared as the week allowed: bag packed, early bus, last visit’s thread picked up",
+     "next": "p1",
+     "setFlags": [
+      "visitPrepared"
+     ],
+     "addHidden": [
+      "Visit — parent arrived early, brought requested item, resumed prior activity"
+     ],
+     "note": "Wren checks the bag for the drawing first. You kept it. The pen moves."
+    },
+    {
+     "text": "Go as you are — she loves you, and that’s the visit",
+     "next": "u1",
+     "addHidden": [
+      "Visit — parent arrived at start time, no items brought"
+     ],
+     "note": "She does love you. She also asks about the drawing, twice, in a voice that gets smaller."
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kicker": "Day 3 — Saturday, April 4, 2026",
+   "dayOffset": 3,
+   "title": "The Hour, Used Well",
+   "body": [
+    "The hour goes the way good hours go: too fast and exactly right. Wren reads two pages of the whale book aloud. You braid her hair with the spare tie. She tells you about the foster family's dog, and it hurts the correct amount, and you let it not show, mostly.",
+    "At the end she asks if you'll bring the whale book again 'until the end of the story.' Ms. Onyema writes something down at that, and for once you do not mind the pen at all."
+   ],
+   "choices": [
+    {
+     "text": "Say goodbye the steady way: hug, promise, name the next visit day",
+     "next": "p2",
+     "note": "\"Tuesday,\" you say. \"I’ll be here Tuesday.\" Naming the next one is how a child learns the visits are a road, not a series of doors."
+    },
+    {
+     "text": "Hold on a little past the goodbye, because an hour is an hour",
+     "next": "p2",
+     "note": "Ms. Onyema calls time gently. Goodbyes that end on time are a skill, and skills can be learned in either order."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kicker": "Day 4 — Sunday, April 5, 2026",
+   "dayOffset": 4,
+   "title": "Notes, the Same Day",
+   "body": [
+    "On the bus home, the visit is still warm in your chest and already fading at the edges — what she said about the dog, the exact page you stopped at, the loose tooth she showed you twice.",
+    "By tonight it will be a feeling. Feelings are for you. The file needs the facts, and there is one person who can put your version of them on paper while they are still facts."
+   ],
+   "choices": [
+    {
+     "text": "Write your visit notes tonight: times, the book, the tooth, the promise, how she seemed",
+     "next": "p3",
+     "setFlags": [
+      "visitNotes"
+     ],
+     "addHidden": [
+      "Parent notes — same-day visit notes written and kept by parent"
+     ],
+     "note": "One page. It matches the hour the way a good map matches a road."
+    },
+    {
+     "text": "Write them this weekend, when it’s quieter",
+     "next": "u3",
+     "addHidden": [
+      "Parent notes — visit notes not written the same day"
+     ],
+     "note": "The weekend is quieter. The visit, by then, is a summary of itself — and summaries lose teeth, and pages, and promises."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kicker": "Day 6 — Tuesday, April 7, 2026",
+   "dayOffset": 6,
+   "title": "The Next Visit, Prepared from Paper",
+   "body": [
+    "Tuesday's visit starts where Saturday's ended — because your notes say exactly where that was. The whale book opens at the right page. Wren's face does something complicated and then simple: of course it does. You remembered in writing.",
+    "Ms. Onyema watches the thread get picked up without a fumble, and her pen has an easy day."
+   ],
+   "choices": [
+    {
+     "text": "At the end, ask Ms. Onyema how the visit will be summarized",
+     "next": "p4",
+     "note": "She tells you plainly: arrival, engagement, the reading, the goodbye. It sounds like your notes because it matches them."
+    },
+    {
+     "text": "Trust that it went well and head out",
+     "next": "p4",
+     "note": "It did go well. Well is a conclusion. Records prefer details."
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kicker": "Day 8 — Thursday, April 9, 2026",
+   "dayOffset": 8,
+   "title": "Asking for Tuesday’s Summary",
+   "body": [
+    "You put in the request the same way as the first one — written, dated, polite: a copy of Tuesday's visit summary, when it is filed, to add to your set.",
+    "Ms. Onyema raises an eyebrow that is mostly approval. 'You keep everything,' she says. 'Everything I’m allowed to,' you say, and she nods like that is the correct answer, because it is."
+   ],
+   "choices": [
+    {
+     "text": "Take the summary when it comes and compare it with your notes",
+     "next": "p5",
+     "setFlags": [
+      "summaryCompared"
+     ],
+     "note": "They agree in every particular that matters. Agreement between the official record and yours is the sound of a case getting less frightening."
+    },
+    {
+     "text": "Take it and file it unread — the visit went well",
+     "next": "p5",
+     "note": "It did. The summary is still a document about your child, and documents in this story reward reading."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kicker": "Day 10 — Saturday, April 11, 2026",
+   "dayOffset": 10,
+   "title": "The Monthly Summary",
+   "body": [
+    "At month's end, the agency compiles the visit summaries into the monthly record — the document that travels furthest, into rooms you will never see. Your visits, both of them and the Tuesdays since, are in it: arrival times, the book, the braid, the goodbyes on time.",
+    "Before it is finalized, Ms. Onyema shows you the draft page about your visits, because you have become the kind of parent who gets shown drafts — the kind with a folder."
+   ],
+   "choices": [
+    {
+     "text": "Read the draft carefully, and sign your acknowledgment when it matches the visits",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "It matches. You sign a true document, and your own notes at home agree with it line for line."
+    },
+    {
+     "text": "Sign it without reading — she’s been fair all along",
+     "next": "end_partial",
+     "note": "She has. The draft swaps the visits’ arrival times, making the good Tuesday the late one. Fair people make clerical errors; readers catch them."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 12 — Monday, April 13, 2026",
+   "dayOffset": 12,
+   "title": "Notes That Match the Day",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "Nothing in this ending is a ruling, and it does not pretend to be one: Wren is still placed, and the road home runs through hearings this scenario does not depict. What the visits built is a record — arrival times, a kept drawing, a book resumed at the right page, goodbyes on time, and a parent's notes that agree with the supervisor's in every particular.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), the visit records were released on request. Reading your own record is how you learn what the next reader will believe about you — while there is still time to add your half of it.",
+    "Notice what the strategy actually was: prepare for the hour like it matters (it is the whole case, twice a week), and write the day down the day it happens. Love supplied the visit. Paper supplied the evidence of it.",
+    "Honesty requires this: Ms. Onyema wrote fairly, and a colder supervisor's pen can make the same hour read smaller. Judges weigh records through their own experience, and luck decides which pen you get. What no pen can take from you is your own dated page, kept at home, that says what the day actually held."
+   ]
+  },
+  {
+   "id": "u1",
+   "kicker": "Day 3 — Saturday, April 4, 2026",
+   "dayOffset": 3,
+   "title": "The Hour, Unprepared",
+   "body": [
+    "You arrive at 10:00 exactly — not late, and not early, and without the bag. Wren's first question is the drawing. Her second is the whale book. Both answers are 'next time,' and 'next time' is a phrase children in this building have heard in several sizes.",
+    "The hour is still warm. She still runs to you. But the visit has a theme now, and the theme is postponement, and Ms. Onyema's pen is fluent in themes."
+   ],
+   "choices": [
+    {
+     "text": "Give the hour everything anyway — floor, game, braid, attention",
+     "next": "u2",
+     "note": "You do. The hour recovers much of itself. What it cannot recover is the drawing."
+    },
+    {
+     "text": "Apologize to Wren for the bag, more than once",
+     "next": "u2",
+     "note": "Once is an apology. Twice is making a six-year-old manage your feelings, and the pen knows the difference."
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "kicker": "Day 4 — Sunday, April 5, 2026",
+   "dayOffset": 4,
+   "title": "The Bus Home",
+   "body": [
+    "On the bus, you replay it: the drawing question, the smaller voice. The visit was not a failure. It was a B-minus version of a morning you know how to do better, and you have three days before Tuesday to prove that — on paper, where proof lives.",
+    "The repair, if there is one, starts the way the preparation should have: tonight, at a table, with a pen."
+   ],
+   "choices": [
+    {
+     "text": "Write the visit notes tonight anyway, and plan Tuesday from them — bag, book, drawing first",
+     "next": "p3",
+     "setFlags": [
+      "visitNotes"
+     ],
+     "addHidden": [
+      "Repair — parent wrote same-day notes and prepared the next visit from them"
+     ],
+     "note": "The notes are honest — including the missing bag — and Tuesday’s plan sits on top of them like a correction in the margin."
+    },
+    {
+     "text": "Let the day go. Tuesday will be better because you’ll feel readier",
+     "next": "u3",
+     "addHidden": [
+      "Repair — no notes written; next visit approached from memory"
+     ],
+     "note": "Feeling ready is a forecast. Notes are a record of weather already survived."
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "kicker": "Day 6 — Tuesday, April 7, 2026",
+   "dayOffset": 6,
+   "title": "Tuesday, from Memory",
+   "body": [
+    "Tuesday's visit is better — you bring the book this time, and the crackers. But the thread is fumbled: the drawing is still at home (you remembered it as packed), the page you resume at is wrong, and Wren corrects you with the patience of a small teacher.",
+    "None of it is catastrophic. All of it is legible. The monthly summary is being built from days exactly like these two."
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Onyema, plainly, what the summary will say about the visits",
+     "next": "u4",
+     "note": "She tells you: willing, loving, inconsistent on follow-through. It is fair, and it stings in proportion to its fairness."
+    },
+    {
+     "text": "Avoid the question — the month is nearly over",
+     "next": "u4",
+     "note": "Avoided questions still get answered. They just get answered in writing, later, by other people."
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "kicker": "Day 8 — Thursday, April 9, 2026",
+   "dayOffset": 8,
+   "title": "A Fair Sentence, Offered a Door",
+   "body": [
+    "'The summary isn’t final,' Ms. Onyema says, in the tone of someone handing you something heavier than it looks. 'If you keep your own visit notes — dates, what you brought, what she said — bring them Thursday. I can attach parent notes to the record.'",
+    "It is the same door as always, in this system: your version, on paper, dated — admitted into the file while the file is still open."
+   ],
+   "choices": [
+    {
+     "text": "Bring the notes Thursday — both visits, written honestly, with the plan for the next ones",
+     "next": "p5",
+     "setFlags": [
+      "notesAttached"
+     ],
+     "addHidden": [
+      "Parent notes — parent’s visit notes attached to the monthly record"
+     ],
+     "note": "They go in behind her summary, where every future reader will meet your handwriting right after hers."
+    },
+    {
+     "text": "Tell her thanks — you’ll keep it all in your head",
+     "next": "u5",
+     "note": "Your head is a warm place and a terrible archive. The summary closes this week."
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "kicker": "Day 10 — Saturday, April 11, 2026",
+   "dayOffset": 10,
+   "title": "The Summary, Finalized",
+   "body": [
+    "The monthly summary finalizes: willing, loving, inconsistent on follow-through. It is not unjust. It is simply the only version of the month that exists in the building, because it is the only version anyone wrote down in it.",
+    "Your version exists too — at home, in your head, exactly as accurate and exactly as inadmissible as every other unwritten thing."
+   ],
+   "choices": [
+    {
+     "text": "Read the summary when your copy arrives",
+     "next": "end_partial",
+     "note": "Reading it still matters. It tells you precisely what the next month has to repair — and that repairs, here, are written."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 12 — Monday, April 13, 2026",
+   "dayOffset": 12,
+   "title": "A Good Visit, Thinly Recorded",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The visits were loving — that was never the problem, and the record does not claim otherwise. What the record holds is thinner than the days were: no kept-drawing evidence, no parent notes, follow-through marked inconsistent. Wren is still placed, as she was at the start; the loss here is not time with her, it is the strength of the paper that argues for more of it.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), your visit records were available on request from the first week. Parents who read the record early learn the difference between how a visit felt and how it will read — in time to close the gap.",
+    "In this system, the file attends every hearing so you don't have to be believed — you have to be documented. Same-day notes are the smallest unit of that: one page, written the day it happened, worth more than a month of remembering accurately.",
+    "Honesty requires this: Ms. Onyema was fair, and offered the repair door out loud, which not every supervisor does. A colder pen writes 'disengaged' where she wrote 'inconsistent.' You cannot choose the pen. You can choose to keep a page of your own."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s8';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

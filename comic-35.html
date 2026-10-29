@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Hearing That Wasn't</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 16px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 10px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:26px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 35 — The Hearing That Wasn't (a fictional composite)",
+  "startDateISO": "2025-03-10",
+  "startNode": "start",
+  "startCash": 240,
+  "tier": "Complex",
+  "summary": "Month 9 of placement: hearings slide for reasonable reasons while the ASFA 15-month date (June 10, 2026) does not — a chronology-and-readiness scenario about making delay visible in the record."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 275 — Wednesday, December 10, 2025",
+   "dayOffset": 275,
+   "title": "Month Nine",
+   "body": [
+    "Nine months ago, on a March Monday you no longer talk about at work, your son Owen — seven, all elbows and questions — was placed with a foster family across town. The reasons are in a file. So is everything since: the classes, the screens, the visits you have not missed.",
+    "You are Paula. You work as a home-health aide, driving between other people's houses with a folder of your own paperwork riding in the trunk.",
+    "This morning your caseworker, Mr. Osei, said the sentence caseworkers say carefully: “We're coming up on some dates.” He did not mean the holidays. Owen has been in care nine months. A federal clock counts fifteen. It does not pause for anyone, and it is already more than half spent."
+   ],
+   "choices": [
+    {
+     "text": "Ask him to show you the dates, in writing, before you leave",
+     "next": "wall",
+     "note": "He prints the review schedule. At the bottom, in the same plain type as everything else: June 10, 2026."
+    }
+   ]
+  },
+  {
+   "id": "wall",
+   "kicker": "Day 277 — Friday, December 12, 2025",
+   "dayOffset": 277,
+   "title": "Two Calendars",
+   "body": [
+    "At home you put two calendars side by side on the refrigerator. Yours runs in weeks: shifts, visits on Thursdays, Owen's school concert. The case's runs in months, and one of its dates is circled in a color you did not choose.",
+    "June 10, 2026. Fifteen months from the March morning Owen was placed. Your lawyer explained it once, early on: at fifteen of the most recent twenty-two months in care, the agency is generally expected to move toward a different kind of filing — unless an exception fits. It is not a verdict. It is a date when the conversation changes.",
+    "Your next review hearing is in January. That feels far away. Against June, it is not far at all."
+   ],
+   "choices": [
+    {
+     "text": "Call your lawyer and ask what January is actually for",
+     "next": "counsel",
+     "note": "She answers on the second ring, which still surprises you, nine months in."
+    }
+   ]
+  },
+  {
+   "id": "counsel",
+   "kicker": "Day 280 — Monday, December 15, 2025",
+   "dayOffset": 280,
+   "title": "What Your Lawyer Can and Cannot Promise",
+   "body": [
+    "Ms. Okafor has represented you since the beginning — parents in these cases have the right to counsel, and she is yours (42 Pa.C.S. § 6337). She is honest in the way you have learned to trust: she tells you what she does not know.",
+    "“I can't promise you a hearing that stays on the calendar,” she says. “Hearings move. Witnesses get sick, reports run late, courtrooms get double-booked. I won't invent a rule for you — there isn't a simple one I can hand you.”",
+    "“What I can teach you is a practice. Before every date, we file a short written statement saying you are ready and what you are ready to show. If a date moves, we ask — in plain words, on the record — that the reason and the new date be stated. And you keep a running chronology: every date, every move, in order. Delay that is written down is delay the court can see.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask what you should be keeping, starting tonight",
+     "next": "records",
+     "note": "“Everything,” she says. “But start with the file itself. You are allowed to see it.”"
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 284 — Friday, December 19, 2025",
+   "dayOffset": 284,
+   "title": "Your Own File, Again",
+   "body": [
+    "You have seen pieces of your case file — the plan, the visit notes. You have never asked for the whole record at once, including the assessment the agency completed: the form, the item ratings, the outcome.",
+    "Ms. Okafor explains the plain version: your case record “shall be released upon request” (55 Pa. Code § 3130.44(d)). One page, in writing, dated, with a copy for your folder. The request costs a stamp. Not asking costs whatever the file would have taught you."
+   ],
+   "choices": [
+    {
+     "text": "Write the request this week — the full record, including the complete assessment",
+     "next": "records_arrive",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Case record requested in writing — full record, assessment included"
+     ],
+     "note": "A stamp, a date, a copy for the folder. The cheapest power in this whole system."
+    },
+    {
+     "text": "Skip it — the hearing is what matters, not the paper behind it",
+     "next": "no_records",
+     "note": "Understandable. January is coming. But hearings are made of paper, and this paper would have been yours."
+    }
+   ]
+  },
+  {
+   "id": "records_arrive",
+   "kicker": "Day 291 — Friday, December 26, 2025",
+   "dayOffset": 291,
+   "title": "Reading at the Kitchen Table",
+   "body": [
+    "The packet arrives in a thick envelope. Visit notes you remember living. Service letters you already had. And the assessment: pages of items, each rated, ending in an outcome you have heard described but never seen built.",
+    "Some ratings match your memory. Two do not — one rates a Thursday in October you can document differently, because you kept the sign-in sheet. You write the date and the sheet's location in the margin, in pencil, the way Ms. Okafor taught you.",
+    "A note on the disclosure rules, which she made you repeat back: when assessment material is disclosed in the adjudication phase under Rule 1340(B)(1), this assessment approach is untested — it has not been validated the way its use assumes. You write that down too. In this story, the ratings are a claim, not a verdict."
+   ],
+   "choices": [
+    {
+     "text": "Start the chronology tonight — page one: March 10, 2025",
+     "next": "prep1",
+     "setFlags": [
+      "chronologyKept"
+     ],
+     "addHidden": [
+      "Chronology started — placement date, every hearing date, in order"
+     ],
+     "note": "One page. Nine months compressed into dates. It is heavier than it looks."
+    }
+   ]
+  },
+  {
+   "id": "no_records",
+   "kicker": "Day 291 — Friday, December 26, 2025",
+   "dayOffset": 291,
+   "title": "The Envelope You Didn't Ask For",
+   "body": [
+    "No envelope comes, because no request went out. The file exists — it grows every week, in other people's handwriting — but your copy of it is the folder in your trunk: plan, visit notes, certificates.",
+    "Ms. Okafor does not scold you. “Then we work with what we have,” she says, “and we keep our own dates, carefully, because nobody will keep them for us.”"
+   ],
+   "choices": [
+    {
+     "text": "Start your own chronology from your folder and your phone",
+     "next": "prep1",
+     "setFlags": [
+      "chronologyKept"
+     ],
+     "addHidden": [
+      "Chronology started — from the folder and the phone calendar"
+     ],
+     "note": "Your dates, in your hand. It is a beginning, even without the file."
+    }
+   ]
+  },
+  {
+   "id": "prep1",
+   "kicker": "Day 298 — Friday, January 2, 2026",
+   "dayOffset": 298,
+   "title": "The One-Page Readiness Statement",
+   "body": [
+    "The January review is a week away. Ms. Okafor drafts with you at her office table: one page. Your name, Owen's name, the date. “Parent is ready to proceed. Parent has completed the following since the last review —” and a list, each item with its proof attached behind it.",
+    "“One page,” she says. “Filed before every date, whether the date holds or not. A continuance granted to a parent who was ready reads differently in a file than one granted to an empty chair. We are going to make sure the file never shows an empty chair.”"
+   ],
+   "choices": [
+    {
+     "text": "File it, with the certificates and the sign-in sheet attached",
+     "next": "kitchen_table",
+     "cash": -15,
+     "setFlags": [
+      "readinessFiled"
+     ],
+     "addHidden": [
+      "Readiness statement #1 filed — ready, with proof attached"
+     ],
+     "note": "Copies, a bus ride, a stamped receipt. Fifteen dollars of ready."
+    },
+    {
+     "text": "Plan to say it out loud at the hearing instead — paper feels like showing off",
+     "next": "kitchen_table",
+     "note": "Words said in a room stay in the room. Words filed stay in the file. Ms. Okafor lets you choose, and writes nothing down about it, which is its own sentence."
+    }
+   ]
+  },
+  {
+   "id": "kitchen_table",
+   "kicker": "Day 302 — Tuesday, January 6, 2026",
+   "dayOffset": 302,
+   "title": "The Night Before",
+   "body": [
+    "You lay out Owen's drawing of the foster family's dog, your work schedule, and the chronology — one page, nine months long — and you add today's line: “Readiness statement filed.”",
+    "Owen asked on Thursday's visit when the judge part happens. You told him soon, which was the truest available sentence. He accepted it the way children accept weather, and asked for a snack.",
+    "Tomorrow, the judge part happens. Or tomorrow, you find out what “happens” means in a system with this many calendars."
+   ],
+   "choices": [
+    {
+     "text": "Sleep early. Be the ready one",
+     "next": "hearing1",
+     "note": "Your folder is by the door, where your work bag goes. Ready has a location now."
+    }
+   ]
+  },
+  {
+   "id": "hearing1",
+   "kicker": "Day 305 — Friday, January 9, 2026",
+   "dayOffset": 305,
+   "title": "The First Slide",
+   "body": [
+    "The courtroom smells like paper and radiator heat. Everyone is kind. Everyone is also, within twenty minutes, in agreement: the parenting instructor whose updated report the court was expecting has been called away on a family emergency, and her report is not filed.",
+    "The judge is apologetic and brisk. “We'll continue the review. Six weeks.” Papers shuffle. A new date is offered from a list, the way flights are offered at a counter after a cancellation.",
+    "Ms. Okafor stands. This is the practice, performed in plain words: “Parent was ready today, Your Honor — her statement is filed. We ask that the reason for the continuance and the new date be stated on the record.” The judge nods, and says them, slowly, for the record: witness unavailable; report not filed; new date, February 20."
+   ],
+   "choices": [
+    {
+     "text": "Write it in the chronology in the hallway, before the elevator comes",
+     "next": "cont1",
+     "setFlags": [
+      "recordAsked"
+     ],
+     "addHidden": [
+      "Continuance #1 on the record — witness unavailable, report not filed; parent ready"
+     ],
+     "note": "Reason, new date, your readiness — all in the transcript now, not just in your memory."
+    },
+    {
+     "text": "Go straight to your shift — you'll write it up tonight",
+     "next": "cont1",
+     "note": "Tonight becomes tomorrow becomes the weekend. The hallway had a bench. That was the moment."
+    }
+   ]
+  },
+  {
+   "id": "cont1",
+   "kicker": "Day 312 — Friday, January 16, 2026",
+   "dayOffset": 312,
+   "title": "Six Weeks Is Not Nothing",
+   "body": [
+    "Six weeks. You do the arithmetic the way parents in this system learn to do it: not in court time, in Owen time. Six Thursdays of visits. Six weeks of second grade. A loose tooth will come and go inside this continuance.",
+    "And against the other calendar: February 20 is still almost four months before June 10. There is time. That is what everyone says, and it is true, and it is also how time gets spent — in true sentences.",
+    "You keep working the plan. It is the only lever that has ever been fully yours."
+   ],
+   "choices": [
+    {
+     "text": "Keep the Thursday visit exactly as it is — same time, same snack, same book",
+     "next": "visits1",
+     "note": "Continuity is a thing a child can hold. You hold the other end of it."
+    }
+   ]
+  },
+  {
+   "id": "visits1",
+   "kicker": "Day 319 — Friday, January 23, 2026",
+   "dayOffset": 319,
+   "title": "Thursdays",
+   "body": [
+    "The visit room has a couch the color of oatmeal and a bookshelf of donated puzzles. Owen is halfway through a chapter book about a dog who solves mysteries, and he reads you the good parts in his serious voice.",
+    "The visit supervisor writes her notes in the corner, kindly and constantly. You have stopped performing for the notebook. You just bring the snack, read the chapters, lose at the card game honestly.",
+    "On the bus home you update the chronology: visit, one hour, book chapters 9–11. It feels small. Small, dated, and true is what records are."
+   ],
+   "choices": [
+    {
+     "text": "Finish the last parenting module this weekend — certificate before the next date",
+     "next": "service1",
+     "note": "One more line for the readiness statement. Proof first, adjectives later."
+    }
+   ]
+  },
+  {
+   "id": "service1",
+   "kicker": "Day 326 — Friday, January 30, 2026",
+   "dayOffset": 326,
+   "title": "The Certificate",
+   "body": [
+    "The last module is on a Saturday, in a church basement, with coffee that tastes like the urn. You pass the final exercise — a practice conversation with another parent playing a difficult caseworker — and the instructor signs your certificate with a flourish.",
+    "Every service goal on your plan is now complete except the one that was never a class: stable housing hours at the new apartment you moved into in November, which your landlord confirms in a one-line letter you request, in writing, the same day.",
+    "Your plan is done. What remains is a hearing at which to say so, in front of a judge, with the paper in the file. February 20."
+   ],
+   "choices": [
+    {
+     "text": "Photograph the certificate for your phone, file the original",
+     "next": "letter_eli",
+     "note": "Original in the folder. Copy in the readiness packet. Photo in the phone. Paper, three deep."
+    }
+   ]
+  },
+  {
+   "id": "letter_eli",
+   "kicker": "Day 333 — Friday, February 6, 2026",
+   "dayOffset": 333,
+   "title": "Mail from the Foster Home",
+   "body": [
+    "The foster mother, Mrs. Hartley, includes a note with Thursday's returned lunchbox: Owen asked whether the judge “knows his name.” She told him judges read the folder first. He seemed satisfied, she writes, and asked if the folder has pictures.",
+    "It does now. You add the school concert program — Owen, third from the left, holding a recorder like a scepter — to the readiness packet, behind the certificates, where a person reading in order will reach it after the proof and before the end.",
+    "February 20 is two weeks away. You have never been more ready for anything."
+   ],
+   "choices": [
+    {
+     "text": "File readiness statement number two — updated, with the certificate",
+     "next": "prep2",
+     "cash": -15,
+     "setFlags": [
+      "readinessFiled"
+     ],
+     "addHidden": [
+      "Readiness statement #2 filed — all service goals complete, proof attached"
+     ],
+     "note": "Ready, again, in writing, before the date. That is the whole practice: again."
+    }
+   ]
+  },
+  {
+   "id": "prep2",
+   "kicker": "Day 340 — Friday, February 13, 2026",
+   "dayOffset": 340,
+   "title": "Readiness, Again",
+   "body": [
+    "Ms. Okafor reads the second statement and nods once. “Now the file shows a pattern,” she says. “Not a parent who was ready once. A parent who is ready every time, on paper, before anyone asks.”",
+    "She warns you about February anyway: the assessment summary the agency relies on has to be disclosed to your side in the adjudication-phase papers, and the agency's filing has been slow before. “If the paper isn't there,” she says, “the date may move again. If it does, we do the same things. Reason on the record. Chronology updated. Ready again.”",
+    "You hope she is wrong. You prepare as if she is not."
+   ],
+   "choices": [
+    {
+     "text": "Go to February 20 ready to be heard — and ready to be continued",
+     "next": "hearing2",
+     "note": "Both folders packed: the hearing folder, and the hallway bench folder, with the chronology on top."
+    }
+   ]
+  },
+  {
+   "id": "hearing2",
+   "kicker": "Day 347 — Friday, February 20, 2026",
+   "dayOffset": 347,
+   "title": "The Second Slide",
+   "body": [
+    "The report is not filed. The agency's attorney is frank about it: the updated assessment summary — the disclosure your side is owed under Rule 1340(B)(1) — is still being prepared, and the caseworker who would explain it is reassigned.",
+    "And here is the flag Ms. Okafor taught you to carry into every room where that assessment is invoked: the assessment approach behind those ratings is untested. Its items produce numbers; the numbers' accuracy for families like yours has not been established the way its use in court assumes. A rating is a claim. Today, even the claim isn't in the room.",
+    "The judge continues the review to April 3. Ms. Okafor asks, again, in plain words: reason and new date on the record; parent's readiness noted. Granted, both. The transcript grows by a page. So does Owen's time in care: month eleven, becoming twelve."
+   ],
+   "choices": [
+    {
+     "text": "File a short written objection before the next date — ready, again, in writing",
+     "next": "after2",
+     "setFlags": [
+      "objectionFiled"
+     ],
+     "addHidden": [
+      "Written objection filed — parent ready; reason and new date requested on the record"
+     ],
+     "note": "Not a rule. Not a threat. A dated page that says: I was ready, and the case moved anyway."
+    },
+    {
+     "text": "Let this one slide without paper — objecting feels like making enemies",
+     "next": "after2",
+     "note": "The courtroom stays friendly. The file stays quieter. Both of those things are true, and only one of them is read later."
+    }
+   ]
+  },
+  {
+   "id": "after2",
+   "kicker": "Day 354 — Friday, February 27, 2026",
+   "dayOffset": 354,
+   "title": "What the File Shows Tonight",
+   "body": [
+    "At home you open the chronology. It is three pages now. Read quickly, it tells a story nobody intended: a case about a seven-year-old, in which every adult behaved reasonably, and in which the central event — a hearing — has not yet occurred.",
+    "March 10 will be one year since placement. Owen will have spent a seventh of his life in this. He is losing a tooth. He is learning fractions. The file's story and Owen's story are the same length, and only one of them is being lived at full speed.",
+    "April 3 is next. Then June 10 stops being a horizon and becomes a date."
+   ],
+   "choices": [
+    {
+     "text": "Add tonight's line, and circle June 10 in your own color this time",
+     "next": "visits2",
+     "note": "Your color. Your calendar. The date was always yours too — Owen is yours."
+    }
+   ]
+  },
+  {
+   "id": "visits2",
+   "kicker": "Day 361 — Friday, March 6, 2026",
+   "dayOffset": 361,
+   "title": "The Loose Tooth",
+   "body": [
+    "The tooth comes out at Thursday's visit, into a tissue, with ceremony. Owen wants it noted “for the folder,” because he has absorbed, the way children do, the family's whole theory of the world: if it matters, it goes in the folder.",
+    "Mrs. Hartley photographs it for the tooth fairy's records. Everyone laughs. The supervisor writes something down, smiling, and for once you hope the note says exactly what happened.",
+    "Driving home, the arithmetic again: April 3 is the next date. After that, the calendar offers very little room before June."
+   ],
+   "choices": [
+    {
+     "text": "Spend Saturday at the library printing the full chronology, clean",
+     "next": "payday",
+     "cash": -10,
+     "addHidden": [
+      "Chronology printed clean — three pages, March 2025 to today"
+     ],
+     "note": "Ten dollars of copies. Three pages that took a year to write."
+    }
+   ]
+  },
+  {
+   "id": "payday",
+   "kicker": "Day 368 — Friday, March 13, 2026",
+   "dayOffset": 368,
+   "title": "The Cost of Ready",
+   "body": [
+    "Ready is not free. It is copies and bus fare and a shift swapped here, an hour unpaid there. You do the month's math at the kitchen table: the case has cost you, in small bills, about what a birthday party would. Owen's birthday is in May.",
+    "Ms. Okafor calls with two pieces of news. The April date is confirmed by the court — and the court's notice lists a courtroom. “Confirmed,” she says, “is a word this case has taught us to hold lightly. File the statement anyway.”",
+    "That is the practice, and by now it is also just your habit, like the folder by the door."
+   ],
+   "choices": [
+    {
+     "text": "File readiness statement number three",
+     "next": "prep3",
+     "cash": -15,
+     "setFlags": [
+      "readinessFiled"
+     ],
+     "addHidden": [
+      "Readiness statement #3 filed — ready for April 3"
+     ],
+     "note": "Ready, a third time, before the date. Patterns are what files believe."
+    }
+   ]
+  },
+  {
+   "id": "prep3",
+   "kicker": "Day 382 — Friday, March 27, 2026",
+   "dayOffset": 382,
+   "title": "Three Weeks Out",
+   "body": [
+    "Three weeks of ordinary life, lived at full speed on Owen's calendar and at filing speed on the case's. You work. He reads ahead in the dog book and refuses spoilers.",
+    "The evening before April 3, you iron the good blouse and lay out the folder. The chronology sits on top, three clean pages. Under it, three readiness statements, each stamped received. Under those, the certificates.",
+    "“Whatever happens tomorrow,” Ms. Okafor says by phone, “the file will show who was ready. That is not everything. It is not nothing, either. In this system, it is close to the main thing you control.”"
+   ],
+   "choices": [
+    {
+     "text": "Sleep early. Be the ready one, a third time",
+     "next": "hearing3",
+     "note": "Folder by the door. Alarm set. Owen's concert program still in the packet, third from the left."
+    }
+   ]
+  },
+  {
+   "id": "hearing3",
+   "kicker": "Day 389 — Friday, April 3, 2026",
+   "dayOffset": 389,
+   "title": "The Third Slide",
+   "body": [
+    "You wait all morning. Your case is called at noon, in a different courtroom than the notice said, because the listed courtroom was double-booked and a longer matter ran over. The bailiff is apologetic. The judge is apologetic. The calendar, examined closely, has no feelings at all.",
+    "There is no time left today to be heard. The review is continued — to May 15. Your unpaid morning is spent. Your good blouse is wilted. Ms. Okafor performs the practice without a flicker: reason — courtroom double-booked, matter ran over; parent ready, third statement filed; new date May 15, stated on the record.",
+    "In the hallway she says the quiet part: “May 15 is twenty-six days before June 10. Whatever May 15 is, it is the last date this case gets before the clock speaks.”"
+   ],
+   "choices": [
+    {
+     "text": "Submit the updated chronology to the court file before you leave the building",
+     "next": "strain",
+     "setFlags": [
+      "chronologyFiled"
+     ],
+     "addHidden": [
+      "Chronology submitted — every continuance, reason, and readiness statement, in order"
+     ],
+     "note": "The file now contains the case's true age, in your handwriting, where anyone deciding anything must step over it to decide."
+    },
+    {
+     "text": "Keep the chronology for the hearing itself — whenever it comes",
+     "next": "strain",
+     "note": "It stays true in your folder. It just isn't in theirs, yet — and 'yet' is doing heavy work in this story."
+    }
+   ]
+  },
+  {
+   "id": "strain",
+   "kicker": "Day 396 — Friday, April 10, 2026",
+   "dayOffset": 396,
+   "title": "The Spring Squeeze",
+   "body": [
+    "April is the hardest month so far, and nothing in it is anyone's fault, which is somehow the hardest kind. Extra shifts appear and you take them, because ready costs money and so does May's birthday. A visit is shortened by a supervisor's double-booking — noted, kindly, in the chronology, with the make-up hour added the next week.",
+    "Your sister asks the question everyone asks: “How can a case about a kid move this slowly?” You have stopped trying to answer it in one sentence. The chronology answers it in three pages, without adjectives.",
+    "May 15 approaches. And with it, a notice about who will be asking for the date to move this time."
+   ],
+   "choices": [
+    {
+     "text": "Read the notice twice, the way Ms. Okafor taught you: back page first",
+     "next": "notice4",
+     "note": "The back page is where letters like this keep their most important part. It works for notices too."
+    }
+   ]
+  },
+  {
+   "id": "notice4",
+   "kicker": "Day 410 — Friday, April 24, 2026",
+   "dayOffset": 410,
+   "title": "Counsel's Conflict",
+   "body": [
+    "The notice is from the agency's side this time: their attorney has a conflict on May 15 — a trial elsewhere, set long ago — and they will ask the court to continue the review again, into June.",
+    "Into June. The words sit on the page like a weather forecast. A June date would land on the far side of June 10 with the review still unheard: the fifteen-month point arriving while the case is mid-slide, the goal conversation changing in rooms you are not in.",
+    "Ms. Okafor is measured. “We can consent, or we can file our position before the date: parent is ready, parent objects to a continuance past June 10, parent asks that the reason and any new date be stated on the record. It is a page. It is not a guarantee. It is the practice, at the moment the practice matters most.”"
+   ],
+   "choices": [
+    {
+     "text": "Draft the page with her tonight",
+     "next": "folder_night",
+     "setFlags": [
+      "objectionFiled"
+     ],
+     "addHidden": [
+      "Objection to continuance past June 10 drafted with counsel"
+     ],
+     "note": "One page. Ready, objecting, asking for the record. The whole practice, at full size."
+    },
+    {
+     "text": "Ask what consenting would look like — peace has value too",
+     "next": "folder_night",
+     "note": "It would look like a signature, and a June date, and a file that shows the parent agreed. That is also a kind of record."
+    }
+   ]
+  },
+  {
+   "id": "folder_night",
+   "kicker": "Day 417 — Friday, May 1, 2026",
+   "dayOffset": 417,
+   "title": "The Folder by the Door",
+   "body": [
+    "The night before the deadline to file your position, the folder is by the door, thick now: three readiness statements, the chronology, the certificates, the concert program. A year of being ready, in order.",
+    "You think about Owen at the Hartleys' table, doing fractions. You think about judges reading folders first — Mrs. Hartley's phrase, which has become the family's scripture: the folder is how the judge knows his name.",
+    "Tomorrow you decide what the folder says about May 15."
+   ],
+   "choices": [
+    {
+     "text": "File the objection and the fourth readiness statement together",
+     "next": "prep4",
+     "cash": -15,
+     "setFlags": [
+      "readinessFiled",
+      "chronologyFiled"
+     ],
+     "addHidden": [
+      "Readiness statement #4 + objection filed — chronology attached"
+     ],
+     "note": "Ready, objecting, documented. If May 15 moves, it will move over your paper, in daylight."
+    },
+    {
+     "text": "File the readiness statement, but hold the objection — stay agreeable",
+     "next": "prep4",
+     "cash": -15,
+     "setFlags": [
+      "readinessFiled"
+     ],
+     "addHidden": [
+      "Readiness statement #4 filed — no objection"
+     ],
+     "note": "Ready, and silent about the slide. The file will show one of those things more clearly than the other."
+    }
+   ]
+  },
+  {
+   "id": "prep4",
+   "kicker": "Day 424 — Friday, May 8, 2026",
+   "dayOffset": 424,
+   "title": "May 15, Decided in Advance",
+   "body": [
+    "However the paper went in, the date arrives the way all the dates have: a courtroom, a bench, a morning of other people's cases moving at their own speeds toward their own children.",
+    "Ms. Okafor has one last piece of counsel, and it is about expectations, not law: “Courts continue cases for reasons. What we have built is not a wall against that. It is a record that makes the reason — and Owen's age in this — impossible to skip past. Watch what the judge does with it. That is the hearing inside the hearing.”",
+    "The case is called. The agency's attorney rises, conflict letter in hand, and asks for June."
+   ],
+   "choices": [
+    {
+     "text": "The judge takes up the parent's filed position before she rules",
+     "next": "hearing4_obj",
+     "note": "“Counsel, the parent has filed a position.” The room's temperature changes by a degree. Paper, doing its work."
+    },
+    {
+     "text": "The judge grants the June date — and the fight moves to what the record says before June 10",
+     "next": "hearing4_slide",
+     "note": "The request is reasonable, the conflict is real, and reasonableness is how calendars move. What moves with it — your filed paper — is the remaining question."
+    }
+   ]
+  },
+  {
+   "id": "hearing4_obj",
+   "kicker": "Day 431 — Friday, May 15, 2026",
+   "dayOffset": 431,
+   "title": "Opposed, on the Record",
+   "body": [
+    "The judge reads your page in silence. Then she does the thing the practice was built to make possible: she states the whole picture out loud, for the record — the conflict, the request, the parent's readiness across four filed statements, the chronology, and the date nobody in the room says first: June 10.",
+    "“I will not continue this review past the fifteen-month date on a consent calendar,” she says. “The continuance is denied as requested. We will be heard on May 29 — a shortened list, this matter first — and the parent's chronology will be part of the record the court considers.”",
+    "One continuance, successfully opposed — not by a rule, but by a record that made the cost of granting it visible. The other slides still happened. May 29 is thirteen days before the clock. Both of those sentences are the story."
+   ],
+   "choices": [
+    {
+     "text": "Go home and write May 15 in the chronology — the longest entry yet",
+     "next": "partial_review",
+     "addHidden": [
+      "Continuance opposed and denied as requested — hearing set May 29, before June 10"
+     ],
+     "note": "Reason stated. Objection noted. Date kept on your side of the line. In pen, this time."
+    }
+   ]
+  },
+  {
+   "id": "hearing4_slide",
+   "kicker": "Day 431 — Friday, May 15, 2026",
+   "dayOffset": 431,
+   "title": "Granted, Reasonably",
+   "body": [
+    "The request is granted the way all the others were: reasonably. A real conflict, a real trial elsewhere, a new date offered from the list — June 17 — accepted around the room with the small nods of people scheduling a dentist appointment.",
+    "Ms. Okafor asks for the reason and the new date on the record, and gets them, cleanly. She asks that your readiness and your filed position be noted, and they are. The transcript will show a parent who was ready, on paper, objecting — and a date that moved anyway. Objections, in this system, are weighed. They are not walls.",
+    "June 17. Seven days past the line. On the bus home, the arithmetic does itself: before June 17 comes June 10, and June 10 will not wait for the courtroom."
+   ],
+   "choices": [
+    {
+     "text": "Spend the weeks before June 10 building the final packet anyway",
+     "next": "asfa_shadow",
+     "note": "Ready for a hearing whose meaning is about to change underneath it. Ready is still ready."
+    },
+    {
+     "text": "Ask Ms. Okafor what June 10 changes, exactly, if the review is still unheard",
+     "next": "asfa_day",
+     "note": "“The conversation,” she says. “The agency will come to June 17 talking about goals, not just reviews. We will come talking about the record. Both matter. Ours is older.”"
+    }
+   ]
+  },
+  {
+   "id": "partial_review",
+   "kicker": "Day 445 — Friday, May 29, 2026",
+   "dayOffset": 445,
+   "title": "May 29",
+   "body": [
+    "The shortened list is real: your matter is called first, in a quiet courtroom, with the judge's copy of your chronology already on the bench, its corners softened by reading.",
+    "There is time — not plenty, but enough — for the shape of the thing: services complete, housing stable, visits unmissed, and a case whose hearings slid for a year of stated reasons while its parent filed readiness like rent. The judge keeps the review open for written follow-up and sets the fuller hearing inside the summer, with dates stated, on the record, before anyone leaves.",
+    "Walking out, Ms. Okafor says: “One objection held. Three slides stand. That is not a victory parade. It is a record a court can act on — and it is yours.”"
+   ],
+   "choices": [
+    {
+     "text": "Go to Thursday's visit and tell Owen the judge knows his name",
+     "next": "end_partial",
+     "note": "She does. It is in the folder, third from the left, holding a recorder like a scepter."
+    }
+   ]
+  },
+  {
+   "id": "asfa_shadow",
+   "kicker": "Day 445 — Friday, May 29, 2026",
+   "dayOffset": 445,
+   "title": "The Conversation Changes",
+   "body": [
+    "The letter arrives in the last week of May, and it is not about a hearing. It is about a meeting: a permanency planning discussion, the agency writes, “in light of the upcoming fifteen-month date,” at which “all options, including goal change,” will be reviewed.",
+    "All options. You have learned to read this system's adjectives the way sailors read clouds. The review hearing — the one that was supposed to weigh your finished plan — is June 17. The clock's date is June 10. The clock will speak first, in a meeting room, unless the record speaks louder.",
+    "Ms. Okafor spreads the folder on her table. “Then we make sure the record is in the room, filed, before June 10 — chronology, statements, all of it. The clock gets a date. It does not get the only voice.”"
+   ],
+   "choices": [
+    {
+     "text": "File the full chronology packet — chronology, four statements, certificates — before June 10",
+     "next": "final_prep",
+     "setFlags": [
+      "chronologyFiled"
+     ],
+     "addHidden": [
+      "Full packet filed before June 10 — chronology + readiness statements + proof"
+     ],
+     "note": "Filed, stamped, in the record before the date. Whatever June 10 becomes, it will not find an empty chair."
+    },
+    {
+     "text": "Bring the folder to June 17 instead — filed paper feels finished, and you are not finished",
+     "next": "hearing_final_plain",
+     "note": "The folder stays in your trunk through June 10. True, complete — and, on the one date it mattered most, not in the room."
+    }
+   ]
+  },
+  {
+   "id": "final_prep",
+   "kicker": "Day 452 — Friday, June 5, 2026",
+   "dayOffset": 452,
+   "title": "Filed Before the Date",
+   "body": [
+    "The clerk stamps the packet on June 5. Chronology on top: three pages that have become five, every continuance with its reason, every readiness statement with its date, from a March morning in 2025 to a June morning in 2026.",
+    "June 10 comes and goes the way deadlines do — quietly, at full legal volume. The planning meeting happens with your record on the table, and the goal conversation happens around it, not instead of it. The agency's attorney uses a new phrase — “the exception question” — and Ms. Okafor, for the first time in fifteen months, smiles in a meeting.",
+    "June 17 is still on the calendar. For the first time, so are you — in writing, five pages deep, ahead of the date instead of behind it."
+   ],
+   "choices": [
+    {
+     "text": "Walk into June 17 with the record already there",
+     "next": "hearing_final_record",
+     "note": "The judge has read the chronology. You can tell by the questions. They start in March 2025, not in June."
+    }
+   ]
+  },
+  {
+   "id": "hearing_final_record",
+   "kicker": "Day 459 — Friday, June 12, 2026",
+   "dayOffset": 459,
+   "title": "The Hearing, with the Whole Story in the Room",
+   "body": [
+    "The hearing, when it finally happens, is almost disappointingly ordinary: testimony, the plan, the certificates, the Hartleys kind and brief. What is not ordinary is the frame the judge puts around it, on the record, before the first witness:",
+    "“The court notes the parent's chronology, filed June 5, documenting four continuances across fifteen months, the stated reason for each, and the parent's filed readiness before every date. The court has considered the passage of time in this case — including the time attributable to continuances — as a fact in this record, and has weighed it.”",
+    "Delay, named as a fact, in the transcript, where facts live. Whatever follows from this hearing will be built on a record that shows the case's true age — and who was ready for all of it."
+   ],
+   "choices": [
+    {
+     "text": "Hear the rest of your own hearing",
+     "next": "end_held_record",
+     "note": "You sit very still. Fifteen months of Thursdays, and the folder knew his name all along."
+    }
+   ]
+  },
+  {
+   "id": "asfa_day",
+   "kicker": "Day 457 — Wednesday, June 10, 2026",
+   "dayOffset": 457,
+   "title": "June 10",
+   "body": [
+    "June 10, 2026 arrives on a Wednesday, during your shift, between two other people's houses. Nothing happens. That is what the arrival of a legal date looks like from inside a life: nothing, at normal volume, with laundry.",
+    "The planning meeting that follows is polite and transformed. The agency speaks of the fifteen-month point as a door the case has now walked through; the goal conversation — adoption timelines, filing expectations, the exceptions and whether any fits — happens at a speed the review hearings never managed. Your folder is with you. Your chronology is accurate, complete — and unfiled, a private document at a public turning point.",
+    "June 17 is still coming. It will now be a hearing about where the case goes, held after the date that changed what the case is."
+   ],
+   "choices": [
+    {
+     "text": "Go to June 17 anyway — late paper is still paper",
+     "next": "end_asfa",
+     "note": "You go. Ready, a fifth time, in a room where ready now means something different."
+    }
+   ]
+  },
+  {
+   "id": "hearing_final_plain",
+   "kicker": "Day 459 — Friday, June 12, 2026",
+   "dayOffset": 459,
+   "title": "The Hearing, on a Quiet File",
+   "body": [
+    "June 17 happens the way hearings do: testimony, the completed plan, the Hartleys kind and brief, a judge weighing what is in front of her with care. Your folder is on the table beside you — complete, accurate, yours.",
+    "What is not in front of her is any single page that adds the year up. The continuances sit in the docket as separate, reasonable entries. No chronology states the sum. Your readiness lives in three stamped statements, but nothing connects them into the pattern they made in your kitchen.",
+    "The hearing is fair to the file it has. The file it has is shorter than your year was."
+   ],
+   "choices": [
+    {
+     "text": "Hear the rest of your own hearing",
+     "next": "end_held_silent",
+     "note": "Fifteen months of Thursdays, heard in an afternoon, on a record that shows almost none of the waiting."
+    }
+   ]
+  },
+  {
+   "id": "end_held_record",
+   "kicker": "Day 466 — Friday, June 19, 2026",
+   "dayOffset": 466,
+   "title": "Ending — Heard, with the Delay in the Record",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: Fifteen months, four continuances, four reasons — a witness's emergency, a report not filed, a double-booked courtroom, a counsel's conflict — each reasonable, together corrosive. What your choices changed was not whether the slides happened. It was whether they happened in the dark. The chronology you kept and filed, and the readiness you proved before every date, turned the case's true age into a fact the court stated on the record and weighed. The hearing was finally held on a record that included its own delay.",
+    "THE LAW UNDER THIS PATH — AND ITS LIMITS: This scenario deliberately teaches no continuance rule, because none was verified for it: there is no simple deadline or limit on continuances stated anywhere in this game, and any source that handed you one should be doubted. What is real law here is the clock the delay ran against — at 15 of the most recent 22 months in care, a filing toward termination is generally expected unless an exception fits: the child is placed with a relative, a documented compelling reason exists, or the agency did not provide the services it identified as necessary (42 U.S.C. § 675(5)(E)) — and the record rights you used: your case record “shall be released upon request” (55 Pa. Code § 3130.44(d)), your right to counsel (42 Pa.C.S. § 6337), and the clear-and-convincing burden the agency carries in dependency. The readiness statement, the spoken request that reasons and new dates be stated on the record, and the filed chronology are practice, not entitlements — this ending shows practice working, not a rule firing.",
+    "THE HONEST PART: A different judge could have read the same five pages and continued the case anyway; a fifth slide was always possible, and outcomes here turn on workers, judges, dockets, and luck as much as on paper. What the paper guaranteed was narrower and real: the delay could not be invisible, and your readiness could not be rewritten afterward as absence. In a system that decides from files, that is not a small thing. It is, on many days, the main thing a parent controls."
+   ]
+  },
+  {
+   "id": "end_held_silent",
+   "kicker": "Day 466 — Friday, June 19, 2026",
+   "dayOffset": 466,
+   "title": "Ending — Heard, on a Quiet File",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: The hearing was finally held — testimony taken, plan weighed, decisions made. What the file barely shows is how long it took to get there. Without a filed chronology, the case's fifteen months read as a smooth line: petition, plan, services, review. The four continuances exist as scattered docket entries, each with its reasonable face on, and no page anywhere adds them up. Delay happened to this family at full length. In the record, it is nearly invisible — and courts can only weigh what records show.",
+    "THE LAW UNDER THIS PATH — AND ITS LIMITS: As in every path through this scenario, no continuance rule is taught or claimed — the readiness-and-record practice is a practice. The clock, however, is law: the 15-of-22-months point (42 U.S.C. § 675(5)(E)) arrived on June 10, 2026 regardless of the hearing calendar, with its three exceptions — relative placement, a documented compelling reason, and services identified but not provided. Your record rights were law too, whether or not they were used: release of your case record upon request (55 Pa. Code § 3130.44(d)) and counsel (42 Pa.C.S. § 6337). A hearing decides on the record in front of it; this ending is about what wasn't in front of it.",
+    "THE HONEST PART: Nothing in this ending says the hearing itself was unfair, or that its outcome was wrong on the facts it heard. Workers were kind, reasons were real, and the judge weighed what the file contained. That is precisely the lesson: a true story that is never filed competes, in memory and in paper, against a shorter, smoother story that was. Workers, judges, and luck hold pieces of every outcome — but the file is the piece the parent holds, and this time it was held quietly."
+   ]
+  },
+  {
+   "id": "end_asfa",
+   "kicker": "Day 473 — Friday, June 26, 2026",
+   "dayOffset": 473,
+   "title": "Ending — The Date Arrived First",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: The fifteen-month date — June 10, 2026, fifteen calendar months after placement on March 10, 2025 — arrived while the review was still mid-slide, and the case's center of gravity moved: from 'is the parent ready?' to 'what should the goal now be?' That conversation happened first in a planning meeting, at planning-meeting speed, and the June 17 hearing inherited it. Your readiness was real, your plan was finished, your chronology was accurate — and the parts of that story that were never filed could not be weighed in the rooms where the goal conversation happened first.",
+    "THE LAW UNDER THIS PATH: The clock is the law this scenario is built on: when a child has been in care for 15 of the most recent 22 months, a petition to terminate parental rights is generally to be filed unless an exception applies — (1) the child is being cared for by a relative, (2) a compelling reason, documented in the case plan, makes filing contrary to the child's best interests, or (3) the agency did not provide the services it identified as necessary for safe return (42 U.S.C. § 675(5)(E)). Note what the statute does not say: it does not pause for continued hearings. The exceptions are therefore where delayed cases are won or lost — and each exception is a documentation test, which is why the filed record, not the lived one, is the arena. Your other rights on this path were the same as always: your record on request (55 Pa. Code § 3130.44(d)), counsel (42 Pa.C.S. § 6337), and no invented continuance deadline anywhere — because there isn't one in this game.",
+    "THE HONEST PART: The June 10 date is not a verdict, and this ending is not the end of the case — exceptions can still be documented, the hearing still held, the goal still contested, with workers, judges, and luck all holding pieces of what comes next. What changed is leverage and framing: after the date, the parent argues uphill, against a filing expectation, instead of across level ground. Time did that — not any person's villainy. Every continuance in this story had a reasonable face. The clock is the one participant that never has to explain itself."
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 466 — Friday, June 19, 2026",
+   "dayOffset": 466,
+   "title": "Ending — One Objection Held",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: A partial ending, and honestly labeled: of four continuances, three slid past exactly as scheduled — witness, report, courtroom — and the fourth, the one that would have carried the review past June 10, was opposed on the record and denied as requested. The hearing was pulled back to May 29, ahead of the fifteen-month date, with your chronology made part of the record the court considers. The delay was not undone. It was, once, at the moment it mattered most, refused — and the refusal is in the transcript, where refusals live.",
+    "THE LAW UNDER THIS PATH — AND ITS LIMITS: The judge's ruling is depicted as discretion exercised on a record, not as a rule firing: this scenario verifies and teaches no continuance standard, no objection deadline, and no limit — the written objection and readiness statement are practice, performed in plain words, and a different judge could lawfully have granted the June date anyway. The hard law underneath remains the clock (42 U.S.C. § 675(5)(E): the 15-of-22 filing expectation and its three exceptions — relative placement, documented compelling reason, services identified but not provided), your record on request (55 Pa. Code § 3130.44(d)), and counsel (42 Pa.C.S. § 6337). May 29 mattered because June 10 was law. The objection mattered because May 29 was not guaranteed.",
+    "THE HONEST PART: Partial is the honest shape of most wins in this system. Three slides still cost Owen three seasons of Thursdays; one held objection did not refund them. Workers granted, judges weighed, a courtroom's luck ran one way in May after running the other way all winter — and your paper was there for the one moment when the balance could tip. That is the whole claim this scenario makes for the practice: not that it stops time, but that it makes time visible, once, in the room where visibility counts."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s35';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["school|teacher|classroom|class", "School"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+function plateHTML(plateName) {
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Wrong Form</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Wrong Form",
+  "subtitle": "Scenario 10 — The Wrong Form (a fictional composite)",
+  "startDateISO": "2026-06-01",
+  "startNode": "start",
+  "startCash": 125,
+  "tier": "Foundation",
+  "summary": "Your housing referral is stalled because one form transposed two digits of your case ID — find it in your own copy and fix it in writing."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, June 1, 2026",
+   "dayOffset": 0,
+   "title": "The Referral That Stalled",
+   "body": [
+    "Your daughter Alba is six, and the two of you are living in your sister's spare room while you wait for housing help — a support referral, filed months ago, that is supposed to move you toward a unit of your own. It has been 'in process' so long that 'in process' has become the family's address.",
+    "Today your caseworker, Ms. Lindqvist, calls with news that is almost good: the housing support office has your referral, but it is 'stalled in verification.' She does not know why. Stalls, in her experience, are usually a detail. Details, in yours, are usually findable — if you can see the paper."
+   ],
+   "choices": [
+    {
+     "text": "Ask what \"verification\" needs, and what paper it is looking at",
+     "next": "n2",
+     "note": "A stall with a specific cause can be fixed. A stall with a vibe cannot."
+    },
+    {
+     "text": "Ask her to check again next week",
+     "next": "n2",
+     "note": "Next week is when stalled things are traditionally checked again, and found still stalled."
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "kicker": "Day 1 — Tuesday, June 2, 2026",
+   "dayOffset": 1,
+   "title": "A Number With a Name",
+   "body": [
+    "Verification, it turns out, means the housing office is matching your referral to your case record using the case ID number — the one number that follows your family through every system — and the match keeps failing.",
+    "A failing match has a short list of causes, and most of them are typos with consequences. Ms. Lindqvist promises to 'look when she can.' Her caseload, you happen to know, is forty-one families deep."
+   ],
+   "choices": [
+    {
+     "text": "Ask for a copy of the referral packet, so you can check it yourself",
+     "next": "records",
+     "note": "Forty-one families deep means your eyes are the fastest available audit."
+    },
+    {
+     "text": "Leave it to her — she knows the system",
+     "next": "records",
+     "note": "She does. The system also knows her caseload, and schedules accordingly."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 2 — Wednesday, June 3, 2026",
+   "dayOffset": 2,
+   "title": "The Packet, Requested",
+   "body": [
+    "You put it in writing, the short dated note that has become this family's superpower: a request for a copy of the complete referral packet as sent to the housing office.",
+    "When it comes, you will be able to do the one thing nobody with forty-one cases has time to do — read your own referral like a proofreader, because your housing depends on it in a way it depends on no one else."
+   ],
+   "choices": [
+    {
+     "text": "File the written request for the full referral packet",
+     "next": "prep",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records — parent requested a copy of the complete housing referral packet"
+     ],
+     "note": "Under 55 Pa. Code § 3130.44(d), the record is released on request. The packet arrives in three days, eleven pages, with a paperclip that has seen things."
+    },
+    {
+     "text": "Wait for Ms. Lindqvist’s next check instead",
+     "next": "prep",
+     "note": "Her next check happens in nine days. It consists of being told the referral is still stalled."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 3 — Thursday, June 4, 2026",
+   "dayOffset": 3,
+   "title": "Eleven Pages",
+   "body": [
+    "Page one is fine. Page two is fine. Page four is where it lives: the case ID, typed by a human in a hurry — 4185 — where your number, the one on your plan, your letters, your folder, is 4815. Two digits, holding hands in the wrong order.",
+    "The housing office's computer has been looking for family 4185 for six weeks. Family 4185 does not exist. Your family does — it is simply filed under a number that isn't yours, in a queue that does not move for ghosts."
+   ],
+   "choices": [
+    {
+     "text": "Circle the error and write the correction out: wrong number, right number, where to verify it",
+     "next": "eve",
+     "setFlags": [
+      "errorSpotted"
+     ],
+     "addHidden": [
+      "Error — transposed digits in case ID identified by parent from her own copy"
+     ],
+     "note": "Wrong: 4185. Right: 4815. Proof: your plan, page one, and every letter the agency ever sent you."
+    },
+    {
+     "text": "Call Ms. Lindqvist and read her the digits over the phone",
+     "next": "eve",
+     "note": "Digits read aloud are digits that can be mis-heard — 4815 and 4185 sound like cousins, which is the entire problem in miniature."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 4 — Friday, June 5, 2026",
+   "dayOffset": 4,
+   "title": "The List Review",
+   "body": [
+    "There is a date that gives this small error its teeth: the housing office reviews its list on Monday, June 15, 2026. Referrals verified by then go forward for placement matching. Referrals not verified wait for the next review — six weeks later — regardless of whose typo it was.",
+    "Alba is asleep in the spare room that is not hers, in the house that is not yours, patient as only a six-year-old who has never known the system to move fast can be. The correction needs to travel before the list does."
+   ],
+   "choices": [
+    {
+     "text": "Prepare the correction tonight, in writing, with a copy of page one attached",
+     "next": "split",
+     "setFlags": [
+      "correctionDrafted"
+     ],
+     "note": "One page: the error, the fix, and the proof, paper-clipped to the truth."
+    },
+    {
+     "text": "Sleep — the call tomorrow will sort it",
+     "next": "split",
+     "note": "Tomorrow’s call is to a woman with forty-one families. Sorting is not scheduled."
+    }
+   ]
+  },
+  {
+   "id": "split",
+   "kicker": "Day 5 — Saturday, June 6, 2026",
+   "dayOffset": 5,
+   "title": "Deliver It, or Describe It",
+   "body": [
+    "Morning. The correction is one page long. The agency office is on the bus line you already ride. Ms. Lindqvist's phone number is also right there, and phones are free, and describing one page takes ninety seconds.",
+    "But a described correction becomes a note about a correction. A delivered correction becomes the correction itself, stamped, in the file, findable by the next set of hands."
+   ],
+   "choices": [
+    {
+     "text": "Deliver the written correction in person and get a stamped copy",
+     "next": "p1",
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "cash": -4,
+     "addHidden": [
+      "Correction — written correction of case ID filed; stamped copy to parent"
+     ],
+     "note": "Stamped, copied, filed. The referral now carries the right number in the agency’s own hand, with your proof clipped behind it."
+    },
+    {
+     "text": "Phone it in — read the correction to Ms. Lindqvist and trust the note",
+     "next": "u1",
+     "addHidden": [
+      "Correction — case ID correction reported verbally; no written correction received"
+     ],
+     "note": "She writes it on the case note. The referral form itself — the thing the housing office actually reads — is a different document, in a different queue."
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kicker": "Day 7 — Monday, June 8, 2026",
+   "dayOffset": 7,
+   "title": "Re-Filed",
+   "body": [
+    "Ms. Lindqvist calls within two days, sounding like a woman who has found the pea under the mattress. The referral is corrected and re-sent; the housing office confirms the match now works — family 4815, verified, in the queue with its real name on it.",
+    "'You caught that from your copy?' she asks. 'Page four,' you say. 'Nobody reads page four,' she says. 'I do now,' you say."
+   ],
+   "choices": [
+    {
+     "text": "Ask for written confirmation that the corrected referral was re-sent",
+     "next": "p2",
+     "setFlags": [
+      "confirmationAsked"
+     ],
+     "note": "It comes by email: corrected referral transmitted, verification match successful. Into the folder it goes, behind the stamped correction."
+    },
+    {
+     "text": "Take the good news on the phone",
+     "next": "p2",
+     "note": "The news is genuinely good. Its proof currently lives in a phone call."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kicker": "Day 8 — Tuesday, June 9, 2026",
+   "dayOffset": 8,
+   "title": "Trust, and Verify the Other Building",
+   "body": [
+    "One building believes the number now. The question — the same question as every story in this tier — is whether the fix has traveled to the building that acts on it: the housing office's list, compiled by hands that never saw your folder.",
+    "The list review is on Monday, June 15, 2026. Verification there is a phone call away, and the person who answers has your (correct) number."
+   ],
+   "choices": [
+    {
+     "text": "Call the housing office and confirm the corrected ID is on the review list",
+     "next": "p3",
+     "setFlags": [
+      "verifiedDownstream"
+     ],
+     "addHidden": [
+      "Verification — parent confirmed corrected ID on the housing review list"
+     ],
+     "note": "\"4815, yes — verified, on the list for the fourteenth.\" She reads it off her screen. Both buildings now agree on who you are."
+    },
+    {
+     "text": "Assume the re-sent referral updated the list automatically",
+     "next": "u3",
+     "addHidden": [
+      "Verification — parent did not confirm the list carried the corrected ID"
+     ],
+     "note": "Lists are compiled by people from transmissions received. Transmissions received is a category with a history."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kicker": "Day 10 — Thursday, June 11, 2026",
+   "dayOffset": 10,
+   "title": "On the List",
+   "body": [
+    "You are on the list — which is not a unit, not a key, not a moving date. It is the list. Families wait on it for months, and this scenario will not insult you by pretending otherwise. But the list only moves for the verified, and you are, as of this week, verifiably on it.",
+    "Ms. Lindqvist updates the case note: referral active, family awaiting matching. She reads you the note because, by now, that is the custom between you."
+   ],
+   "choices": [
+    {
+     "text": "Ask her to include how the stall was resolved — error found and corrected from your copy",
+     "next": "p4",
+     "setFlags": [
+      "storyInFile"
+     ],
+     "note": "She does. The note now explains the six weeks instead of letting them look like silence."
+    },
+    {
+     "text": "Let the note say \"referral active\" and leave it at that",
+     "next": "p4",
+     "note": "\"Active\" is true. It is just not the whole truth, and the whole truth was flattering this time."
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kicker": "Day 12 — Saturday, June 13, 2026",
+   "dayOffset": 12,
+   "title": "Before the Review",
+   "body": [
+    "Two days before the list review, a letter comes from the housing office: a standard pre-review confirmation — name, household, case ID, unit size sought. Four lines of fact about your family, to be confirmed by your signature and returned.",
+    "Four lines is few enough to read like a formality and exactly enough to contain one more error."
+   ],
+   "choices": [
+    {
+     "text": "Read all four lines like a proofreader — name, household, number, unit size",
+     "next": "p5",
+     "setFlags": [
+      "confirmationRead"
+     ],
+     "note": "Name right. Household right. Number right — 4815, in friendly type. Unit size: it says one bedroom. Alba is six. It should say two."
+    },
+    {
+     "text": "Sign and return it — the number is fixed, that was the point",
+     "next": "p5",
+     "note": "The number was the point until the unit size became the point. Errors travel in families too."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kicker": "Day 14 — Monday, June 15, 2026",
+   "dayOffset": 14,
+   "title": "The Second Error, Caught Cheaper",
+   "body": [
+    "The unit-size line is wrong the way these things are wrong: Alba's age was entered as her household size, or something like it, somewhere upstream. It is fixable with one phone call today — because today it is a pre-review confirmation, not a placement offer for the wrong apartment.",
+    "You make the call, reference your confirmation letter, and watch the fix happen in the only way fixes are ever really watched: by asking for the corrected version."
+   ],
+   "choices": [
+    {
+     "text": "Get the corrected confirmation in writing, then sign and return it",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "Two bedrooms, right number, right names. You sign the truest four lines in the whole file, and keep the copy that proves it."
+    },
+    {
+     "text": "Let the unit size go — one bedroom beats no bedroom",
+     "next": "end_partial",
+     "note": "It does, until the offer arrives for a one-bedroom, your acceptance is expected in days, and declining it needs explaining to people who have your signed confirmation saying one was right."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 16 — Wednesday, June 17, 2026",
+   "dayOffset": 16,
+   "title": "One Digit, Fixed in Writing",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The win is stated honestly: this is not a key in a door. It is a verified place on the list, a file that explains its own six-week stall, and a confirmation with four true lines — the strongest position this process offers a family still waiting, which is what 'winning' looks like at this tier.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), the referral packet was released on request. The transposed digits were findable by exactly one person with time to look — the person whose housing depended on them — and she could only look because she had the copy.",
+    "Notice the repeated shape: file the correction in writing, get the stamp, then verify the fix in the other building. Systems do not share corrections telepathically. They share them when someone carries the paper across.",
+    "Honesty requires this: the housing office might have caught the error at review, or never; lists move at speeds no parent controls; a different worker buries the stamped correction for a month. You cannot set the queue's pace. You can make sure that when your name is called, it is called under the right number."
+   ]
+  },
+  {
+   "id": "u1",
+   "kicker": "Day 7 — Monday, June 8, 2026",
+   "dayOffset": 7,
+   "title": "A Note About a Correction",
+   "body": [
+    "Ms. Lindqvist is glad you called — genuinely; forty-one families and she still answers like a person. She notes the digits in the case note and promises to pass them along to whoever handles referral amendments.",
+    "Whoever handles referral amendments is, this month, covering two desks. The case note is not the referral. The referral — eleven pages, page four still wrong — sits in the housing office's queue, being matched, nightly and automatically, against a family that does not exist."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the amendment in writing — offer to bring the correction in yourself",
+     "next": "u2",
+     "note": "Offering to carry your own correction is not pushiness. In a system this loaded, it is logistics."
+    },
+    {
+     "text": "Wait — she said she’d pass it along",
+     "next": "u2",
+     "note": "She will, when the desk is covered and the day allows. The list review does not have a day-allows policy."
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "kicker": "Day 8 — Tuesday, June 9, 2026",
+   "dayOffset": 8,
+   "title": "The Quiet Days",
+   "body": [
+    "Days pass the way they pass in spare rooms: slowly and on someone else's schedule. The list review is on Monday, June 15, 2026, and verification still fails, nightly, automatically, in a building that has never heard your voice.",
+    "Ms. Lindqvist, reached at last, is frank: the amendment never got attached. The case note says the right number. The referral says the wrong one. Both statements are true, and only one of them is in the queue."
+   ],
+   "choices": [
+    {
+     "text": "Bring the written correction in today, with page one of your plan attached as proof",
+     "next": "p3",
+     "setFlags": [
+      "correctionFiled"
+     ],
+     "addHidden": [
+      "Correction — written correction filed in person after verbal report failed"
+     ],
+     "note": "Stamped at the desk, re-sent the same afternoon. The housing office confirms the match within the day — the review, just barely, will see the right number."
+    },
+    {
+     "text": "Ask her to please handle it this week, as a favor",
+     "next": "u3",
+     "addHidden": [
+      "Correction — parent relied on verbal handling; referral still uncorrected near review"
+     ],
+     "note": "Favors are real and she owes you one and neither fact attaches a document to a referral."
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "kicker": "Day 15 — Tuesday, June 16, 2026",
+   "dayOffset": 15,
+   "title": "The Review Passes",
+   "body": [
+    "The list review comes and goes on Monday, June 15, 2026. Somewhere in it, referrals are verified and move forward. Yours is not among them — not rejected, not decided against, simply not matched, the bureaucratic equivalent of a letter never arriving.",
+    "At the next visit, the summary reads: 'Referral pending verification since spring.' Since spring. As if the number had been shy."
+   ],
+   "choices": [
+    {
+     "text": "Show her your copy of page four — the digits, circled",
+     "next": "u4",
+     "note": "Her face does something honest. \"You had this the whole time?\" You did. Having it and filing it turned out to be different verbs."
+    },
+    {
+     "text": "Ask when the next review is, and sit down to wait for it",
+     "next": "u4",
+     "note": "Six weeks. Waiting is now the plan, because waiting is what is left when a deadline passes unarmed."
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "kicker": "Day 16 — Wednesday, June 17, 2026",
+   "dayOffset": 16,
+   "title": "The Correction, Eventually Filed",
+   "body": [
+    "The fix, when it comes, looks exactly like the fix in February would have — one page, in writing, stamped, with page one attached. Ms. Lindqvist files it herself this time, walks it to the right desk, and confirms the match by phone while you are still in the building.",
+    "It takes one afternoon. It would always have taken one afternoon. The cost was never the afternoon."
+   ],
+   "choices": [
+    {
+     "text": "Keep the stamped copy and the confirmation, and ask that the file explain the stall",
+     "next": "u5",
+     "setFlags": [
+      "storyInFile"
+     ],
+     "addHidden": [
+      "Correction — written correction filed and confirmed; stall explained in the record"
+     ],
+     "note": "The note goes in: error located by parent, corrected, verified. Whatever the next review decides, it will decide about the real family, under the real number."
+    },
+    {
+     "text": "File the correction but skip the explaining — being right is enough",
+     "next": "u5",
+     "note": "Being right is enough for you. The file, unexplained, still reads \"pending since spring\" to everyone who meets it cold."
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "kicker": "Day 18 — Friday, June 19, 2026",
+   "dayOffset": 18,
+   "title": "Six Weeks",
+   "body": [
+    "The next review is six weeks out. Alba will start the school year from your sister's spare room — registered, finally, under the right number, which is not nothing and is not a home.",
+    "Your folder, at least, is complete now: the packet, the error, the correction, the confirmation. It arrived at completeness by the expensive road."
+   ],
+   "choices": [
+    {
+     "text": "Put the folder where the next set of hands can find it",
+     "next": "end_partial",
+     "note": "Next time — and systems like this always schedule a next time — the paper starts ahead of the problem."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 20 — Sunday, June 21, 2026",
+   "dayOffset": 20,
+   "title": "Still Waiting on a Number",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The correction was made, verified, and filed — one review too late. The family remains on the list under the right number, which matters and is not the win: the win was the June review, and June is gone. Alba stayed with you throughout; what the wrong digit cost was six weeks of a childhood spent in a spare room, and a file that reads 'pending since spring' as if the family, not the number, had been hard to find.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), the packet was yours on request — and it was, from the first week. The difference between the two endings is not access. It is that a correction described on a phone becomes a note, while a correction delivered becomes an amendment.",
+    "Digits are the smallest possible unit of this system's respect for a family: get them wrong and you are a ghost; get them fixed, in writing, and you are a household again.",
+    "Honesty requires this: Ms. Lindqvist was overloaded, not careless in spirit, and she walked the correction through herself in the end. Another worker never returns the call; a housing office with a human review step catches its own ghost. You cannot staff the desks. You can be the person who reads page four."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s10';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

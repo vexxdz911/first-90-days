@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — Two Homes</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 12 — Two Homes (a fictional composite)",
+  "startDateISO": "2026-03-02",
+  "startNode": "start",
+  "startCash": 210,
+  "tier": "Hard",
+  "summary": "Siblings in two placements, two workers, two calendars — one written request that forces coordination onto the record."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, March 2, 2026",
+   "dayOffset": 0,
+   "title": "Two Addresses",
+   "body": [
+    "Your children came into care together and were placed apart. Mara, nine, lives with the Hartleys across town, and her caseworker is Ms. Okafor. Jonah, six, lives with Ms. Bell in the next township, and his caseworker is Mr. Delgado — a different worker, in a different office, with a different calendar.",
+    "Nobody decided your children should rarely see each other. Nobody had to. Two placements, two workers, and two visit schedules were quite enough. You see each child every week. What you almost never see is both of them in the same room — and lately Mara has started asking why her brother is never at her visits, in the tone children use for questions they already suspect the answers to."
+   ],
+   "choices": [
+    {
+     "text": "Ask both workers, this week, when the children will see each other",
+     "next": "calendars",
+     "addHidden": [
+      "Sibling contact — parent asked for joint visits in week one; no joint visit scheduled"
+     ],
+     "note": "Both workers say some version of 'we're working on it.' Working on it has no date."
+    },
+    {
+     "text": "Focus on your own visits first — one problem at a time",
+     "next": "calendars",
+     "note": "Reasonable. It is also how 'later' becomes a season."
+    }
+   ]
+  },
+  {
+   "id": "calendars",
+   "kicker": "Day 3 — Thursday, March 5, 2026",
+   "dayOffset": 3,
+   "title": "Two Calendars",
+   "body": [
+    "Ms. Okafor sends Mara's schedule: your visits Tuesdays and Thursdays, at the Hartleys', after school. Mr. Delgado sends Jonah's: Wednesdays and Saturdays, at Ms. Bell's, late morning. Sibling time, both messages say, is 'to be arranged between the placements.'",
+    "Arranged by whom is not stated. The Hartleys work weekdays. Ms. Bell cares for her mother on weekends. Each household is reasonable. Each worker is reasonable. The arrangement is nobody's job, which in practice makes it yours — except you are the one person in this case who cannot schedule anything."
+   ],
+   "choices": [
+    {
+     "text": "Keep both calendars on the refrigerator and wait for the overlap",
+     "next": "first_clash",
+     "note": "You study them like a puzzle. There is no overlapping square. That is the puzzle."
+    }
+   ]
+  },
+  {
+   "id": "first_clash",
+   "kicker": "Day 7 — Monday, March 9, 2026",
+   "dayOffset": 7,
+   "title": "The Same Hour",
+   "body": [
+    "On Saturday, Jonah's visit moves to the exact hour of Mara's rescheduled Thursday visit — a dentist appointment shifted everything — and the two visits land in two towns at the same time. You cannot be in both. No one can. You choose Mara's, because Mara's was moved first, and you tell yourself Jonah is six and will not keep score.",
+    "Mr. Delgado's log for that day has one line for you: 'Mother did not attend.' It does not say where you were. Logs rarely do, unless somebody makes them."
+   ],
+   "choices": [
+    {
+     "text": "Call Mr. Delgado from the Hartleys' driveway and explain — today, while it's fresh",
+     "next": "clash_noted",
+     "cash": -6,
+     "addHidden": [
+      "Visit log — Jonah: mother at sibling's simultaneous visit; conflict reported by phone the same day"
+     ],
+     "note": "He is decent about it. 'I'll add a note,' he says. Notes are small. So is thread, and thread holds coats together."
+    },
+    {
+     "text": "Go home and deal with it Monday — you're wrung out",
+     "next": "clash_plain",
+     "note": "Monday comes. The log line doesn't change. Log lines almost never do, once the day closes."
+    }
+   ]
+  },
+  {
+   "id": "clash_noted",
+   "kicker": "Day 8 — Tuesday, March 10, 2026",
+   "dayOffset": 8,
+   "title": "The Note in the Margin",
+   "body": [
+    "Mr. Delgado does add the note. You know because he reads it back to you: 'Mother at sibling's visit, same hour, called to explain.' Nine words. The 'did not attend' is still there — logs are additive, not corrective — but now the line has company, and company changes what a line means to the next reader.",
+    "The next reader matters. Files in this system are read by people who have never met you, in rooms you will never see, on days when you cannot speak. You are beginning to understand that you have two cases: the one you live, and the one on paper. They are supposed to be the same case."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mr. Delgado who is supposed to schedule the siblings together",
+     "next": "phone_tag",
+     "note": "'Coordination,' he says, 'is usually the placing workers together.' Usually. Together. Neither word is a name."
+    }
+   ]
+  },
+  {
+   "id": "clash_plain",
+   "kicker": "Day 8 — Tuesday, March 10, 2026",
+   "dayOffset": 8,
+   "title": "Did Not Attend",
+   "body": [
+    "On Monday you explain, and Mr. Delgado is kind, and the kind explanation goes nowhere in particular, because the day is closed and the log is written and Monday's words have no box to live in. 'I'll keep it in mind,' he says, and you believe he means it, and you also understand that 'in mind' is not a place a court can look.",
+    "The line in Jonah's log now reads, to any future reader, like all the other lines like it in all the other files: a mother who didn't come. The fact that you were with your other child, at a visit his own agency scheduled, exists only in your memory and the Hartleys' kitchen."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mr. Delgado who is supposed to schedule the siblings together",
+     "next": "phone_tag",
+     "note": "'Coordination,' he says, 'is usually the placing workers together.' Usually. Together. Neither word is a name."
+    }
+   ]
+  },
+  {
+   "id": "phone_tag",
+   "kicker": "Day 11 — Friday, March 13, 2026",
+   "dayOffset": 11,
+   "title": "Phone Tag",
+   "body": [
+    "You spend a week in the space between two offices. Ms. Okafor says sibling visits are arranged through the children's placements jointly and Mr. Delgado's office holds Jonah's transport. Mr. Delgado says transport follows the visit schedule, and the schedule is set with the placing worker — Ms. Okafor. Each statement is true. Together they describe a circle.",
+    "Meanwhile the children ask about each other in parallel, in two kitchens, and two foster mothers pass the questions along to two workers, who pass them into two files. Four adults are carrying messages between your children. Your children have not been in the same room in five weeks."
+   ],
+   "choices": [
+    {
+     "text": "Bring the circle to your lawyer — there must be a way to make this somebody's job",
+     "next": "records_fork",
+     "addHidden": [
+      "Coordination — each worker attributes sibling scheduling to the other office"
+     ],
+     "note": "Your lawyer listens to the whole circle before speaking. Lawyers in this story charge by the hour and listen like it."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 14 — Monday, March 16, 2026",
+   "dayOffset": 14,
+   "title": "What the File Would Say",
+   "body": [
+    "Your lawyer — appointed for you in this case, as parents in dependency cases may be (42 Pa.C.S. § 6337) — asks a question that reorders the week: 'Have you seen the visit logs? Both of them?' You have seen your own calendars. You have not seen what the agency's paper says about the last five weeks.",
+    "A party may ask, in writing, for the case record, and under the regulation it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). The logs would show — in the agency's own hand — how many sibling visits were scheduled, how many happened, and what the file says about why. Paper about paper. It is how this system is audited: from inside its own handwriting."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written request for the record — both children's logs, complete",
+     "next": "records_arrive",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "note": "Signed in the lawyer's office, copied at the library. The request itself becomes a page in the file it asks about. That is normal here, and strange, and useful."
+    },
+    {
+     "text": "Work from your own notebook for now — the lawyer has limited hours",
+     "next": "own_notes",
+     "note": "Your notebook is honest and detailed. It is also, in the language of hearings, just your word. Your word is true. That is a different property than being believed on paper."
+    }
+   ]
+  },
+  {
+   "id": "records_arrive",
+   "kicker": "Day 21 — Monday, March 23, 2026",
+   "dayOffset": 21,
+   "title": "Two Logs, Side by Side",
+   "body": [
+    "The packet arrives in a manila envelope, and you lay the two logs on the kitchen table the way you laid the calendars on the refrigerator — side by side, looking for the overlap. Mara's log: visits with you, regular, warm notes from the Hartleys. Jonah's log: visits with you, regular, one 'did not attend' with Mr. Delgado's margin note or without it, depending on a phone call you did or didn't make.",
+    "And sibling visits — the thing you actually asked about — have a section in each log, and in seven weeks the two sections contain, between them, zero entries. Not canceled ones. Not failed ones. None. The absence has a shape when you see it in the agency's own hand: it is not that joint visits went wrong. It is that they were never anybody's line to fill in."
+   ],
+   "choices": [
+    {
+     "text": "Take the logs to the lawyer and draft the request — one letter, both workers' names on it",
+     "next": "draft_a",
+     "addHidden": [
+      "Sibling visits — none joint in the first seven weeks (agency's own logs)"
+     ],
+     "note": "Seven weeks, zero entries, their handwriting. Some arguments you make. Some you just lay on the table."
+    }
+   ]
+  },
+  {
+   "id": "own_notes",
+   "kicker": "Day 21 — Monday, March 23, 2026",
+   "dayOffset": 21,
+   "title": "Your Notebook",
+   "body": [
+    "Your spiral notebook has every visit, every call, every 'we're working on it,' dated in your hand, going back to the first week. It is a good notebook. You show it to your lawyer, who reads two pages with genuine respect and then says the sentence that governs this entire system: 'I believe you. Now let's make it so we don't have to ask anyone else to.'",
+    "What your notebook cannot do is prove the negative in the agency's own hand — that no joint visit was ever scheduled. For that you would need their logs. What it can do is anchor a letter: dates you asked, people you asked, answers you got. A letter written from a notebook is a request. A letter written from their logs is a record correcting itself."
+   ],
+   "choices": [
+    {
+     "text": "Draft the letter from the notebook — dates, names, and the ask, in writing",
+     "next": "draft_b",
+     "note": "Weaker paper, same ask. You write it that night, because the children are not getting less separate while you wait for better evidence."
+    }
+   ]
+  },
+  {
+   "id": "draft_a",
+   "kicker": "Day 24 — Thursday, March 26, 2026",
+   "dayOffset": 24,
+   "title": "One Letter, Two Names",
+   "body": [
+    "The letter your lawyer helps you draft is one page, and it is addressed — this is the whole design of it — to Ms. Okafor and Mr. Delgado together, with a copy to each of their supervisors and one to the court file through your lawyer. It cites no law. It does something ruder: it cites the logs. 'In the first seven weeks of placement, the children's logs record no joint sibling visit. I am requesting a coordinated sibling visit, at the same time and place, weekly, scheduled jointly by both workers.'",
+    "One letter, two names, every desk at once. A circle cannot survive being written down as a circle — once the request exists on both desks on the same day, 'the other office handles it' stops being an answer either office can give."
+   ],
+   "choices": [
+    {
+     "text": "Send it to both workers, both supervisors, and the court file — and keep your stamped copy",
+     "next": "response_a",
+     "cash": -4,
+     "setFlags": [
+      "writtenRequest"
+     ],
+     "addHidden": [
+      "Written request — coordinated weekly sibling visit, sent to both workers and supervisors"
+     ],
+     "note": "Four envelopes, one morning. The post office clerk does not know she has just changed a case. Clerks rarely do. That's what stamps are for."
+    },
+    {
+     "text": "Hand it to Ms. Okafor at Thursday's visit — she's the warmer of the two",
+     "next": "sent_one",
+     "note": "She accepts it kindly and promises to raise it. It now lives on one desk, in one file, as a favor asked — not a request pending before everyone responsible."
+    }
+   ]
+  },
+  {
+   "id": "draft_b",
+   "kicker": "Day 24 — Thursday, March 26, 2026",
+   "dayOffset": 24,
+   "title": "A Letter From a Notebook",
+   "body": [
+    "You draft the same one page at your kitchen table: the dates you asked, the answers you received, and the request itself — a coordinated sibling visit, same time and place, weekly, scheduled jointly by both workers. Your lawyer reads it over the phone and changes only the last line: 'Please respond in writing.' Four words that turn a letter into a debt.",
+    "It is a good letter. Its weakness is not in its sentences; it is in its footings. Everything it asserts rests on your notebook, and the agency can answer a notebook with a shrug in a way it cannot answer its own logs. You send it anyway. A request on paper, even thin paper, is a different object from a request in the air."
+   ],
+   "choices": [
+    {
+     "text": "Send it to both workers and both supervisors, with 'please respond in writing' intact",
+     "next": "response_b",
+     "cash": -4,
+     "setFlags": [
+      "writtenRequest"
+     ],
+     "note": "Four envelopes. Whatever comes back — even silence — now has a date on it."
+    },
+    {
+     "text": "Hand it to Ms. Okafor at Thursday's visit — she's the warmer of the two",
+     "next": "sent_one",
+     "note": "She accepts it kindly and promises to raise it. One desk, one file, one person's goodwill standing between your children and each other."
+    }
+   ]
+  },
+  {
+   "id": "sent_one",
+   "kicker": "Day 25 — Friday, March 27, 2026",
+   "dayOffset": 25,
+   "title": "One Desk",
+   "body": [
+    "Ms. Okafor raises it, the way she promised. You know this because she tells you she did, at the next visit, while braiding Mara's hair with the ease of a woman who has done it a hundred times. What you do not have is anything in writing: no reply, no date, no decision — because the request never formally existed anywhere except her desk and her goodwill.",
+    "Goodwill is real, and Ms. Okafor has it. But goodwill does not attend meetings, does not get copied to supervisors, and does not appear in Jonah's file at all. In his file, this week looks exactly like the last five: two separate logs, two separate children."
+   ],
+   "choices": [
+    {
+     "text": "Wait for the reply that may come through her",
+     "next": "response_b",
+     "note": "It comes, eventually, in the form all single-desk requests come in: as news, not as an answer."
+    }
+   ]
+  },
+  {
+   "id": "response_a",
+   "kicker": "Day 28 — Monday, March 30, 2026",
+   "dayOffset": 28,
+   "title": "A Reply With Both Names On It",
+   "body": [
+    "The reply arrives in four days, and it is an email with both supervisors copied, which tells you before you read a word of it that the circle is broken. A coordination meeting is scheduled — both workers, both foster parents, and you, by phone — 'to establish a standing sibling visit.' The logs are mentioned. Your letter is mentioned, by its date.",
+    "Nothing in the reply apologizes, and you find you don't need it to. What you needed was for the request to become an item — a thing with a date, an owner, and a next step — in two files at once. It has. Items get minuted. Minutes get read by judges."
+   ],
+   "choices": [
+    {
+     "text": "Join the coordination meeting by phone, notebook open",
+     "next": "meeting",
+     "note": "You take the call in the Hartleys' driveway before your visit, because that is where your life happens now: in driveways, between appointments, on time."
+    }
+   ]
+  },
+  {
+   "id": "response_b",
+   "kicker": "Day 28 — Monday, March 30, 2026",
+   "dayOffset": 28,
+   "title": "We'll Look Into It",
+   "body": [
+    "The reply, when it comes, is two sentences: the agency 'is looking into sibling visit coordination' and will 'advise when arrangements are finalized.' No date for a decision. No meeting. No mention of your letter's date — or, if your letter went to one desk only, no reply at all, just Ms. Okafor's kind report that it's being discussed.",
+    "'Looking into it' is where requests go to be neither granted nor denied, and the review hearing is now a month away. What is not answered in writing before a review tends to be described at the review — by whoever holds the pen that day. At the moment, that is not you."
+   ],
+   "choices": [
+    {
+     "text": "File a second written request — short, dated, referencing the first — before the review",
+     "next": "push",
+     "cash": -4,
+     "setFlags": [
+      "writtenRequest"
+     ],
+     "addHidden": [
+      "Written request — second request filed before the review, referencing the first"
+     ],
+     "note": "A second letter converts 'looking into it' into a timeline: asked, answered vaguely, asked again. Timelines are arguments that make themselves."
+    },
+    {
+     "text": "Let it ride to the review — the workers mean well",
+     "next": "push",
+     "note": "They may. Meaning well is a quality of people. Reviews run on qualities of paper."
+    }
+   ]
+  },
+  {
+   "id": "meeting",
+   "kicker": "Day 35 — Monday, April 6, 2026",
+   "dayOffset": 35,
+   "title": "The Coordination Meeting",
+   "body": [
+    "The meeting takes twenty minutes, eight of which are spent discovering that the Hartleys cannot do Saturdays and Ms. Bell cannot do weekday evenings — the exact knot that defeated five weeks of goodwill. It is untied the ordinary way knots are: somebody proposes Sunday afternoons at the agency's visit rooms, transport split between the two offices on alternating weeks, and everybody watches it work on paper before anyone has to drive anywhere.",
+    "You say almost nothing. You don't have to. Your letter is doing the talking, the way paper does when it has been sent to everyone: it sits in the middle of the table as the reason eleven people are solving a problem that five weeks of phone calls described as unsolvable."
+   ],
+   "choices": [
+    {
+     "text": "Confirm the plan back in writing — a short email: Sundays, visit rooms, alternating transport",
+     "next": "joint1",
+     "cash": -4,
+     "addHidden": [
+      "Coordination meeting — standing Sunday sibling visit agreed, transport split between offices"
+     ],
+     "note": "The reply 'confirmed' takes eleven minutes. You print it at the library and put it in front of the refrigerator calendars, where this story started."
+    }
+   ]
+  },
+  {
+   "id": "push",
+   "kicker": "Day 35 — Monday, April 6, 2026",
+   "dayOffset": 35,
+   "title": "Asking Again, On Paper",
+   "body": [
+    "Your second letter is three sentences long and references the first by its date. It asks for a decision — not a visit, a decision — before the review hearing, and it goes to the same full set of desks. Short letters written second are a genre of their own: they do not argue. They count.",
+    "Whether the agency answers this one or not, the review now has a shape it didn't have before: a request, a vague reply or none, and a renewal — all dated, all in the file the judge will read. You have not gotten your children a single extra hour together yet. You have gotten something that hearings run on: a record that cannot be described as 'the parent never raised it.'"
+   ],
+   "choices": [
+    {
+     "text": "Go to Mara's visit — and tell her, carefully, that you're working on Sundays",
+     "next": "joint_partial",
+     "note": "You don't promise her the day. You have learned what promises cost in this system. You tell her the truth instead: it's on paper now, and paper is how things here become real."
+    }
+   ]
+  },
+  {
+   "id": "joint1",
+   "kicker": "Day 39 — Friday, April 10, 2026",
+   "dayOffset": 39,
+   "title": "Ninety Minutes, Both of Them",
+   "body": [
+    "The first joint visit is ninety minutes in a visit room with a couch, a rug, and a box of toys meant for every age and therefore perfect for none. Jonah shows Mara a loose tooth with the ceremony of a state occasion. Mara reads him a whole picture book, including the parts she is plainly making up, and he believes the made-up parts most.",
+    "At the end, neither child cries, which the visit supervisor writes down, and both workers' logs — for the first time in the case — record the same event on the same day: sibling visit, held. Two files, one afternoon. You stand in the parking lot afterward understanding that this is what coordination looks like. It looks like a room where your children already knew how to be siblings, waiting for the adults' calendars to catch up."
+   ],
+   "choices": [
+    {
+     "text": "Drive home past both foster homes, the long way, on purpose",
+     "next": "strain",
+     "addHidden": [
+      "Sibling visit — first joint visit held, 90 minutes, recorded in both children's logs"
+     ],
+     "note": "The long way costs four dollars in gas you do not have and is worth it in a currency that doesn't spend anywhere else."
+    }
+   ]
+  },
+  {
+   "id": "joint_partial",
+   "kicker": "Day 39 — Friday, April 10, 2026",
+   "dayOffset": 39,
+   "title": "A Visit That Almost Happens",
+   "body": [
+    "A joint visit does get scheduled before the review — a Saturday at Ms. Bell's, arranged by phone. On the day, the transport from the Hartleys' side falls through: a car seat issue, a driver swap, a reason no one writes down because the visit was never written down. Mara joins by video call for twenty minutes, propped against Ms. Bell's kitchen fruit bowl, pixelated and brave.",
+    "Twenty minutes of video is not nothing. It is also not a visit, and in the logs it becomes one line in each file — 'sibling contact, virtual' in Jonah's, nothing at all in Mara's, because her office didn't arrange it. Even the almost-visit gets filed asymmetrically. That asymmetry is the case, in miniature, and it is now — because of your letters — a documented miniature."
+   ],
+   "choices": [
+    {
+     "text": "Write down what happened, date it, and send it to your lawyer for the review",
+     "next": "strain",
+     "cash": -3,
+     "addHidden": [
+      "Sibling contact — scheduled joint visit failed on transport; 20-minute video call instead"
+     ],
+     "note": "Your lawyer files it with your letters. The packet for the review is now a story with a beginning, a middle, and a missing car seat."
+    }
+   ]
+  },
+  {
+   "id": "strain",
+   "kicker": "Day 45 — Thursday, April 16, 2026",
+   "dayOffset": 45,
+   "title": "A New Name on the File",
+   "body": [
+    "In April, Mr. Delgado rotates off Jonah's case — caseloads shift; nothing personal — and Jonah's file passes to a new worker, Ms. Pryce, who will meet your son for the first time next week. Everything Ms. Pryce will ever know about the sibling question, she will learn from the file before she learns it from any person.",
+    "This is the moment every choice you have made about paper was actually for. A worker can be told. A file can only be read. What Ms. Pryce finds — letters with dates, logs with zero entries and then entries, a meeting, a plan — or, on the thinner paths, a notebook's worth of asking that exists nowhere she can see — determines whether 'coordination' is a live item in Jonah's case or a rumor about his mother."
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the review with your lawyer — everything, in date order",
+     "next": "review_prep",
+     "note": "Date order. In this system, chronology is not a style. It's the argument."
+    }
+   ]
+  },
+  {
+   "id": "review_prep",
+   "kicker": "Day 52 — Thursday, April 23, 2026",
+   "dayOffset": 52,
+   "title": "Paper for the Review",
+   "body": [
+    "The review hearing is set for Thursday, April 30, 2026. Your lawyer lays out what the judge will have: the placement summaries, two logs, and whatever your choices have added to them. 'The judge cannot order a history,' she says. 'She can only order a future. Our job is to make the history impossible to describe wrong.'",
+    "She is blunt about the limits: the hearing will not reunify the children into one home — that question isn't before the court today, and pretending otherwise wastes the credibility the paper bought. What is before the court is narrower and winnable: whether sibling contact becomes a scheduled, written, owned part of both children's plans, or stays a favor the calendar grants when it can."
+   ],
+   "choices": [
+    {
+     "text": "Carry the full packet in — logs, letters, and the visit record",
+     "next": "hearing_strong",
+     "note": "The packet is not thick. Thickness was never the point. Sequence was."
+    },
+    {
+     "text": "Carry yourself in — tell the judge, and let the summaries speak for the rest",
+     "next": "hearing_plain",
+     "note": "You know this story cold. The question the hearing will answer is whether knowing it is the same as it being known."
+    }
+   ]
+  },
+  {
+   "id": "hearing_strong",
+   "kicker": "Day 59 — Thursday, April 30, 2026",
+   "dayOffset": 59,
+   "title": "The Review — One Schedule",
+   "body": [
+    "The judge reads the packet in the order your lawyer arranged it: two logs with seven weeks of empty sibling sections; one letter with two names on it; a meeting; a plan; a visit both logs record. The agency's counsel does not dispute any of it — it is, after all, the agency's own paper — and describes the Sunday arrangement as 'in place and working.'",
+    "'Then it can be in the order,' the judge says, in the tone of a woman concluding a sentence someone else started. She turns to you for the only question she needs answered aloud: whether Sundays at the visit rooms, transport alternating between the offices, works for you. Behind the question sits the whole case: she is not asking whether you love your children. She is asking whether the plan on paper can be made the plan in the order."
+   ],
+   "choices": [
+    {
+     "text": "Say yes — and ask that the schedule, the place, and the transport split be written into the order itself",
+     "next": "end_together",
+     "note": "'So ordered.' Two words. Your children have had longer sentences written about them; few have mattered more."
+    },
+    {
+     "text": "Accept the agency's verbal assurance instead — the judge seems satisfied, and pressing feels risky",
+     "next": "end_visits_only",
+     "note": "The hearing ends warmly. Warmth, like goodwill, does not get copied to supervisors."
+    }
+   ]
+  },
+  {
+   "id": "hearing_plain",
+   "kicker": "Day 59 — Thursday, April 30, 2026",
+   "dayOffset": 59,
+   "title": "The Review — Two Files",
+   "body": [
+    "Without the packet, the review is a shorter and smoother hearing. Two summaries are read: Mara, doing well; Jonah, doing well. 'Did not attend' appears once, unexplained, the way unexplained lines do — quietly, and in the direction of the parent. Sibling contact is described by counsel as 'being coordinated between the placements,' a sentence in the present continuous tense, where it has lived for two months.",
+    "The judge looks at you over the summaries. She can only order what is before her, and what is before her is two files that do not mention each other. 'Is there anything about the children's time together you'd like on the record?' she asks — an open door, and the last one in this story."
+   ],
+   "choices": [
+    {
+     "text": "Use the door: lay out the dates from your notebook and ask for a written sibling schedule",
+     "next": "end_visits_only",
+     "note": "Judges remember parents who answer a direct invitation with dates. What she can do with late paper is less than what she could have done with early paper — but it is not nothing."
+    },
+    {
+     "text": "Say they're working on it — you don't want to sound like you're accusing anyone",
+     "next": "end_drift",
+     "note": "The hearing ends in five minutes. Everyone is pleasant. Pleasant hearings are how cases drift: nothing decided, nothing denied, nothing scheduled."
+    }
+   ]
+  },
+  {
+   "id": "end_together",
+   "kicker": "Day 66 — Thursday, May 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — One Calendar",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): The agency's own logs recorded no joint sibling visit in the first seven weeks — not a failed visit, an unscheduled one. Your written request, sent to both workers and both supervisors on the same day, converted that absence into an item with a date and owners; a coordination meeting followed; the first joint visit was then recorded in both children's logs on the same day. At the review, that sequence — absence, request, meeting, visit — is what the court ordered continued. Judges order futures, but they build them out of documented pasts.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): You were entitled to the record you built the letter from — the case record 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — and to the lawyer who helped you aim it (42 Pa.C.S. § 6337). No statute in this scenario's verified set schedules sibling visits by itself. What the law supplied was access and counsel; what you supplied was the mechanism that makes agencies move: one written request, addressed to everyone responsible at once, that no office could answer by pointing at the other. The court's order did the rest — and note what the win actually is. Your children still live in two homes tonight. What changed is that their time together is now a scheduled, written, court-ordered part of both plans, owned by named workers, instead of a favor two calendars granted when they happened to agree.",
+    "THE HONEST PART: Another judge could have left the Sunday plan as an agency arrangement rather than an order, and a different pair of foster households could have made Sundays impossible and forced a harder negotiation. Workers rotated, transport failed once in this story's other paths, and luck — a supervisor who answered in four days — played its part. Your share was narrower and entirely real: you made the invisible problem legible, in the agency's own handwriting, early enough for a court to act on it. In the published cases this scenario is built from, courts ended up directing sibling contact themselves after long stretches in which it belonged to no one. The lesson is not that letters are magic. It is that coordination, like everything else in this system, happens on paper first or not at all."
+   ]
+  },
+  {
+   "id": "end_visits_only",
+   "kicker": "Day 66 — Thursday, May 7, 2026",
+   "dayOffset": 66,
+   "title": "Ending — Visits, Unwritten",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Your children are seeing each other — that part is real, and it matters to them more than any document. What the file does not hold is a schedule anyone owns: the arrangement lives in workers' intentions, foster parents' goodwill, and (on this path) a judge's recollection of a parent speaking up late. The first time a worker rotates, a car seat fails, or a household's circumstances change, the arrangement has no paper to stand on, and the five-week silence that opened this story is the documented precedent for how long 'arranged between the placements' can last.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Nothing about this ending is a legal defeat — no motion was denied, no right was refused. You had access to the record (55 Pa. Code § 3130.44(d)) and to counsel (42 Pa.C.S. § 6337) throughout; what varied across this scenario's paths was never the law, only how much of your asking existed in the form the system acts on. Verbal assurances from an agency are worth exactly the tenure of the person who gave them. Written requests create items; items create meetings; court orders create obligations that survive staff changes. The distance between this ending and 'One Calendar' is not effort or love — the visits happened either way. It is one envelope's worth of formality, applied early.",
+    "THE HONEST PART: It is possible this arrangement holds for months on goodwill alone — foster parents like the Hartleys and Ms. Bell are often the load-bearing walls of these cases, and your children may never miss a Sunday. It is also possible it quietly dissolves, the way it silently didn't exist for the first seven weeks, and that a future review reads two logs that once again do not mention each other. Workers, judges, households, and luck will decide which. What this path leaves you is the knowledge — now earned — of the exact mechanism that turns goodwill into schedule, and a review cycle that comes around again. The letter can still be written. It just works better written first."
+   ]
+  },
+  {
+   "id": "end_drift",
+   "kicker": "Day 59 — Thursday, April 30, 2026",
+   "dayOffset": 59,
+   "title": "Ending — Two Separate Files",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Two placement summaries that do not mention each other; one unexplained 'did not attend'; a sibling relationship that exists richly in two children's lives and almost nowhere in their paperwork. Nothing in this ending was decided against you. That is precisely the problem the scenario was built to show: in a two-worker, two-placement case, the default outcome requires no one's decision. Drift is not an event. It is the absence of one — an item never created, a request never made in the form that survives the asking.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The system did not withhold your tools. The record was available on written request (55 Pa. Code § 3130.44(d)); counsel was available to help use it (42 Pa.C.S. § 6337); the court, at the review, expressly invited you to put the sibling question on the record. What was never supplied — by anyone, including you — was the single artifact this scenario is about: one dated, written request, sent to everyone responsible, that makes coordination a pending item in two files at once. Agencies respond to pending items. They are organized, staffed, and audited around them. A concern carried only in conversation is, administratively, a concern that has not yet been raised.",
+    "THE HONEST PART: Your children are, by every summary, doing well in two decent homes, and their bond is being carried meanwhile by the oldest technology in this story: two kids asking about each other in two kitchens. That bond is tougher than paperwork, and it may well outlast this case. But permanency planning is done from files, and files that treat siblings as separate cases tend, over time, to produce separate plans. Workers rotate, judges read what is in front of them, and luck favors the documented. The hopeful truth inside this ending is that nothing here is final — reviews recur, and the request that would have changed this hearing can still change the next one. It is one page. It has two names on it. Now you know why both of those things matter."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s12';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

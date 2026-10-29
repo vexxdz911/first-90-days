@@ -1,0 +1,51 @@
+# STRATEGY GUIDE — Scenario 34: “The Missed Year”
+
+*Game documentation for “The First 90 Days,” a fictional simulation. This guide describes play in this scenario only. It is general information about how the simulation works — not legal advice for any real case.*
+
+## (1) The win
+
+**Ending — The Folder Prevails**
+
+State it honestly: even the best ending in this scenario is a **record** win, not an instant homecoming. The court credits the parent's contemporaneous folder over the agency's reconstructed summary, marks the plan substantially complete, corrects the official record to match the year that actually happened, and reopens the reunification path on an order, with dates and continuing reviews. Tobias does not walk home at the end of the hearing in any ending in this scenario — what February decides is whose version of the year becomes the case's official history, and everything after February is read from that. On that measure, this ending is the whole game: the official memory is, for once, the true one.
+
+## (2) The route
+
+Key decision points, in order. Node titles are exactly as they appear in the data.
+
+1. **The Knock and the Bag** — *Write down the names on the paper, and the time.* *Changes:* sets **removed** (there is an in-story removal, on March 2, 2026) and makes the first entry in what becomes the only continuous record in the case.
+2. **Seventy-Two Hours** — the shelter care hearing lands on Thursday, March 5, 2026, three days after removal, and counsel tells you to start a folder of your own. *Changes:* the strategy itself is named — boring, dated, duplicated.
+3. **The Sign-In Sheet** — *Ask for a dated copy or a stamp in your notebook at every session.* *Changes:* sets **proofHabit**; ten Tuesdays stop depending on the program's paperwork surviving.
+4. **Receipts in Pencil** — *Spend one evening a month copying the month's pages* (cash −10). *Changes:* duplication begins before there is anything dramatic to duplicate, which is the only time duplication is cheap.
+5. **The Certificate** — *Put the original in the folder and copies in two other places.* *Changes:* sets **certificateCopied**; the parenting program — completed 10 of 10 in May, under worker one — is proved three times over before any summary gets to describe it.
+6. **Handoff One** — *Take the unpaid afternoon and reconcile the folder against the file, line by line* (cash −25). *Changes:* sets **handoffChecked**; the navigator line is caught reading “referral pending,” and annotated, initialled, before worker one leaves.
+7. **The Referral That Was Never Re-Sent** — *Ask for the send confirmation, dated, for your folder.* *Changes:* a hidden item records both halves of the fact: the referral re-sent in July under worker two, and the March promise that exists officially nowhere but your notebook.
+8. **Completed, Marked Incomplete** — *Send the completion letter, with its dates, to the agency and the court — and keep the receipts* (cash −10). *Changes:* sets **completionReproved**; paper answers paper, in the file, months before February.
+9. **The Log That Restarts** — *Write up the visit history from your notebook and file it with counsel now.* *Changes:* sets **visitHistoryFiled**; the spring's visits become a filed record made from a contemporaneous record, instead of a claim made in February.
+10. **Copies of the Copies** — *Pay for the full duplicate set for your lawyer's office* (cash −20). *Changes:* sets **folderDuplicated**; from here on, loss would have to happen twice to count.
+11. **Asking for the Whole File** — *Sign and send the record request this week.* *Changes:* sets **recordsRequested**; the request covers the whole record, including the full assessment — form, item ratings, outcome. The returned file's seams (next node) can only be audited by someone who asked for it.
+12. **Handoff Two** — *Reconcile the folder against the file again* (cash −25). *Changes:* **handoffChecked** again, before worker three; continuity is bought a second time, knowingly.
+13. **The Plan, Re-Typed** — *Ask, in writing, for the completion date to be corrected to May, with the letter attached.* *Changes:* sets **dateCorrected**; February will not be told the spring took until summer.
+14. **How the Folder Goes In** — *File the complete folder early, indexed, every seam answered.* *Changes:* sets **folderFiled** and routes to **The Review — The Continuous Record**: the judge has read your year before the hearing, so the hearing is a discussion and not an ambush. *Reaches:* **Ending — The Folder Prevails**.
+
+Total route cost: cash −90 against a start of 140 — the folder is expensive in exactly the currency (unpaid afternoons, copy money, bus fare) that the parent has least of, and the scenario prices it that way on purpose.
+
+**Full verified route (every node, in order):** The Knock and the Bag → Seventy-Two Hours → A Folder of Your Own → Worker One: The Plan → The Sign-In Sheet → Receipts in Pencil → Visits, First Log → The Notebook Habit → The Certificate → Asked in Writing → Handoff One → Worker Two: Starting Over → The Referral That Was Never Re-Sent → Completed, Marked Incomplete → The Log That Restarts → Copies of the Copies → Asking for the Whole File → A File with Seams → Her Folder, His Months → Handoff Two → Worker Three: Another First Meeting → The Plan, Re-Typed → Sign Your Visits → Is February a Holiday? → Winter Visits, Steady → The Review Is Set → Auditing Your Own Folder → The Folder, Read Whole → How the Folder Goes In → The Review — The Continuous Record → Ending — The Folder Prevails. *(This route has been walked programmatically against the scenario data; every step is a real choice edge in the graph.)*
+
+## (3) Why this wins — the law as it is supposed to work
+
+- **The first hearing is prompt, and counsel is a right.** A shelter care hearing must be held within 72 hours of a child being taken into custody (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)). The parent has the right to counsel, and to appointed counsel if they cannot afford one (42 Pa.C.S. § 6337). The route's founding act — the folder — is counsel's advice at that first hearing, which is why getting the first hearing's advice is load-bearing for the whole year.
+- **Your own record is yours on request.** The case record — including the full assessment, its form, its item ratings, and its outcome — “shall be released upon request” (55 Pa. Code § 3130.44(d)). The audit that wins February is impossible without it: you cannot show a file's seams until you have the file. (As the game states wherever it invokes the assessment: whether the adjudication-phase disclosure rule, Pa.R.J.C.P. 1340(B)(1), reaches every scored item of an assessment form is untested; the route's direct record request does not depend on that question.)
+- **The later clock is exact, and it has exceptions.** Tobias was placed on March 2, 2026; 15 of the most recent 22 months arrives on June 2, 2027, at which point the agency is pressed to file a petition to terminate parental rights — unless an exception applies: relative care, a documented compelling reason, or the agency's failure to provide services the plan identified as necessary (42 U.S.C. § 675(5)(E)). February in this scenario is not that hearing — it matters because the record February writes, corrected or seamed, is the record that date would be argued from. The winning route's folder, unusually, documents the services exception from the agency's own pages.
+- **Contemporaneous paper is how the system is built to be checked.** Nothing in the route asks anyone to break a rule. It wins by using the record-keeping the process itself assumes — dated entries, filed corrections, requests answered in writing — more continuously than a three-worker year could.
+
+## (4) The traps
+
+- **Trusting one copy** — putting the certificate in a single folder, or copying “only the certificate pages” at *Copies of the Copies*. Costs you redundancy itself: a transfer summary that says “in progress,” a migrated log, or one lost folder now decides what can be proved.
+- **Correcting “incomplete” by phone** at *Completed, Marked Incomplete*. Costs you the correction's existence: the worker knows the truth, but the February report is written from the file, and the file was never corrected in it.
+- **Filing the folder at the door** at *How the Folder Goes In*. Costs you the reading: the folder is true and complete, and meets a judge who has had an hour with it instead of a month. This routes to **Ending — Partly Credited** — believed in principle, rationed in practice.
+- **Filing only the services paper** at the same node, and arguing visits from memory. Costs you the spring's visits entirely: services are credited in full, and the official visit record — a log that begins in August — prevails where your paper had the gap, in **Ending — The Summary Prevails, in Part**.
+- A related fork at the same node — **taking the half-offer and contesting nothing** — is not counted as a trap here, because it reaches **Ending — Reunified, Understated**, in which reunification *is* ordered. It costs the record, not the order; whether that is a price or a bargain depends on what the player is playing for, and the guide will not decide it for them.
+
+## (5) What no strategy controls
+
+The route controls one folder. It does not control the turnover itself — three workers in twelve months is weather, not a choice — nor whether a given worker annotates a pending referral, re-sends one unprompted, or confirms the seams aloud in February, as the third worker does on the winning path. It does not control the judge, whose careful reading of an early-filed folder is this ending's silent co-author; a busier morning in the same courtroom plausibly produces Partly Credited from identical paper. And it does not control luck: a visit system that had not migrated, or a transfer summary written at full length, would have made the folder a belt-and-suspenders comfort instead of the case's memory. Workers, judges, and luck hold pieces of every ending here. What strategy changes is only — and really — this: when the official memory fails, as across three workers it was always likely to, a second memory exists that a court can adopt as its own.

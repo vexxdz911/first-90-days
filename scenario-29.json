@@ -1,0 +1,684 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 29 — The Teen Who Says No (a fictional composite)",
+  "startDateISO": "2026-10-05",
+  "startNode": "start",
+  "startCash": 240,
+  "tier": "Complex",
+  "summary": "A 15-year-old refuses her placement and services in her own words; her mother learns what a parent can still put on the record when the plan's subject won't cooperate."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, October 5, 2026",
+   "dayOffset": 0,
+   "title": "A Plan With Two Names on It",
+   "body": [
+    "Your daughter Kayla is fifteen. Four months ago, after a hard spring that everyone describes differently, the court placed her in foster care with Ms. Bell, across town. You stayed in the case. Kayla stayed angry at almost everyone in it, including, on different days, you.",
+    "Your part of the plan is written down: family sessions, visitation, a parenting support group, staying in contact with the school. Kayla's part is written down too: live in the placement, attend her own sessions, go to school from Ms. Bell's house.",
+    "The paper assumes you can deliver her part as well as yours. This month, that assumption is going to be tested — in rooms where what gets written down will matter as much as what actually happens."
+   ],
+   "choices": [
+    {
+     "text": "Read the plan again at the kitchen table, both names, line by line",
+     "next": "meeting_notice",
+     "note": "Two names. Two sets of promises. Only one set is yours to keep."
+    }
+   ]
+  },
+  {
+   "id": "meeting_notice",
+   "kicker": "Day 2 — Wednesday, October 7, 2026",
+   "dayOffset": 2,
+   "title": "The Review Is Coming",
+   "body": [
+    "A notice says the case will be reviewed in court later this fall. Your lawyer, Ms. Ferreira, tells you the judge will read the file before anyone speaks: progress notes, visit notes, and short summaries of meetings like the one scheduled this week.",
+    "“Summaries are powerful,” she says. “They are also short. Part of our work is making sure the short version is the true version.”",
+    "Kayla has been invited to this week's meeting. She has told Ms. Bell she is not going. Then, this morning, she texted you one word: “fine.”"
+   ],
+   "choices": [
+    {
+     "text": "Go to the meeting early, plan folder in hand, and wait to see if she comes",
+     "next": "teen_in_room",
+     "cash": -12,
+     "note": "Bus fare across town. You arrive with time to breathe, which is its own preparation."
+    }
+   ]
+  },
+  {
+   "id": "teen_in_room",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "Kayla, in Her Own Voice",
+   "body": [
+    "Kayla comes. She sits nearest the door, hood down because Ms. Bell asked, phone face-down because nobody asked and she did it anyway.",
+    "The worker, Mr. Ortiz, is kind and procedural. He describes the family session Kayla missed and the placement rule she broke, and then — to his credit — he turns to her. “Kayla. Tell it your way.”",
+    "She does. “I am not doing that session. The lady talks about me like I'm a chart. And I'm not asking permission to go to my own aunt's. I said that. Write that.” She looks at the notebook. “Are you writing that?”"
+   ],
+   "choices": [
+    {
+     "text": "Watch what gets written, and say nothing yet",
+     "next": "after_meeting",
+     "addHidden": [
+      "Teen's own words — 'I am not doing that session. The lady talks about me like I am a chart'"
+     ],
+     "note": "Her sentences are in the room. Whether they reach the file is the next question."
+    }
+   ]
+  },
+  {
+   "id": "after_meeting",
+   "kicker": "Day 7 — Monday, October 12, 2026",
+   "dayOffset": 7,
+   "title": "What the Notebook Holds",
+   "body": [
+    "After Kayla leaves for school, Mr. Ortiz shows you the meeting summary he is drafting. It is three lines long. One of them reads: “Mother to ensure youth attends family sessions and follows placement rules.”",
+    "Kayla's sentences are not in it. Her refusal is — as your assignment. The session she described as being talked about “like a chart” has become a thing you failed to ensure.",
+    "Ms. Ferreira, on the phone afterward, is precise. “You cannot make Kayla attend. You can ask that what she said be quoted, not summarized. Ask in the room, and then ask again in writing, so the asking is in the record too.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, that Kayla's own words be quoted in the summary",
+     "next": "quote_path",
+     "setFlags": [
+      "teenQuoted"
+     ],
+     "addHidden": [
+      "Mother's written request — teen's words to be quoted, not summarized"
+     ],
+     "note": "A short email, dated, kept. The file now has to carry her voice or explain why it does not."
+    },
+    {
+     "text": "Let the summary stand — Kayla was heard in the room, and that has to count",
+     "next": "summary_path",
+     "note": "She was heard. The room, however, is not the record. The record is what travels."
+    }
+   ]
+  },
+  {
+   "id": "quote_path",
+   "kicker": "Day 9 — Wednesday, October 14, 2026",
+   "dayOffset": 9,
+   "title": "Quoted, Not Summarized",
+   "body": [
+    "Mr. Ortiz replies within two days. The summary is amended. It now reads: “Youth stated: ‘I am not doing that session. The lady talks about me like I am a chart.’ Mother requested this statement be recorded as spoken.”",
+    "It is a small paragraph. It changes the shape of the page: the refusal now has an owner, and it is not you.",
+    "Ms. Ferreira says, “That is the whole skill in this case. You cannot do Kayla's part. You can make the file show whose part it was — in her words, not in a summary of her words.”"
+   ],
+   "choices": [
+    {
+     "text": "Save the amended summary in your folder, printed, dated",
+     "next": "records_scene",
+     "note": "Paper, kept. You are building the version of this case that can be checked."
+    }
+   ]
+  },
+  {
+   "id": "summary_path",
+   "kicker": "Day 9 — Wednesday, October 14, 2026",
+   "dayOffset": 9,
+   "title": "Heard in the Room",
+   "body": [
+    "The summary goes into the file as drafted: three lines, your name beside Kayla's refusal. Nobody was unkind. Nobody lied. A fifteen-year-old's reasons simply did not survive being shortened.",
+    "At home you write down what she actually said, from memory, in your notebook — “like I am a chart” — and date it. It is not in the file. But it is somewhere true, and later it may help you ask better questions.",
+    "Ms. Ferreira, when you tell her, does not scold. “Then we start the paper from here,” she says. “There is another door, and it is open now.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Ferreira about that other door",
+     "next": "records_scene",
+     "note": "The door is the same one from every flyer in the courthouse hallway."
+    }
+   ]
+  },
+  {
+   "id": "records_scene",
+   "kicker": "Day 12 — Saturday, October 17, 2026",
+   "dayOffset": 12,
+   "title": "Your Own File",
+   "body": [
+    "Ms. Ferreira explains: you may ask the county agency for your own case record — the notes, the summaries, the scored assessment form with its item ratings and outcome. Under the regulation, it “shall be released upon request” (55 Pa. Code § 3130.44(d)). She is specific about asking for the full scored assessment, not just the narrative: the form, the ratings, the outcome.",
+    "“And a caution,” she adds. “At the adjudication stage there are disclosure rules about assessment and discovery material (Pa.R.J.C.P. 1340(B)(1)). Whether Rule 1340 reaches every scored item of an assessment like this one is untested — no court has decided it. We ask under the regulation we can quote, and we note the rule we cannot.”",
+    "You have never seen the form that scores your family. The request is one page."
+   ],
+   "choices": [
+    {
+     "text": "Write the request this week — the full record, including the scored assessment",
+     "next": "packet_wait",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Record request — full case record and scored assessment, form, item ratings, outcome"
+     ],
+     "note": "Dated, copied, kept. The cheapest power in this whole system."
+    },
+    {
+     "text": "Skip it for now — the review is months away, and paper can wait",
+     "next": "packet_wait",
+     "note": "Paper can wait. Paper is also what the judge reads first. The wait will be in the story."
+    }
+   ]
+  },
+  {
+   "id": "packet_wait",
+   "kicker": "Day 18 — Friday, October 23, 2026",
+   "dayOffset": 18,
+   "title": "Six Quiet Days",
+   "body": [
+    "Days pass at their normal size. You work your shifts. You attend your group. Visitation is Saturday: Kayla shows you a drawing, eats most of a pizza, and leaves twenty minutes early because “the vibe in here is a waiting room.” The visit note will say the visit ended early. It will not say who ended it, or why, unless somebody writes that down.",
+    "You write it down. Date, time, her words as close as you can hold them: “the vibe in here is a waiting room.”",
+    "On the sixth day, an envelope — or, if you did not ask, a phone call about the upcoming session schedule — moves the case forward."
+   ],
+   "choices": [
+    {
+     "text": "Go on, through an ordinary Saturday first",
+     "next": "visit_saturday",
+     "note": "You cannot attend a family session for her. You can only attend it."
+    }
+   ]
+  },
+  {
+   "id": "visit_saturday",
+   "kicker": "Day 22 — Tuesday, October 27, 2026",
+   "dayOffset": 22,
+   "title": "Visitation, in a Waiting Room",
+   "body": [
+    "Saturday visitation is in the room with the clock that everyone in these stories watches. Kayla arrives with her drawing folder, eats, talks about school in short, complete sentences, and leaves twenty minutes early — her choice, stated plainly at the door: “Love you. The vibe in here is a waiting room.”",
+    "You write it down that evening: date, time, her words. Not because the early leaving is a crisis. Because the visit note will record the leaving, and you would like the record to also record the sentence, the drawing, and the love you — in her order, not the file's.",
+    "On Monday, the thing you asked for — or, if you did not ask, the thing your lawyer describes to you from the courthouse flyer, in the tone of a person pointing at a door you walked past — becomes the subject."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the record itself",
+     "next": "assessment_form",
+     "note": "What is written about the visits matters as much as the visits. You are learning to read the writing."
+    }
+   ]
+  },
+  {
+   "id": "assessment_form",
+   "kicker": "Day 26 — Saturday, October 31, 2026",
+   "dayOffset": 26,
+   "title": "The Scored Form",
+   "body": [
+    "The assessment form, when it reaches you, is not a story. It is a grid: items, ratings, an outcome line. Some items are about your home and your history. Several, you notice with a feeling you do not immediately have a word for, are about Kayla's behaviour — sessions attended, rules followed, nights spent where assigned — entered on a form that carries your family's name and is read as your family's score.",
+    "Ms. Ferreira goes through it with a pencil. “Here,” she says, tapping one item, “is where a summary does its quiet work. The rating does not say whose action it was. Ratings rarely do. That is why the quotes and the log matter: they reattach actions to the people who did them.”",
+    "She repeats her caution, because accuracy is her love language: the adjudication disclosure rule (Pa.R.J.C.P. 1340(B)(1)) exists, and whether it reaches every scored item of a form like this is untested. Your copy came by the regulation you can quote — released upon request (55 Pa. Code § 3130.44(d))."
+   ],
+   "choices": [
+    {
+     "text": "Read the ratings beside your own notes, line by line",
+     "next": "form_reading",
+     "addHidden": [
+      "Scored assessment — several items rate the teen's actions on the family's form, without naming whose action"
+     ],
+     "note": "A grid, read slowly, is less frightening than a grid imagined. It is also, you see now, arguable — line by line, with sources."
+    }
+   ]
+  },
+  {
+   "id": "form_reading",
+   "kicker": "Day 29 — Tuesday, November 3, 2026",
+   "dayOffset": 29,
+   "title": "Reading the Grid Beside the Truth",
+   "body": [
+    "Side by side on the kitchen table: the form, and your notebook. Where the form says a session was “not attended,” your notebook says who left, at nine minutes, saying what. Where the form records an overnight “absence,” your notebook — on the paths where you wrote it in time — records a couch, an aunt, a phone call.",
+    "You are not disputing the form's facts, mostly. You are disputing its grammar: its habit of leaving the subject out of the sentence, so the reader supplies your name.",
+    "Tomorrow is the family session Kayla has been refusing. You will be in the room. What the form makes of tomorrow depends, in part, on the grammar you manage to put into its notes."
+   ],
+   "choices": [
+    {
+     "text": "Go to the session",
+     "next": "service_day",
+     "note": "You attend for yourself. She decides for herself. The notes will decide what the court believes about both."
+    }
+   ]
+  },
+  {
+   "id": "service_day",
+   "kicker": "Day 32 — Friday, November 6, 2026",
+   "dayOffset": 32,
+   "title": "The Session She Walks Out Of",
+   "body": [
+    "The family session is in a small room with a box of tissues placed exactly in the middle of the table, like a centerpiece. The therapist begins by reading goals aloud from a sheet — Kayla's goals, in the program's words.",
+    "Nine minutes in, Kayla stands up. “This is the chart thing,” she says. “You are all reading about me. I'm right here.” She walks out. Nobody follows her; the procedure is to let a young person take space, and to write down that she left.",
+    "The therapist looks at you with genuine sympathy. “We will note she left at nine minutes. We will also note you stayed.” What else gets noted is, in part, up to what you do next."
+   ],
+   "choices": [
+    {
+     "text": "Stay for the rest of the session, and do the work that is actually yours to do",
+     "next": "walkout_choice",
+     "addHidden": [
+      "Session record — teen left at nine minutes; mother remained for the full session"
+     ],
+     "note": "You stay. It feels like doing nothing. On paper, it is the opposite."
+    }
+   ]
+  },
+  {
+   "id": "walkout_choice",
+   "kicker": "Day 35 — Monday, November 9, 2026",
+   "dayOffset": 35,
+   "title": "After She Leaves",
+   "body": [
+    "In the parking lot, Kayla is not there. Ms. Bell texts: Kayla got the bus, arrived back at the placement, went to her room. She is safe. She is also, in the language forming in the file, “declining services.”",
+    "Ms. Ferreira gives you the fork plainly. “You can document your outreach — every call, every text, every ride you offered — dated, while it is fresh. Or you can trust that everyone remembers you tried. Files do not remember. Files contain.”",
+    "There is also tonight to think about, though you do not know it yet."
+   ],
+   "choices": [
+    {
+     "text": "Write the outreach log tonight — calls, texts, the ride offered, times",
+     "next": "outreach_path",
+     "cash": -15,
+     "setFlags": [
+      "outreachLog"
+     ],
+     "addHidden": [
+      "Outreach log — dated calls, texts, and ride offered on the day teen left the session"
+     ],
+     "note": "Copies, a notebook, twenty minutes after a long day. This is what documenting costs: almost nothing, at the exact moment you have almost nothing."
+    },
+    {
+     "text": "Let tonight go — you will explain it at the review, in person",
+     "next": "wait_path",
+     "note": "Explaining in person is real. It is also, in this system, the least durable form of evidence."
+    }
+   ]
+  },
+  {
+   "id": "outreach_path",
+   "kicker": "Day 38 — Thursday, November 12, 2026",
+   "dayOffset": 38,
+   "title": "The Log",
+   "body": [
+    "The log is not eloquent. “4:12 p.m. — called K., no answer. 4:20 — texted: ‘I'm here when you're ready. Bus money in your app.’ 5:05 — offered ride Saturday.” That is all. It does not argue. It accumulates.",
+    "When you send a copy to Ms. Ferreira, she replies with one line: “Now her leaving and your reaching are both in the record. That is a fair file.”",
+    "You sleep a little better. Then your phone lights up at 9:40 p.m. It is Rosa, your sister. “Guess who is on my couch.”"
+   ],
+   "choices": [
+    {
+     "text": "Call Rosa back",
+     "next": "sleep_night",
+     "note": "Kayla has made tonight's decision herself. What you do with that fact is yours."
+    }
+   ]
+  },
+  {
+   "id": "wait_path",
+   "kicker": "Day 38 — Thursday, November 12, 2026",
+   "dayOffset": 38,
+   "title": "The Quiet Evening",
+   "body": [
+    "You do the dishes. You do not write anything down. The calls you made exist in your phone and in your memory, which — Ms. Ferreira would say — are the two places this system reads last.",
+    "At 9:40 p.m. your phone lights up. It is Rosa, your sister. “Guess who is on my couch.”",
+    "Kayla left Ms. Bell's after dinner, took two buses, and arrived at the aunt she is not supposed to visit without permission. She chose where to sleep tonight, the way fifteen-year-olds in these stories do: with her feet."
+   ],
+   "choices": [
+    {
+     "text": "Call Rosa back",
+     "next": "sleep_night",
+     "note": "Kayla has made tonight's decision herself. What you do with that fact is yours."
+    }
+   ]
+  },
+  {
+   "id": "sleep_night",
+   "kicker": "Day 42 — Monday, November 16, 2026",
+   "dayOffset": 42,
+   "title": "Where She Sleeps Tonight",
+   "body": [
+    "Rosa is calm. Kayla is safe, fed, doing homework at the kitchen counter, and asleep-by-eleven if Rosa has anything to say about it. “She asked if she could stay when she feels like a chart,” Rosa says. “I told her one night, and I told her I would tell you and Ms. Bell. No secrets. That was the deal.”",
+    "You call Ms. Bell and Mr. Ortiz's line and leave messages — tonight, not tomorrow — saying where Kayla is, that she is safe, and that Rosa will put her on the morning bus to school. You say Kayla's reason in Kayla's words.",
+    "Whatever else tonight becomes in the file, it will not become a mystery. You have made sure of the part that was yours to make sure of."
+   ],
+   "choices": [
+    {
+     "text": "In the morning, decide how tonight gets onto the record",
+     "next": "morning_choice",
+     "note": "Tonight she chose. Tomorrow, the file chooses its words. You get a say in those, if you take it in time."
+    }
+   ]
+  },
+  {
+   "id": "morning_choice",
+   "kicker": "Day 45 — Thursday, November 19, 2026",
+   "dayOffset": 45,
+   "title": "The Morning After, on Paper",
+   "body": [
+    "By 9 a.m. there are two versions of last night available to the future. In one, a report line reads: “Youth left placement overnight without permission; mother aware.” In the other, the same line is followed by Kayla's quoted reason, Rosa's account, your same-night calls with times, and the morning bus she did, in fact, catch.",
+    "Both versions are true. They do not weigh the same. A judge reading the second one is reading about a teenager who made a choice, a family that communicated, and a mother who documented outreach instead of hiding a hard night.",
+    "Ms. Ferreira: “Which version exists is, unusually, up to you — if the paper goes in this week.”"
+   ],
+   "choices": [
+    {
+     "text": "Send the written account this week — her quoted words, Rosa's account, your call times",
+     "next": "documented_night",
+     "setFlags": [
+      "nightDocumented"
+     ],
+     "addHidden": [
+      "Overnight account — teen's quoted reason, aunt's account, mother's same-night calls with times"
+     ],
+     "note": "In writing, dated, to the worker and your lawyer. The hard night is now a fair paragraph."
+    },
+    {
+     "text": "Let the report line stand as it is — everyone involved knows what really happened",
+     "next": "undocumented_night",
+     "note": "Everyone involved does know. The file, which outlives everyone's involvement, knows the short version."
+    }
+   ]
+  },
+  {
+   "id": "documented_night",
+   "kicker": "Day 48 — Sunday, November 22, 2026",
+   "dayOffset": 48,
+   "title": "A Fair Paragraph",
+   "body": [
+    "Your account goes in. Mr. Ortiz attaches it without editing your sentences, which is its own small mercy of procedure. Kayla, told at visitation that her words are in the file as she said them, goes quiet and then says, “Okay. That's — okay.”",
+    "She does not promise to attend the next session. She does ask whether the new therapist — there is talk of a new one — “reads about people or talks to them.” Nobody writes that question down except you. You write it down.",
+    "The review is coming. Between here and there, the placement itself is about to become the moving part."
+   ],
+   "choices": [
+    {
+     "text": "Go on toward the review",
+     "next": "kaylas_question",
+     "note": "You carry a folder that is beginning to tell the truth in order."
+    }
+   ]
+  },
+  {
+   "id": "undocumented_night",
+   "kicker": "Day 48 — Sunday, November 22, 2026",
+   "dayOffset": 48,
+   "title": "The Short Version",
+   "body": [
+    "The report line stands: left placement overnight, mother aware. At visitation, Kayla shrugs about the whole night — “Rosa's couch is better than a chart” — and changes the subject to a drawing she is proud of. You are proud of it too. You tell her so, twice.",
+    "Ms. Ferreira reviews the file with you and circles the line in pencil. “We can still add your account,” she says. “Later paper helps less than on-time paper, but it helps. What we cannot do is pretend the short version is not there. We answer it, or it answers for us.”",
+    "The review is coming. Between here and there, the placement itself is about to become the moving part."
+   ],
+   "choices": [
+    {
+     "text": "Go on toward the review",
+     "next": "kaylas_question",
+     "note": "You carry a thinner folder, and a clear view of what it is missing."
+    }
+   ]
+  },
+  {
+   "id": "kaylas_question",
+   "kicker": "Day 51 — Wednesday, November 25, 2026",
+   "dayOffset": 51,
+   "title": "Kayla's Question",
+   "body": [
+    "At the next visit, Kayla asks the question underneath this whole case, in the direct style that is her gift and her file's problem: “If I don't go to the thing, why does YOUR paper say you failed? You're not me.”",
+    "You tell her the truest available answer: “Because the paper was written that way. We're trying to get it written the way it happened. Your words are in it now — the ones I could get in. You can also ask to speak at the review. It's your case too.”",
+    "She considers this with the seriousness of a judge. “Maybe,” she says. “If they let me talk first.” You write that down, too — her condition, in her words — and send it to Ms. Ferreira the same evening, because conditions stated by teenagers are still statements, and statements belong in records."
+   ],
+   "choices": [
+    {
+     "text": "Send her condition to your lawyer the same evening, quoted exactly",
+     "next": "review_two",
+     "setFlags": [
+      "teenQuoted"
+     ],
+     "addHidden": [
+      "Teen's condition, quoted — 'Maybe. If they let me talk first.'"
+     ],
+     "note": "Quoted, dated, sent. Her voice is becoming a feature of this file, not a rumour about it."
+    }
+   ]
+  },
+  {
+   "id": "review_two",
+   "kicker": "Day 54 — Saturday, November 28, 2026",
+   "dayOffset": 54,
+   "title": "The First Review",
+   "body": [
+    "The courtroom part takes eleven minutes. The judge has read the file. She notes your group attendance (complete), your visitation (consistent), and then she reads, twice, the parts of the file that belong to Kayla: a session left at nine minutes, a night at an aunt's, a placement asking for “a higher level of support.”",
+    "Your lawyer asks that the record reflect what is also true: that the refusals are Kayla's, quoted in her own words where your paper reached the file, and that your outreach is documented. The judge nods and says the sentence that structures the rest of this story: “The plan will need to fit the young person who actually exists. Continue.”",
+    "Outside, Ms. Bell tells you, kindly and tiredly, that she has given notice. She cannot keep Kayla safe when Kayla will not stay. A placement change is coming — not as punishment, as arithmetic."
+   ],
+   "choices": [
+    {
+     "text": "Ask what a placement change does to everything already in motion",
+     "next": "placement_disrupts",
+     "addHidden": [
+      "Review — court: 'The plan will need to fit the young person who actually exists'"
+     ],
+     "note": "Progress, in this system, is partly an address. The address is about to change."
+    }
+   ]
+  },
+  {
+   "id": "placement_disrupts",
+   "kicker": "Day 58 — Wednesday, December 2, 2026",
+   "dayOffset": 58,
+   "title": "A New Address",
+   "body": [
+    "Kayla moves to a new foster home on the other side of the county — the Hendersons, experienced with teenagers, nearer Rosa and farther from her school. The practical progress resets in ways no one orders and everyone feels: a new therapist intake, a new school bus route, visitation moved to a different office, a new worker shadowing Mr. Ortiz.",
+    "Kayla's verdict, delivered by text: “new chart, same reading-about-me.” Then, a day later: “the lady here asks though.”",
+    "The next review will ask what has been consistent across the change. The honest answer is: Kayla's voice, and yours — if yours is on paper, in order, with dates."
+   ],
+   "choices": [
+    {
+     "text": "Decide how to rebuild the paper for the new placement",
+     "next": "rebuild_paper",
+     "cash": -20,
+     "note": "A second folder, a second set of introductions, bus fare to a farther office. Rebuilding is a cost nobody reimburses."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_paper",
+   "kicker": "Day 62 — Sunday, December 6, 2026",
+   "dayOffset": 62,
+   "title": "Rebuilding the Record",
+   "body": [
+    "Ms. Ferreira lays out the work without decorating it. Introduce yourself to the new therapist in writing. Send the new worker the outreach log, the quoted statements, and your written account of the overnight — so the new file does not start from the short versions. File a short written statement to the court before the next review: what you have done, what Kayla has said, and what you are asking for — a plan adjusted to the teenager who exists.",
+    "“It is the same moves,” she says. “That is not a failure of imagination. That is what a record is: the same true moves, made on time, more than once.”",
+    "There are two weeks until the statement is due. There is also your job, and sleep, and everything else."
+   ],
+   "choices": [
+    {
+     "text": "Do the rebuilding — introductions, packet to the new worker, statement drafted with your lawyer",
+     "next": "rebuild_strong",
+     "setFlags": [
+      "rebuiltRecord",
+      "writtenStatement"
+     ],
+     "addHidden": [
+      "Written statement to the court — mother's actions, teen's quoted words, request for an adjusted plan"
+     ],
+     "note": "Done in evenings, in order, with copies. The new file opens with the fair version."
+    },
+    {
+     "text": "Do what you can, which this month is visits and calls — the paper will have to wait",
+     "next": "rebuild_thin",
+     "note": "Visits and calls are real care. They are also the care this system is worst at remembering."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_strong",
+   "kicker": "Day 66 — Thursday, December 10, 2026",
+   "dayOffset": 66,
+   "title": "The New File Opens Fairly",
+   "body": [
+    "The Hendersons' worker writes back: “Thank you — this is more context than we usually start with.” The new therapist, at intake, begins by asking Kayla what a session would have to be like for her to stay in the room. Kayla, suspicious and then not, says, “Shorter. And I get to talk first.”",
+    "She stays for twenty minutes of the first session. Twenty is not the goal on the sheet. It is, everyone in the room understands, a beginning that belongs to her.",
+    "Your statement is filed. The review is set. What the judge will weigh is now, in unusually large part, what actually happened."
+   ],
+   "choices": [
+    {
+     "text": "Go on to the weeks before the final review",
+     "next": "new_therapist",
+     "note": "Paper filed is not the same as change lived. The weeks themselves are evidence too."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_thin",
+   "kicker": "Day 66 — Thursday, December 10, 2026",
+   "dayOffset": 66,
+   "title": "Visits and Calls",
+   "body": [
+    "You visit every Saturday. You call on Wednesdays. Kayla knows you will, and the knowing shows — she saves you the school news, she asks about your shift, she once, astonishingly, asks whether the group is “still boring,” which is her way of asking whether you are still going. You are.",
+    "None of it is in the new file in any detail. The new file starts from the summaries: a session left, a night away, a placement changed. Your consistency lives in the Hendersons' kitchen and in Kayla's memory — two places the court cannot read.",
+    "The review is set. Ms. Ferreira is honest: “We will speak well. Speaking is what we have. The file will say less than the truth, and everyone deciding will know it might — and will decide from the file anyway.”"
+   ],
+   "choices": [
+    {
+     "text": "Go on to the weeks before the final review",
+     "next": "new_therapist",
+     "note": "You bring yourself, your memory, and your lawyer. It is not nothing. It is not paper."
+    }
+   ]
+  },
+  {
+   "id": "new_therapist",
+   "kicker": "Day 68 — Saturday, December 12, 2026",
+   "dayOffset": 68,
+   "title": "Twenty Minutes at a Time",
+   "body": [
+    "The weeks pass in the small denominations this system actually uses: a bus route learned, a visit that runs its full hour because nobody watched the clock, a session Kayla leaves at twenty minutes instead of nine — or, on a bad week, at four, with the door not slammed but closed very deliberately, which the note records as progress of a kind nobody puts in a brochure.",
+    "Ms. Bell's successor placement holds. Rosa's Sunday dinners become a rhythm Kayla defends fiercely and attends religiously, a sentence Mr. Ortiz writes down without being asked, which you notice, and remember, and say thank you for — aloud, because fairness to workers is also part of a true record.",
+    "The final review is now days away. What varies, going in, is not Kayla, and not the past. It is the file."
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the final review with your lawyer",
+     "next": "final_prep",
+     "note": "Same teenager, same spring and summer. Different paper. Tomorrow tests what paper does."
+    }
+   ]
+  },
+  {
+   "id": "final_prep",
+   "kicker": "Day 71 — Tuesday, December 15, 2026",
+   "dayOffset": 71,
+   "title": "Before the Final Review",
+   "body": [
+    "The night before, Ms. Ferreira goes over the board with you, the way she promised at the start: what the file holds, what the clocks did, what remains open.",
+    "The clocks: reviews have passed on schedule while the placement changed underneath them, resetting the practical work each time — new therapist, new route, new office — without resetting Kayla, who has been the same person throughout, saying the same thing in the same words: talk to me, not about me.",
+    "The horizon she names once, plainly and generically: a dependency case cannot stay open forever, and a fifteen-year-old becomes an older teenager while adults deliberate. No one in this story is given a date for that. It is weather on the edge of the map, and it is one reason the paper matters now.",
+    "“Tomorrow,” she says, “the judge weighs what is in front of her. Let's make sure the weighing is the decision — not the filing.”"
+   ],
+   "choices": [
+    {
+     "text": "Bring the full packet — logs, quotes, statements, the fair file",
+     "next": "hearing_full",
+     "note": "Everything you built, in order, with dates. The hearing can now be about Kayla."
+    },
+    {
+     "text": "Bring what you have and speak from memory — it will have to be enough",
+     "next": "hearing_partial",
+     "note": "Memory testifies. Paper cross-examines it. Tomorrow will show the difference."
+    }
+   ]
+  },
+  {
+   "id": "hearing_full",
+   "kicker": "Day 76 — Sunday, December 20, 2026",
+   "dayOffset": 76,
+   "title": "The Final Review, Full File",
+   "body": [
+    "The judge reads before she listens, which is why the file mattered. She has Kayla's sentences as Kayla said them. She has your outreach, dated. She has a session Kayla left at nine minutes and a later one she stayed in for twenty, in the same folder, neither one exaggerated.",
+    "Kayla attends for part of the hearing and says her piece standing: “I will do the short sessions. I want to live where people ask me stuff. I want to see my mom more, not in a waiting room.” The judge thanks her and writes — actually writes, pen moving — while Kayla is speaking.",
+    "Then the judge looks at you, and at the worker, and begins the part where the record you built either holds a plan up or lets it fall."
+   ],
+   "choices": [
+    {
+     "text": "Ask the court to adjust the plan to the teenager who exists — shorter sessions she helped design, kin time with Rosa written in, and a path home",
+     "next": "end_stabilize",
+     "note": "You ask for the plan Kayla's own words describe. The file, for once, backs the asking."
+    },
+    {
+     "text": "Ask, above all, that the record stand as the fair account — her refusals as hers, your work as yours — and let the plan follow from that",
+     "next": "end_fair_record",
+     "note": "Truth first, in order, on paper. Whatever follows will at least follow from what happened."
+    }
+   ]
+  },
+  {
+   "id": "hearing_partial",
+   "kicker": "Day 76 — Sunday, December 20, 2026",
+   "dayOffset": 76,
+   "title": "The Final Review, Thin File",
+   "body": [
+    "The judge reads before she listens, which is why the file mattered. What she has is summaries: a mother who “was aware” of an overnight absence, sessions “not attended,” a placement that “required a higher level of support.” Your lawyer speaks well and truly about your calls, your visits, your staying. The judge listens the way judges do to things that are not in the record: politely, and without anywhere to put them.",
+    "Kayla does not attend this one. Her absence is noted in a single line, without her reasons, which were never quoted into any document anyone in this room has read.",
+    "The judge begins the part where a thin file either hardens into a judgment about you — or drifts, undecided, toward a horizon nobody in the room controls."
+   ],
+   "choices": [
+    {
+     "text": "Answer as best the moment allows, and accept the court's direction on the plan as written",
+     "next": "end_blame",
+     "note": "The plan as written measures you by Kayla's part. The file gave the court little else to measure."
+    },
+    {
+     "text": "Ask for time — more reviews, more chances for the truth to accumulate on its own",
+     "next": "end_drift",
+     "note": "Time, in a case with a fifteen-year-old in it, is not a neutral request. The court knows it. So do you."
+    }
+   ]
+  },
+  {
+   "id": "end_stabilize",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — She Stabilizes, and the Case Turns Toward Home",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: A refusal with its owner's name on it — Kayla's, in her quoted words (“like I am a chart”) — a session left at nine minutes and a mother who stayed for the rest of it, a night on an aunt's couch documented with same-night calls instead of discovered later, and a written statement that asked for a plan fitted to the teenager who exists. The new therapist's shorter, teen-first sessions — twenty minutes and counting — entered the file beside the old summary line, “mother to ensure youth attends,” and outweighed it, because the file finally contained both.",
+    "WHAT THE CLOCKS DID: Reviews passed on schedule while the placement changed once, resetting the practical work — therapist, route, office — without resetting Kayla. Nothing in this ending was won quickly. It was won by the same moves made twice: quote her, log the outreach, file the statement, show up anyway.",
+    "THE LAW UNDER THIS PATH: You were entitled to counsel, and appointed counsel if you could not afford it (42 Pa.C.S. § 6337) — Ms. Ferreira's advice is that right at work. Your look at the file rested on the record rule: the record “shall be released upon request” (55 Pa. Code § 3130.44(d)), including the full scored assessment you asked for by name. Disclosure in the adjudication phase is governed by Pa.R.J.C.P. 1340(B)(1); whether that rule reaches every scored item of an assessment is untested, and this scenario does not pretend otherwise. Dependency and termination decisions carry a clear-and-convincing-evidence burden — the standard the paper in this ending was built to be weighed under. The plan was adjusted and the goal remains return home; the case moves toward closure with you as Kayla stabilizes with the Hendersons and Rosa's kin time written in. A dependency case cannot stay open forever — that horizon is real and generic, and this ending does not claim any specific rule about it.",
+    "THE HONEST PART: Kayla's twenty minutes were Kayla's. A different teenager, a different therapist, a judge who read the same file with a different hand — any of these could have carried this case to another ending, and in real cases they do. Workers, judges, placements, and luck hold pieces of every outcome. What your choices changed was narrower and real: when the court weighed Kayla's refusals, it weighed them as hers, and when it weighed your work, the work was there to be weighed."
+   ]
+  },
+  {
+   "id": "end_fair_record",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — Her Refusals, Fairly Recorded; the Plan Adjusted",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: The fair account — her refusals quoted and owned by her, your outreach logged and dated, the overnight told whole, a written statement on the record. The court did not order the full arrangement you asked for: Kayla remains placed for now, and the plan is adjusted rather than replaced — sessions redesigned with her input, kin time formalized, your obligations rewritten to the ones a parent can actually perform.",
+    "WHAT THE CLOCKS DID: Reviews passed; the placement changed once and reset the practical progress; the case continues on a shorter leash of dates. The adjustment was not a victory lap. It was the system, presented with a file that separated two people's actions, finally writing a plan that separated them too.",
+    "THE LAW UNDER THIS PATH: Counsel and appointed counsel (42 Pa.C.S. § 6337); the record released on request, including the scored assessment — form, item ratings, outcome (55 Pa. Code § 3130.44(d)); adjudication-phase disclosure under Pa.R.J.C.P. 1340(B)(1), with its application to the assessment's scored items untested, as stated in-game; and the clear-and-convincing-evidence burden that governs dependency and termination decisions. No ending in this scenario turns on a rule this list does not contain.",
+    "THE HONEST PART: A fair record is not the same as a finished case, and this ending does not call it one. Kayla may still leave a session next month; a placement may still change; a judge may still read fairly and decide hard. Real outcomes turn on workers, judges, teenagers, and luck. What the record changed is the question the next review will ask — from “why didn't the mother ensure compliance” to “what does this young person need, and what has her mother actually done.” That is a better question, and getting it asked was the playable skill."
+   ]
+  },
+  {
+   "id": "end_blame",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — The Record Blames the Mother",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: Summaries. “Mother aware” of an overnight absence, without the same-night calls. Sessions “not attended,” without the nine minutes, the staying, or the sentence about the chart. A teenager's choices, shortened until they fit under her mother's name — and a judge who, reading that file, increased the pressure on the only person the plan could name: you. Goal pressure grows in this ending: more is now formally expected of you, including things that were never yours to deliver.",
+    "WHAT THE CLOCKS DID: The reviews did not wait for the record to become fair. Each passing review read the file as it stood that month, and the placement change reset the practical work while the summaries travelled unchanged into the new file, acquiring the authority of age.",
+    "THE LAW UNDER THIS PATH: The rights were the same in this ending as in every other — counsel (42 Pa.C.S. § 6337), the record on request (55 Pa. Code § 3130.44(d)), adjudication-phase disclosure (Pa.R.J.C.P. 1340(B)(1), its reach to scored assessment items untested), and a clear-and-convincing burden for dependency and termination decisions. Rights unused in time do not vanish from the statute book; they vanish from the file, which is where hearings live. Nothing decided here was a finding about your worth as a mother. It was a finding about a record — a record that attributed a fifteen-year-old's stated, reasoned refusals to the nearest adult name.",
+    "THE HONEST PART: Parents reach this ending after doing most things right in person and few of them on paper, and teenagers reach it beside parents who did the opposite; the line runs through summaries, workloads, courtroom minutes, and luck as much as through anyone's effort. Workers, judges, and a teenager's own weather held pieces of this outcome. The lesson the scenario was built to teach is not “try harder.” It is that in this system, care that is not documented is care the court cannot weigh — and a refusal that is not quoted will be summarized, and a summary will find an owner, and the owner is usually the parent."
+   ]
+  },
+  {
+   "id": "end_drift",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — Toward the Horizon, With a True Record",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: A mixed record — real care, thinly documented; a teenager's voice, heard in rooms and mostly absent from pages; reviews that continued the case because no version of the file yet justified either a firm plan or a closing one. What the file does hold, where your paper reached it, tells the truth: her words, your log, the night at Rosa's told whole. It is not enough paper to have changed the direction. It is enough to change what the direction means.",
+    "WHAT THE CLOCKS DID: Time did the deciding. Reviews passed, the placement changed, Kayla got older inside a case that — stated generically, with no specific rule claimed — cannot stay open forever. Drift is not an event in this system. It is what happens while every individual decision is a reasonable continuance.",
+    "THE LAW UNDER THIS PATH: Counsel (42 Pa.C.S. § 6337); records on request (55 Pa. Code § 3130.44(d)); disclosure under Pa.R.J.C.P. 1340(B)(1), untested as to the assessment's scored items; the clear-and-convincing burden for dependency and termination decisions. This scenario deliberately asserts nothing more specific about aging out, emancipation, or extended jurisdiction — no primary text for such specifics was verified, so the game keeps the horizon generic: the case cannot stay open forever.",
+    "THE HONEST PART: Drift endings happen to diligent parents and to overwhelmed ones, beside teenagers who thrive late and teenagers who do not, under judges who hope time will do what orders cannot. Workers, judges, placements, and luck all held pieces of this. What remains — and it is not nothing — is a paper record that at least tells the truth about whose choices were whose. If Kayla ever reads her file as an adult, and many young people do, she will find her own sentences in it, and yours beside them, dated. Some records are built for a hearing. This one, in the end, was also built for a reader."
+   ]
+  }
+ ]
+}

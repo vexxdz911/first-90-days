@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Teen Who Says No</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 16px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 10px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:26px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 29 — The Teen Who Says No (a fictional composite)",
+  "startDateISO": "2026-10-05",
+  "startNode": "start",
+  "startCash": 240,
+  "tier": "Complex",
+  "summary": "A 15-year-old refuses her placement and services in her own words; her mother learns what a parent can still put on the record when the plan's subject won't cooperate."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, October 5, 2026",
+   "dayOffset": 0,
+   "title": "A Plan With Two Names on It",
+   "body": [
+    "Your daughter Kayla is fifteen. Four months ago, after a hard spring that everyone describes differently, the court placed her in foster care with Ms. Bell, across town. You stayed in the case. Kayla stayed angry at almost everyone in it, including, on different days, you.",
+    "Your part of the plan is written down: family sessions, visitation, a parenting support group, staying in contact with the school. Kayla's part is written down too: live in the placement, attend her own sessions, go to school from Ms. Bell's house.",
+    "The paper assumes you can deliver her part as well as yours. This month, that assumption is going to be tested — in rooms where what gets written down will matter as much as what actually happens."
+   ],
+   "choices": [
+    {
+     "text": "Read the plan again at the kitchen table, both names, line by line",
+     "next": "meeting_notice",
+     "note": "Two names. Two sets of promises. Only one set is yours to keep."
+    }
+   ]
+  },
+  {
+   "id": "meeting_notice",
+   "kicker": "Day 2 — Wednesday, October 7, 2026",
+   "dayOffset": 2,
+   "title": "The Review Is Coming",
+   "body": [
+    "A notice says the case will be reviewed in court later this fall. Your lawyer, Ms. Ferreira, tells you the judge will read the file before anyone speaks: progress notes, visit notes, and short summaries of meetings like the one scheduled this week.",
+    "“Summaries are powerful,” she says. “They are also short. Part of our work is making sure the short version is the true version.”",
+    "Kayla has been invited to this week's meeting. She has told Ms. Bell she is not going. Then, this morning, she texted you one word: “fine.”"
+   ],
+   "choices": [
+    {
+     "text": "Go to the meeting early, plan folder in hand, and wait to see if she comes",
+     "next": "teen_in_room",
+     "cash": -12,
+     "note": "Bus fare across town. You arrive with time to breathe, which is its own preparation."
+    }
+   ]
+  },
+  {
+   "id": "teen_in_room",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "Kayla, in Her Own Voice",
+   "body": [
+    "Kayla comes. She sits nearest the door, hood down because Ms. Bell asked, phone face-down because nobody asked and she did it anyway.",
+    "The worker, Mr. Ortiz, is kind and procedural. He describes the family session Kayla missed and the placement rule she broke, and then — to his credit — he turns to her. “Kayla. Tell it your way.”",
+    "She does. “I am not doing that session. The lady talks about me like I'm a chart. And I'm not asking permission to go to my own aunt's. I said that. Write that.” She looks at the notebook. “Are you writing that?”"
+   ],
+   "choices": [
+    {
+     "text": "Watch what gets written, and say nothing yet",
+     "next": "after_meeting",
+     "addHidden": [
+      "Teen's own words — 'I am not doing that session. The lady talks about me like I am a chart'"
+     ],
+     "note": "Her sentences are in the room. Whether they reach the file is the next question."
+    }
+   ]
+  },
+  {
+   "id": "after_meeting",
+   "kicker": "Day 7 — Monday, October 12, 2026",
+   "dayOffset": 7,
+   "title": "What the Notebook Holds",
+   "body": [
+    "After Kayla leaves for school, Mr. Ortiz shows you the meeting summary he is drafting. It is three lines long. One of them reads: “Mother to ensure youth attends family sessions and follows placement rules.”",
+    "Kayla's sentences are not in it. Her refusal is — as your assignment. The session she described as being talked about “like a chart” has become a thing you failed to ensure.",
+    "Ms. Ferreira, on the phone afterward, is precise. “You cannot make Kayla attend. You can ask that what she said be quoted, not summarized. Ask in the room, and then ask again in writing, so the asking is in the record too.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, that Kayla's own words be quoted in the summary",
+     "next": "quote_path",
+     "setFlags": [
+      "teenQuoted"
+     ],
+     "addHidden": [
+      "Mother's written request — teen's words to be quoted, not summarized"
+     ],
+     "note": "A short email, dated, kept. The file now has to carry her voice or explain why it does not."
+    },
+    {
+     "text": "Let the summary stand — Kayla was heard in the room, and that has to count",
+     "next": "summary_path",
+     "note": "She was heard. The room, however, is not the record. The record is what travels."
+    }
+   ]
+  },
+  {
+   "id": "quote_path",
+   "kicker": "Day 9 — Wednesday, October 14, 2026",
+   "dayOffset": 9,
+   "title": "Quoted, Not Summarized",
+   "body": [
+    "Mr. Ortiz replies within two days. The summary is amended. It now reads: “Youth stated: ‘I am not doing that session. The lady talks about me like I am a chart.’ Mother requested this statement be recorded as spoken.”",
+    "It is a small paragraph. It changes the shape of the page: the refusal now has an owner, and it is not you.",
+    "Ms. Ferreira says, “That is the whole skill in this case. You cannot do Kayla's part. You can make the file show whose part it was — in her words, not in a summary of her words.”"
+   ],
+   "choices": [
+    {
+     "text": "Save the amended summary in your folder, printed, dated",
+     "next": "records_scene",
+     "note": "Paper, kept. You are building the version of this case that can be checked."
+    }
+   ]
+  },
+  {
+   "id": "summary_path",
+   "kicker": "Day 9 — Wednesday, October 14, 2026",
+   "dayOffset": 9,
+   "title": "Heard in the Room",
+   "body": [
+    "The summary goes into the file as drafted: three lines, your name beside Kayla's refusal. Nobody was unkind. Nobody lied. A fifteen-year-old's reasons simply did not survive being shortened.",
+    "At home you write down what she actually said, from memory, in your notebook — “like I am a chart” — and date it. It is not in the file. But it is somewhere true, and later it may help you ask better questions.",
+    "Ms. Ferreira, when you tell her, does not scold. “Then we start the paper from here,” she says. “There is another door, and it is open now.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Ferreira about that other door",
+     "next": "records_scene",
+     "note": "The door is the same one from every flyer in the courthouse hallway."
+    }
+   ]
+  },
+  {
+   "id": "records_scene",
+   "kicker": "Day 12 — Saturday, October 17, 2026",
+   "dayOffset": 12,
+   "title": "Your Own File",
+   "body": [
+    "Ms. Ferreira explains: you may ask the county agency for your own case record — the notes, the summaries, the scored assessment form with its item ratings and outcome. Under the regulation, it “shall be released upon request” (55 Pa. Code § 3130.44(d)). She is specific about asking for the full scored assessment, not just the narrative: the form, the ratings, the outcome.",
+    "“And a caution,” she adds. “At the adjudication stage there are disclosure rules about assessment and discovery material (Pa.R.J.C.P. 1340(B)(1)). Whether Rule 1340 reaches every scored item of an assessment like this one is untested — no court has decided it. We ask under the regulation we can quote, and we note the rule we cannot.”",
+    "You have never seen the form that scores your family. The request is one page."
+   ],
+   "choices": [
+    {
+     "text": "Write the request this week — the full record, including the scored assessment",
+     "next": "packet_wait",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Record request — full case record and scored assessment, form, item ratings, outcome"
+     ],
+     "note": "Dated, copied, kept. The cheapest power in this whole system."
+    },
+    {
+     "text": "Skip it for now — the review is months away, and paper can wait",
+     "next": "packet_wait",
+     "note": "Paper can wait. Paper is also what the judge reads first. The wait will be in the story."
+    }
+   ]
+  },
+  {
+   "id": "packet_wait",
+   "kicker": "Day 18 — Friday, October 23, 2026",
+   "dayOffset": 18,
+   "title": "Six Quiet Days",
+   "body": [
+    "Days pass at their normal size. You work your shifts. You attend your group. Visitation is Saturday: Kayla shows you a drawing, eats most of a pizza, and leaves twenty minutes early because “the vibe in here is a waiting room.” The visit note will say the visit ended early. It will not say who ended it, or why, unless somebody writes that down.",
+    "You write it down. Date, time, her words as close as you can hold them: “the vibe in here is a waiting room.”",
+    "On the sixth day, an envelope — or, if you did not ask, a phone call about the upcoming session schedule — moves the case forward."
+   ],
+   "choices": [
+    {
+     "text": "Go on, through an ordinary Saturday first",
+     "next": "visit_saturday",
+     "note": "You cannot attend a family session for her. You can only attend it."
+    }
+   ]
+  },
+  {
+   "id": "visit_saturday",
+   "kicker": "Day 22 — Tuesday, October 27, 2026",
+   "dayOffset": 22,
+   "title": "Visitation, in a Waiting Room",
+   "body": [
+    "Saturday visitation is in the room with the clock that everyone in these stories watches. Kayla arrives with her drawing folder, eats, talks about school in short, complete sentences, and leaves twenty minutes early — her choice, stated plainly at the door: “Love you. The vibe in here is a waiting room.”",
+    "You write it down that evening: date, time, her words. Not because the early leaving is a crisis. Because the visit note will record the leaving, and you would like the record to also record the sentence, the drawing, and the love you — in her order, not the file's.",
+    "On Monday, the thing you asked for — or, if you did not ask, the thing your lawyer describes to you from the courthouse flyer, in the tone of a person pointing at a door you walked past — becomes the subject."
+   ],
+   "choices": [
+    {
+     "text": "Turn to the record itself",
+     "next": "assessment_form",
+     "note": "What is written about the visits matters as much as the visits. You are learning to read the writing."
+    }
+   ]
+  },
+  {
+   "id": "assessment_form",
+   "kicker": "Day 26 — Saturday, October 31, 2026",
+   "dayOffset": 26,
+   "title": "The Scored Form",
+   "body": [
+    "The assessment form, when it reaches you, is not a story. It is a grid: items, ratings, an outcome line. Some items are about your home and your history. Several, you notice with a feeling you do not immediately have a word for, are about Kayla's behaviour — sessions attended, rules followed, nights spent where assigned — entered on a form that carries your family's name and is read as your family's score.",
+    "Ms. Ferreira goes through it with a pencil. “Here,” she says, tapping one item, “is where a summary does its quiet work. The rating does not say whose action it was. Ratings rarely do. That is why the quotes and the log matter: they reattach actions to the people who did them.”",
+    "She repeats her caution, because accuracy is her love language: the adjudication disclosure rule (Pa.R.J.C.P. 1340(B)(1)) exists, and whether it reaches every scored item of a form like this is untested. Your copy came by the regulation you can quote — released upon request (55 Pa. Code § 3130.44(d))."
+   ],
+   "choices": [
+    {
+     "text": "Read the ratings beside your own notes, line by line",
+     "next": "form_reading",
+     "addHidden": [
+      "Scored assessment — several items rate the teen's actions on the family's form, without naming whose action"
+     ],
+     "note": "A grid, read slowly, is less frightening than a grid imagined. It is also, you see now, arguable — line by line, with sources."
+    }
+   ]
+  },
+  {
+   "id": "form_reading",
+   "kicker": "Day 29 — Tuesday, November 3, 2026",
+   "dayOffset": 29,
+   "title": "Reading the Grid Beside the Truth",
+   "body": [
+    "Side by side on the kitchen table: the form, and your notebook. Where the form says a session was “not attended,” your notebook says who left, at nine minutes, saying what. Where the form records an overnight “absence,” your notebook — on the paths where you wrote it in time — records a couch, an aunt, a phone call.",
+    "You are not disputing the form's facts, mostly. You are disputing its grammar: its habit of leaving the subject out of the sentence, so the reader supplies your name.",
+    "Tomorrow is the family session Kayla has been refusing. You will be in the room. What the form makes of tomorrow depends, in part, on the grammar you manage to put into its notes."
+   ],
+   "choices": [
+    {
+     "text": "Go to the session",
+     "next": "service_day",
+     "note": "You attend for yourself. She decides for herself. The notes will decide what the court believes about both."
+    }
+   ]
+  },
+  {
+   "id": "service_day",
+   "kicker": "Day 32 — Friday, November 6, 2026",
+   "dayOffset": 32,
+   "title": "The Session She Walks Out Of",
+   "body": [
+    "The family session is in a small room with a box of tissues placed exactly in the middle of the table, like a centerpiece. The therapist begins by reading goals aloud from a sheet — Kayla's goals, in the program's words.",
+    "Nine minutes in, Kayla stands up. “This is the chart thing,” she says. “You are all reading about me. I'm right here.” She walks out. Nobody follows her; the procedure is to let a young person take space, and to write down that she left.",
+    "The therapist looks at you with genuine sympathy. “We will note she left at nine minutes. We will also note you stayed.” What else gets noted is, in part, up to what you do next."
+   ],
+   "choices": [
+    {
+     "text": "Stay for the rest of the session, and do the work that is actually yours to do",
+     "next": "walkout_choice",
+     "addHidden": [
+      "Session record — teen left at nine minutes; mother remained for the full session"
+     ],
+     "note": "You stay. It feels like doing nothing. On paper, it is the opposite."
+    }
+   ]
+  },
+  {
+   "id": "walkout_choice",
+   "kicker": "Day 35 — Monday, November 9, 2026",
+   "dayOffset": 35,
+   "title": "After She Leaves",
+   "body": [
+    "In the parking lot, Kayla is not there. Ms. Bell texts: Kayla got the bus, arrived back at the placement, went to her room. She is safe. She is also, in the language forming in the file, “declining services.”",
+    "Ms. Ferreira gives you the fork plainly. “You can document your outreach — every call, every text, every ride you offered — dated, while it is fresh. Or you can trust that everyone remembers you tried. Files do not remember. Files contain.”",
+    "There is also tonight to think about, though you do not know it yet."
+   ],
+   "choices": [
+    {
+     "text": "Write the outreach log tonight — calls, texts, the ride offered, times",
+     "next": "outreach_path",
+     "cash": -15,
+     "setFlags": [
+      "outreachLog"
+     ],
+     "addHidden": [
+      "Outreach log — dated calls, texts, and ride offered on the day teen left the session"
+     ],
+     "note": "Copies, a notebook, twenty minutes after a long day. This is what documenting costs: almost nothing, at the exact moment you have almost nothing."
+    },
+    {
+     "text": "Let tonight go — you will explain it at the review, in person",
+     "next": "wait_path",
+     "note": "Explaining in person is real. It is also, in this system, the least durable form of evidence."
+    }
+   ]
+  },
+  {
+   "id": "outreach_path",
+   "kicker": "Day 38 — Thursday, November 12, 2026",
+   "dayOffset": 38,
+   "title": "The Log",
+   "body": [
+    "The log is not eloquent. “4:12 p.m. — called K., no answer. 4:20 — texted: ‘I'm here when you're ready. Bus money in your app.’ 5:05 — offered ride Saturday.” That is all. It does not argue. It accumulates.",
+    "When you send a copy to Ms. Ferreira, she replies with one line: “Now her leaving and your reaching are both in the record. That is a fair file.”",
+    "You sleep a little better. Then your phone lights up at 9:40 p.m. It is Rosa, your sister. “Guess who is on my couch.”"
+   ],
+   "choices": [
+    {
+     "text": "Call Rosa back",
+     "next": "sleep_night",
+     "note": "Kayla has made tonight's decision herself. What you do with that fact is yours."
+    }
+   ]
+  },
+  {
+   "id": "wait_path",
+   "kicker": "Day 38 — Thursday, November 12, 2026",
+   "dayOffset": 38,
+   "title": "The Quiet Evening",
+   "body": [
+    "You do the dishes. You do not write anything down. The calls you made exist in your phone and in your memory, which — Ms. Ferreira would say — are the two places this system reads last.",
+    "At 9:40 p.m. your phone lights up. It is Rosa, your sister. “Guess who is on my couch.”",
+    "Kayla left Ms. Bell's after dinner, took two buses, and arrived at the aunt she is not supposed to visit without permission. She chose where to sleep tonight, the way fifteen-year-olds in these stories do: with her feet."
+   ],
+   "choices": [
+    {
+     "text": "Call Rosa back",
+     "next": "sleep_night",
+     "note": "Kayla has made tonight's decision herself. What you do with that fact is yours."
+    }
+   ]
+  },
+  {
+   "id": "sleep_night",
+   "kicker": "Day 42 — Monday, November 16, 2026",
+   "dayOffset": 42,
+   "title": "Where She Sleeps Tonight",
+   "body": [
+    "Rosa is calm. Kayla is safe, fed, doing homework at the kitchen counter, and asleep-by-eleven if Rosa has anything to say about it. “She asked if she could stay when she feels like a chart,” Rosa says. “I told her one night, and I told her I would tell you and Ms. Bell. No secrets. That was the deal.”",
+    "You call Ms. Bell and Mr. Ortiz's line and leave messages — tonight, not tomorrow — saying where Kayla is, that she is safe, and that Rosa will put her on the morning bus to school. You say Kayla's reason in Kayla's words.",
+    "Whatever else tonight becomes in the file, it will not become a mystery. You have made sure of the part that was yours to make sure of."
+   ],
+   "choices": [
+    {
+     "text": "In the morning, decide how tonight gets onto the record",
+     "next": "morning_choice",
+     "note": "Tonight she chose. Tomorrow, the file chooses its words. You get a say in those, if you take it in time."
+    }
+   ]
+  },
+  {
+   "id": "morning_choice",
+   "kicker": "Day 45 — Thursday, November 19, 2026",
+   "dayOffset": 45,
+   "title": "The Morning After, on Paper",
+   "body": [
+    "By 9 a.m. there are two versions of last night available to the future. In one, a report line reads: “Youth left placement overnight without permission; mother aware.” In the other, the same line is followed by Kayla's quoted reason, Rosa's account, your same-night calls with times, and the morning bus she did, in fact, catch.",
+    "Both versions are true. They do not weigh the same. A judge reading the second one is reading about a teenager who made a choice, a family that communicated, and a mother who documented outreach instead of hiding a hard night.",
+    "Ms. Ferreira: “Which version exists is, unusually, up to you — if the paper goes in this week.”"
+   ],
+   "choices": [
+    {
+     "text": "Send the written account this week — her quoted words, Rosa's account, your call times",
+     "next": "documented_night",
+     "setFlags": [
+      "nightDocumented"
+     ],
+     "addHidden": [
+      "Overnight account — teen's quoted reason, aunt's account, mother's same-night calls with times"
+     ],
+     "note": "In writing, dated, to the worker and your lawyer. The hard night is now a fair paragraph."
+    },
+    {
+     "text": "Let the report line stand as it is — everyone involved knows what really happened",
+     "next": "undocumented_night",
+     "note": "Everyone involved does know. The file, which outlives everyone's involvement, knows the short version."
+    }
+   ]
+  },
+  {
+   "id": "documented_night",
+   "kicker": "Day 48 — Sunday, November 22, 2026",
+   "dayOffset": 48,
+   "title": "A Fair Paragraph",
+   "body": [
+    "Your account goes in. Mr. Ortiz attaches it without editing your sentences, which is its own small mercy of procedure. Kayla, told at visitation that her words are in the file as she said them, goes quiet and then says, “Okay. That's — okay.”",
+    "She does not promise to attend the next session. She does ask whether the new therapist — there is talk of a new one — “reads about people or talks to them.” Nobody writes that question down except you. You write it down.",
+    "The review is coming. Between here and there, the placement itself is about to become the moving part."
+   ],
+   "choices": [
+    {
+     "text": "Go on toward the review",
+     "next": "kaylas_question",
+     "note": "You carry a folder that is beginning to tell the truth in order."
+    }
+   ]
+  },
+  {
+   "id": "undocumented_night",
+   "kicker": "Day 48 — Sunday, November 22, 2026",
+   "dayOffset": 48,
+   "title": "The Short Version",
+   "body": [
+    "The report line stands: left placement overnight, mother aware. At visitation, Kayla shrugs about the whole night — “Rosa's couch is better than a chart” — and changes the subject to a drawing she is proud of. You are proud of it too. You tell her so, twice.",
+    "Ms. Ferreira reviews the file with you and circles the line in pencil. “We can still add your account,” she says. “Later paper helps less than on-time paper, but it helps. What we cannot do is pretend the short version is not there. We answer it, or it answers for us.”",
+    "The review is coming. Between here and there, the placement itself is about to become the moving part."
+   ],
+   "choices": [
+    {
+     "text": "Go on toward the review",
+     "next": "kaylas_question",
+     "note": "You carry a thinner folder, and a clear view of what it is missing."
+    }
+   ]
+  },
+  {
+   "id": "kaylas_question",
+   "kicker": "Day 51 — Wednesday, November 25, 2026",
+   "dayOffset": 51,
+   "title": "Kayla's Question",
+   "body": [
+    "At the next visit, Kayla asks the question underneath this whole case, in the direct style that is her gift and her file's problem: “If I don't go to the thing, why does YOUR paper say you failed? You're not me.”",
+    "You tell her the truest available answer: “Because the paper was written that way. We're trying to get it written the way it happened. Your words are in it now — the ones I could get in. You can also ask to speak at the review. It's your case too.”",
+    "She considers this with the seriousness of a judge. “Maybe,” she says. “If they let me talk first.” You write that down, too — her condition, in her words — and send it to Ms. Ferreira the same evening, because conditions stated by teenagers are still statements, and statements belong in records."
+   ],
+   "choices": [
+    {
+     "text": "Send her condition to your lawyer the same evening, quoted exactly",
+     "next": "review_two",
+     "setFlags": [
+      "teenQuoted"
+     ],
+     "addHidden": [
+      "Teen's condition, quoted — 'Maybe. If they let me talk first.'"
+     ],
+     "note": "Quoted, dated, sent. Her voice is becoming a feature of this file, not a rumour about it."
+    }
+   ]
+  },
+  {
+   "id": "review_two",
+   "kicker": "Day 54 — Saturday, November 28, 2026",
+   "dayOffset": 54,
+   "title": "The First Review",
+   "body": [
+    "The courtroom part takes eleven minutes. The judge has read the file. She notes your group attendance (complete), your visitation (consistent), and then she reads, twice, the parts of the file that belong to Kayla: a session left at nine minutes, a night at an aunt's, a placement asking for “a higher level of support.”",
+    "Your lawyer asks that the record reflect what is also true: that the refusals are Kayla's, quoted in her own words where your paper reached the file, and that your outreach is documented. The judge nods and says the sentence that structures the rest of this story: “The plan will need to fit the young person who actually exists. Continue.”",
+    "Outside, Ms. Bell tells you, kindly and tiredly, that she has given notice. She cannot keep Kayla safe when Kayla will not stay. A placement change is coming — not as punishment, as arithmetic."
+   ],
+   "choices": [
+    {
+     "text": "Ask what a placement change does to everything already in motion",
+     "next": "placement_disrupts",
+     "addHidden": [
+      "Review — court: 'The plan will need to fit the young person who actually exists'"
+     ],
+     "note": "Progress, in this system, is partly an address. The address is about to change."
+    }
+   ]
+  },
+  {
+   "id": "placement_disrupts",
+   "kicker": "Day 58 — Wednesday, December 2, 2026",
+   "dayOffset": 58,
+   "title": "A New Address",
+   "body": [
+    "Kayla moves to a new foster home on the other side of the county — the Hendersons, experienced with teenagers, nearer Rosa and farther from her school. The practical progress resets in ways no one orders and everyone feels: a new therapist intake, a new school bus route, visitation moved to a different office, a new worker shadowing Mr. Ortiz.",
+    "Kayla's verdict, delivered by text: “new chart, same reading-about-me.” Then, a day later: “the lady here asks though.”",
+    "The next review will ask what has been consistent across the change. The honest answer is: Kayla's voice, and yours — if yours is on paper, in order, with dates."
+   ],
+   "choices": [
+    {
+     "text": "Decide how to rebuild the paper for the new placement",
+     "next": "rebuild_paper",
+     "cash": -20,
+     "note": "A second folder, a second set of introductions, bus fare to a farther office. Rebuilding is a cost nobody reimburses."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_paper",
+   "kicker": "Day 62 — Sunday, December 6, 2026",
+   "dayOffset": 62,
+   "title": "Rebuilding the Record",
+   "body": [
+    "Ms. Ferreira lays out the work without decorating it. Introduce yourself to the new therapist in writing. Send the new worker the outreach log, the quoted statements, and your written account of the overnight — so the new file does not start from the short versions. File a short written statement to the court before the next review: what you have done, what Kayla has said, and what you are asking for — a plan adjusted to the teenager who exists.",
+    "“It is the same moves,” she says. “That is not a failure of imagination. That is what a record is: the same true moves, made on time, more than once.”",
+    "There are two weeks until the statement is due. There is also your job, and sleep, and everything else."
+   ],
+   "choices": [
+    {
+     "text": "Do the rebuilding — introductions, packet to the new worker, statement drafted with your lawyer",
+     "next": "rebuild_strong",
+     "setFlags": [
+      "rebuiltRecord",
+      "writtenStatement"
+     ],
+     "addHidden": [
+      "Written statement to the court — mother's actions, teen's quoted words, request for an adjusted plan"
+     ],
+     "note": "Done in evenings, in order, with copies. The new file opens with the fair version."
+    },
+    {
+     "text": "Do what you can, which this month is visits and calls — the paper will have to wait",
+     "next": "rebuild_thin",
+     "note": "Visits and calls are real care. They are also the care this system is worst at remembering."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_strong",
+   "kicker": "Day 66 — Thursday, December 10, 2026",
+   "dayOffset": 66,
+   "title": "The New File Opens Fairly",
+   "body": [
+    "The Hendersons' worker writes back: “Thank you — this is more context than we usually start with.” The new therapist, at intake, begins by asking Kayla what a session would have to be like for her to stay in the room. Kayla, suspicious and then not, says, “Shorter. And I get to talk first.”",
+    "She stays for twenty minutes of the first session. Twenty is not the goal on the sheet. It is, everyone in the room understands, a beginning that belongs to her.",
+    "Your statement is filed. The review is set. What the judge will weigh is now, in unusually large part, what actually happened."
+   ],
+   "choices": [
+    {
+     "text": "Go on to the weeks before the final review",
+     "next": "new_therapist",
+     "note": "Paper filed is not the same as change lived. The weeks themselves are evidence too."
+    }
+   ]
+  },
+  {
+   "id": "rebuild_thin",
+   "kicker": "Day 66 — Thursday, December 10, 2026",
+   "dayOffset": 66,
+   "title": "Visits and Calls",
+   "body": [
+    "You visit every Saturday. You call on Wednesdays. Kayla knows you will, and the knowing shows — she saves you the school news, she asks about your shift, she once, astonishingly, asks whether the group is “still boring,” which is her way of asking whether you are still going. You are.",
+    "None of it is in the new file in any detail. The new file starts from the summaries: a session left, a night away, a placement changed. Your consistency lives in the Hendersons' kitchen and in Kayla's memory — two places the court cannot read.",
+    "The review is set. Ms. Ferreira is honest: “We will speak well. Speaking is what we have. The file will say less than the truth, and everyone deciding will know it might — and will decide from the file anyway.”"
+   ],
+   "choices": [
+    {
+     "text": "Go on to the weeks before the final review",
+     "next": "new_therapist",
+     "note": "You bring yourself, your memory, and your lawyer. It is not nothing. It is not paper."
+    }
+   ]
+  },
+  {
+   "id": "new_therapist",
+   "kicker": "Day 68 — Saturday, December 12, 2026",
+   "dayOffset": 68,
+   "title": "Twenty Minutes at a Time",
+   "body": [
+    "The weeks pass in the small denominations this system actually uses: a bus route learned, a visit that runs its full hour because nobody watched the clock, a session Kayla leaves at twenty minutes instead of nine — or, on a bad week, at four, with the door not slammed but closed very deliberately, which the note records as progress of a kind nobody puts in a brochure.",
+    "Ms. Bell's successor placement holds. Rosa's Sunday dinners become a rhythm Kayla defends fiercely and attends religiously, a sentence Mr. Ortiz writes down without being asked, which you notice, and remember, and say thank you for — aloud, because fairness to workers is also part of a true record.",
+    "The final review is now days away. What varies, going in, is not Kayla, and not the past. It is the file."
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the final review with your lawyer",
+     "next": "final_prep",
+     "note": "Same teenager, same spring and summer. Different paper. Tomorrow tests what paper does."
+    }
+   ]
+  },
+  {
+   "id": "final_prep",
+   "kicker": "Day 71 — Tuesday, December 15, 2026",
+   "dayOffset": 71,
+   "title": "Before the Final Review",
+   "body": [
+    "The night before, Ms. Ferreira goes over the board with you, the way she promised at the start: what the file holds, what the clocks did, what remains open.",
+    "The clocks: reviews have passed on schedule while the placement changed underneath them, resetting the practical work each time — new therapist, new route, new office — without resetting Kayla, who has been the same person throughout, saying the same thing in the same words: talk to me, not about me.",
+    "The horizon she names once, plainly and generically: a dependency case cannot stay open forever, and a fifteen-year-old becomes an older teenager while adults deliberate. No one in this story is given a date for that. It is weather on the edge of the map, and it is one reason the paper matters now.",
+    "“Tomorrow,” she says, “the judge weighs what is in front of her. Let's make sure the weighing is the decision — not the filing.”"
+   ],
+   "choices": [
+    {
+     "text": "Bring the full packet — logs, quotes, statements, the fair file",
+     "next": "hearing_full",
+     "note": "Everything you built, in order, with dates. The hearing can now be about Kayla."
+    },
+    {
+     "text": "Bring what you have and speak from memory — it will have to be enough",
+     "next": "hearing_partial",
+     "note": "Memory testifies. Paper cross-examines it. Tomorrow will show the difference."
+    }
+   ]
+  },
+  {
+   "id": "hearing_full",
+   "kicker": "Day 76 — Sunday, December 20, 2026",
+   "dayOffset": 76,
+   "title": "The Final Review, Full File",
+   "body": [
+    "The judge reads before she listens, which is why the file mattered. She has Kayla's sentences as Kayla said them. She has your outreach, dated. She has a session Kayla left at nine minutes and a later one she stayed in for twenty, in the same folder, neither one exaggerated.",
+    "Kayla attends for part of the hearing and says her piece standing: “I will do the short sessions. I want to live where people ask me stuff. I want to see my mom more, not in a waiting room.” The judge thanks her and writes — actually writes, pen moving — while Kayla is speaking.",
+    "Then the judge looks at you, and at the worker, and begins the part where the record you built either holds a plan up or lets it fall."
+   ],
+   "choices": [
+    {
+     "text": "Ask the court to adjust the plan to the teenager who exists — shorter sessions she helped design, kin time with Rosa written in, and a path home",
+     "next": "end_stabilize",
+     "note": "You ask for the plan Kayla's own words describe. The file, for once, backs the asking."
+    },
+    {
+     "text": "Ask, above all, that the record stand as the fair account — her refusals as hers, your work as yours — and let the plan follow from that",
+     "next": "end_fair_record",
+     "note": "Truth first, in order, on paper. Whatever follows will at least follow from what happened."
+    }
+   ]
+  },
+  {
+   "id": "hearing_partial",
+   "kicker": "Day 76 — Sunday, December 20, 2026",
+   "dayOffset": 76,
+   "title": "The Final Review, Thin File",
+   "body": [
+    "The judge reads before she listens, which is why the file mattered. What she has is summaries: a mother who “was aware” of an overnight absence, sessions “not attended,” a placement that “required a higher level of support.” Your lawyer speaks well and truly about your calls, your visits, your staying. The judge listens the way judges do to things that are not in the record: politely, and without anywhere to put them.",
+    "Kayla does not attend this one. Her absence is noted in a single line, without her reasons, which were never quoted into any document anyone in this room has read.",
+    "The judge begins the part where a thin file either hardens into a judgment about you — or drifts, undecided, toward a horizon nobody in the room controls."
+   ],
+   "choices": [
+    {
+     "text": "Answer as best the moment allows, and accept the court's direction on the plan as written",
+     "next": "end_blame",
+     "note": "The plan as written measures you by Kayla's part. The file gave the court little else to measure."
+    },
+    {
+     "text": "Ask for time — more reviews, more chances for the truth to accumulate on its own",
+     "next": "end_drift",
+     "note": "Time, in a case with a fifteen-year-old in it, is not a neutral request. The court knows it. So do you."
+    }
+   ]
+  },
+  {
+   "id": "end_stabilize",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — She Stabilizes, and the Case Turns Toward Home",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: A refusal with its owner's name on it — Kayla's, in her quoted words (“like I am a chart”) — a session left at nine minutes and a mother who stayed for the rest of it, a night on an aunt's couch documented with same-night calls instead of discovered later, and a written statement that asked for a plan fitted to the teenager who exists. The new therapist's shorter, teen-first sessions — twenty minutes and counting — entered the file beside the old summary line, “mother to ensure youth attends,” and outweighed it, because the file finally contained both.",
+    "WHAT THE CLOCKS DID: Reviews passed on schedule while the placement changed once, resetting the practical work — therapist, route, office — without resetting Kayla. Nothing in this ending was won quickly. It was won by the same moves made twice: quote her, log the outreach, file the statement, show up anyway.",
+    "THE LAW UNDER THIS PATH: You were entitled to counsel, and appointed counsel if you could not afford it (42 Pa.C.S. § 6337) — Ms. Ferreira's advice is that right at work. Your look at the file rested on the record rule: the record “shall be released upon request” (55 Pa. Code § 3130.44(d)), including the full scored assessment you asked for by name. Disclosure in the adjudication phase is governed by Pa.R.J.C.P. 1340(B)(1); whether that rule reaches every scored item of an assessment is untested, and this scenario does not pretend otherwise. Dependency and termination decisions carry a clear-and-convincing-evidence burden — the standard the paper in this ending was built to be weighed under. The plan was adjusted and the goal remains return home; the case moves toward closure with you as Kayla stabilizes with the Hendersons and Rosa's kin time written in. A dependency case cannot stay open forever — that horizon is real and generic, and this ending does not claim any specific rule about it.",
+    "THE HONEST PART: Kayla's twenty minutes were Kayla's. A different teenager, a different therapist, a judge who read the same file with a different hand — any of these could have carried this case to another ending, and in real cases they do. Workers, judges, placements, and luck hold pieces of every outcome. What your choices changed was narrower and real: when the court weighed Kayla's refusals, it weighed them as hers, and when it weighed your work, the work was there to be weighed."
+   ]
+  },
+  {
+   "id": "end_fair_record",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — Her Refusals, Fairly Recorded; the Plan Adjusted",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: The fair account — her refusals quoted and owned by her, your outreach logged and dated, the overnight told whole, a written statement on the record. The court did not order the full arrangement you asked for: Kayla remains placed for now, and the plan is adjusted rather than replaced — sessions redesigned with her input, kin time formalized, your obligations rewritten to the ones a parent can actually perform.",
+    "WHAT THE CLOCKS DID: Reviews passed; the placement changed once and reset the practical progress; the case continues on a shorter leash of dates. The adjustment was not a victory lap. It was the system, presented with a file that separated two people's actions, finally writing a plan that separated them too.",
+    "THE LAW UNDER THIS PATH: Counsel and appointed counsel (42 Pa.C.S. § 6337); the record released on request, including the scored assessment — form, item ratings, outcome (55 Pa. Code § 3130.44(d)); adjudication-phase disclosure under Pa.R.J.C.P. 1340(B)(1), with its application to the assessment's scored items untested, as stated in-game; and the clear-and-convincing-evidence burden that governs dependency and termination decisions. No ending in this scenario turns on a rule this list does not contain.",
+    "THE HONEST PART: A fair record is not the same as a finished case, and this ending does not call it one. Kayla may still leave a session next month; a placement may still change; a judge may still read fairly and decide hard. Real outcomes turn on workers, judges, teenagers, and luck. What the record changed is the question the next review will ask — from “why didn't the mother ensure compliance” to “what does this young person need, and what has her mother actually done.” That is a better question, and getting it asked was the playable skill."
+   ]
+  },
+  {
+   "id": "end_blame",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — The Record Blames the Mother",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: Summaries. “Mother aware” of an overnight absence, without the same-night calls. Sessions “not attended,” without the nine minutes, the staying, or the sentence about the chart. A teenager's choices, shortened until they fit under her mother's name — and a judge who, reading that file, increased the pressure on the only person the plan could name: you. Goal pressure grows in this ending: more is now formally expected of you, including things that were never yours to deliver.",
+    "WHAT THE CLOCKS DID: The reviews did not wait for the record to become fair. Each passing review read the file as it stood that month, and the placement change reset the practical work while the summaries travelled unchanged into the new file, acquiring the authority of age.",
+    "THE LAW UNDER THIS PATH: The rights were the same in this ending as in every other — counsel (42 Pa.C.S. § 6337), the record on request (55 Pa. Code § 3130.44(d)), adjudication-phase disclosure (Pa.R.J.C.P. 1340(B)(1), its reach to scored assessment items untested), and a clear-and-convincing burden for dependency and termination decisions. Rights unused in time do not vanish from the statute book; they vanish from the file, which is where hearings live. Nothing decided here was a finding about your worth as a mother. It was a finding about a record — a record that attributed a fifteen-year-old's stated, reasoned refusals to the nearest adult name.",
+    "THE HONEST PART: Parents reach this ending after doing most things right in person and few of them on paper, and teenagers reach it beside parents who did the opposite; the line runs through summaries, workloads, courtroom minutes, and luck as much as through anyone's effort. Workers, judges, and a teenager's own weather held pieces of this outcome. The lesson the scenario was built to teach is not “try harder.” It is that in this system, care that is not documented is care the court cannot weigh — and a refusal that is not quoted will be summarized, and a summary will find an owner, and the owner is usually the parent."
+   ]
+  },
+  {
+   "id": "end_drift",
+   "kicker": "Day 84 — Monday, December 28, 2026",
+   "dayOffset": 84,
+   "title": "Ending — Toward the Horizon, With a True Record",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD: A mixed record — real care, thinly documented; a teenager's voice, heard in rooms and mostly absent from pages; reviews that continued the case because no version of the file yet justified either a firm plan or a closing one. What the file does hold, where your paper reached it, tells the truth: her words, your log, the night at Rosa's told whole. It is not enough paper to have changed the direction. It is enough to change what the direction means.",
+    "WHAT THE CLOCKS DID: Time did the deciding. Reviews passed, the placement changed, Kayla got older inside a case that — stated generically, with no specific rule claimed — cannot stay open forever. Drift is not an event in this system. It is what happens while every individual decision is a reasonable continuance.",
+    "THE LAW UNDER THIS PATH: Counsel (42 Pa.C.S. § 6337); records on request (55 Pa. Code § 3130.44(d)); disclosure under Pa.R.J.C.P. 1340(B)(1), untested as to the assessment's scored items; the clear-and-convincing burden for dependency and termination decisions. This scenario deliberately asserts nothing more specific about aging out, emancipation, or extended jurisdiction — no primary text for such specifics was verified, so the game keeps the horizon generic: the case cannot stay open forever.",
+    "THE HONEST PART: Drift endings happen to diligent parents and to overwhelmed ones, beside teenagers who thrive late and teenagers who do not, under judges who hope time will do what orders cannot. Workers, judges, placements, and luck all held pieces of this. What remains — and it is not nothing — is a paper record that at least tells the truth about whose choices were whose. If Kayla ever reads her file as an adult, and many young people do, she will find her own sentences in it, and yours beside them, dated. Some records are built for a hearing. This one, in the end, was also built for a reader."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s29';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["school|teacher|classroom|class", "School"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+function plateHTML(plateName) {
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Second County</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 16px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 10px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:26px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 16 — The Second County (a fictional composite)",
+  "startDateISO": "2026-08-03",
+  "startNode": "start",
+  "startCash": 230,
+  "tier": "Hard",
+  "summary": "A mid-case move for housing, a file that takes a month to cross the county line, and clocks that don't pause — carrying her own copies so the case doesn't restart from zero."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, August 3, 2026",
+   "dayOffset": 0,
+   "title": "The Lease That Ended",
+   "body": [
+    "The landlord's letter is polite and final: the building is being sold, your lease ends this month, and the apartment where your daughter Ivy, eight, learned to ride a bike stops being yours in twenty-six days. Ivy is placed with a foster family here in Alder County, eight months into her case, while you work the plan — housing was always its heaviest line, and the line just moved.",
+    "Your cousin Marisol, one county over in Bexley, has a spare room and a lease that allows a guest, for a while. It is the only housing you can reach. Your Alder caseworker, Mr. Tran, is decent about it: families move; cases transfer; 'we'll send the file to Bexley and they'll pick it up.' He says it the way people describe weather in another state. What he does not say is how long files take to travel, or what happens to clocks while they do. Court clocks, you will learn, do not recognize county lines. Neither do they wait at them."
+   ],
+   "choices": [
+    {
+     "text": "Ask Mr. Tran exactly what 'transfer' involves — what goes, when, and what you should carry yourself",
+     "next": "before_move",
+     "note": "He answers honestly within the limits of his knowledge, which stops, as most caseworkers' knowledge stops, at the county border."
+    }
+   ]
+  },
+  {
+   "id": "before_move",
+   "kicker": "Day 3 — Thursday, August 6, 2026",
+   "dayOffset": 3,
+   "title": "The Week Before the Truck",
+   "body": [
+    "Mr. Tran's honest answer: the file is copied and sent by the agency's process — 'a few weeks, usually' — and Bexley opens its own case when the file lands. Your services here (your counselor, your parenting group, eight months of attendance) live in that file and in the providers' own records. Your review hearing stays in Alder, on Monday, September 14, 2026, transfer or no transfer.",
+    "Your lawyer asks the question the week exists for: 'What will you be able to prove in Bexley, the day you arrive, if their file is empty?' A party may request the case record in writing, and it 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — the whole record: service certificates, attendance logs, the plan, the notes. A copy for Bexley, carried by hand, is legal, ordinary, and — she lets the implication sit — entirely your responsibility to think of."
+   ],
+   "choices": [
+    {
+     "text": "Request the complete record now — before the move, while Alder still has you on its desk",
+     "next": "copies_secured",
+     "cash": -12,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Parent copy of record — complete file obtained before the move, carried by hand"
+     ],
+     "note": "The copy takes four days and costs twelve dollars at the library copier for your own set. Eight months of your life, in a binder, with tabs. It is the heaviest thing you own that fits in a tote bag."
+    },
+    {
+     "text": "Trust the transfer — the agency does this all the time, and the truck is Friday",
+     "next": "trust_transfer",
+     "note": "They do do it all the time. 'All the time' is a frequency, not a duration, and the duration is the part that will matter."
+    }
+   ]
+  },
+  {
+   "id": "copies_secured",
+   "kicker": "Day 5 — Saturday, August 8, 2026",
+   "dayOffset": 5,
+   "title": "The Binder",
+   "body": [
+    "The binder assembles on Marisol's borrowed kitchen table before you've even moved: plan, court orders, your parenting certificate (module one of two), counseling attendance logs signed monthly, visit notes, Ivy's school records that Alder had — everything, tabbed, in date order, with the review date written inside the front cover the way people used to write their names in books: Monday, September 14, 2026, Alder County court.",
+    "You make a second, slimmer copy of the service pages for handing over, because originals get lost in other people's systems too, and a third set of the certificates alone. Paper in triplicate travels better than paper in singular. So do people, but you only have the one of you."
+   ],
+   "choices": [
+    {
+     "text": "Pack the binder on top of the last box, where your hand will be",
+     "next": "move_day",
+     "note": "Movers — in your case, Marisol's pickup — lose boxes marked 'fragile.' The binder rides in the cab."
+    }
+   ]
+  },
+  {
+   "id": "trust_transfer",
+   "kicker": "Day 5 — Saturday, August 8, 2026",
+   "dayOffset": 5,
+   "title": "Sent, Somewhere",
+   "body": [
+    "Your documents stay where they've always lived: in the agency's file room in Alder, in your counselor's cabinet, in the parenting program's binder — a distributed archive of your eight months, none of it addressed to you. Mr. Tran confirms the transfer request is 'in process' before you leave, and you believe him, because it is.",
+    "What 'in process' means at the border between two county systems — whose intake queue, whose mailroom, whose scanning backlog — is knowledge no one person in either building fully has. You drive to Bexley with your clothes, your phone charger, and Marisol's address written on your hand, the way you used to write the important things."
+   ],
+   "choices": [
+    {
+     "text": "Ride to Bexley in the cab of the pickup, watching the county line signs go past",
+     "next": "move_day",
+     "note": "The border is a green sign and a river. Your case crosses it at the speed of interoffice process. You cross it at fifty-five miles an hour. That difference is this scenario."
+    }
+   ]
+  },
+  {
+   "id": "move_day",
+   "kicker": "Day 7 — Monday, August 10, 2026",
+   "dayOffset": 7,
+   "title": "County Line",
+   "body": [
+    "Marisol's spare room is small, clean, and unmistakably borrowed — a futon, a lamp, a hook for your coat, and a cousin whose generosity has the exact dimensions of the room. Ivy's foster placement stays in Alder for now; children don't transfer as fast as files, which is saying something. Your visits remain in Alder, ninety minutes each way by bus, until Bexley and Alder sort out whose case this is.",
+    "The sorting-out has a legal shadow your lawyer named before you left: the clocks — the review date, the case's overall timeline, the months Ivy has been in care — run on the case, not on the file's location. Paper can be in transit. Time cannot."
+   ],
+   "choices": [
+    {
+     "text": "Notify both counties of the move in writing this week — old address, new address, dates",
+     "next": "notify",
+     "cash": -4,
+     "note": "Written notice, both directions, with your phone number on it. Mail in this story is how families prove they said things."
+    }
+   ]
+  },
+  {
+   "id": "notify",
+   "kicker": "Day 9 — Wednesday, August 12, 2026",
+   "dayOffset": 9,
+   "title": "Two Letters",
+   "body": [
+    "Alder acknowledges your notice with a form letter — received, noted, transfer pending. Bexley's intake line, when you call, is courteous and entirely empty-handed: no file, no case number, no worker; 'when it arrives, we'll assign it.' You ask what you should do meanwhile, and the answer is the answer this scenario is built around: 'Keep doing what you were doing, and keep your paperwork.'",
+    "Keep your paperwork. The sentence lands differently depending on what your hands hold: a binder with tabs, or a memory of certificates in other people's cabinets. Either way, the advice is the same, and so is the calendar: the Alder review is five weeks away, and counting is something calendars do without permission."
+   ],
+   "choices": [
+    {
+     "text": "Enroll Ivy's school transfer paperwork and settle into the bus routes",
+     "next": "school",
+     "note": "Schools, at least, transfer records in days. You file that fact away as evidence that speed is a choice institutions make."
+    }
+   ]
+  },
+  {
+   "id": "school",
+   "kicker": "Day 12 — Saturday, August 15, 2026",
+   "dayOffset": 12,
+   "title": "A New School",
+   "body": [
+    "Ivy's school records cross the county line in three days, because schools have a legal conveyor belt for exactly this and use it without drama. She'll start in Bexley in September if her placement moves, or keep her Alder school if it doesn't — a decision above your pay grade that two counties will make from files, one of which doesn't exist yet.",
+    "You update her Alder school anyway, in writing, with Marisol's address, because you have become a person who notifies institutions in writing the way other people lock doors: automatically, and because of experience. The school secretary faxes the update to both counties' offices the same day. A fax. In 2026. It arrives faster than your case file will."
+   ],
+   "choices": [
+    {
+     "text": "Settle into the waiting — and keep every Alder service going by bus",
+     "next": "ivy_call",
+     "note": "Your counselor agrees to telehealth. The parenting group does not. Two buses, Tuesdays, for module two. The plan continues; only its geography changed."
+    }
+   ]
+  },
+  {
+   "id": "ivy_call",
+   "kicker": "Day 14 — Monday, August 17, 2026",
+   "dayOffset": 14,
+   "title": "Wednesday, by Phone",
+   "body": [
+    "Visits are in person on weekends, but Wednesdays are for the phone, and Ivy's foster mother holds it to her ear with the ceremony of a switchboard operator in an old film. Ivy's questions are logistical, the way children's questions about upheaval always are: Does Marisol's house have stairs? Is the spare room a room? Can a person hear the rain there?",
+    "You answer everything you truthfully can and promise nothing you don't control — a discipline this case has taught you at some cost. What you can tell her is the date of the review, and that you will be in the room, in Alder, on that day, with the file. She repeats the date back to you like a spelling word. Somewhere in a visit log, this call becomes a line — 'phone contact held, child appropriate' — and for once the line and the life are the same size."
+   ],
+   "choices": [
+    {
+     "text": "Keep the Wednesday rhythm — calls, like visits, are a record of showing up",
+     "next": "first_weeks",
+     "addHidden": [
+      "Child contact — Wednesday phone calls held throughout the transfer period"
+     ],
+     "note": "Rhythm is a kind of evidence. Children keep it better than agencies do."
+    }
+   ]
+  },
+  {
+   "id": "first_weeks",
+   "kicker": "Day 16 — Wednesday, August 19, 2026",
+   "dayOffset": 16,
+   "title": "Nothing Yet",
+   "body": [
+    "Week three in Bexley: nothing has arrived. Bexley's intake answer is unchanged — no file, no worker — while Alder's position has subtly shifted: the case is 'transferring,' which means Alder's services calendar still runs (your visits, your group) but Alder's initiative has already left the building. You live in one county, are served in another, and are administered, for the moment, in neither.",
+    "The visits are the sharp edge: ninety minutes each way, two buses, a transfer downtown, $11 a trip. Miss one and the log — kept in Alder, by the visit program, in the file that's in transit — records it in the vocabulary these scenarios have taught you to fear."
+   ],
+   "choices": [
+    {
+     "text": "Spend the fare and keep every visit — the log is the log, wherever it's kept",
+     "next": "visit_kept",
+     "cash": -33,
+     "note": "Thirty-three dollars across three weeks of buses. Attendance over distance is expensive in every currency except the one reviews spend."
+    },
+    {
+     "text": "Miss one visit in the worst week — money runs out before the month does",
+     "next": "visit_missed",
+     "cash": -11,
+     "addHidden": [
+      "Visit — missed during transfer period (fare); no written explanation sent"
+     ],
+     "note": "The week it happens, rent-to-Marisol and food and the fare form a triangle with no solution. The log gets its line. Logs always get their line."
+    }
+   ]
+  },
+  {
+   "id": "visit_kept",
+   "kicker": "Day 19 — Saturday, August 22, 2026",
+   "dayOffset": 19,
+   "title": "The Cousin's Couch Has Rules",
+   "body": [
+    "Marisol's lease allows a guest for sixty days. You knew this; what you didn't know is how loudly day nineteen of sixty can tick. She is kind, the landlord is inflexible, and the arithmetic of your life now includes finding Bexley housing with a case in Alder, no Bexley worker, and a futon deadline — while Bexley housing programs ask, reasonably, for documentation of your situation, including your case.",
+    "Documentation of your case. The request lands on your hands and finds there either a binder with tabs or a phone number for an Alder office that considers you transferred. Housing, services, school — every Bexley institution asks the new county's oldest question: show me. What you can show is what you carried."
+   ],
+   "choices": [
+    {
+     "text": "Show what you have, apply for the Bexley housing list, and keep the Alder review date circled",
+     "next": "second_room",
+     "note": "The review is three weeks out. Housing lists move in months. Everything in your life is a queue, and you are documented in some of them."
+    }
+   ]
+  },
+  {
+   "id": "visit_missed",
+   "kicker": "Day 19 — Saturday, August 22, 2026",
+   "dayOffset": 19,
+   "title": "The Cousin's Couch Has Rules",
+   "body": [
+    "Marisol's lease allows a guest for sixty days, and day nineteen ticks the louder for the visit you missed — because you can feel the file, wherever it is, tilting: a missed visit during a transfer is exactly the kind of line that gets summarized later as 'parent disengaged following relocation,' a sentence that would be wrong about everything except the bus fare.",
+    "Bexley housing asks for documentation of your case. Alder considers you transferred. Bexley has nothing. You stand between two systems at the exact point where each one's responsibility is described with the other one's name — the county version of a circle you may remember from other stories in this series — with a review three weeks away."
+   ],
+   "choices": [
+    {
+     "text": "Write to both counties about the missed visit and the fare — late, but in writing, dated now",
+     "next": "second_room",
+     "cash": -4,
+     "addHidden": [
+      "Missed visit — parent explained in writing to both counties (fare, transfer period)"
+     ],
+     "note": "Late paper again: weaker than the binder, stronger than the silence it replaces. The ladder has many rungs."
+    }
+   ]
+  },
+  {
+   "id": "second_room",
+   "kicker": "Day 21 — Monday, August 24, 2026",
+   "dayOffset": 21,
+   "title": "A Room With a Lease Line",
+   "body": [
+    "The Bexley room is above a bakery, up stairs Ivy would count out loud, and the landlord — a woman who has rented to people in your exact situation before, though she doesn't say how she knows — asks for two things: a deposit, and 'something official that says what your situation is.' Not your story. Something official. Every door in the new county opens to the same key, and the key is a document about your case.",
+    "You have a review in three weeks, a futon with five weeks left on it, and a deposit you can almost make. What you hand her — a binder's contents or an Alder phone number and a promise — decides whether this room waits for you or rents to the next name on her list. Housing in the new county is not separate from the case in the old one. It never was. The county line just made the connection visible."
+   ],
+   "choices": [
+    {
+     "text": "Put the room on a short hold — documentation first, deposit scraped together by Friday",
+     "next": "track_split",
+     "cash": -20,
+     "addHidden": [
+      "Housing — Bexley room identified; landlord awaiting official case documentation"
+     ],
+     "note": "Twenty dollars to hold a door for a week. Whether the documentation arrives in time to walk through it is the rest of the story."
+    }
+   ]
+  },
+  {
+   "id": "track_split",
+   "kicker": "Day 23 — Wednesday, August 26, 2026",
+   "dayOffset": 23,
+   "title": "The Border, in Practice",
+   "body": [
+    "Day twenty-three. You walk into Bexley's intake office in person, because phones have given you all they have. What happens in that office depends — with the mechanical fidelity this series never apologizes for — on what is in your hands."
+   ],
+   "choices": [
+    {
+     "text": "Lay the binder on the intake desk",
+     "next": "her_copies",
+     "note": "Tabs, certificates, logs, the plan. The intake worker's face changes in the way faces change when a queue becomes a person with a file."
+    },
+    {
+     "text": "Lay out the situation — addresses, dates, the Alder phone number — from memory and your phone",
+     "next": "empty_hands",
+     "note": "Everything you say is true. The intake worker writes some of it down, in her words, in a note that will someday be the beginning of your Bexley file: a summary, by a stranger, of your eight months."
+    }
+   ]
+  },
+  {
+   "id": "her_copies",
+   "kicker": "Day 23 — Wednesday, August 26, 2026",
+   "dayOffset": 23,
+   "title": "The File Arrives With Her",
+   "body": [
+    "The intake worker copies your service pages on the spot — the slim set you made for handing over — and Bexley's file is born containing eight months of your life: certificates, signed logs, the current plan, the review date flagged on the intake form in her handwriting with an exclamation point you did not put there and would not remove.",
+    "'You'd be surprised how often people arrive with nothing,' she says, in the tone of a woman who would not, in fact, be surprised. Bexley schedules nothing new for you. There is nothing new to schedule: your services are verified, current, and credited provisionally pending the official file — a phrase that means the case continues at its actual age instead of restarting at zero."
+   ],
+   "choices": [
+    {
+     "text": "Get the intake receipt — her name, the date, the list of what you handed over",
+     "next": "verified_note",
+     "cash": -3,
+     "addHidden": [
+      "Bexley file — opened from parent's copies; services verified and credited pending official transfer"
+     ],
+     "note": "A receipt for a file. Bureaucracy's love language, fluently spoken, at last, in both directions."
+    }
+   ]
+  },
+  {
+   "id": "empty_hands",
+   "kicker": "Day 23 — Wednesday, August 26, 2026",
+   "dayOffset": 23,
+   "title": "We Start When It Arrives",
+   "body": [
+    "'We start when it arrives' is not unkindness; it is procedure wearing its honest face. Without the official file, Bexley cannot verify your services — your counselor's name is in Alder's system, your certificates in a cabinet, your attendance in a program binder — so Bexley does what systems do unverified: it schedules its own intake assessment, its own service referrals, its own baseline. Duplicates of things you finished months ago, entering a fresh file with fresh dates, where a reader will someday wonder why you did them twice — or why your 'start' is dated month nine.",
+    "Your Alder counselor, reached by phone, offers to send her logs directly. Providers can; some do; it takes nine days and arrives as loose pages without the plan around them. Partial paper, partial restart — the arithmetic of arriving empty-handed."
+   ],
+   "choices": [
+    {
+     "text": "Call every Alder provider yourself and beg the records loose, one office at a time",
+     "next": "verified_note",
+     "cash": -6,
+     "note": "Some send, some stall, one faxes. The Bexley file grows a patchwork appendix: real paper, unindexed, unexplained — better than blank, short of whole."
+    }
+   ]
+  },
+  {
+   "id": "verified_note",
+   "kicker": "Day 28 — Monday, August 31, 2026",
+   "dayOffset": 28,
+   "title": "The New County's Screen",
+   "body": [
+    "Bexley's first administrative act in your case is a drug screen referral — standard at intake, whatever your history. The referral lists a Bexley lab; your eight months of Alder screens are in the file in transit, so as far as Bexley's paper is concerned, this is your first. You take it the day it issues, because in this story you have learned the first rule of screens and of everything else: the date you do a thing is the thing.",
+    "The lab is two buses in the new geography. You are, you realize on the second bus, building a Bexley record now — screen by screen, receipt by receipt — on top of whatever your hands carried across the border. The counties will eventually reconcile their papers. What they reconcile to is partly up to what exists."
+   ],
+   "choices": [
+    {
+     "text": "File the lab receipt with Marisol's spare-room paperwork and wait for the box from Alder",
+     "next": "paper_month",
+     "note": "Receipts in a folder, folder in the room, room on a sixty-day clock. Everything accounted for except the one box that matters."
+    }
+   ]
+  },
+  {
+   "id": "paper_month",
+   "kicker": "Day 29 — Tuesday, September 1, 2026",
+   "dayOffset": 29,
+   "title": "A Month of Receipts",
+   "body": [
+    "On the twenty-ninth day, you do an inventory, because inventories are what this month has taught you: one Bexley screen (taken, receipt kept), four Alder visits (kept by bus, or three and an explanation), two telehealth counseling sessions (logged by the provider, confirmed by email), module two of parenting group (in progress, attendance emailed weekly by the facilitator, because you asked her to). A month that two county files currently describe as a blank is, in your folder, the most densely documented month of your case.",
+    "You index it in date order and write the review date inside the front cover again, under the first time you wrote it. Paper doesn't get discouraged. That is its entire advantage over people, and this month you have been determined to deserve it."
+   ],
+   "choices": [
+    {
+     "text": "Keep the index current — the box from Alder is now officially overdue, in the sense that you are keeping count",
+     "next": "transfer_lag",
+     "addHidden": [
+      "Transfer month — parent's own index documents services, screens, and visits during the file's transit"
+     ],
+     "note": "Keeping count is a form of jurisdiction. For this month, in this case, it is yours."
+    }
+   ]
+  },
+  {
+   "id": "transfer_lag",
+   "kicker": "Day 30 — Wednesday, September 2, 2026",
+   "dayOffset": 30,
+   "title": "Day Thirty",
+   "body": [
+    "Thirty days after your move, the official file has not arrived. Alder's transfer office, reached after two hold queues, reports it 'sent' on day twelve — sent being a word that covers trucks, mailrooms, scanning queues, and at least one inter-county courier whose route is a state secret. Bexley reports, accurately, that it has not been received. Between 'sent' and 'received,' your case's official existence is in a vehicle somewhere, and the review hearing is twelve days away, in Alder, where a judge will open a file.",
+    "What that judge finds in Alder's file depends on which Alder file: the original, wherever it physically is, and whatever has been said about you since — a month of visits logged by a program, services attended by telehealth and bus, all recorded in systems that do not know the main file is traveling."
+   ],
+   "choices": [
+    {
+     "text": "Call the Alder clerk's office about the review — confirm the date and ask what's in the court file",
+     "next": "clerks_call",
+     "cash": -3,
+     "note": "Clerks answer the questions courts run on: what date, what room, what documents. Call clerks. It is a life skill disguised as a phone call."
+    }
+   ]
+  },
+  {
+   "id": "clerks_call",
+   "kicker": "Day 36 — Tuesday, September 8, 2026",
+   "dayOffset": 36,
+   "title": "The Clerk's Question",
+   "body": [
+    "The Alder clerk confirms: review, Monday, September 14, 2026, courtroom as listed. Then she asks the question that tells you she has seen this film: 'Will Bexley have their file by then? The judge likes the current service verification.' Current service verification. Your services are current. Their verification is a state of paper, and paper, this month, has been a geography problem.",
+    "Your lawyer, updated by phone, lays out the endgame with her usual mercy-free clarity: 'At the review, Alder's report will say what's in Alder's file. Bexley's say-so will be what's in Bexley's. Your folder is the only complete set of your records on Earth right now. So the question is whether the complete set gets in front of the judge — or just its official fragments.'"
+   ],
+   "choices": [
+    {
+     "text": "Prepare the complete set for the review — through your lawyer, to both counties, before the hearing",
+     "next": "box_arrives",
+     "note": "Copies to Alder's worker, Bexley's intake, and the court packet via your lawyer. The complete set, delivered by the only courier who never lost it: you."
+    }
+   ]
+  },
+  {
+   "id": "box_arrives",
+   "kicker": "Day 38 — Thursday, September 10, 2026",
+   "dayOffset": 38,
+   "title": "The Box",
+   "body": [
+    "On day thirty-four, the official file arrives in Bexley — a banker's box and a scanned drive, eight months of case, minus, as these things go, the loose items: two attendance certificates that lived in a sub-folder, and the most recent month's visit logs, which the visit program sends separately, eventually, to an office that has to know to ask.",
+    "The box's arrival is announced to you by Bexley's new worker, Ms. Adeyemi, as good news, and it is — the case now officially exists in the county where you sleep. But the review is four days away, and the box is a beginning for Bexley's paperwork, not an end: reconciling it against your services, your visits, and your month of Bexley life is work measured in weeks, by people who have other boxes."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review with the reconciliation already done — your set, their box, the differences flagged",
+     "next": "prep_done",
+     "note": "Flagged by you, in date order, in the calm handwriting of a person who has carried this file further than any courier."
+    },
+    {
+     "text": "Go to the review trusting the box to speak — it is, after all, the official file now",
+     "next": "prep_done",
+     "note": "The box speaks with an accent: it ends a month ago, and it is missing two certificates and the recent visits. Official and incomplete are compatible adjectives."
+    }
+   ]
+  },
+  {
+   "id": "prep_done",
+   "kicker": "Day 40 — Saturday, September 12, 2026",
+   "dayOffset": 40,
+   "title": "The Differences, Flagged",
+   "body": [
+    "Two days before the review, you and your lawyer do by phone what the two counties have not yet done in person: reconcile. The box against your set, line by line. Two certificates missing from the box — present in your binder, copies already in Bexley's intake file since day twenty-three, if you carried them, or begged loose from providers since, if you didn't. The recent visit logs — summarized in your index. Her one-page memo lists each gap and its covering document, in the tone of a person doing arithmetic in public.",
+    "'This memo is the hearing,' she says. 'Everything else is introductions.' You believe her, because by now you have watched a year of hearings run on exactly this: not who is right, but what is reconciled, in writing, before the judge has to ask."
+   ],
+   "choices": [
+    {
+     "text": "Go to Alder for the review — memo, binder, and box, in one car, in date order",
+     "next": "review",
+     "setFlags": [
+      "reconciliationFiled"
+     ],
+     "addHidden": [
+      "Reconciliation memo — gaps in the transferred file flagged, parent's copies attached"
+     ],
+     "note": "One car, three versions of the same eight months, finally traveling together."
+    }
+   ]
+  },
+  {
+   "id": "review",
+   "kicker": "Day 42 — Monday, September 14, 2026",
+   "dayOffset": 42,
+   "title": "The Review — Two Counties on the Phone",
+   "body": [
+    "The Alder review convenes with Bexley on speakerphone — two counties, one child, one judge, and a stack of paper whose completeness is the whole hearing, though no one will say so in those words. Alder's report covers the case through the move and describes the transfer. Bexley's contribution covers what Bexley holds. Between the reports, there is a month of your life: services, screens, visits across ninety minutes of bus routes.",
+    "The judge asks, in the tone judges use for load-bearing questions, how the month since relocation is documented. The answer is sitting in the court packet — or it is a pause, filled by counsel describing systems to each other. You have known since the courthouse steps of other stories which of those you would rather be."
+   ],
+   "choices": [
+    {
+     "text": "Let the complete set answer — binder trail, intake receipt, logs, both counties copied in advance",
+     "next": "end_carried",
+     "note": "Your lawyer doesn't argue. She directs the judge to the packet, tab by tab. Eight months, one month, no gap: the file, testifying to its own journey."
+    },
+    {
+     "text": "Let the partial record answer — provider pages, a new screen, the box, reconciling as it goes",
+     "next": "end_partial",
+     "note": "Real paper, loosely joined. The judge can see a case in it, the way you can see a house in a pile of lumber: truly there, not yet standing."
+    },
+    {
+     "text": "Let the transfer answer — two counties' systems explaining each other to the court",
+     "next": "end_zero",
+     "note": "Systems explaining systems sound, from the bench, like weather explaining rain: a description of the thing that happened to you, offered as if it were an account of you."
+    }
+   ]
+  },
+  {
+   "id": "end_carried",
+   "kicker": "Day 49 — Monday, September 21, 2026",
+   "dayOffset": 49,
+   "title": "Ending — The File Arrives With Her",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Two files, reconciled before the hearing by the only person who held both: yours. The binder — requested from Alder before the move, under the regulation that releases the record to its subject — seeded Bexley's file on day twenty-three, so Bexley's record of your services begins at month eight, not month zero. When the official box finally arrived on day thirty-four, missing certificates and a month of visit logs, the gaps were already covered by the copies you had carried and filed, with an intake receipt proving when Bexley got them. At the review, the transfer month was documented as what it was: services continued, visits kept by bus, screens taken — a relocation, not a disappearance.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Inter-county transfer is procedure, and this scenario deliberately keeps its mechanics generic — what was verified, and what you used, is the record right itself: the case record 'shall be released upon request' (55 Pa. Code § 3130.44(d)), exercised before the move, when Alder still had you on its desk. The deeper principle is about clocks: the case's timeline — the review date, the months Ivy has spent in care under the ASFA framework's 15-of-22 accounting (42 U.S.C. § 675(5)(E)) — runs on the child's life, not on the file's itinerary. A month of undocumented services is a month the timeline cannot see. Your binder made the month visible, which is why this ending's modesty is its strength: nothing was won except continuity — your eight months still count as eight months, in both counties, in writing.",
+    "THE HONEST PART: The box might have arrived complete and early for another family; Marisol's sixty days might have run out for yours and forced a second move mid-story; a Bexley intake worker less willing to copy a parent's binder could have insisted on waiting for the official file, and some do. Workers, clerks, couriers, and cousins all held pieces of this outcome, and the cousin's spare room held more than most. What was yours was a single unglamorous decision made in the last week in Alder, when the truck was already coming: you asked for your own record while it was still easy to give. In the published cases this scenario is built from, families' cases crossed county lines and arrived thinned, re-baselined, half-remembered by new workers reading partial files. Yours arrived whole because it traveled twice — once by courier, once by hand — and the hand was faster."
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 49 — Monday, September 21, 2026",
+   "dayOffset": 49,
+   "title": "Ending — Half a Restart",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A patchwork: an official box that arrived on day thirty-four missing the loose items; provider pages begged loose one office at a time, real but unindexed; a Bexley record born at intake from a stranger's summary of your eight months; a fresh screen standing where a history of screens belongs. At the review, the case was visible but young-looking — services credited in part, re-verified in part, a month of your life described by two counties in two vocabularies with a visible seam. Nothing was denied, and nothing was quite believed at full value either: partial paper earns partial credit, at reviews as at banks.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The clocks never paused — the review sat on its date, and the case's ASFA accounting (42 U.S.C. § 675(5)(E)) continued to count Ivy's months in care while two bureaucracies reconciled. Against running clocks, a restart is not a neutral event: re-baselined services read as new services, and new services read as a parent earlier in her plan than she is. The instrument that prevents it was in the verified set from the first week: the complete record, available on written request (55 Pa. Code § 3130.44(d)), before Alder's desk cleared. This path recovered much of what that request would have secured automatically — at the price of nine days here, a fax there, and a seam in the file that future readers will have to be told about, because the file cannot explain itself.",
+    "THE HONEST PART: Half a restart is a recoverable position, and families recover from worse every month: your services are now verified in Bexley going forward, the box is reconciled enough to proceed, and the next review will read a settled file. The costs were real but denominated in the case's least renewable currency — time on a child's clock, and the benefit of the doubt, which partial records spend faster than complete ones. Workers in two counties were mostly decent within their systems; the systems' handoff was the failure, and handoffs fail in the direction of whoever isn't carrying copies. What this ending teaches, it teaches kindly because the tuition was moderate: in a two-county case, you are the only continuous institution in your child's life. Carry the file like it."
+   ]
+  },
+  {
+   "id": "end_zero",
+   "kicker": "Day 49 — Monday, September 21, 2026",
+   "dayOffset": 49,
+   "title": "Ending — Starting From Zero",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): In Bexley: a new file, opened at intake from a phone summary, containing a fresh assessment schedule, duplicate referrals for services you completed months ago, and a baseline dated month nine — your case, re-aged by a county line. In Alder: a transferred file, complete except for the items in transit, now administered by people who consider it closed. Between them, at the review, a month of your actual life existed as an explanatory pause while two systems described their procedures to a judge. The procedures were accurately described. So was the outcome: services you had finished were re-ordered as if new, and the case's timeline — which never stopped counting Ivy's months in care — now also counts a restart you didn't cause as time you must spend again.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Nothing in this ending required anyone's bad faith, which is precisely its lesson: transfer procedure (kept generic here, as this scenario's verified set requires) assumes the file is the case. When the file lags, the case as administered lags — while the legal clocks that govern the child's timeline, including the ASFA 15-of-22 framework (42 U.S.C. § 675(5)(E)), run from the child's life and not from the paperwork. The one verified instrument that breaks the equation 'file = case' is the subject's own copy: the record, released on written request (55 Pa. Code § 3130.44(d)), carried by the only participant who crosses the border at highway speed and has every incentive to arrive complete. Counsel (42 Pa.C.S. § 6337) can ask for it with you. No one can ask for it instead of you, in time, from the other side of the move.",
+    "THE HONEST PART: It should be said, in fairness to everyone in this story, that systems do eventually reconcile: the box arrived, the duplicates will be noticed, and a future worker in Bexley will likely merge the records and restore most of your eight months to you — months from now, at the speed of boxes. The injury of this ending is the interval: a season in which your daughter's case described a stranger — a new parent, at baseline, beginning services — while the real you rode buses to the real ones. Judges read what exists; workers inherit what arrives; luck, in the form of one intake worker's initiative, rescues some families from this ending without any binder at all. But luck is not a transfer protocol. The binder was three days of copying in a week when you had a truck to load, and it was the difference between your case traveling at the speed of institutions and at the speed of you."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s16';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["school|teacher|classroom|class", "School"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+function plateHTML(plateName) {
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

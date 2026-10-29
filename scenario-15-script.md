@@ -1,0 +1,288 @@
+# THE FIRST 90 DAYS — Scenario 15: “The Protective Parent”
+
+*Human-readable script. This document and `scenario-15.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts the aftermath of domestic violence as it appears in a child-welfare case — through petitions, safety documentation, and service records. It contains no graphic description of violence. The danger in the story belongs to the other parent; the paperwork problem belongs to the mother. Players may skip any scene or use the quick exit, in game and in life, at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, June 1, 2026. Day offsets are days since the scenario's start date. Tier: Hard.
+
+## [start] One Word: Parents
+*Day 0 — Monday, June 1, 2026 — Monday, June 1, 2026 (dayOffset 0)*
+
+The petition is written the way petitions are written, in the passive plural: 'the parents failed to protect the child from exposure to domestic conflict.' You read it at your sister's kitchen table, where you and Sam, six, have been staying, and where Sam is now placed with her — your sister, his aunt — while the case proceeds. Two parents were in the house that last winter. One of them was the danger. The sentence names both of you, in one word, for one failure.
+
+You know what you did in that house, in the months before anyone filed anything: the calls you made, the order you obtained, the locks, the leaving — leaving most of all, which is the thing survivors do that looks, in a summary, like nothing, because leaving leaves no form. Sam's father knows what he did too. The file, so far, cannot tell the difference between you. Teaching it the difference — on paper, in dates — is this scenario.
+
+**Choices:**
+- Read the petition a second time with a pen — mark every sentence where 'parents' means him, or means you, or means neither → **her_record**  _(HIDDEN + Petition — 'parents failed to protect'; no act or omission attributed to mother individually)_
+  - NOTE (shown after choosing): The pen finds the truth quickly: the petition's plural is doing all of its work. Plurals are how individual records get lost.
+
+## [her_record] What She Had Already Done
+*Day 4 — Friday, June 5, 2026 — Friday, June 5, 2026 (dayOffset 4)*
+
+Before the petition existed, there was a record — scattered, held by four different institutions, none of whom know about each other. A protection order, obtained last fall and still in force, in the court file across town. Intake paperwork at the domestic violence center, with dates. A landlord's copy of a lock change. And the leaving: a sister's couch, a school transfer for Sam handled in a single determined week.
+
+None of it is in the caseworker's summary, which begins, as summaries do, on the night the police came. Your protective history is real, documented, and entirely outside the file that will judge it — because no one has ever carried it there. Records do not travel on their own. They are carried, by hand, usually by the person they describe.
+
+**Choices:**
+- Start the folder today — order, center dates, lock receipt, in date order, copies for your lawyer → **folder_start**  _(FLAG: folderStarted; HIDDEN + Safety documentation — protection order, DV center dates, lock change; assembled by mother after filing)_
+  - NOTE (shown after choosing): Date order again. The folder's first claim is chronological: she acted before the system did.
+- Tell the caseworker all of it at the next visit — she'll note what matters → **worker_visit**
+  - NOTE (shown after choosing): She will note something. What summaries keep of spoken history is the theme of every bad ending in this game.
+
+## [folder_start] The Folder, First Edition
+*Day 6 — Sunday, June 7, 2026 — Sunday, June 7, 2026 (dayOffset 6)*
+
+Your sister helps at the kitchen table: copies at her office copier after hours, the center's intake sheet requested and received, the court file's order located with a clerk's help. It assembles into something with a thesis — she sought protection, formally, repeatedly, before the state sought anything from her — in twenty-one pages.
+
+It is also, you understand, only a first edition. The case will generate new paper for months: services assigned, services attended, services missed — his and yours, filed in the same binder by people who shelve alphabetically by family, not by parent. Keeping the folder current is the work. The work starts at the next visit, where the plan's services are handed out like a single assignment with two names on it.
+
+**Choices:**
+- Take the folder to the visit — and listen for whose name is on which service → **worker_visit**
+  - NOTE (shown after choosing): Listen for the plural. It will be everywhere, like weather.
+
+## [worker_visit] The Visit
+*Day 8 — Tuesday, June 9, 2026 — Tuesday, June 9, 2026 (dayOffset 8)*
+
+The caseworker, Ms. Herrera, is not unkind, and the plan she reviews is not unreasonable in its parts: counseling for you; a program for Sam's father, across town; supervised visits for him; 'co-parenting sessions' — joint — for you both, listed on the plan's service page under the family name, the way mail is addressed to a house.
+
+Joint sessions. With the man the protection order is about. The order sits in your folder, twenty-one pages deep in the record of your own making and nowhere in the plan's. Ms. Herrera is describing services for 'the parents,' and until the file learns to separate you, the plan will keep assigning you a share of his danger as if it were a household chore to split.
+
+**Choices:**
+- Say it now, plainly, and ask that it be noted: joint sessions are not safe for you, and you are asking for separate services → **visit_note_a**  _(FLAG: safetyRaised; HIDDEN + Safety — mother states on the record that joint services are unsafe; requests separate services)_
+  - NOTE (shown after choosing): Your voice shakes once, at 'not safe,' and holds. Ms. Herrera writes. What she writes is the next node of your life, as usual.
+- Sign the plan as presented — you can raise details later, once trust is built → **visit_note_b**
+  - NOTE (shown after choosing): Trust builds in both directions at different speeds. The signature is instant. Its implications are scheduled weekly.
+
+## [visit_note_a] Noted, Verbatim
+*Day 10 — Thursday, June 11, 2026 — Thursday, June 11, 2026 (dayOffset 10)*
+
+What Ms. Herrera writes — she turns the notebook so you can see, which you will always remember — is close to your words: 'Mother states joint sessions unsafe due to PFA; requests individual track.' One sentence. It does not grant anything. It does something prior to granting: it makes your safety objection a fact of the file rather than a mood of a meeting.
+
+She also says, honestly, that changing the service structure is 'a team decision' — which means the sentence you just created will be read by people who were not in this room, on a day you won't be present. That is not a flaw in the sentence. That is its entire purpose.
+
+**Choices:**
+- Ask what the file currently says about each of you separately — you want to see the record itself → **records_fork**
+  - NOTE (shown after choosing): 'The team' reads the file. It's time you did too.
+
+## [visit_note_b] Signed As Presented
+*Day 10 — Thursday, June 11, 2026 — Thursday, June 11, 2026 (dayOffset 10)*
+
+The plan is signed — services for 'the parents,' joint sessions included — and the signature page says what signatures say: reviewed, understood, agreed. Your reasons for signing were good ones: fear of seeming uncooperative in a case where 'cooperative' is being graded, hope that the details would soften in practice. The file will not record your reasons. It will record the signature, weekly, at sessions you will now have to either attend unsafely or miss on paper.
+
+You understand, driving home, that you have not agreed to a service. You have agreed to a dilemma with a schedule. The first session is in twelve days — time enough for paper, if paper is made.
+
+**Choices:**
+- Call your lawyer before the first session — the signature may be signed, but the record isn't finished → **records_fork**
+  - NOTE (shown after choosing): Records are never finished. That's the threat in this system, and also the hope.
+
+## [records_fork] Two Names, One File
+*Day 12 — Saturday, June 13, 2026 — Saturday, June 13, 2026 (dayOffset 12)*
+
+Your lawyer — parents in these cases have the right to counsel, and to appointed counsel if they cannot afford it (42 Pa.C.S. § 6337) — asks to see what the agency's file actually says about you, individually, if it says anything individually at all. A party may request the case record in writing; it 'shall be released upon request' (55 Pa. Code § 3130.44(d)).
+
+She is looking, she says, for the sentences with plurals in them, because plurals are where your case will be won or lost: every 'parents' in the file is a place where his conduct and yours have been averaged, and averages, in a courtroom, have a way of being read as the mother's individual score.
+
+**Choices:**
+- Sign the written request for the full record — notes, logs, service referrals, all of it → **file_arrives**  _(FLAG: recordsRequested)_
+  - NOTE (shown after choosing): The full record. Not the summary of it, which is the document that has been describing you to everyone so far.
+- Work from the summaries and the plan — the full file feels adversarial to request → **summaries_only**
+  - NOTE (shown after choosing): It isn't adversarial. It's the file's own contents, requested by one of its subjects. But the feeling is real, and feelings spend weeks like money.
+
+## [file_arrives] The File, Read Closely
+*Day 19 — Saturday, June 20, 2026 — Saturday, June 20, 2026 (dayOffset 19)*
+
+The record, read at your lawyer's office with two pens, is worse and better than you feared. Worse: the plurals are everywhere — 'parents missed February screening' on a day you attended and signed in, while he never appeared; 'parents uncooperative with intake' describing a morning he spent shouting at a worker in a parking lot you were not in. Better: every false plural is falsifiable from documents — sign-in sheets, the center's dates, the order — because the underlying events left paper of their own.
+
+Your lawyer marks each sentence with a small, devastating notation: 'hers,' 'his,' 'both,' 'neither — provable.' The file's average is dissolving into individuals. Dissolving it on paper, in the agency's own record, before a judge ever reads it, is the work of the next month.
+
+**Choices:**
+- Start with the February screening — request the provider's sign-in sheet for that day → **signin**  _(HIDDEN + Case note — 'parents missed February screening'; provider sign-in sheet shows mother attended)_
+  - NOTE (shown after choosing): One plural, corrected by one sheet. The method is the message: the record separates the same way it merged — document by document.
+
+## [summaries_only] Summaries of Summaries
+*Day 19 — Saturday, June 20, 2026 — Saturday, June 20, 2026 (dayOffset 19)*
+
+Without the full record, you work from the summary the agency gives the court — which is itself a summary of notes you've never seen, describing events you attended (and he didn't) in a grammar that holds you jointly. Your lawyer can argue the principle — she is separate from him; judge her on her record — but principles without documents are closing arguments in search of exhibits.
+
+She directs you to the two piles of paper you can still build without the file: the center's documentation of your engagement there, and precise, dated proof of your own service attendance from here on. 'We separate the record forward,' she says, 'since we can't audit it backward.' It can be done. It is simply done with fewer tools.
+
+**Choices:**
+- Go to the domestic violence center this week — and ask for your engagement there in writing, with dates → **dv_center**
+  - NOTE (shown after choosing): The center has been keeping your record all along, in its own filing cabinet, waiting for someone to ask it to testify.
+
+## [signin] The Sign-In Sheet
+*Day 21 — Monday, June 22, 2026 — Monday, June 22, 2026 (dayOffset 21)*
+
+The provider's sign-in sheet for the February screening is almost boring, which is what makes it decisive: a grid of names and times, your signature in the 9:15 row, his row empty. Your lawyer files a copy with the agency and keeps the original in the folder that is becoming, document by document, your individual record.
+
+She also teaches you the sentence to use from now on, in every office, about every joint entry: 'Please document us separately.' Four words. Said in writing, they have a way of changing how notes get taken, the way a photographer in a room changes how people stand.
+
+**Choices:**
+- Take the method to the domestic violence center — your engagement there, in writing, with dates → **dv_center**  _(HIDDEN + Record correction — February screening: sign-in sheet filed; mother attended, father absent)_
+  - NOTE (shown after choosing): One plural corrected. The center's letter is next, and it's the heaviest paper you own.
+
+## [dv_center] The Center's Letter
+*Day 23 — Wednesday, June 24, 2026 — Wednesday, June 24, 2026 (dayOffset 23)*
+
+The domestic violence center's advocate, Ms. Oyelaran, has known your voice longer than anyone in this case. She can document your engagement: intake last fall, the safety-planning sessions, the weeks you called from your sister's, the help with the school transfer — all of it dated in the center's own records, kept for exactly this purpose among others.
+
+She also tells you the truth about how this paper travels: the agency may have 'been in contact' with the center — a call, a confirmation that you're 'known to services' — without a single date ever crossing into your file. Contact is not documentation. If the dates matter — and your case is now entirely about dates — someone has to carry them across the street. That someone, as ever, is you.
+
+**Choices:**
+- Ask for the letter — engagement documented with dates, on the center's letterhead, addressed to the file → **letter_secured**  _(cash -4; FLAG: dvLetter; HIDDEN + DV center — mother's engagement documented with dates, letter provided to the file)_
+  - NOTE (shown after choosing): She writes it that week. Center letterhead has a gravity in court files that no one's testimony quite matches.
+- Assume the agency's contact with the center covers it — they said they'd coordinate → **assumed**
+  - NOTE (shown after choosing): Coordinate is a verb agencies conjugate in the future tense. Your file lives in the past tense, where dates either exist or don't.
+
+## [letter_secured] Dated, On Letterhead
+*Day 25 — Friday, June 26, 2026 — Friday, June 26, 2026 (dayOffset 25)*
+
+The center's letter runs to a page and a half, and its power is entirely in its dates: they begin last fall, before the petition, before the police night — a chronology of protection that predates the state's involvement. With the protection order in front of it and the sign-in sheet behind it, your folder now tells a story no plural can survive: one parent sought safety through every formal channel available to her, in order, in writing, first.
+
+Your lawyer sends the packet to the agency with a cover letter whose last line you memorize: 'We ask that Mother's record be documented separately from Father's going forward.' The ask is now itself on the record. Even its refusal would be.
+
+**Choices:**
+- Keep documenting — his side of the ledger is about to write itself → **his_missed**
+  - NOTE (shown after choosing): Cases turn on comparisons the file makes unavoidable. His is coming, in his program's own handwriting.
+
+## [assumed] Some Contact
+*Day 25 — Friday, June 26, 2026 — Friday, June 26, 2026 (dayOffset 25)*
+
+Weeks later, at a team meeting you hear about secondhand, the caseworker describes the agency's knowledge of your center engagement in the phrase that will follow your case to its review: there 'had been some contact' with the center. Some contact. No dates, no sessions, no fall chronology — a fog where your strongest evidence should be, because the letter that would have burned the fog off was never requested, and the center, bound by its own confidentiality rules, does not mail its records unasked.
+
+Your own testimony can supply the dates at a hearing — memory, under oath, sincere. Against a file, sincerity testifies at a discount. The dates existed. They simply never crossed the street.
+
+**Choices:**
+- Go on — his side of the ledger is about to write itself, and plurals cut both ways until they don't → **his_missed**
+  - NOTE (shown after choosing): His record is about to become very clear. The danger is that yours stays foggy in the same file, where clarity and fog average out.
+
+## [his_missed] His Side of the Ledger
+*Day 30 — Wednesday, July 1, 2026 — Wednesday, July 1, 2026 (dayOffset 30)*
+
+Sam's father's program attendance collapses in the ordinary documented way: sessions missed, a warning, more missed — and then discharge, for non-attendance, recorded by the program in a letter of its own. It is his second such letter, in a longer history you know better than the file does. The system, whatever its failures, documents him with perfect clarity when he is the only name on the form.
+
+And yet the agency's summary for the month reads: 'Parents making limited progress; Father discharged from program; Mother engaged with services.' Read that sentence the way a tired judge would at 4 P.M. The grammar still averages you: his discharge and your engagement, poured into one adjective — 'limited' — that now modifies a plural subject. Separating the sentence is separating the case.
+
+**Choices:**
+- Send the written separation request — her record documented separately, with the packet attached → **separation_filed**  _(cash -4; FLAG: separationFiled; HIDDEN + Written request — mother's record to be documented separately from father's, with documentation attached)_
+  - NOTE (shown after choosing): In writing, with exhibits, to the agency and through your lawyer to the court file. The sentence, answered with documents.
+- Raise it at the next visit, verbally — Ms. Herrera has been fair, and paper feels like escalation → **separation_verbal**
+  - NOTE (shown after choosing): Fair people agree with fair requests in rooms. What survives the room is the part this scenario keeps asking about.
+
+## [separation_filed] Filed, With Exhibits
+*Day 32 — Friday, July 3, 2026 — Friday, July 3, 2026 (dayOffset 32)*
+
+The separation request is four pages with the packet behind it, and its argument could fit on an index card: judge her on her documents. Order, center letter with fall dates, sign-in sheet, her service attendance — against his discharge letter and his missed-screening rows, filed separately, where they belong. Your lawyer files it; the agency acknowledges receipt in writing, because filed things get acknowledged; and the next monthly summary — you will see it before the review — contains a sentence that has never appeared in your case before: 'Mother's progress is documented separately at her counsel's request.'
+
+It is not a victory. It is a filing-cabinet event. But filing cabinets are where reviews come from, and reviews are where children get their timelines decided.
+
+**Choices:**
+- Keep the record clean and current — the next month will test whether it holds → **safety_event**
+  - NOTE (shown after choosing): It will be tested, because his conduct is not finished, and the file's grammar is a habit, not a law.
+
+## [separation_verbal] Raised, Agreed, Unfiled
+*Day 32 — Friday, July 3, 2026 — Friday, July 3, 2026 (dayOffset 32)*
+
+Ms. Herrera agrees completely — verbally, warmly, in her office, with Sam's drawing taped to her cabinet. Of course you should be documented separately. She'll 'flag it for the team.' The flag, if it exists, is in her notebook. The team's summary the following month is written by a supervisor from the file, and the file was never told.
+
+You drive home rehearsing the difference between being agreed with and being documented — the two experiences this system hands out in inverse proportion to their durability. The review is three weeks away. What is in the file by then is what the judge will average, or refuse to.
+
+**Choices:**
+- Go on to the review with the fairness of individuals as your exhibit → **safety_event**
+  - NOTE (shown after choosing): Individuals have been fair to you. The file has been grammatical. The review will be conducted from one of these.
+
+## [safety_event] The Car
+*Day 37 — Wednesday, July 8, 2026 — Wednesday, July 8, 2026 (dayOffset 37)*
+
+On a Tuesday, your car — the used sedan that gets you to work, to services, to Sam's visits at your sister's — is broken into outside your shift: window, glovebox, nothing taken that matters except your ability to get anywhere this week. There is no mystery about who you believe did it, and no proof the file could use, and the police report you file that night says exactly that, in the flat language of reports.
+
+You miss Thursday's counseling session — the car's at the glass shop, the bus route doesn't reach the counselor's office, and the week collapses in the ordinary logistical way weeks collapse for people with no slack. What happens to that miss in the record is now the whole question: whether it arrives as a documented event with a police report attached, or as a bare absence in a column.
+
+**Choices:**
+- Document it the day it happens — police report, glass-shop invoice, and a written note to the agency explaining the miss → **documented_event**  _(cash -60; HIDDEN + Missed session — documented same day: police report and repair invoice attached; cause recorded)_
+  - NOTE (shown after choosing): Sixty dollars for the window, an hour for the paperwork. The miss enters the record already explained, in the system's own documentary dialect.
+- Handle it quietly and get back on schedule next week — don't feed the file more drama → **quiet_event**  _(cash -60)_
+  - NOTE (shown after choosing): Quiet is a virtue in a life. In a file, quiet is a blank, and blanks get filled by whoever writes next.
+
+## [documented_event] Recorded With a Reason
+*Day 39 — Friday, July 10, 2026 — Friday, July 10, 2026 (dayOffset 39)*
+
+The agency's note for that week is a small masterpiece of the new grammar your filings have taught it: 'Mother missed session [date]; reported car break-in same day, police report and invoice provided; rescheduled.' One sentence, individually hers, cause attached. A year of this case's plurals, answered by a sentence with documentation in it.
+
+Your lawyer, reading it, allows herself one dry sentence of her own: 'The file has learned to tell you apart. Now we find out whether the court reads the same file.'
+
+**Choices:**
+- Prepare for the review — her record, his record, side by side, in date order → **review_prep**
+  - NOTE (shown after choosing): Side by side. The comparison is the argument; the folder is just its table of contents.
+
+## [quiet_event] Recorded as a Miss
+*Day 39 — Friday, July 10, 2026 — Friday, July 10, 2026 (dayOffset 39)*
+
+The week's note is seven words: 'Mother missed counseling session; no explanation documented.' It sits in the file two lines below his program's discharge letter, and a reader moving quickly — all readers of files move quickly — receives them as a pair: his failure, her failure, the parents, again, in the average the whole scenario has been fighting.
+
+You did explain, to the counselor's receptionist, by phone. Phones, again: the explanation existed for exactly as long as the call did. The record, as ever, kept what was sent to it in a form it can keep.
+
+**Choices:**
+- Prepare for the review with what's actually in the folder → **review_prep**
+  - NOTE (shown after choosing): What's in it is what's in it. The review will now decide how much of you it can see.
+
+## [review_prep] Separating the Record
+*Day 49 — Monday, July 20, 2026 — Monday, July 20, 2026 (dayOffset 49)*
+
+Review preparation, with your lawyer, is an exercise in two columns. Column one, yours: protection order (predating the petition), center letter with dates, screening sign-in, services attended, a documented car, a filed separation request — each item provable, dated, and individually attributable. Column two, his: the discharge letter, the missed rows, the orders he's under. The columns have different lengths in different paths through this story, and their relative clarity is, your lawyer says, quite literally the case: 'The allegation was failure to protect. Your defense is a chronology of protecting. Chronologies need documents. Let's see what we've got.'
+
+She is honest about the ceiling: the review will not erase the allegation by applauding your paperwork, and Sam's placement will turn on more than grammar. But a court that can see two parents separately can make orders about them separately — and that, in a case built on a plural, is the difference between a story and a sentence.
+
+**Choices:**
+- Go to the review with the two columns in date order → **hearing**
+  - NOTE (shown after choosing): Two columns. It has taken six weeks of paper to earn the right to be read as one person.
+
+## [hearing] The Review
+*Day 56 — Monday, July 27, 2026 — Monday, July 27, 2026 (dayOffset 56)*
+
+The agency's report is read, and for the first time in this case you hear your name carry sentences by itself — how many of them depends on the paper trail behind you. His discharge is his. The question the judge works through, aloud, is the petition's original verb: protect. What did each parent do, and when, and what does the record show?
+
+She looks at the file in front of her to answer. Everyone in the room understands, by now, that the file is not a summary of the case. The file is the case, in the only form that survives the drive home.
+
+**Choices:**
+- Let the separated record speak — order, dates, sign-ins, the filed request → **end_separated**
+  - NOTE (shown after choosing): Your lawyer argues from documents, in date order, for nine minutes. Chronology, presented calmly, is the sound protection makes on paper.
+- Let the safety record speak — strong protection paper, thin separation paper → **end_safety**
+  - NOTE (shown after choosing): Protection you can prove. Separation you can only assert. The judge will weigh each in its own currency.
+- Let your testimony speak — the file was never separated, and your voice is the separation → **end_lumped**
+  - NOTE (shown after choosing): You testify truly and in detail. The court reporter takes it down. Testimony is a record too — the kind made last, worth least per page, when documents were available first.
+
+## [end_separated] Ending — Two Files, Not One
+*Day 63 — Monday, August 3, 2026 — Monday, August 3, 2026 (dayOffset 63)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the hidden record, revealed): Two distinguishable records. Yours: a protection order obtained before the petition existed, a domestic violence center's letter documenting your engagement with dates beginning last fall, a sign-in sheet correcting the file's worst plural, a written separation request the agency acknowledged, and a missed session recorded with its documented cause. His: a discharge letter and empty rows, filed under his own name at last. At the review, the court addressed the parents in separate sentences — your compliance credited as yours, expanded time with Sam ordered on your record, and the 'failure to protect' allegation answered by the chronology the documents established: she was not the parent who failed to protect. She was the parent who had been protecting, on paper, since before the state arrived.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): The instruments were the verified set: counsel (42 Pa.C.S. § 6337) to audit the plurals, and the case record on written request (55 Pa. Code § 3130.44(d)) to find them — because you cannot correct sentences you have never seen. Nothing in this scenario's law decides a 'failure to protect' allegation by itself; what decided this review was the ordinary rule of every hearing in this game: the side whose account is documented gets weighed as fact, and any case the agency ultimately brings must still be proven by clear and convincing evidence. Note the win's honest shape: Sam is still placed with his aunt tonight. What changed is who the file says you are — and in a system that plans children's futures from files, that identity is not cosmetic. It is the ground the next review stands on.
+- THE HONEST PART: A different judge might have credited the same documents less, or an agency might have resisted separation harder; Ms. Herrera's willingness to write your words verbatim, and a center advocate who kept meticulous dates, were gifts of staffing and luck as much as of strategy. His conduct also cooperated with clarity — files separate more easily when one parent's record is unambiguous, and messier cases exist where both parents' papers tangle honestly. What was yours was the discipline of carrying your own record across the street, document by document, before strangers averaged it away. In the published cases behind this scenario, courts heard about protection orders and center engagement late, partially, or not at all — through testimony about 'some contact' no one had dated. You dated it. That is the whole difference, and it was enough.
+
+## [end_safety] Ending — Safe, and Still Counted Together
+*Day 63 — Monday, August 3, 2026 — Monday, August 3, 2026 (dayOffset 63)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the hidden record, revealed): A strong safety record trapped inside a joint file. Your protection order and center engagement were real, and by the review they were at least partially credited — the court's safety findings about you are sound, and the orders protecting Sam are built partly on your work. But the file's grammar never fully separated: his discharge still drags the plural adjective ('limited progress') across your column, service obligations are still partly joint on paper, and your case continues to be summarized as a couple's performance in which you are the stronger half of an average.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Safety documentation and record separation are different instruments, and this path played one of them well. The protection paper answers the question 'is she safe for her child?' The separation paper — the audited file (55 Pa. Code § 3130.44(d)), the corrected entries, the written request through counsel (42 Pa.C.S. § 6337) — answers the prior question: 'which record is hers at all?' Reviews ask the second question first, because they read files before they meet people. Nothing about this ending endangers Sam or you tonight; the safety orders stand. What it costs is attribution: your progress will keep being diluted by his, review after review, until the record is separated by the same documentary labor this path postponed.
+- THE HONEST PART: It is genuinely possible to live inside this ending safely for a long time — many survivors' cases run exactly here, protected and mis-averaged, sustained by workers who know the truth informally even when the file doesn't say it. Informal knowledge retires, rotates, and forgets; that is its nature, and the reason the separated record matters more with every month the case runs. The hopeful fact is that nothing here is closed: the audit can still be requested, the corrections still filed, the letter still carried across the street, and the next review reads a file you still have time to edit by addition. You built the safety. The paperwork of being seen as its author remains — available, unglamorous, and decisive in proportion to how long this case lasts.
+
+## [end_lumped] Ending — One Word: Parents
+*Day 56 — Monday, July 27, 2026 — Monday, July 27, 2026 (dayOffset 56)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT THE FILE HELD (the hidden record, revealed): One blended record: an allegation written in the plural, services assigned in the plural, progress summarized in the plural — his discharge and your engagement averaged into 'limited,' his missed screening and your attended one averaged into an absence, your undocumented week averaged into a pattern. At the review, your testimony was detailed, consistent, and — the word the minutes will use — 'credible.' It changed nothing structural, because testimony describes a record; it does not rebuild one. The court continued the case on the file as written: the parents, jointly, with joint expectations and a joint timeline, in which the dangerous parent's pace sets the safe parent's clock.
+- THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Every tool for a different outcome was present in the verified set and unused in time: the full record on written request (55 Pa. Code § 3130.44(d)) — where the false plurals sat, correctable, next to the sign-in sheets that correct them; counsel (42 Pa.C.S. § 6337) to file the separation the file's grammar required; the center's dated letter, waiting across the street to be asked for. The legal standard itself was never the obstacle — the agency's burdens in this system are demanding ones, up to clear and convincing evidence at the stages where rights are decided. The obstacle was evidentiary architecture: an allegation about an individual, answered by an individual, requires an individual record, and records are built from documents carried by hand.
+- THE HONEST PART: The deepest unfairness in this ending deserves plain words: you were the safe parent, and the system's paperwork could not tell — because telling was a labor no one performed, in a case where the labor was always going to fall to the person with the least slack to perform it. That is a true criticism of the system, and it is also, practically, the reason the labor matters: courts in the published cases behind this scenario repeatedly met survivors' protective histories as undated testimony — 'she had spoken with the center' — while discharge letters sat in the same files, dated to the day. Paper is not fairer than people. It is just more durable, and durability is what reviews read. Nothing in this ending is irreversible; the file accepts additions until the case closes. But separation delayed is attribution denied in the meantime, and the meantime is where children live.

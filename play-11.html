@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Interpreter</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Interpreter",
+  "subtitle": "Scenario 11 — The Interpreter (a fictional composite)",
+  "startDateISO": "2026-10-05",
+  "startNode": "start",
+  "startCash": 130,
+  "tier": "Foundation",
+  "summary": "Meetings and forms arrive in English; you read Spanish at full speed — ask, in writing, for interpretation and translated papers."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, October 5, 2026",
+   "dayOffset": 0,
+   "title": "Papers in a Language You Read Slowly",
+   "body": [
+    "Your son Marco is eight. You have lived in this country eleven years, and your English is the English of work and school and the grocery store — strong for talking, slower for paper. The paper, unfortunately, is where this process lives.",
+    "Your family's case is a support case: Marco is home, you have a caseworker, Ms. Doyle, and a lawyer, Ms. Ferreira, from an earlier hearing. A planning meeting is set for Friday, October 9, 2026, and the notice came with a packet — eleven pages, English only — that you have read twice and understood, you estimate, seventy percent of. The thirty percent worries you. It should. It is usually the operative thirty."
+   ],
+   "choices": [
+    {
+     "text": "Mark the pages you don’t fully understand, to ask about them",
+     "next": "n2",
+     "note": "Seven pages marked. Knowing where the fog is, is most of a map."
+    },
+    {
+     "text": "Put the packet away — the meeting will explain it",
+     "next": "n2",
+     "note": "Meetings explain things at talking speed. Packets wait, and can be re-read. Each has its uses; only one is in this room."
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "kicker": "Day 1 — Tuesday, October 6, 2026",
+   "dayOffset": 1,
+   "title": "The Meeting Before the Meeting",
+   "body": [
+    "Ms. Doyle calls to confirm Friday: the meeting will cover Marco's services, a new schedule, and 'some forms.' Her English is quick and kind. You catch most of it. 'Most of it,' you have learned, is exactly the amount that gets people in trouble at signature time.",
+    "At your last meeting, months ago, no interpreter was present either. You nodded at several things that month that you later learned, from Ms. Ferreira, you had not actually agreed to — and one thing you had. The system's memory of that meeting is a form with your signature. Your memory is a fog with a signature in it."
+   ],
+   "choices": [
+    {
+     "text": "Decide this meeting will be different — starting before it starts",
+     "next": "records",
+     "note": "The difference will not be your English. It will be what gets asked for, in advance, in writing."
+    },
+    {
+     "text": "Hope Friday is clearer than the last one",
+     "next": "records",
+     "note": "Hope is not a strategy, but it is the one most meetings are currently planned around."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 2 — Wednesday, October 7, 2026",
+   "dayOffset": 2,
+   "title": "The Request, in Writing",
+   "body": [
+    "Ms. Ferreira's advice, when you call her, is short enough to write on the packet itself: ask for it in writing, before the meeting, and keep a copy. An interpreter for the meeting. The packet — and future papers — in Spanish. And a copy of whatever the meeting produces, for your records.",
+    "A written request is not a demand and it is not rude. It is a document that exists even when people are busy, which is the entire history of every improvement in your case so far."
+   ],
+   "choices": [
+    {
+     "text": "Send the written request: interpreter for Friday, papers in Spanish, copies for your records",
+     "next": "prep",
+     "setFlags": [
+      "recordsRequested",
+      "interpreterRequested"
+     ],
+     "addHidden": [
+      "Request — parent requested interpreter and translated documents in writing before the meeting"
+     ],
+     "note": "You write it in Spanish, with a short English cover line, and keep a copy in the folder. Under 55 Pa. Code § 3130.44(d), the records part is a right you already hold; the rest is now, at last, on paper where people can act on it."
+    },
+    {
+     "text": "Ask Ms. Doyle by phone, where it’s warmer",
+     "next": "prep",
+     "note": "Warmth is real. So is the note she will write from the call, in English, in her words, if the day leaves her time to write one."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 3 — Thursday, October 8, 2026",
+   "dayOffset": 3,
+   "title": "Preparing in Two Languages",
+   "body": [
+    "Thursday, you prepare the way you have learned to prepare for everything in this process: the folder, the marked packet, your questions written down in Spanish so they survive your nerves — why the schedule is changing, what the forms are, what happens if the bus to the new program conflicts with your shift.",
+    "Questions written down do not evaporate when a room gets fast or loud. That is their whole virtue, in any language."
+   ],
+   "choices": [
+    {
+     "text": "Write the questions, and send Ms. Ferreira a copy of everything",
+     "next": "eve",
+     "setFlags": [
+      "questionsWritten"
+     ],
+     "note": "Your lawyer now holds what you hold. Two folders, one family — a fairer fight for the paper."
+    },
+    {
+     "text": "Prepare the questions in your head, where they’ve always lived",
+     "next": "eve",
+     "note": "They have lived there through eleven years of meetings. The record of what happened to them there is the packet you’re holding."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 3 — Thursday, October 8, 2026",
+   "dayOffset": 3,
+   "title": "The Night Before",
+   "body": [
+    "The packet sits on the table, marked and flagged. No reply has come about the interpreter yet — the request went in Wednesday, and the agency's week is the agency's week. Silence, you have learned, is not an answer; it is just silence, wearing an answer's coat.",
+    "Marco is asleep. Friday is a door. What you do at the door — walk through it nodding, or walk through it asking — is the remaining variable, and it is yours."
+   ],
+   "choices": [
+    {
+     "text": "Sleep, and take the folder — and your copy of the request — with you",
+     "next": "split",
+     "note": "The copy matters. A request you can show is a request that happened."
+    }
+   ]
+  },
+  {
+   "id": "split",
+   "kicker": "Day 4 — Friday, October 9, 2026",
+   "dayOffset": 4,
+   "title": "The Meeting Room",
+   "body": [
+    "Friday, the meeting room: Ms. Doyle, a supervisor by phone, a table of English paper — and no interpreter. Ms. Doyle is apologetic and brisk in the same breath: the request, she says, came late in a short week; they can 'get through it,' and schedule the interpreter 'for next time.'",
+    "Next time is where this system keeps all its best intentions. The forms, however, are this time, and they are already sliding across the table toward you."
+   ],
+   "choices": [
+    {
+     "text": "Show your copy of the written request, and ask that the signing wait for the interpreter — or that the meeting be rescheduled with one",
+     "next": "p1",
+     "setFlags": [
+      "heldTheLine"
+     ],
+     "addHidden": [
+      "Meeting — parent presented written interpreter request; signing deferred pending interpretation"
+     ],
+     "note": "There is a pause that is not hostile, just procedural. Then the supervisor, on the phone, makes a decision that paper tends to force: reschedule to Tuesday, interpreter booked, nothing signed today."
+    },
+    {
+     "text": "Stay and nod through it — don’t be difficult, Marco needs the services",
+     "next": "u1",
+     "addHidden": [
+      "Meeting — held without interpreter; parent signed forms presented in English"
+     ],
+     "note": "Being difficult and being understood are different things. The room, today, is making you choose between their appearances."
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kicker": "Day 4 — Friday, October 9, 2026",
+   "dayOffset": 4,
+   "title": "Nothing Signed, On Purpose",
+   "body": [
+    "The meeting ends early and strangely well: no forms signed, the discussion items listed in writing to be covered Tuesday, and your request — the paper one — attached to the meeting record as the reason for the change.",
+    "Ms. Doyle, walking you out, says the thing workers say when a family has just taught the office something: 'Next time, send it the week before.' You intend to. The folder intends to make sure of it."
+   ],
+   "choices": [
+    {
+     "text": "Confirm Tuesday in writing, and ask that the packet come in Spanish ahead of it",
+     "next": "p2",
+     "setFlags": [
+      "tuesdayConfirmed"
+     ],
+     "note": "Confirmed, and — two days early — a Spanish packet arrives. Fourteen pages. All of them, this time, in a language you read at full speed."
+    },
+    {
+     "text": "Trust that Tuesday is arranged",
+     "next": "p2",
+     "note": "It is arranged. Confirming is how arranged things stay arranged through other people’s Fridays."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "The Packet, Read at Full Speed",
+   "body": [
+    "The Spanish packet is a revelation mostly about English: two of the seven foggy pages turn out to say things quite different from what you had guessed — one service is optional that you thought was mandatory; one form is a permission you can decline, which you had thought was a requirement with a signature line.",
+    "Seventy percent, it turns out, had been a generous estimate. This is not a failure of yours. It is what percentages mean when the missing part is chosen by the writer, not the reader."
+   ],
+   "choices": [
+    {
+     "text": "Mark the two pages and write your questions beside them, for Tuesday",
+     "next": "p3",
+     "setFlags": [
+      "fullyRead"
+     ],
+     "addHidden": [
+      "Preparation — parent read the full packet in Spanish and prepared questions"
+     ],
+     "note": "Your questions are now about the actual services, not about vocabulary. That is a different meeting, and a better one."
+    },
+    {
+     "text": "Read it lightly — Tuesday has an interpreter, which is the point of Tuesday",
+     "next": "p3",
+     "note": "The interpreter will translate what is said. Your questions decide what gets said. Both halves are needed."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kicker": "Day 8 — Tuesday, October 13, 2026",
+   "dayOffset": 8,
+   "title": "Tuesday, Translated",
+   "body": [
+    "Tuesday, there is a third chair. The interpreter — a woman named Carmen who renders Ms. Doyle's quick English into unhurried Spanish and your Spanish into precise English — changes the physics of the room: everything slows by exactly the amount understanding requires.",
+    "The schedule change is explained, and your bus objection lands and is fixed. The optional service is identified as optional, by name. The permission form is explained as a permission — and you decline one part of it, and grant the rest, which the form allows and nobody had mentioned on Friday."
+   ],
+   "choices": [
+    {
+     "text": "Ask, through Carmen, that the meeting summary state what was optional and what you declined",
+     "next": "p4",
+     "setFlags": [
+      "summarySpecifics"
+     ],
+     "note": "It will. A summary that records a declined permission protects everyone — including the worker who honored it."
+    },
+    {
+     "text": "Let the summary be a summary",
+     "next": "u3",
+     "addHidden": [
+      "Summary — meeting summary written generically despite interpreted discussion"
+     ],
+     "note": "Generic summaries are where specific agreements go to become deniable."
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kicker": "Day 10 — Thursday, October 15, 2026",
+   "dayOffset": 10,
+   "title": "The Summary, in Writing",
+   "body": [
+    "The summary arrives in both languages, as requested: services, the fixed schedule, the declined item named as declined, the granted items named as granted. It matches the meeting the way your folder at home matches your life — because this time, the meeting and the paper were built in the same language.",
+    "Ms. Ferreira, reading her copy, sends one line back: 'This is how it’s supposed to look.'"
+   ],
+   "choices": [
+    {
+     "text": "Read both versions against your questions, then sign the acknowledgment",
+     "next": "p5",
+     "setFlags": [
+      "summaryChecked"
+     ],
+     "note": "They agree. What you signed on Friday-that-wasn’t, you are finally signing for real — knowingly, which is the only way signatures are supposed to happen."
+    },
+    {
+     "text": "Sign Ms. Ferreira’s copy at her office without re-reading",
+     "next": "p5",
+     "note": "She would catch a discrepancy. “Would” is a thinner wall than reading it yourself, and you are fluent in this wall now."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kicker": "Day 12 — Saturday, October 17, 2026",
+   "dayOffset": 12,
+   "title": "For the Record",
+   "body": [
+    "At the next home visit, Ms. Doyle brings the meeting record for the file: request, rescheduling, interpreted meeting, bilingual summary. She reads the sequence aloud, in English, and you follow on your Spanish copy — two readers, one record, same page for the first time.",
+    "There is a signature line for your acknowledgment of the record, and the whole weight of the scenario is on the table inside it."
+   ],
+   "choices": [
+    {
+     "text": "Sign, having read it in a language you read at full speed",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "The signature means what signatures are supposed to mean. It took a written request, a rescheduled meeting, and a third chair to buy that meaning. It was worth all three."
+    },
+    {
+     "text": "Sign quickly — this one you already know is right",
+     "next": "end_partial",
+     "note": "It mostly is — except one date, the services start date, which the record gives as the following Monday. You know it because you almost didn’t check. The file now disagrees with the program’s letter, and the disagreement will be discovered on a Monday morning, by Marco."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 14 — Monday, October 19, 2026",
+   "dayOffset": 14,
+   "title": "Understood, in Writing",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The win is understanding, made durable: a meeting held with interpretation, papers read at full speed, choices — including a declined one — recorded as choices, and a signature that means what signatures are supposed to mean. Marco's services start on the schedule that was actually agreed, because the agreement was actually made.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), the copies of the record are released on request — the request that produced your copy of the packet is the same motion, in the same writing, as the one that asked for the interpreter and the translation. Paper asks travel; spoken asks evaporate. This scenario deliberately claims no other statute: the win was built from a documented request, a lawyer copied in, and the patience to reschedule rather than nod.",
+    "Notice the hinge: it was not your English that changed between Friday and Tuesday. It was the record of what you had asked for, produced at the door of the meeting room, in your hand.",
+    "Honesty requires this: the supervisor could have refused the reschedule, and Carmen could have been unavailable for weeks — interpreters are people with calendars, and workers vary in whether paper moves them. No strategy guarantees the third chair. It guarantees that the request for it is undeniable, dated, and in the file when the meeting is later described as one you 'attended and agreed.'"
+   ]
+  },
+  {
+   "id": "u1",
+   "kicker": "Day 4 — Friday, October 9, 2026",
+   "dayOffset": 4,
+   "title": "Nodding, in English",
+   "body": [
+    "The meeting runs an hour. You understand the shape of it — services, schedule, forms — the way you understand the shape of a song in a language you're learning: the melody yes, the words mostly, the verse about obligations no.",
+    "Three forms are signed. One is explained twice, kindly, and you are fairly sure you know what it does. Fairly sure is the amount of sure that signs things in this room. Marco asks that night what the meeting decided. You tell him the parts you know. You do not tell him about the parts you signed."
+   ],
+   "choices": [
+    {
+     "text": "Go home and write down, tonight, everything you think you agreed to",
+     "next": "u2",
+     "setFlags": [
+      "reconstructionWritten"
+     ],
+     "note": "A reconstruction, written the same day, is a flare sent up while the smoke is still visible. It is not too late — it is just later than Friday should have been."
+    },
+    {
+     "text": "Wait for the summary — it will explain what happened",
+     "next": "u2",
+     "note": "The summary will explain what the summary says happened. Whether that is what happened is precisely the question."
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "kicker": "Day 5 — Saturday, October 10, 2026",
+   "dayOffset": 5,
+   "title": "What Ms. Ferreira Finds",
+   "body": [
+    "Ms. Ferreira reads your reconstruction — and then, because she is your lawyer, the signed forms themselves. Her face does a controlled thing. One form was a permission you would not have granted as written. One service you 'accepted' is one you had told her, in March, you did not want. The schedule change conflicts with your shift in exactly the way you tried to say, in English, at the part of the meeting where the words got fast.",
+    "'You didn’t fail this meeting,' she says. 'This meeting was held in a way that made it unfailable-by-you and unpassable too.' Then she does the useful thing: she drafts the letter."
+   ],
+   "choices": [
+    {
+     "text": "Send her letter — and your own written request — asking that the unsigned parts be re-covered with an interpreter",
+     "next": "p3",
+     "setFlags": [
+      "repairSent"
+     ],
+     "addHidden": [
+      "Repair — counsel and parent requested interpreted re-review of Friday’s decisions in writing"
+     ],
+     "note": "The letter goes in with your reconstruction attached: what you understood, what you didn’t, dated the day of the meeting. The fog is now evidence, filed by the person who was inside it."
+    },
+    {
+     "text": "Ask her to just call Ms. Doyle — lawyers calling fixes things",
+     "next": "u3",
+     "addHidden": [
+      "Repair — counsel raised the issue by phone; no written re-review request"
+     ],
+     "note": "Lawyers calling does fix things — between lawyers and workers. It leaves the file exactly as Friday left it."
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "kicker": "Day 8 — Tuesday, October 13, 2026",
+   "dayOffset": 8,
+   "title": "The Summary of Friday",
+   "body": [
+    "The meeting summary arrives — in English — and it is confident the way summaries are confident: services accepted, schedule agreed, permissions granted. Your name is in it as a person who understood and consented. Nothing in it is a lie from the writer's chair. Nothing in it is the meeting you attended.",
+    "Summaries like this are load-bearing: every later decision about Marco's services will be built on the assumption that Friday was informed consent."
+   ],
+   "choices": [
+    {
+     "text": "Write back — in Spanish, with Ms. Ferreira’s help — that you did not understand and do not agree, item by item",
+     "next": "u4",
+     "setFlags": [
+      "disagreementFiled"
+     ],
+     "note": "Item by item: the permission, the service, the schedule. A disagreement filed is a wall the next summary must build around."
+    },
+    {
+     "text": "Let the summary stand — fighting paper is exhausting, and Marco needs the services",
+     "next": "u4",
+     "note": "He does. The services are real. So is the version of you that the file is constructing, one consent at a time."
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "kicker": "Day 10 — Thursday, October 15, 2026",
+   "dayOffset": 10,
+   "title": "A Second Meeting, Offered",
+   "body": [
+    "The agency's answer to a written disagreement is, in the end, an honest one: a second meeting, with an interpreter, to re-cover Friday. Ms. Doyle does not defend the summary. She schedules Carmen, sends the packet in Spanish, and puts your letter in the record where letters go to be permanent.",
+    "It is Friday again, three weeks later, with a third chair this time — and your letter, and your reconstruction, sitting in the file as the meeting's true first draft."
+   ],
+   "choices": [
+    {
+     "text": "Attend, read everything in Spanish, and make the choices again — knowingly",
+     "next": "p5",
+     "setFlags": [
+      "recoveredInformed"
+     ],
+     "addHidden": [
+      "Re-review — decisions re-made with interpretation after parent’s written disagreement"
+     ],
+     "note": "The permission is narrowed. The unwanted service is declined, by name. The schedule bends around your shift. The meeting you needed in October happens — in the file, dated later, explained by your letter."
+    },
+    {
+     "text": "Attend but let Ms. Ferreira do the fixing — you’re tired of rooms",
+     "next": "u5",
+     "note": "She fixes it well. The record of the fix, though, credits the lawyer’s voice where yours should have been — and you will attend more rooms than she will, in the years of this case."
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "kicker": "Day 12 — Saturday, October 17, 2026",
+   "dayOffset": 12,
+   "title": "The Record, Corrected at a Cost",
+   "body": [
+    "The corrections are made — services righted, permission narrowed, schedule mended. What cannot be corrected retroactively is the record's first draft: a signed Friday that says you understood, followed by your letters that say you didn't, followed by a second meeting. Future readers will see the argument, not just the outcome.",
+    "It is a better record than silence would have left. It is a worse one than a written request in the first week would have built. Both of those sentences are the scenario."
+   ],
+   "choices": [
+    {
+     "text": "Read the corrected record when it comes, in Spanish, before signing anything",
+     "next": "end_partial",
+     "note": "You read it at full speed this time. The lesson arrived the expensive way, which is still arrival."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 14 — Monday, October 19, 2026",
+   "dayOffset": 14,
+   "title": "Nodding Through the Meeting",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The services were eventually righted — the permission narrowed, the unwanted service declined, the schedule mended — but they were righted through repair: a lawyer's letter, a filed disagreement, a second meeting, and a file that preserves Friday's signature under your name beside decisions you did not understand when you made them. Marco is home, and was never the question here. The question was whether your consent in this system is a fact or a formality.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), your records are released on request — and the same written-request habit, used before the meeting instead of after it, is what the other ending is made of. This scenario deliberately claims no other statute: it teaches that a request on paper, copied to your lawyer, is the instrument a parent holds regardless of what any particular office's practice happens to be.",
+    "Nodding is what a person does when the cost of stopping a room feels higher than the cost of the room's decisions. The file cannot see the nodding. It can only see the signature. Write first; nod never.",
+    "Honesty requires this: Ms. Ferreira caught in a week what a different parent, without a lawyer, might never have caught — access to counsel was luck and law at once. Workers vary: Ms. Doyle scheduled the fix without defensiveness, which not every worker does. No strategy controls who is in the room. A written request, dated and copied, is the one attendee you can always bring."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s11';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

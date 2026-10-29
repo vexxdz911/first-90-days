@@ -1,0 +1,399 @@
+# THE FIRST 90 DAYS — Scenario 32: “The Assessment, Appealed”
+
+*Human-readable script. This document and `scenario-32.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here. The county in this scenario is deliberately unnamed: it is 'a pilot county,' and nothing in the story identifies it further.**
+
+**Content note:** This scenario depicts a dependency case told through an assessment challenge — records requests, a rebuttal worksheet, and a review hearing — told through procedure and paperwork. There is no graphic content. The child's placement predates the story and is not depicted. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −40` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Monday, March 2, 2026. Day offsets are days since the scenario's start date.
+
+## [start] The Summary, Quoted
+*Day 0 — Monday, March 2, 2026 — Monday, March 2, 2026 (dayOffset 0)*
+
+You are Mara. Your son Eli, six, has been placed with a foster family for four months, since November — that part of the story happened before this one starts, and this one is not about relitigating it. This one is about a form.
+
+You live in a pilot county — one of the counties where Pennsylvania is piloting a new way of assessing families. Today is a family team meeting, and the worker is reading from a summary: 'The assessment rates supervision, housing stability, and caregiver stress in the high range. Overall level: high.' She reads it the way people read weather. Then she turns the page — her page — and moves on. The form itself is not in the room. It has never been in any room you were in.
+
+**Choices:**
+- Ask, before she turns the page, what the summary is based on → **meeting_q**
+  - NOTE (shown after choosing): You say it politely. You have learned what politeness costs and what it buys. Today it buys one sentence.
+- Let the meeting finish — think about it on the bus → **bus_home**
+  - NOTE (shown after choosing): The summary follows you home anyway. Summaries do that when nobody has seen the thing they summarize.
+
+## [meeting_q] One Sentence
+*Day 0 — Monday, March 2, 2026 — Monday, March 2, 2026 (dayOffset 0)*
+
+'It's a standard assessment,' the worker says. 'The summary is what we work from.' She is not being cruel. She is being accurate about her own job: the summary is what she was given to work from, too.
+
+In your notebook you write down her sentence, word for word, with the date. You do not yet know why you are doing this. It is the first entry in what will become the most useful document in your case.
+
+**Choices:**
+- Go to the library clinic on Wednesday — ask what a parent can actually request → **library**
+  - NOTE (shown after choosing): Free lawyers, first come. You have become a person who arrives early for things.
+
+## [bus_home] The Bus Home
+*Day 1 — Tuesday, March 3, 2026 — Tuesday, March 3, 2026 (dayOffset 1)*
+
+On the bus you write down what you remember of the summary: three items named, all 'high,' an overall level, a recommendation for services you are already attending. You cannot reconstruct the rest, because there was no rest — not for you. Somewhere there is a form with seventeen somethings on it, and your family's next year is being planned from its totals.
+
+Your sister texts: the library has a legal clinic Wednesdays. You type back one word: 'going.'
+
+**Choices:**
+- Go to the clinic on Wednesday → **library**
+  - NOTE (shown after choosing): You arrive forty minutes early. The lawyer has the calm of a person who reads frightening paperwork for a living.
+
+## [library] What the Form Is, and Isn't
+*Day 3 — Thursday, March 5, 2026 — Thursday, March 5, 2026 (dayOffset 3)*
+
+The clinic lawyer, Mr. Osei, has never seen the form either — nobody outside the system has, which is part of the point. Here is what is known about it, stated carefully because most of it has never been published: Pennsylvania's Universal Assessment is a Pennsylvania-specific scored form in the FAST family of assessment tools. It has 17 Priority Items, and the ratings on those items drive real decisions — services, visit levels, recommendations. The item list and the scoring rules have never been published. It is a scored form: a person fills it in and scores it. It is not a machine deciding anything — which is exactly why the scoring can be asked about, item by item, by the person it describes.
+
+Then he tells you the door that exists: under the regulation, information in the county agency's case record 'shall be released upon request' to a parent (55 Pa. Code § 3130.44(d)). 'So you request it,' he says. 'The full form. Every item rating. The outcome. In writing, by name. What comes back will teach us what the system thinks the form is — and every answer, including a non-answer, goes in your file.'
+
+**Choices:**
+- Write the request this week, naming the form, the item ratings, and the outcome → **request1**
+  - NOTE (shown after choosing): Not 'my file.' The form. The ratings. The outcome. Named things can be granted, refused, or appealed. Unnamed things can only be summarized.
+
+## [request1] Request Number One
+*Day 5 — Saturday, March 7, 2026 — Saturday, March 7, 2026 (dayOffset 5)*
+
+The request is one page: your case record, and specifically the complete Universal Assessment — the scored form itself, the rating given to each of its 17 Priority Items, and the outcome those ratings produced. You sign it, date it, copy it, and mail the original certified, because Mr. Osei's rule is carved over the clinic door in everything but fact: if it isn't on paper, it didn't happen.
+
+You start a log on the back page of your notebook: request, date, method, response. Four columns. It looks like nothing. It is the spine of everything after.
+
+**Choices:**
+- Mail it certified and log it the same day → **wait1**  _(cash −6; FLAG: recordsRequested; FLAG: logStarted; HIDDEN + Request #1 — Mar 7; names the form, all 17 item ratings, and the outcome; certified, logged)_
+  - NOTE (shown after choosing): A green receipt card and four columns in a notebook. The cheapest power in this whole system.
+
+## [wait1] The Waiting Weeks
+*Day 12 — Saturday, March 14, 2026 — Saturday, March 14, 2026 (dayOffset 12)*
+
+Waiting, in this system, is a job with no pay, and you do it the way you do your paying job — the early shift at the bakery, Eli's visits on Saturdays, the parenting class on Tuesdays. The assessment rated your life in seventeen items. Your life, meanwhile, keeps generating documents: pay stubs, a class attendance sheet with a perfect row of signatures, a lease.
+
+Mr. Osei said something you keep turning over: 'If the ratings are ever wrong, they'll be wrong item by item — and items are answered with paper, not with outrage.'
+
+**Choices:**
+- Start a documents folder — pay stubs, attendance sheets, the lease, everything dated → **folder_start**  _(FLAG: folderStarted)_
+  - NOTE (shown after choosing): A folder is an argument that hasn't been introduced yet.
+- Spend Saturday's visit just being Eli's mom — the paper can wait a week → **visit_beat**
+  - NOTE (shown after choosing): He has lost a tooth. The tooth is not on any form. You are his mother anyway, at full rating, unrecorded.
+
+## [folder_start] The Folder
+*Day 14 — Monday, March 16, 2026 — Monday, March 16, 2026 (dayOffset 14)*
+
+The folder fills the way folders do: four pay stubs, the parenting-class attendance sheet, your lease, the letter from your shift supervisor about the schedule change you arranged so Tuesdays would work. You label each page with the date it covers, in pencil, the way Mr. Osei showed you.
+
+None of it feels like fighting. All of it is. Somewhere a form says things about your supervision, your housing, your stress. Here is a folder that says things too — in dates, signatures, and other people's handwriting.
+
+**Choices:**
+- Check the mailbox — the reply is due any day → **reply1**  _(HIDDEN + Documents folder — pay stubs, attendance sheet, lease, supervisor letter, all dated)_
+  - NOTE (shown after choosing): It comes Thursday. Answers in this story arrive on Thursdays more often than chance allows.
+
+## [visit_beat] Saturday
+*Day 14 — Monday, March 16, 2026 — Monday, March 16, 2026 (dayOffset 14)*
+
+The visit room has a couch, a rug, and a box of games with pieces missing. Eli beats you at the memory game twice, fairly. The visit supervisor writes something in a notebook — there is always a notebook — and you find yourself wondering which of the seventeen items is being fed by this hour, and whether 'plays memory game, loses graciously' is a rating anyone's form contains.
+
+On the bus home you start the documents folder anyway, from memory and a shoebox: pay stubs in one pile, class sheets in another. Later than the folder-first version of you. Not too late.
+
+**Choices:**
+- Check the mailbox — the reply is due any day → **reply1**  _(FLAG: folderStarted; HIDDEN + Documents folder — started after the visit; pay stubs and class sheets, dated)_
+  - NOTE (shown after choosing): It comes Thursday. Answers in this story arrive on Thursdays more often than chance allows.
+
+## [reply1] The Outcome Summary
+*Day 16 — Wednesday, March 18, 2026 — Wednesday, March 18, 2026 (dayOffset 16)*
+
+The reply is one page. It is the outcome summary — the same one read aloud at the team meeting, now with your name at the top: three item areas described in words, an overall level, a recommendation. No form. No ratings by item number. The cover letter explains that the assessment itself is 'an internal scoring document,' and that the summary 'reflects its conclusions.'
+
+You read it three times. It is not nothing — it is the conclusions, in writing, with a date. It is also not what you asked for, and the difference between those two sentences is the whole next month of your life.
+
+**Choices:**
+- Accept the summary — it's the conclusions; the conclusions are what they use anyway → **accept_summary**
+  - NOTE (shown after choosing): A reasonable sentence. It has ended more challenges than any ruling ever issued.
+- Write request number two — more specific than the first → **request2**
+  - NOTE (shown after choosing): Mr. Osei, on the phone: 'Good. Now we ask like people who have read their answer.'
+
+## [request2] Request Number Two
+*Day 19 — Saturday, March 21, 2026 — Saturday, March 21, 2026 (dayOffset 19)*
+
+The second request thanks them for the outcome summary — the thank-you is strategic and also sincere; paper that acknowledges paper gets answered — and then restates the request with the precision the first reply taught you: the scored form; the rating for each Priority Item, by item; the identity or role of the person who completed it; and the outcome. It notes the first request's date and the reply's date, from your log.
+
+'You are not asking louder,' Mr. Osei says. 'You are asking narrower. Narrower is what systems can't summarize away.'
+
+**Choices:**
+- Mail it certified, log it, and keep building the folder while you wait → **partial_reply**  _(cash −6; FLAG: secondRequest; HIDDEN + Request #2 — Mar 21; item-by-item ratings, rater role, form; cites Request #1 and its reply)_
+  - NOTE (shown after choosing): Ask. Log. Build. Wait. The four verbs of this entire scenario.
+
+## [partial_reply] Nine of Seventeen
+*Day 26 — Saturday, March 28, 2026 — Saturday, March 28, 2026 (dayOffset 26)*
+
+The second reply is progress wearing its usual disguise: a partial no. Enclosed is a list — nine of the seventeen Priority Items, each with its rating, in a clean table. The other eight are 'not available for release at this time,' no reason itemized. The form itself is not enclosed. The rater is identified only as 'the assigned casework team.'
+
+Nine of seventeen. You sit at the kitchen table with the table on the left and your folder on the right, and for the first time the assessment is not weather. It is nine specific sentences about your life — and specific sentences can be checked.
+
+**Choices:**
+- Begin the worksheet: one row per rated item, one column for the rating, one for your document → **worksheet**  _(FLAG: ratingsPartial; HIDDEN + Partial production — ratings for 9 of 17 Priority Items; form withheld; 8 items 'not available')_
+  - NOTE (shown after choosing): Nine rows. Some of them, you already suspect, the folder can argue with.
+
+## [worksheet] The Worksheet
+*Day 29 — Tuesday, March 31, 2026 — Tuesday, March 31, 2026 (dayOffset 29)*
+
+The worksheet is a plain ruled page, and it is the most subversive object in this story. Each row: the item, the rating you were given, the document that speaks to it, and a one-line note in your words. 'Supervision — rated high concern — Eli's school attendance record, no unexcused absences, attached.' 'Housing stability — rated high concern — lease, fourteen months at current address, attached.'
+
+Two rows argue hard. Several rows, honestly, don't — the stress item is true, and you write 'true' beside it, because a worksheet that concedes what's true is believed about what it disputes. Mr. Osei calls this 'the credibility of the whole page.' You call it not lying on the form about the form.
+
+**Choices:**
+- Finish all nine rows — including the ones that say 'true' → **landlord**  _(FLAG: worksheetBuilt; HIDDEN + Rebuttal worksheet — 9 items mapped to documents; 2 ratings disputed with paper, others conceded or noted)_
+  - NOTE (shown after choosing): Nine rows, each ending in paper. The two strongest rows still need one document you don't have yet.
+- Do the two strong rows well and leave the rest for later → **landlord**  _(FLAG: worksheetBuilt; HIDDEN + Rebuttal worksheet — 2 items fully documented; remaining rows sketched)_
+  - NOTE (shown after choosing): 'Later' is a real place in this system. Things sent there do sometimes get done. The worksheet is thinner for it.
+
+## [landlord] The Landlord's Letter
+*Day 33 — Saturday, April 4, 2026 — Saturday, April 4, 2026 (dayOffset 33)*
+
+The housing row needs the landlord, and the landlord needs asking, which is the part nobody warns you about this process: half of it is asking ordinary people to write down ordinary truths. Mrs. Abernathy has rented to you for fourteen months. She writes, on her own letterhead, in her own hand: the address, the dates, rent paid on time, no complaints, 'a quiet tenant, the boy's grandmother visits Sundays.'
+
+It is not a legal document. It is better than a legal document: it is a person, with a name and a phone number, saying a checkable thing about the item the form rated without ever knocking on her door.
+
+**Choices:**
+- Ask her today, and add the letter to the worksheet the same night → **rater_q**  _(cash −8; HIDDEN + Landlord letter — 14 months, rent on time, no complaints; attached to housing row)_
+  - NOTE (shown after choosing): One bus ride, one conversation, one page. The housing row is now the strongest row on the sheet.
+- Skip it — the lease already proves the address → **rater_q**
+  - NOTE (shown after choosing): The lease proves an address. The letter proves a tenancy. The form rated the tenancy.
+
+## [rater_q] Who Scored You?
+*Day 36 — Tuesday, April 7, 2026 — Tuesday, April 7, 2026 (dayOffset 36)*
+
+The next question goes in its own letter, because Mr. Osei insists questions deserve their own paper: who completed the assessment — what is their role; what training or certification does the tool require of the person who scores it; and was the person who scored yours trained or certified in it, and when.
+
+'You may get an answer,' he says. 'You may get a paragraph that sounds like an answer. Either way — ask in writing, keep what comes back, and keep the question itself. In this system, a question on the record is a kind of property. It stays in the file after everyone in the room has been reassigned.'
+
+**Choices:**
+- Send the rater question in writing, by itself, logged → **second_meeting**  _(FLAG: raterAsked; HIDDEN + Rater question sent Apr 7 — role, training, certification, in writing, logged)_
+  - NOTE (shown after choosing): Three questions on one page. Whatever comes back — including nothing — now has a date before it.
+
+## [second_meeting] The Second Team Meeting
+*Day 40 — Saturday, April 11, 2026 — Saturday, April 11, 2026 (dayOffset 40)*
+
+The team meeting quotes the summary again — the same three areas, the same overall level — because the summary is the document the system carries from room to room. But this time you are not hearing it as weather. You have nine ratings in a table at home, a worksheet with a landlord's handwriting on it, and a question about the scorer sitting in a mailbox.
+
+When the worker finishes, you say, mildly, that you've requested the item ratings and built a worksheet responding to them, and that you'll be bringing it to the review hearing. The room does not gasp. Rooms like this don't. But the sentence goes into the meeting notes, and meeting notes go into the file, and the file is where this story keeps its score.
+
+**Choices:**
+- Go home and wait for the answer to the rater question → **rater_reply**  _(HIDDEN + Meeting notes — parent stated she has the item ratings and a rebuttal worksheet for the review hearing)_
+  - NOTE (shown after choosing): Your challenge now exists in the agency's own handwriting. That is a different thing from existing only in yours.
+
+## [rater_reply] The Answer That Isn't
+*Day 43 — Tuesday, April 14, 2026 — Tuesday, April 14, 2026 (dayOffset 43)*
+
+The answer comes on letterhead and says, in full substance: the assessment 'was completed by the assigned worker in accordance with agency practice; staff complete required internal training.' No name. No role beyond 'assigned worker.' No certification named, no date, no statement of whether the training was completed before or after your scoring — or by the person who scored you at all.
+
+You read it twice, the way you read the first reply, and then you do the thing Mr. Osei drilled into you: you do not throw it across the room. You file it. The question, the answer, and the gap between them — all three pages go into the folder, in order, because all three are the record now.
+
+**Choices:**
+- Take the folder to Mr. Osei — ask what the court track adds to this → **court_question**  _(HIDDEN + Rater reply — 'assigned worker,' 'required internal training'; no name, certification, or date)_
+  - NOTE (shown after choosing): A non-answer, dated and filed, is evidence of exactly one thing — and it is not nothing: that the question was asked and this is what came back.
+
+## [court_question] The Court Track, Honestly
+*Day 44 — Wednesday, April 15, 2026 — Wednesday, April 15, 2026 (dayOffset 44)*
+
+Mr. Osei raises the court option himself, and raises its limit in the same breath. There is a discovery rule for dependency cases — Rule 1340 of the Rules of Juvenile Court Procedure — under which a party can ask the court to order the agency to disclose material items (Pa.R.J.C.P. 1340(B)(1)). 'Parents' lawyers use it for records,' he says. 'For this form, I have to tell you the truth: no court has yet decided whether this rule reaches the assessment form — asking is how that gets decided. We can put the request in front of the judge at the review hearing and let the record show it was made. What we cannot do is promise you the form.'
+
+'Then let's make the record,' you say, 'and bring the worksheet as our exhibit either way.' He nods like a man whose client has understood the assignment better than most lawyers do.
+
+**Choices:**
+- Add the Rule 1340 request for the form to the hearing filing — with the untested flag stated in it → **filed_record**  _(FLAG: rule1340Asked)_
+  - NOTE (shown after choosing): The filing itself says the quiet part: this application of the rule is untested. Honesty, in a filing, is a strategy — judges can smell the other kind.
+- Keep to the worksheet and the questions — don't spend credibility on an untested ask → **hearing_carry**
+  - NOTE (shown after choosing): A defensible choice, and Mr. Osei says so. The worksheet is proven technology. The rule, for this, is a question mark with a caption.
+
+## [filed_record] Filed Before the Hearing
+*Day 46 — Friday, April 17, 2026 — Friday, April 17, 2026 (dayOffset 46)*
+
+Four days before the review hearing, your lawyer files your side of the paper: the worksheet, marked as the parent's exhibit; the two requests and their replies; the rater question and its letterhead non-answer; and the Rule 1340 request for the form, flagged honestly as untested. Copies go to the agency and the child's attorney, because paper nobody else has seen can be kept out of rooms.
+
+You take an unpaid morning off work for the hearing. It costs real money. So does everything in this story that works.
+
+**Choices:**
+- Go to the review hearing with the folder — and your copy of everything in it → **hearing**  _(cash −40)_
+  - NOTE (shown after choosing): Filed, served, logged. Whatever happens in the room, the paper is already in the building.
+
+## [hearing_carry] Carrying It In Yourself
+*Day 46 — Friday, April 17, 2026 — Friday, April 17, 2026 (dayOffset 46)*
+
+You decide to bring the worksheet yourself rather than file ahead — the questions and the Rule 1340 ask left for another day. Your lawyer offers the worksheet at the hearing's start, the agency's solicitor glances through it without objection, and the judge takes it and sets it beside the summary.
+
+Unfiled paper arrives later and lands softer than filed paper — that is the tax on this route — but it arrives. The worksheet is on the bench, in the room, which is more rooms than the form itself has ever been in with you present.
+
+**Choices:**
+- Take your seat — the hearing begins → **hearing**
+  - NOTE (shown after choosing): Two documents on the bench now: their summary, and your worksheet. One of them has a landlord's handwriting on it.
+
+## [hearing] The Review Hearing
+*Day 50 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 50)*
+
+The hearing opens the way these hearings open: the agency's solicitor quotes the assessment's conclusions — the three high areas, the overall level, the recommendation — from the summary. The form itself is not in the room. It is, you realize, entirely possible it has never been in any room where decisions about Eli were made; only its conclusions travel, the way only rumors travel.
+
+Then the judge turns to your lawyer, and to the exhibit with the ruled lines and the pencil dates. The moment is not dramatic. Courtrooms almost never are, on the days that matter. It is simply your turn, and what you do with it is a choice about what this record will contain when everyone in this room has forgotten this morning.
+
+**Choices:**
+- Press the two documented items — walk the judge row by row through the paper → **hearing_items**
+  - NOTE (shown after choosing): Supervision: a school record. Housing: a landlord. Not outrage — exhibits.
+- Offer the worksheet and the rater questions for the record, without pressing the items today → **hearing_questions**
+  - NOTE (shown after choosing): A quieter theory of the case: get it all into the file, and let the file work on every future reader.
+- Ask the court to attach the worksheet to the next review and revisit the ratings then → **hearing_defer**
+  - NOTE (shown after choosing): Not today, but not never: a date, an attachment, and a direction — if the judge agrees.
+
+## [hearing_items] Row by Row
+*Day 50 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 50)*
+
+Your lawyer does not argue with the summary. She does something ruder and more effective: she reads your worksheet aloud, row by row, and after each disputed rating she says the name of a document, and the document is there — the school attendance record with no unexcused absences under the 'supervision' rating; Mrs. Abernathy's letter under 'housing stability,' fourteen months, rent on time, under a rating the form gave without knocking on any landlord's door.
+
+The agency's solicitor does not call you a liar, because the paper doesn't let her. What she says, after a pause, is that the agency 'can review the two items against the documentation and issue a written correction if warranted.' The judge looks over her glasses. 'Fourteen days,' she says. 'In writing. And the worksheet stays in the record either way.'
+
+**Choices:**
+- Wait the fourteen days — working, visiting, logging → **rescore_letter**
+  - NOTE (shown after choosing): Fourteen days, in writing, either way. Even the waiting has paperwork now.
+
+## [hearing_questions] For the Record
+*Day 50 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 50)*
+
+Your lawyer offers the worksheet as an exhibit and asks that it be included in the record, and then — calmly, as items, the way you file papers — puts the rest on the transcript: the parent requested the form and item ratings under the release regulation on two dated occasions and received a summary and a partial table; the parent asked who scored the assessment and what training or certification the scorer holds, and received the answer now offered as an exhibit; the parent asks that the worksheet and the questions accompany the file at every future review.
+
+The judge grants the inclusion without argument. The agency's solicitor does not commit to re-scoring anything, and the ratings stand — all of them, including the two your paper argues with. The hearing moves on to visit schedules and service dates, the ordinary machinery. But the transcript has new sentences in it now, and transcripts do not get reassigned, transferred, or lost in a drawer.
+
+**Choices:**
+- Go to Saturday's visit, and log the hearing in the notebook that night → **end_longwin**
+  - NOTE (shown after choosing): No ratings changed today. The file changed today. In this system those are different sentences, and the second one is longer.
+
+## [hearing_defer] Attach It to the Next Review
+*Day 50 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 50)*
+
+Your lawyer asks for a smaller, calendared thing: not re-scoring today, but an order attaching the worksheet to the case record for the next review, with the agency to respond to its two documented items in writing before that date. The agency's solicitor, offered a deadline instead of an argument, agrees to the attachment and to 'reviewing' the two items. The judge writes it into the order — dates, attachment, response — in the unglamorous language that makes things happen in June because someone said them in April.
+
+It is less than pressing. It is more than offering. It is a promise with a docket entry, which is the only kind this system reliably keeps.
+
+**Choices:**
+- Calendar it yourself that night — the response date and the review date, in the notebook and on the fridge → **next_review_set**
+  - NOTE (shown after choosing): Two dates. The fridge is also a filing system, if you keep it like one.
+
+## [next_review_set] The Dates on the Fridge
+*Day 56 — Monday, April 27, 2026 — Monday, April 27, 2026 (dayOffset 56)*
+
+The agency's response arrives a week before the review: one of the two documented ratings — housing stability — is revised downward in writing, with your landlord's letter cited as the basis. The other, supervision, stands, 'the documentation noted and the rating maintained.' Half a loaf, in writing, with a citation to your own exhibit.
+
+At the review, the worksheet is in the file — the judge's copy has her initials on the attachment stamp — and the item-by-item conversation that no one had in March is the conversation the room has now, briefly and on paper. Eli's plan changes at the margins: a step toward unsupervised time, built partly on a rating that exists because a landlord wrote a letter.
+
+**Choices:**
+- Log the review, file the response, and start the next worksheet page → **end_middle**
+  - NOTE (shown after choosing): The next review already has a document waiting for it. That has never been true before.
+
+## [rescore_letter] The Letter With Two Corrections
+*Day 64 — Tuesday, May 5, 2026 — Tuesday, May 5, 2026 (dayOffset 64)*
+
+It arrives on day thirteen of fourteen, which in this system counts as punctual: the agency's written re-scoring. 'Supervision' — revised, the school attendance record cited. 'Housing stability' — revised, the landlord's letter cited. The other ratings stand, including one you disputed and several you didn't. The overall level moves one notch, and the recommendation attached to it changes with it — a step up in visit time, recommended in writing, by the system, about your family.
+
+You read it at the kitchen table with the worksheet beside it, row by row, the way you built it. Two rows are different now because two documents existed. That is the whole arithmetic of this scenario, and it is not nothing. It is, in fact, the only arithmetic that has ever worked.
+
+**Choices:**
+- File the letter in the folder, log it, and go tell Eli about Saturday → **end_revised**
+  - NOTE (shown after choosing): Saturday is a longer visit now. The folder stays home. Some paper's job is to be finished.
+
+## [accept_summary] Living From the Summary
+*Day 18 — Friday, March 20, 2026 — Friday, March 20, 2026 (dayOffset 18)*
+
+Life does not pause for paperwork, and the summary becomes simply the way your case is described: in team meetings, in service referrals, in the reports written by people who have read nothing else about you. 'High overall,' the referrals say, and the services they route you to are the services that level attracts — more monitoring, more classes, the same Tuesdays.
+
+You attend everything. Your attendance sheets are perfect. They are filed somewhere, presumably — but no one has ever asked for them, and a document nobody requests has a way of not existing.
+
+**Choices:**
+- Keep going — the review hearing will sort it out → **meetings_pass**
+  - NOTE (shown after choosing): Hearings sort out what is put in front of them. That clause does a lot of work in this story.
+
+## [meetings_pass] The Summary, Again
+*Day 32 — Friday, April 3, 2026 — Friday, April 3, 2026 (dayOffset 32)*
+
+At the next team meeting the summary is quoted again, word for word — you recognize the sentences the way you recognize a song — and a decision gets built on it: the recommendation stays high-monitoring, because the assessment says so, because the summary says the assessment says so.
+
+On the bus home you have the thought that has started every other version of this story: somewhere there is a form. You have never seen it. It is possible to start asking now — late starts are still starts — or to let the summary go on being the only version of you the system reads.
+
+**Choices:**
+- Start now — write the request, build what folder you can, in the weeks left → **request_late**
+  - NOTE (shown after choosing): Late paper is still paper. It just has less time to become a record.
+- Let it ride — you are attending everything; surely that speaks for itself → **summary_follows**
+  - NOTE (shown after choosing): Attendance speaks. The question is whether anyone is transcribing.
+
+## [request_late] The Late Start
+*Day 35 — Monday, April 6, 2026 — Monday, April 6, 2026 (dayOffset 35)*
+
+You do in three weeks what the other version of you did in eight: the request (certified, logged — some lessons you learn from a story you haven't lived yet), the folder from the shoebox, a short worksheet covering the two items your documents argue with hardest. The reply, when it comes, is the familiar one-two: the outcome summary again, and — this time — a note that your packet 'will be placed in the case record and provided to the court at the review.'
+
+It is not the form. It is not the ratings. But it is your paper, entering the file through the front door, before the hearing — and that turns out to matter at the hearing more than you expected.
+
+**Choices:**
+- Go to the review hearing and hand the judge your packet directly → **hearing_unprepared**
+  - NOTE (shown after choosing): Thinner than the filed version. Thinner is not the same as absent.
+
+## [hearing_unprepared] The Hearing, Thin Worksheet
+*Day 50 — Tuesday, April 21, 2026 — Tuesday, April 21, 2026 (dayOffset 50)*
+
+The summary is quoted, as always, from the agency's side of the room. When your lawyer rises, she does not have ratings to rebut — she never got them — but she has your packet: the request, the log, the folder's best pages, the two-row worksheet. She asks the court to attach it to the record for the next review and to direct the agency to respond to its two items in writing before that date.
+
+The judge, who has read the packet during the recess because it was short enough to read, agrees — and adds, looking at the agency's solicitor, that a parent who asks this specifically 'should not have to ask twice for the document the summary summarizes.' The ratings stand today. The worksheet goes into the file with a response date attached.
+
+**Choices:**
+- Calendar the response date and the review date that night → **next_review_set**
+  - NOTE (shown after choosing): Two dates on the fridge. The fridge is undefeated.
+
+## [summary_follows] The File You Never Saw
+*Day 55 — Sunday, April 26, 2026 — Sunday, April 26, 2026 (dayOffset 55)*
+
+The review hearing comes and goes on the summary's terms: the level, the three areas, the recommendation, adopted. Your testimony is heard kindly and weighed the way testimony is weighed against a scored form it cannot see — as one person's account, against a document's authority, where the document's authority comes precisely from nobody in the room having to defend its rows.
+
+Afterward your lawyer says, gently, the sentence that is this ending's whole epitaph and this scenario's whole argument: 'Next time — and there will be a next review — we start with the form. You can request it. By name. It's allowed.'
+
+**Choices:**
+- Write the date of the next review on the fridge, and under it: 'request the form' → **end_unseen**
+  - NOTE (shown after choosing): The fridge, undefeated, keeps one more instruction for the future.
+
+## [end_revised] Ending — Two Ratings, Revised in Writing
+*Day 66 — Thursday, May 7, 2026 — Thursday, May 7, 2026 (dayOffset 66)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT GOT ONTO THE RECORD (this scenario's scoreboard): The worksheet, entered as your exhibit. Two Priority Item ratings — supervision and housing stability — revised downward in a signed agency letter that cites your own documents as the basis. An overall level moved one notch, and a recommendation changed with it, toward more time with Eli. And, underneath those, the requests, the log, the rater question and its non-answer, and an untested Rule 1340 request for the form itself — all filed, all dated, all available to every future reader of the file. The form itself you never saw. Notice that the win in this scenario is measured in revised ratings and entered paper, not in anyone conceding the form was wrong in general, and not in Eli coming home at this hearing. He didn't. The plan moved. The record moved further.
+- THE LAW UNDER THIS PATH: The whole challenge ran on one verified right: under 55 Pa. Code § 3130.44(d), information in the case record 'shall be released upon request' to a parent — a right you exercised by naming a specific record (the full scored assessment: the form, the item ratings, the outcome), which is the project's documented use of the regulation for the Universal Assessment. The court track was stated as honestly in the filing as it is here: Pa.R.J.C.P. 1340(B)(1) provides for disclosure, on a party's request, of material items in dependency proceedings, but no court has yet decided whether this rule reaches the assessment form — asking is how that gets decided, and your ask is now part of a court record where a future case may answer it. Everything else that worked was not law at all: it was the discipline the law rewards — written, dated, specific, logged, and answered with documents instead of adjectives.
+- THE HONEST PART: The two revised ratings were revised because two documents existed and a judge set a fourteen-day clock — and because the agency reviewer who re-scored them chose to credit a landlord's letter over a form filled in by someone who never met her. A different reviewer holds the line on both. A different judge declines the clock. The rater question was never really answered, the form was never produced, and eight of the seventeen ratings were never even released to be rebutted. Workers, judges, reviewers, and luck held most of this outcome. What your choices controlled was whether the file would contain anything besides the summary. It contains a worksheet now, and two corrections that cite it. In a system that reads files, that is what a win looks like from inside.
+
+## [end_longwin] Ending — The Long Win: The Questions Are in the File
+*Day 60 — Friday, May 1, 2026 — Friday, May 1, 2026 (dayOffset 60)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT GOT ONTO THE RECORD (this scenario's scoreboard): No ratings changed. Say that first, because this ending only works if it is not oversold. What changed is the file: your worksheet is an exhibit in it; your two dated requests and the partial replies are exhibits; your question — who scored this, and with what training or certification — is on a hearing transcript, together with the agency's answer, which names no name, cites no certification, and dates nothing. Every future reader of this case — the next worker, the next reviewer, the next judge, an appellate court if it ever comes to that — will meet your questions inside the file, in your words, next to the summary. The form's conclusions no longer travel alone.
+- THE LAW UNDER THIS PATH: You exercised the release right of 55 Pa. Code § 3130.44(d) twice, in writing, with increasing specificity — the form, the item ratings, the outcome — and the gap between what that right describes and what you received (a summary, then nine of seventeen ratings, no form) is now itself documented in a court record rather than merely true. The Rule 1340 question was not spent on this path; it remains available and untested: no court has yet decided whether this rule reaches the assessment form. Nothing in this ending required a court to agree with you about anything. It required only that asking be done in the forms the system cannot misfile: written, dated, specific, and offered into a record. That is a lower bar than winning, and it is the bar this scenario most wants its players to notice, because it is clearable by almost any parent with a notebook — which may be the most important fact in it.
+- THE HONEST PART: A record is a slow weapon, and this ending asks you to value something that pays off, if it pays off, in rooms you may never see, in front of readers you will never meet. It is possible the questions sit in the file unread and the summary outlives them. It is also true — and the published cases bear this out — that files are how these cases are actually decided over time, by people reconstructing what happened from paper, and a file that contains a documented, unanswered question about its own central document is a different file from one that doesn't. Workers rotate; judges rotate; the summary, unchallenged, would simply have accumulated authority with every copying. It has a challenger now, filed and stamped. Luck and personnel held the ratings. They do not hold the transcript.
+
+## [end_middle] Ending — Partly Revised, Calendared
+*Day 62 — Sunday, May 3, 2026 — Sunday, May 3, 2026 (dayOffset 62)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT GOT ONTO THE RECORD (this scenario's scoreboard): One of the two documented ratings — housing stability — revised in writing, your landlord's letter cited as the basis. The other maintained, with your documentation 'noted,' which is this system's way of saying your paper was read and will remain readable. The worksheet is attached to the case record by court order, with an agency response obligation that was actually met, a week early. And the next review will open with an item-by-item conversation that no previous review in this case ever had, because for the first time both sides' documents are in the same file.
+- THE LAW UNDER THIS PATH: Same spine as every path in this scenario: the release right of 55 Pa. Code § 3130.44(d), exercised by naming the form, the item ratings, and the outcome; and, held in reserve or spent depending on your route, the untested question whether Pa.R.J.C.P. 1340(B)(1) reaches the assessment form — no court has yet decided, and this ending did not need it decided, because a judge will often order the practical thing in front of her (an attachment, a response date) without ruling on the largest question behind it. Courts run on such middle orders. So, it turns out, does progress: an order that attaches your worksheet to the next review converts one hearing's effort into every later hearing's starting point, which is why calendaring — the least dramatic skill in this scenario — may be its most compounding one.
+- THE HONEST PART: Half a loaf is the honest unit here, and this debrief will not frost it: one rating revised, one standing on a note; the form unseen; eight ratings never released; Eli's plan changed at the margins — a step toward unsupervised time, not a homecoming. A bolder push in the hearing room might have won the second rating, or spent the goodwill that bought the order; a different solicitor refuses the attachment and forces the argument; a different judge grants nothing calendared at all. Workers, judges, timing, and temperament all held pieces. What your choices built is the thing none of those pieces can now remove: the next review starts from a file that contains your evidence, your questions, and a written correction — because you made sure, on paper and on dates, that it would.
+
+## [end_unseen] Ending — The Summary Follows the Case
+*Day 58 — Wednesday, April 29, 2026 — Wednesday, April 29, 2026 (dayOffset 58)*
+
+**Ending.**
+
+**Debrief:**
+- WHAT GOT ONTO THE RECORD (this scenario's scoreboard): Nothing of yours. That is the finding of this ending, stated plainly because softening it would repeat the harm. The record of Eli's case — the file every future worker, reviewer, and judge will read — contains an outcome summary of a scored form: seventeen Priority Items, rated by a person never identified to you, under scoring rules that have never been published, producing a level that has now been quoted in team meetings, service referrals, and a review hearing as if it were a fact about your family rather than a document about it. Your attendance was perfect. Your testimony was kind. Neither is in the file with anything like the summary's authority, because neither was ever put there in the form the file keeps.
+- THE LAW UNDER THIS PATH: The right you did not use was real, and it remains real for the next review: under 55 Pa. Code § 3130.44(d), case-record information 'shall be released upon request' to a parent, and the project's research documents the specific request — the full scored assessment form, the item ratings, and the outcome — as the challenge's first move. Two honest caveats belong here, because this scenario makes them everywhere: the regulation's application to this form is a practice, not a decided case, and whether Pa.R.J.C.P. 1340(B)(1) reaches the form at all is untested — no court has yet decided. Neither caveat is a reason the request fails; both are reasons it might be answered partially, procedurally, or late — which is exactly what makes asking early, in writing, and with a log the strategy the other endings are built from. A right with a review hearing for a deadline is only as real as the calendar you keep for it.
+- THE HONEST PART: Parents reach this ending for reasons that are not failures: exhaustion, night shifts, the belief that attending everything must surely count, and the reasonable trust that a system quoting a form has shown someone the form. Nobody in this ending acted as a villain; the worker quoted what she was given to quote, the judge weighed what was in front of her, and the summary accumulated the quiet authority that unexamined documents accumulate. Workers, judges, forms, and timing decided this — and luck, in the form of which lawyer happened to be at a library clinic on a Wednesday. The next review is already on the fridge. Under its date, in your handwriting, are five words that are the entire scenario in miniature: 'request the form.' It is not too late for them to work. It is only later than it was.

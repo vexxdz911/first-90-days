@@ -1,0 +1,50 @@
+# Strategy Guide — Scenario 27: "The Long Way Home"
+
+*Game documentation for a fictional simulation ("The First 90 Days," Scenario 27). This guide describes choices inside the scenario only. It is general information about how the simulation is built — not legal advice for any real case. The scenario deliberately keeps the interstate placement process generic: no compact rules are named, no interstate timelines are stated, and none are needed to follow this route.*
+
+*Route verified by walking `scenario-27.json` programmatically from its start node, choice by choice: 23 edges, reaching the named ending (see the path check reported with this guide's delivery).*
+
+## (1) The win
+
+**Ending — Home With You; the Paperwork Outrun** (`end_reunified`)
+
+State it honestly: the best ending in this scenario is the one where the interstate paperwork *loses*. Milo comes home to you on a trial return, ordered before the fifteen-month point, because your own track finished first — and Carla's placement, instead of being the ending, stands in the order as the family's documented reserve: pursued continuously, near completion, and never needed. That is still a partial thing, as every ending here is: the trial return comes with supervision, the case closes slowly behind it, and it arrived after Milo spent over a year in a stranger's home waiting on process. A child should not have had to wait out two filing systems to reach either home. Within the scenario as built, though, no ending gives Milo more: a parent, at home, with family documented in reserve.
+
+The two aunt endings are real wins of a different shape — **Ending — With Carla, Before the Clock** (`end_aunt`) and **Ending — The Clock Struck; the Record Answered** (`end_exception`, the relative-placement exception documented and the placement completing after the clock date). The route below is also the route that keeps both of them open longest, because it runs both tracks at full strength; you only spend the choice that closes them at the very last build.
+
+## (2) The route
+
+Key decision points, in order (node titles), the winning choice at each, and what it changes:
+
+1. **Reading Your Own Record** — *"Sign and send the records request, naming the interstate correspondence specifically"* (cash −5). Sets **`recordsRequested`** and opens **Logged as Sent. Never Received.** — the scenario's hinge: the home-study request your state logged as sent was never received in Carla's. No summary ever shows you this blank. Everything after is built on having found it early.
+2. **The Study Visit Is Scheduled. Then It Isn't.** — *"Set a standing Sunday call with Carla — case talk, then ordinary family talk, logged briefly."* Sets `sundayCalls`; hidden: weekly aunt contact, logged. Engagement in this scenario is a practice, and this choice installs the practice before the postponements start testing it.
+3. **Renewal Season** — *"Help Carla renew early — kit sent, proof kept, copies to you"* (cash −10). Sets `renewalDone`; hidden: Carla's approvals renewed *before* expiry, with proof of sending. Approvals in this process expire on schedule even when nothing about the person changed; this choice is what keeps her file continuously alive instead of periodically dead.
+4. **What Waiting Looks Like From Milo's Chair** — *"Ask the workers to log Carla's video calls with Milo — dates, in the file."* Sets `contactLogged`; hidden: the aunt–child bond as a dated record. An unlogged bond is real and invisible; a logged one is a fact a court can see at a review.
+5. **Asking Where It Is, Again** — *"Send the second records request — trace the finished study's transmission, with dates"* (cash −5). Sets `recordsRequested` + `studyTraced` and opens **The Study Was in a Queue With No Name**: the finished, favorable study located, its delay documented as transmission and queue time — sets `delayDocumented`. This four-date trace is the raw material of the exception ending, and it strengthens every other ending by making the delay attributable to process, not family.
+6. **Carla's Voice, Thinner** — *"Go to Carla — a visit, her folder reviewed together, her importance said plainly and in writing to the file"* (cash −30). Sets `auntHeld`; hidden: her engagement sustained through the final stretch, her file complete and current. This is the most expensive choice on the route and the one that most directly refuses the scenario's failure mode: drift.
+7. **Choosing the Final Build** — *"Lead with reunification — finish your track at full strength, Carla documented as the standing backup."* Sets `parentLed` and routes through **Your Track, at Full Strength** → **The Final Review — Your Track, Finished First** → the win ending. The other builds remain excellent second choices (the placement push routes to `end_aunt`; the exception packet to `end_exception`); the drift build closes everything (see Traps).
+
+Supporting beats on the route: name Carla **in writing at the first table** (**The Name You Say First** — hidden: aunt named by Mother on day one); log the sticky-note sending date at **"'Sent,' Says the File"**; tell Carla the truth when your housing opens at **Your Track, Suddenly Interesting** (sets `truthTold`) — her yes survives honesty, and her file says she was told.
+
+Cash on the route: about $70 of your $170 start (intake/bus fare, copies, postage, and the trip to Carla). As in most of this series, money pinches but never decides; elapsed time decides.
+
+## (3) Why this wins — the law as it is supposed to work
+
+Only principles from the scenario's verified set are used:
+
+- **The record is requestable — and it is the tracking tool.** A parent's case record "shall be released upon request" (55 Pa. Code § 3130.44(d)). This route uses the right the way the scenario teaches it: not as an accusation, but as an instrument — first to find that a request was logged as sent and never received, and later to trace a finished study sitting in a queue. Two state systems can each be honestly reporting "in process" while the paper between them does not exist; the parent's file request is the only tool in the scenario that can see the whole distance.
+- **The ASFA clock and its relative exception.** At fifteen of the most recent twenty-two months in care, the agency's duty to file a termination petition arises unless an exception applies (42 U.S.C. § 675(5)(E)) — among them, that the child is being cared for by a relative. The route respects that exception precisely: it does not claim the exception before Carla is actually caring for Milo. Instead it builds the dated record — continuous family effort, delay shown to be process — from which an agency can document its reason to defer filing while the relative placement completes (the `end_exception` path), and it finishes the placement outright on the `end_aunt` path. On the win route itself, the clock never has to be argued at all, because the trial return is ordered before the point arrives.
+- **A filing is not a termination.** On every path in this scenario the clock's consequence is a *filing duty*, and grounds for termination would still have to be proved by **clear and convincing evidence** at a hearing. The strategy is therefore never "beat the law"; it is "make the documented facts, by the clock date, better than the filing" — a completed parental track, a living relative placement, or both.
+
+## (4) The traps
+
+1. **"Take Ms. Bell's summaries" (Reading Your Own Record).** The kindest trap in the game: your worker means well, and her summary ("still in process") is honestly wrong — it reports a request that never arrived as if it were traveling. Skipping the records request routes you through **Summaries, Reassured**, the gap is found a month later at best, and every dated build downstream starts from older, thinner paper.
+2. **"Give her space" (The Study Visit Is Scheduled. Then It Isn't.) and "She is family — family doesn't need tending" (Carla's Voice, Thinner).** The same trap twice, in its early and late forms. In a process measured in months and run on replies, an untended relative drifts — not by deciding to quit, but by answering a week slower, letting a renewal lapse, missing a window. Both choices feed directly toward the closure letter and **Ending — The Placement That Died of Silence** (`end_collapse`).
+3. **"Trust the timeline — renewal can wait until they ask" (Renewal Season).** The asking and the expiring do not consult each other. One lapsed approval in the final stretch can close a file that took a year to build, and reopening is a beginning — the one thing this child has had too many of.
+4. **"Let it ride — everyone means well" (Choosing the Final Build).** The endgame version of every earlier trap. Meaning well is the fuel the whole process runs on; elapsed time is what it produces. This choice routes to `end_collapse`: clock struck, no exception documented, the case reset to your plan alone under a filed petition.
+
+## (5) What no strategy controls
+
+Two states' queues — including a queue with no name, in a state you have never visited, staffed by a worker whose caseload you cannot see. A first request that can be lost in transmission despite everyone's good faith. Approval expiry dates set by calendars no one in the family controls. Carla's employer's flexibility, her health, her stamina across fifteen months of being examined for a child who never arrives. The housing program's timing — the win ending turns substantially on a letter arriving in one season rather than the next. Which judge reads the file, and whether the stranger foster family's kindness (luck wearing a human face) holds for the duration.
+
+As the scenario's debriefs state: outcomes turn on workers, judges, and luck. The antagonist of this story is elapsed time between two filing systems, and no strategy defeats elapsed time — it only decides whether the family's effort remains visible, current, and provable while time passes. That visibility is the whole game, and it is, in the end, a winnable one.

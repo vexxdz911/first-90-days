@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Paternity Question</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 16px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 10px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:26px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Paternity Question",
+  "subtitle": "Scenario 18 — The Paternity Question (a fictional composite)",
+  "startDateISO": "2026-05-04",
+  "startNode": "start",
+  "startCash": 210,
+  "tier": "Hard",
+  "summary": "A father notified late in his daughter's case has six weeks to show up on paper — while her mother documents the stability any change must protect."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, May 4, 2026 — FATHER'S TRACK",
+   "dayOffset": 0,
+   "title": "The Letter That Came Late",
+   "body": [
+    "The envelope reaches you on a Monday, weeks after the case it describes was already moving. Your daughter June — four years old, in a foster placement across the county since before this story opens — has a court review coming. A man has been identified as her father. On paper, today, that man is you. The letter is the first paper in this case with your name on it, and it arrives late in a case that did not wait for it.",
+    "You read it three times at the kitchen table. It does not explain everything, and this scenario will not pretend it does: what matters here is procedural, and it is in front of you — there is a case, there is an agency, there is a review on Monday, June 15, and there is, as of today, no written word from you anywhere in June's file.",
+    "In the published cases this composite is built from, fathers who surfaced late were often judged on a painful distinction: what they said they had done, and what the file could show. Your core skill in this scenario is unglamorous and decisive — showing up on paper before you can show up in person."
+   ],
+   "choices": [
+    {
+     "text": "Write back this week — a short letter saying who you are, that you received the notice, and that you want to be involved — and keep a copy",
+     "next": "mom_notice",
+     "cash": -6,
+     "setFlags": [
+      "fatherWritten"
+     ],
+     "addHidden": [
+      "Father's written response — received and filed within days of his notice"
+     ],
+     "note": "One page, dated, copied. The file now contains a voice that was not in it on Sunday."
+    },
+    {
+     "text": "Wait until you can go in person and explain everything properly",
+     "next": "father_wait",
+     "note": "An explanation planned is not an explanation filed. The file stays empty while you prepare to fill it."
+    }
+   ]
+  },
+  {
+   "id": "father_wait",
+   "kicker": "Day 2 — Wednesday, May 6, 2026 — FATHER'S TRACK",
+   "dayOffset": 2,
+   "title": "Two Days of Meaning To",
+   "body": [
+    "Wednesday. The letter is on the counter, under a magnet, getting better in your head every time you rehearse it. The file, meanwhile, has received nothing, because files cannot hear rehearsals.",
+    "A coworker who has been through a custody case asks one question: 'Did you send anything?' It lands harder than advice would. Meaning to respond is a feeling. A dated letter is a fact — and facts are the only currency the next six weeks accept."
+   ],
+   "choices": [
+    {
+     "text": "Send the letter today, shorter than the rehearsed version, and keep the copy",
+     "next": "father_reply",
+     "cash": -6,
+     "setFlags": [
+      "fatherWritten"
+     ],
+     "addHidden": [
+      "Father's written response — sent on day 2, after an initial delay"
+     ],
+     "note": "Two days late is recoverable. The letter's date is now the fact, not the intention."
+    }
+   ]
+  },
+  {
+   "id": "mom_notice",
+   "kicker": "Day 1 — Tuesday, May 5, 2026 — MOTHER'S TRACK",
+   "dayOffset": 1,
+   "title": "A Name She Did Not Have an Address For",
+   "body": [
+    "MOTHER'S TRACK. June has lived in her placement for months, and her mother's case has run on its own track the whole time: visits, a service plan, the slow work of stability. Today the worker tells her a father has been identified and notified — a man from years ago, from before June, whose last known address, when the case opened, she did not have.",
+    "The worker asks, neutrally, about what she said at the start. The truth has two plain parts: she gave the name she had; she did not have an address, and part of her — she can say this now — was afraid that contact would reopen a conflict she had worked hard to close. Incomplete information is not the same as a false story, and this scenario grades neither. What matters is what she puts in writing now.",
+    "Her pressures are real and they are hers: June's stability in the placement she knows, safety and clear boundaries if a new adult enters the picture, and a review of her own that is also approaching."
+   ],
+   "choices": [
+    {
+     "text": "Write it down for the worker: the name she gave, that she had no address, what she fears, and the boundaries she is asking for",
+     "next": "father_reply",
+     "setFlags": [
+      "motherWroteEarly"
+     ],
+     "addHidden": [
+      "Mother's written statement — what she knew, what she lacked, and the boundaries she requests"
+     ],
+     "note": "On paper, her account is specific instead of defensive — and her boundaries become something a plan can actually carry."
+    },
+    {
+     "text": "Tell the worker verbally and leave it at that — writing feels like making it a bigger thing",
+     "next": "father_reply",
+     "note": "The conversation happens. The record of it is one line in someone else's note, in someone else's words."
+    }
+   ]
+  },
+  {
+   "id": "father_reply",
+   "kicker": "Day 2 — Wednesday, May 6, 2026 — FATHER'S TRACK",
+   "dayOffset": 2,
+   "title": "Showing Up on Paper",
+   "body": [
+    "FATHER'S TRACK. Your letter goes out — and then the harder discipline begins: one letter is an event; a paper trail is a practice. The agency's reply, when it comes, is brief and procedural. It names a worker, a phone number, and the June 15 review. It asks for your current contact information and availability, in writing.",
+    "Everything in this case will be read later by people who were not in the room: a worker's supervisor, lawyers, a judge. They will read dates. They will read what was sent, what was kept, and what was only ever said on a phone call that left no trace.",
+    "On your fridge, next to June's notice, you start a folder. It is thin. Thin is fine. Thin and growing is the whole strategy."
+   ],
+   "choices": [
+    {
+     "text": "Put your phone, address, work hours, and visit availability in writing, and file your copy in the folder",
+     "next": "father_counsel",
+     "cash": -4,
+     "setFlags": [
+      "contactInWriting"
+     ],
+     "addHidden": [
+      "Father's contact and availability — provided in writing, dated"
+     ],
+     "note": "Availability on paper can be planned around. Availability mentioned on a call cannot."
+    },
+    {
+     "text": "Call the number and give the details verbally — faster, friendlier",
+     "next": "father_counsel",
+     "note": "Friendly, and gone. If the worker changes, your availability changes with her notebook."
+    }
+   ]
+  },
+  {
+   "id": "father_counsel",
+   "kicker": "Day 4 — Friday, May 8, 2026 — FATHER'S TRACK",
+   "dayOffset": 4,
+   "title": "Asking for Counsel, in Writing",
+   "body": [
+    "FATHER'S TRACK. A man at work says the sentence that changes your month: 'You know you can ask for a lawyer, right?' You do not know the forms, the office, or the words. What the law — the verified law this scenario uses — actually says is broad and plain: a party is entitled to representation by legal counsel at all stages of the proceedings, and if he is without financial resources or otherwise unable to employ counsel, to have the court provide counsel for him (42 Pa.C.S. § 6337). This scenario states no narrower eligibility rule than that, because it has not verified one.",
+    "Asking is itself a paper act. A request made only out loud can be misheard, misfiled, or remembered differently by everyone who was not there. A request in writing has a date, and a date can be followed up.",
+    "You write it the way you wrote the first letter: short, dated, copied. Who you are. The case you were notified about. That you are asking for counsel under § 6337. Where you can be reached."
+   ],
+   "choices": [
+    {
+     "text": "Send the written request for counsel and keep the stamped or dated copy",
+     "next": "mom_visit",
+     "cash": -4,
+     "setFlags": [
+      "counselAsked"
+     ],
+     "addHidden": [
+      "Father's request for counsel under 42 Pa.C.S. § 6337 — in writing, dated, copy kept"
+     ],
+     "note": "Whatever happens next, the asking is documented. Undocumented asking is the system's favorite disappearing act."
+    },
+    {
+     "text": "Wait and ask at the review itself — June 15 is only six weeks away",
+     "next": "mom_visit",
+     "note": "Six weeks is most of the case you have. Counsel met in a hallway has hallway time to prepare."
+    }
+   ]
+  },
+  {
+   "id": "mom_visit",
+   "kicker": "Day 6 — Sunday, May 10, 2026 — MOTHER'S TRACK",
+   "dayOffset": 6,
+   "title": "Sunday Visit, Steady Ground",
+   "body": [
+    "MOTHER'S TRACK. Sunday, and June is all knees and questions at the visit, settled in the way she has slowly become settled — with her foster caregiver's routines, with her mother's Sundays, with a world that, whatever its paperwork, has held its shape for her for months.",
+    "This is the mother's stake, stated without apology: stability is not an abstraction to her. It is this — a child who knows where Sunday happens. A new person entering that world may, in time, widen it. Her job, as she sees it, is to make sure any widening happens on paper, with boundaries, at a pace a four-year-old can absorb.",
+    "The worker mentions the review. Six weeks. On both tracks now, the same date is circling."
+   ],
+   "choices": [
+    {
+     "text": "Ask the worker, in the visit note, that any new contact be structured and scheduled — and keep her copy",
+     "next": "father_work",
+     "setFlags": [
+      "motherBoundariesWritten"
+     ],
+     "addHidden": [
+      "Mother's visit note — requests structured, scheduled contact with clear boundaries"
+     ],
+     "note": "A boundary written down is a plan element. A boundary only felt is a future argument."
+    },
+    {
+     "text": "Say nothing this week — don't look like she's blocking anything",
+     "next": "father_work",
+     "note": "Silence reads as having no position. In this system, no position is also a position — someone else's."
+    }
+   ]
+  },
+  {
+   "id": "father_work",
+   "kicker": "Day 7 — Monday, May 11, 2026 — FATHER'S TRACK",
+   "dayOffset": 7,
+   "title": "The Shift Schedule Problem",
+   "body": [
+    "FATHER'S TRACK. Your job is warehouse work, second shift, with a bus ride on each end and a supervisor who posts schedules a week at a time. None of that is an excuse in a file; all of it is a fact that belongs in one. Cases like yours, in the published record, often turn on constraints nobody wrote down until it was too late to plan around them.",
+    "A daytime appointment is not impossible. It is impossible on no notice, in a week when the schedule is already posted, on a bus route that runs hourly. That sentence — written, early, to the worker — is the difference between a constraint and a surprise.",
+    "The folder gets a new page: your shift pattern, your bus route, the days you can move, the days you cannot, and the supervisor's number for verification."
+   ],
+   "choices": [
+    {
+     "text": "Send the work-and-transport page to the worker now, before any appointment is set",
+     "next": "mom_records",
+     "cash": -4,
+     "setFlags": [
+      "workInWriting"
+     ],
+     "addHidden": [
+      "Father's work schedule and transport limits — provided in writing in advance"
+     ],
+     "note": "Constraints disclosed early read as planning. The same constraints disclosed after a missed appointment read as excuses."
+    },
+    {
+     "text": "Keep it in your pocket — you'll make whatever they schedule work somehow",
+     "next": "mom_records",
+     "note": "Somehow is not a plan a worker can write into a schedule. The first conflict will introduce your constraints at the worst possible moment."
+    }
+   ]
+  },
+  {
+   "id": "mom_records",
+   "kicker": "Day 9 — Wednesday, May 13, 2026 — MOTHER'S TRACK",
+   "dayOffset": 9,
+   "title": "Mother Asks for the Record",
+   "body": [
+    "MOTHER'S TRACK. At the agency office, the mother does the thing this whole game keeps teaching from different chairs: she asks, in writing, for the case record. She is a party to June's case, and the regulation is plain — the record 'shall be released upon request' (55 Pa. Code § 3130.44(d)). She signs the request at the counter and keeps her copy.",
+    "She is not asking out of suspicion. She is asking because dates she has never seen — when things were filed, when notices went out, what her own service plan actually says in its current version — are quietly steering decisions she is then judged on. You cannot respond to a timeline you have not read.",
+    "The packet will take days to arrive. Asking today is what makes arriving possible."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written record request under § 3130.44(d) and keep the copy",
+     "next": "father_dates",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Mother's written record request under 55 Pa. Code § 3130.44(d) — signed, copy kept"
+     ],
+     "note": "The request is dated today. In this system, the date a parent asked is itself part of the record."
+    },
+    {
+     "text": "Ask the worker to just tell her the important dates instead",
+     "next": "father_dates",
+     "note": "A summary from memory, of dates, about a case decided by dates. She leaves with impressions where the record would have given her facts."
+    }
+   ]
+  },
+  {
+   "id": "father_dates",
+   "kicker": "Day 11 — Friday, May 15, 2026 — FATHER'S TRACK",
+   "dayOffset": 11,
+   "title": "The Dates Change the Math",
+   "body": [
+    "FATHER'S TRACK. You make the same request from your side — in writing, for the record as it concerns you (55 Pa. Code § 3130.44(d)) — and when the papers come, you sit with them the way the mother sat with hers: looking for dates.",
+    "And there it is, the quiet hinge of this whole scenario. The service-plan dates and the notice dates are not the same dates. The case was running — plans written, reviews scheduled — well before the letter reached your kitchen table. Nothing in this beat states a rule about notice; the scenario has verified none and claims none. What it shows is arithmetic a parent can do: your six weeks to June 15 were never the case's six weeks. They are the remainder of a much older clock.",
+    "Seeing the dates changes what you do. There is no time to wait for the case to come to you. Every remaining step has to be initiated, in writing, by you."
+   ],
+   "choices": [
+    {
+     "text": "Request the record in writing too, then rebuild your plan around the real dates",
+     "next": "mom_boundaries",
+     "cash": -6,
+     "setFlags": [
+      "recordsRequested",
+      "sawDates"
+     ],
+     "addHidden": [
+      "Father's written record request under 55 Pa. Code § 3130.44(d)",
+      "Notice and service-plan dates compared — father replanned around the June 15 review"
+     ],
+     "note": "Two parents, two requests, one timeline finally visible to both. That visibility is the lesson of § 3130.44(d)."
+    },
+    {
+     "text": "Skim the packet and set it aside — the review is what matters, not old dates",
+     "next": "mom_boundaries",
+     "note": "The old dates are the review: they are what the judge will see when she asks how long each parent has had, and to do what."
+    }
+   ]
+  },
+  {
+   "id": "mom_boundaries",
+   "kicker": "Day 13 — Sunday, May 17, 2026 — MOTHER'S TRACK",
+   "dayOffset": 13,
+   "title": "Boundaries, Written Kindly",
+   "body": [
+    "MOTHER'S TRACK. The mother's written statement goes in — the one about what she knew and did not have, months ago. Now comes its companion piece: what she is asking for going forward. Not a wall. A frame. Contact that is scheduled rather than sudden. Information shared through the worker rather than around her. June's routines — school, Sundays, bedtime — treated as load-bearing.",
+    "She writes it carefully, because she knows how it could be read by someone determined to read it ungenerously, and she refuses to hand them the material: every sentence is about June's pace, none is about punishing anyone. Boundaries stated as the child's needs are the hardest kind to argue with, because they are not, in the end, about the adults at all.",
+    "She keeps her copy. By now, on both tracks, the keeping of copies has stopped feeling like suspicion and started feeling like hygiene."
+   ],
+   "choices": [
+    {
+     "text": "File the boundaries statement and keep the copy in her own folder",
+     "next": "father_availability",
+     "setFlags": [
+      "motherBoundariesFiled"
+     ],
+     "addHidden": [
+      "Mother's boundaries statement — filed, framed around the child's routines and pace"
+     ],
+     "note": "Her position is now findable by anyone who reads the file — including a judge who has never met her."
+    },
+    {
+     "text": "Hold it back — it might look uncooperative at the review",
+     "next": "father_availability",
+     "note": "Unfiled, her boundaries exist only if she gets a chance to say them out loud, in the right room, on the right day."
+    }
+   ]
+  },
+  {
+   "id": "father_availability",
+   "kicker": "Day 14 — Monday, May 18, 2026 — FATHER'S TRACK",
+   "dayOffset": 14,
+   "title": "Availability, Again — Because People Change",
+   "body": [
+    "FATHER'S TRACK. The worker who took your first letter has rotated off the case. Her replacement is polite, conscientious, and in possession of a file in which — if you did the early work — your phone number, address, work hours, and availability already live in your own handwriting. If you didn't, this Monday is when you learn what verbal information is worth across a staffing change.",
+    "Either way, the practice is the same and this node teaches it deliberately: resend it. Updated, dated, brief. Contact and availability in writing is not a form you file once; it is a habit you maintain for exactly this reason — the system is made of people, and people rotate.",
+    "June 15 is four weeks away. The new worker schedules a first, structured contact — supervised, at the agency, short. A beginning with edges on it."
+   ],
+   "choices": [
+    {
+     "text": "Resend updated contact and availability in writing to the new worker",
+     "next": "first_contact",
+     "cash": -4,
+     "setFlags": [
+      "contactUpdated"
+     ],
+     "addHidden": [
+      "Father's contact and availability — resent in writing after worker change"
+     ],
+     "note": "The new worker's first impression of you is a document that predates her. That is what a paper trail is for."
+    },
+    {
+     "text": "Introduce yourself by phone and trust the file to speak for itself",
+     "next": "first_contact",
+     "note": "The file speaks — in whatever accent your earlier choices gave it."
+    }
+   ]
+  },
+  {
+   "id": "first_contact",
+   "kicker": "Day 16 — Wednesday, May 20, 2026 — FATHER'S TRACK",
+   "dayOffset": 16,
+   "title": "Forty Minutes, Supervised",
+   "body": [
+    "FATHER'S TRACK. The contact room has a clock, a box of toys chosen by committee, and June — who does not know you the way a daughter in a storybook would, because this is not a storybook. She is four. You are, to her, a man the worker introduced carefully, whose name she is learning.",
+    "Forty supervised minutes. You build a tower. She knocks it down with the solemnity of a building inspector condemning it. You do not reach for more than the visit offers: no promises about June 15, no questions about her mother's case, nothing that makes a four-year-old carry an adult's hope across the room.",
+    "Afterward, the worker asks if you want the note of the visit. You say yes. Of course you say yes. You are a man building a file the way other men build a house — because somebody he loves is going to live in what it proves."
+   ],
+   "choices": [
+    {
+     "text": "Thank the worker in writing afterward, confirm you want the next contact, and file the visit note",
+     "next": "mom_stability",
+     "cash": -4,
+     "setFlags": [
+      "visitFollowedUp"
+     ],
+     "addHidden": [
+      "First supervised contact — attended, appropriate, followed up in writing"
+     ],
+     "note": "Attendance is the event. The written follow-up is what makes the event findable in June."
+    },
+    {
+     "text": "Leave quietly — showing up was the point, no need to make paperwork of a tower",
+     "next": "mom_stability",
+     "note": "The visit happened. Its trace in the file is now entirely in other people's handwriting."
+    }
+   ]
+  },
+  {
+   "id": "mom_stability",
+   "kicker": "Day 18 — Friday, May 22, 2026 — MOTHER'S TRACK",
+   "dayOffset": 18,
+   "title": "What Stability Actually Looks Like",
+   "body": [
+    "MOTHER'S TRACK. The mother's own track has not paused while the father's began: her service plan has its own dates, its own attendance, its own folder now. Stability, in her file, is not a claim — it is a stack of kept appointments, and she has learned to keep the stack herself rather than trust that it assembles itself somewhere downtown.",
+    "Word reaches her of the first supervised contact. It went fine, the worker says. Fine is a word she turns over for a day. Fine, structured, supervised, scheduled — that is precisely the shape she asked for in writing. The frame held. That does not end her caution, but it gives her caution something it did not have before: a data point that is not a fear.",
+    "She writes her update to the worker that week — her own progress, in her own words, dated — because both parents in this story are learning the same lesson from opposite sides of it."
+   ],
+   "choices": [
+    {
+     "text": "Send her written update — progress, the contact she heard went well, and her boundaries restated once, calmly",
+     "next": "father_follow",
+     "setFlags": [
+      "motherUpdateFiled"
+     ],
+     "addHidden": [
+      "Mother's written update — progress documented; structured contact acknowledged"
+     ],
+     "note": "A mother who documents her own progress and acknowledges a father's first step, in writing, is very hard to caricature in a courtroom."
+    },
+    {
+     "text": "Wait for the review to say any of it — written updates feel like lobbying",
+     "next": "father_follow",
+     "note": "Everything at a review is lobbying; the only question is whether yours arrived early enough to be read."
+    }
+   ]
+  },
+  {
+   "id": "father_follow",
+   "kicker": "Day 20 — Sunday, May 24, 2026 — FATHER'S TRACK",
+   "dayOffset": 20,
+   "title": "Follow-Through Is a Repetition",
+   "body": [
+    "FATHER'S TRACK. The second contact is scheduled. Then the third. Follow-through, you are learning, is not a heroic act; it is a repetition that survives boredom, weather, buses, and a supervisor's rotating schedule. Each contact kept is a line. Each line is dated. The lines, together, are the argument — there is no other argument, and there never was.",
+    "You confirm each one in writing beforehand and thank in writing afterward, a rhythm so plain it feels silly until you imagine the file without it: a judge in June, flipping pages, finding either a rhythm or a scattering of other people's recollections.",
+    "Three weeks to the review. The folder on the fridge is no longer thin."
+   ],
+   "choices": [
+    {
+     "text": "Keep the rhythm: written confirmation before, written thanks after, every time",
+     "next": "setback",
+     "setFlags": [
+      "followThrough"
+     ],
+     "addHidden": [
+      "Father's contacts — confirmed and followed up in writing, each time"
+     ],
+     "note": "Repetition is the evidence. Anyone can be documented once."
+    },
+    {
+     "text": "Relax the paperwork now that visits are going well — the relationship is the real thing",
+     "next": "setback",
+     "note": "The relationship is the real thing. The paperwork is how the real thing survives being described to strangers."
+    }
+   ]
+  },
+  {
+   "id": "setback",
+   "kicker": "Day 22 — Tuesday, May 26, 2026 — FATHER'S TRACK",
+   "dayOffset": 22,
+   "title": "The Week the Schedule Broke",
+   "body": [
+    "FATHER'S TRACK. It was always going to happen, and it happens on a Tuesday: the posted schedule flips you onto the contact day, the bus route posts a detour, and the week's arithmetic stops working. This is the moment the whole scenario has been rehearsing — not whether a working parent hits a conflict, but what the conflict looks like on paper.",
+    "There are two versions of next week in the file. In one, a dated note arrives before the missed contact: the schedule change, the supervisor's posting, the alternative days offered, the request to reschedule. In the other, there is a gap — and gaps, in June, get explained by whoever explains them first, which will not be you.",
+    "Your folder, your habits, and about twenty minutes stand between those two versions."
+   ],
+   "choices": [
+    {
+     "text": "Notify the worker in writing before the contact, attach the posted schedule, and offer two alternative days",
+     "next": "mom_writing",
+     "cash": -18,
+     "setFlags": [
+      "conflictNotified"
+     ],
+     "addHidden": [
+      "Schedule conflict — notified in writing in advance, alternatives offered; contact rescheduled"
+     ],
+     "note": "A conflict handled on paper reads as reliability under pressure. The taxi money hurts. The alternative hurts more."
+    },
+    {
+     "text": "Miss it and explain at the next contact — they'll understand, they've seen the visits go well",
+     "next": "mom_writing",
+     "note": "They might. The file will show a no-show with an explanation dated after it. Order matters, and you just reversed it."
+    }
+   ]
+  },
+  {
+   "id": "mom_writing",
+   "kicker": "Day 24 — Thursday, May 28, 2026 — MOTHER'S TRACK",
+   "dayOffset": 24,
+   "title": "Mother Writes the Review Before It Happens",
+   "body": [
+    "MOTHER'S TRACK. Two and a half weeks out, the mother sits with her folder and does what the father is doing across town: she assembles her review self on paper. Her progress, dated. Her boundaries, already filed. Her position on June's contact with her father, stated in the frame she chose weeks ago — structured, scheduled, at June's pace, expanding only as the record supports expanding.",
+    "She is not asked to be the father's advocate, and she is not his opponent in any sentence she writes. She is a parent documenting a child's life and her own work in it. That the father's documented steps make her measured position easier to hold is a fact she notes privately, and files nowhere.",
+    "Reviews, both parents now understand, are largely written before anyone enters the room. June 15 will mostly read aloud what May put in the folders."
+   ],
+   "choices": [
+    {
+     "text": "Finish her written review statement and deliver it to the worker and her counsel before the review",
+     "next": "worker_checkin",
+     "setFlags": [
+      "motherReviewReady"
+     ],
+     "addHidden": [
+      "Mother's written review statement — delivered in advance"
+     ],
+     "note": "Delivered early, it can be read. Filed on the day, it can only be glanced at."
+    },
+    {
+     "text": "Keep her statement for the day itself — fresher in person",
+     "next": "worker_checkin",
+     "note": "In person, she will have minutes. On paper, she had weeks. The trade is rarely worth it."
+    }
+   ]
+  },
+  {
+   "id": "worker_checkin",
+   "kicker": "Day 25 — Friday, May 29, 2026 — FATHER'S TRACK",
+   "dayOffset": 25,
+   "title": "The Worker Reads the Folder Back",
+   "body": [
+    "FATHER'S TRACK. A check-in meeting, Friday, in a small office with your folder's twin on the desk — the agency's file, which now contains your letters in the order you sent them. The worker goes through what will go to the court: the dates you were notified, the dates you responded, counsel, contacts, the conflict you flagged and rescheduled.",
+    "Hearing your spring read back as a sequence of dates is a strange experience. Reduced to paper, you are either a rhythm or a rumor, and today — on the strong version of this story — you sound like a rhythm. The worker is careful, as workers are: she promises nothing about June 15. Judges decide, she says. Files inform.",
+    "What she can tell you is what will be in front of the judge. You already know. You wrote a good share of it."
+   ],
+   "choices": [
+    {
+     "text": "Ask what, specifically, will be in the report to the court — and write down her answer, dated",
+     "next": "packet_build",
+     "setFlags": [
+      "askedReportContents"
+     ],
+     "addHidden": [
+      "Father asked, in the check-in, what the court report would contain — answer noted and dated"
+     ],
+     "note": "No surprises is a strategy. You cannot answer a report you have not asked about."
+    },
+    {
+     "text": "Leave it to the professionals — asking feels like pressure",
+     "next": "packet_build",
+     "note": "Asking what a report contains is not pressure. It is the most ordinary diligence in this entire scenario."
+    }
+   ]
+  },
+  {
+   "id": "packet_build",
+   "kicker": "Day 28 — Monday, June 1, 2026 — FATHER'S TRACK",
+   "dayOffset": 28,
+   "title": "Assembling the Packet",
+   "body": [
+    "FATHER'S TRACK. Monday, June 1. Two weeks out. On your table: every copy you kept. The response letter. The counsel request. Contact and availability, twice. The work-and-transport page. Visit confirmations and thanks, in rhythm. The conflict note with the posted schedule attached. Counsel — asked for in writing back in May, and by now part of how you prepare — helps you order it the way a stranger reads: chronologically, tabbed, short cover page.",
+    "This packet is the scenario's whole thesis in a manila folder: a man who was notified late cannot recover the months before his notice. He can only make the weeks after it undeniable. The packet does not argue that he is a good father — a packet cannot know that. It proves the narrower, load-bearing thing: since the day the letter reached him, he has shown up, on paper, every time, in advance, in writing.",
+    "Across town, the mother's statement is in the file too. Two folders, approaching the same room."
+   ],
+   "choices": [
+    {
+     "text": "Finish the packet with counsel's help and deliver copies in advance of the review",
+     "next": "mom_packet",
+     "cash": -12,
+     "setFlags": [
+      "packetDelivered"
+     ],
+     "addHidden": [
+      "Father's chronological packet — delivered in advance of the June 15 review"
+     ],
+     "note": "Delivered in advance, it is homework the court can actually do. Delivered on the day, it is a prop."
+    },
+    {
+     "text": "Bring one copy on the day — handing it over in person feels more sincere",
+     "next": "mom_packet",
+     "note": "Sincerity is not a reading schedule. A packet nobody has read is a speech nobody heard."
+    }
+   ]
+  },
+  {
+   "id": "mom_packet",
+   "kicker": "Day 30 — Wednesday, June 3, 2026 — MOTHER'S TRACK",
+   "dayOffset": 30,
+   "title": "Mother's Last Page Before the Review",
+   "body": [
+    "MOTHER'S TRACK. The mother's folder closes the way it opened: with June at the center of the page. Her final written update is short. June is stable. Her own plan is on track, with dates. The structured contacts have happened as scheduled; the child, by the worker's account and her own Sunday observations, is absorbing them at the pace the frame was built to protect.",
+    "She does not write the father's review for him — his packet does that, or fails to. She writes the only thing that was ever hers to write: a documented mother, a stable child, boundaries stated as a child's needs, and a position that the record — his and hers together — should set the pace of whatever comes next.",
+    "Monday, June 15. Both tracks enter the same room. What happens there depends, more than either parent expected in May, on which version of the spring the folders contain."
+   ],
+   "choices": [
+    {
+     "text": "Deliver her final update in advance and go into the review with her folder complete",
+     "next": "the_folder",
+     "setFlags": [
+      "motherPacketComplete"
+     ],
+     "addHidden": [
+      "Mother's final written update — delivered in advance of the review"
+     ],
+     "note": "Both parents, documented. The review will now be about a record, not about recollections."
+    },
+    {
+     "text": "Rest on what is already filed — one more letter won't change anything",
+     "next": "the_folder",
+     "note": "Perhaps. But 'already filed' is a quantity, and quantities are exactly what this scenario has been counting."
+    }
+   ]
+  },
+  {
+   "id": "the_folder",
+   "kicker": "Day 32 — Friday, June 5, 2026 — BOTH TRACKS",
+   "dayOffset": 32,
+   "title": "BOTH TRACKS — The Folder, Weighed",
+   "body": [
+    "Friday, June 5. Ten days before the review, take stock — honestly, the way the court will. On the table are the two folders this scenario has been building, choice by choice, since May 4.",
+    "In the fullest version: his dated response, counsel requested in writing, contact and work constraints on paper, records requested and read, contacts confirmed and followed up, a conflict flagged before it became a gap, a packet delivered early; her early written account, boundaries filed as a child's needs, her own record requested, her progress documented in her own words. In thinner versions — and this scenario has let you build them — some of those pages are phone calls, intentions, and explanations dated after the fact.",
+    "You cannot now add pages to May. You can only decide how what exists gets presented on June 15. Choose the presentation that matches the folder you actually built — the court, in each ending, will."
+   ],
+   "choices": [
+    {
+     "text": "Present the full packet: documented involvement, structured expansion, placement path to be built on this record",
+     "next": "strong_deliver",
+     "note": "The ask matches the paper: a documented role now, and a path the record itself has paved."
+    },
+    {
+     "text": "Present a measured packet: involvement is real but young — ask that it continue supervised and structured while the record grows",
+     "next": "structured_deliver",
+     "note": "A smaller ask, honestly sized to a shorter record — and structured asks are hard for a court to refuse outright."
+    },
+    {
+     "text": "Go in with what little paper there is and explain the rest in person",
+     "next": "thin_arrive",
+     "note": "Explanations in person are the one currency June 15 does not accept at face value."
+    }
+   ]
+  },
+  {
+   "id": "strong_deliver",
+   "kicker": "Day 35 — Monday, June 8, 2026 — FATHER'S TRACK",
+   "dayOffset": 35,
+   "title": "Delivered Early, Read in Full",
+   "body": [
+    "FATHER'S TRACK. The packet goes in a week before the review — to the worker, to counsel, through counsel to the court — with the mother's advance statement already in the file beside it. For the first time in this case, every reader enters June 15 having read the same spring.",
+    "Counsel lays it out in the order you built it: notice received in May; response within days; counsel requested in writing under § 6337; records requested under § 3130.44(d) and actually read; constraints disclosed before they bit; every contact kept, confirmed, and followed up; the one conflict flagged in advance with alternatives. No adjectives. Dates.",
+    "The ask is sized to the record: a documented role for June's father now — scheduled contact on a defined, expanding structure — and a stated path, to be measured at the next review, toward placement or expanded involvement if the documented rhythm holds."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review and let the dates make the argument",
+     "next": "mom_strong",
+     "note": "You have done the only thing May allowed. June will do what it does."
+    }
+   ]
+  },
+  {
+   "id": "mom_strong",
+   "kicker": "Day 37 — Wednesday, June 10, 2026 — MOTHER'S TRACK",
+   "dayOffset": 37,
+   "title": "Mother, in the Same Room",
+   "body": [
+    "MOTHER'S TRACK. The mother reads the packet too — she was always going to; it is, in part, about her daughter's life. What she finds in it is the version of events her own boundaries assumed at their most hopeful: a father whose involvement arrived structured, scheduled, and documented, whose steps she can verify rather than merely trust.",
+    "Her statement, already filed, does not change — it does not need to. It asked that the record set the pace. The record, for once, is legible enough to do it. She confirms her position in the room in one sentence and lets her folder carry the rest.",
+    "June, who is four, knows none of this. She knows Sunday, and the tower man, and that both of those things keep happening. Permanency, at her scale, is repetition she can count on."
+   ],
+   "choices": [
+    {
+     "text": "Enter the review — Monday, June 15",
+     "next": "review_strong",
+     "note": "Day 42. The room where folders are weighed."
+    }
+   ]
+  },
+  {
+   "id": "review_strong",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "BOTH TRACKS — The Review, June 15",
+   "body": [
+    "The courtroom reads dates the way other rooms read faces. The judge works through the file in order, and the order — for this path — is the argument: a late notice, answered in writing within days; counsel sought on paper; a record requested, received, and visibly used to replan; constraints disclosed in advance; contacts kept and documented; a conflict handled before it became an absence; a mother's account and boundaries filed early, in her own words, framed around her child's stability.",
+    "No one in the room claims the spring proves everything. Counsel claims the narrower thing the packet was built to prove — that since the day he was notified, this father's involvement is not a promise but a documented pattern, and that June's mother, on her own track, has documented the stability any expansion must protect. The judge asks a handful of questions. The answers, unusually for this room, are mostly already in writing.",
+    "Then the judge rules on what the record can carry."
+   ],
+   "choices": [
+    {
+     "text": "Hear the ruling",
+     "next": "end_documented",
+     "note": "What a full folder can carry — and what even a full folder cannot guarantee next time."
+    }
+   ]
+  },
+  {
+   "id": "structured_deliver",
+   "kicker": "Day 35 — Monday, June 8, 2026 — FATHER'S TRACK",
+   "dayOffset": 35,
+   "title": "A Smaller Ask, Honestly Sized",
+   "body": [
+    "FATHER'S TRACK. Your packet is real but younger than the fullest version — some early steps were verbal, some pages thin — and counsel, to her credit, refuses to dress it as more than it is. Sized honestly, the ask changes shape: not a path to placement argued today, but continued involvement on a supervised, structured basis, with the specific documented steps — written confirmations, advance notice of conflicts, availability kept current — named as the record to be built by the next review.",
+    "It is a less satisfying week than the bold version. It is also the version most late-noticed parents in the published record would have been fortunate to reach: still in the case, on terms, with the terms written down, and a defined way for the file to grow.",
+    "The mother's statement supports structure — it always did. What it could never support was a leap. This ask does not leap."
+   ],
+   "choices": [
+    {
+     "text": "Take the structured ask into the review",
+     "next": "mom_structured",
+     "note": "A record that keeps building is a case that stays open — in the good sense."
+    }
+   ]
+  },
+  {
+   "id": "mom_structured",
+   "kicker": "Day 38 — Thursday, June 11, 2026 — MOTHER'S TRACK",
+   "dayOffset": 38,
+   "title": "Mother Nods at the Frame",
+   "body": [
+    "MOTHER'S TRACK. The structured proposal reaches the mother before the review, in writing, through the worker — which is itself the point. No surprises at her door, no sudden expansions of June's world. A schedule, a setting, supervision, and a review date at which the documented record — not anyone's hopes — decides what happens next.",
+    "This is, nearly word for word, the frame she filed in May. She confirms it without triumphalism and without apology: June's stability is protected by the structure, and the structure leaves a documented door open that a documented father can, over time, walk through.",
+    "Her folder and his, thinner than they might have been, still agree on the shape of the next season. In this system, agreement on shape is no small thing."
+   ],
+   "choices": [
+    {
+     "text": "Enter the review — Monday, June 15",
+     "next": "review_structured",
+     "note": "Day 42. Structure, weighed."
+    }
+   ]
+  },
+  {
+   "id": "review_structured",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "BOTH TRACKS — The Review, June 15 (Structured)",
+   "body": [
+    "The judge reads a younger record than the fullest path's — and reads it accurately. There is involvement here, and it is genuinely documented in stretches, but the pattern is months younger than the case and thinner than the ask of placement would require. Counsel does not overclaim it. The mother confirms the frame she filed. The worker confirms the contacts that happened and the structure that held them.",
+    "What the court is being asked for, on this path, is time with terms: involvement that continues supervised and structured, expectations written down, and a record that — if the rhythm holds — will be a different weight at the next review.",
+    "The judge rules accordingly."
+   ],
+   "choices": [
+    {
+     "text": "Hear the ruling",
+     "next": "end_supervised",
+     "note": "Not the boldest ending. A durable one."
+    }
+   ]
+  },
+  {
+   "id": "thin_arrive",
+   "kicker": "Day 35 — Monday, June 8, 2026 — FATHER'S TRACK",
+   "dayOffset": 35,
+   "title": "Explaining, in Person",
+   "body": [
+    "FATHER'S TRACK. In the thin version of this spring, you arrive at the review's doorstep with a folder that is mostly intentions: calls you made that left no trace, availability a rotated worker never received, a missed contact explained afterward, dates in a packet you skimmed rather than studied. None of it means you did not care. All of it means the file cannot say so.",
+    "Counsel — if counsel is there at all on this path — does what can be done: she asks the court to weigh your presence today, your testimony, your evident desire. She is asking the court to do exactly what this scenario has spent six weeks showing courts cannot do at scale: reconstruct a spring from a man's sincerity in a single morning.",
+    "Across the room, the mother's documented stability fills its folder. The contrast is not malice. It is arithmetic."
+   ],
+   "choices": [
+    {
+     "text": "Go into the review with the folder there is",
+     "next": "mom_thin",
+     "note": "The review will be about the record. It was always going to be about the record."
+    }
+   ]
+  },
+  {
+   "id": "mom_thin",
+   "kicker": "Day 38 — Thursday, June 11, 2026 — MOTHER'S TRACK",
+   "dayOffset": 38,
+   "title": "Mother's Folder, Full; the Room, Quiet",
+   "body": [
+    "MOTHER'S TRACK. The mother did her paper on every version of this story — her account, her boundaries, her record request, her updates — because her track never depended on his. By June, her folder is the steadiest object in the case: a stable child, a documented plan, boundaries framed as a four-year-old's needs.",
+    "She takes no pleasure in the thinness across the room. A documented father would have made her child's world larger and her own position easier, not harder. But her filed position was always the same sentence: the record should set the pace. She will not ask the court to set a pace no record supports — that sentence protects June from leaps in every direction.",
+    "She confirms her statement, answers the judge's questions, and waits for a ruling that, on this path, her folder largely wrote."
+   ],
+   "choices": [
+    {
+     "text": "Enter the review — Monday, June 15",
+     "next": "review_thin",
+     "note": "Day 42. Arithmetic, weighed."
+    }
+   ]
+  },
+  {
+   "id": "review_thin",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "BOTH TRACKS — The Review, June 15 (Thin Record)",
+   "body": [
+    "The judge is not unkind. She goes through the file looking — visibly, page by page — for the father's spring: a dated response, a counsel request, contacts documented, a conflict flagged in advance. What she finds is a late notice, a great deal of testimony about intentions, and a file whose father-shaped pages were mostly written by other people, after the fact, from memory.",
+    "Your testimony is heard in full, and believed in part, and it changes the ruling's tone more than its content — because a review decides on a record, and the record here can carry the existing plan and very little weight beyond it. The mother's documented track, by contrast, is complete, and completeness in this room is its own argument.",
+    "The judge rules, and — importantly — writes down what a different record would need to show. Courts on this path do not close doors. They specify them."
+   ],
+   "choices": [
+    {
+     "text": "Hear the ruling — and read what it writes down for next time",
+     "next": "end_thin",
+     "note": "Not banishment. A specification."
+    }
+   ]
+  },
+  {
+   "id": "end_documented",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "Ending — A Documented Role, and a Path",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: At the June 15 review, the court gave June's father a documented role — scheduled contact on a defined, expanding structure — and stated a path toward placement or expanded involvement, to be measured against the record at the next review. Read that honestly: it is not placement today, and it is not a promise. It is the strongest outcome this scenario offers, and it is still, deliberately, a path and not a destination — because in the published cases this composite draws on, late-noticed fathers who built a record earned the next step, never a skipped one.",
+    "WHY THE RECORD CARRIED IT (verified law only): Two rights did the quiet work. Counsel: a party is entitled to representation by legal counsel at all stages of the proceedings, and if without financial resources or otherwise unable to employ counsel, to have the court provide counsel (42 Pa.C.S. § 6337) — he asked in writing, early, and counsel turned his spring into a presentable packet. Records: the case record 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — both parents requested it in writing, and seeing the notice and service-plan dates changed what each of them did with the weeks that remained. Everything else was habit, not law: dated letters, copies kept, constraints disclosed in advance, follow-through in writing.",
+    "BOTH PARENTS, PLAINLY: Neither parent in this ending is a villain or a footnote. The mother's documented stability and her boundaries — filed early, framed as her child's needs — are half the reason the court could expand the father's role safely; structure she asked for is structure the order uses. The father's late notice was real, and so was his response to it. Workers rotated, schedules broke, and a judge weighed it all — outcomes here also turned on people and timing no strategy controls. What the parents controlled was the paper. This time, the paper was enough to move."
+   ]
+  },
+  {
+   "id": "end_supervised",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "Ending — Involved, Supervised, Still Building",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: The court kept June's father involved on a supervised, structured basis — scheduled contact, defined expectations, and a record that continues to build toward the next review. Placement and expanded involvement were not ordered today; the door to them was not closed either. It was given a specification: keep the documented rhythm, and let a fuller record argue what a younger one could not.",
+    "WHY STRUCTURE, HONESTLY: This ending is what a partial record honestly earns, and this scenario will not dress it as defeat or as victory. The verified tools were used — counsel under 42 Pa.C.S. § 6337 to size the ask to the evidence, and the record requested in writing under 55 Pa. Code § 3130.44(d), whose dates let both parents plan around the real timeline — but some early steps stayed verbal, and verbal steps are the ones staffing changes and courtrooms cannot retrieve. The court weighed what was documented, credited it, and declined to let it carry more than its weight.",
+    "BOTH PARENTS, PLAINLY: The mother's filed frame — structured, scheduled, at her child's pace — is quite literally the shape of this order; her documentation protected June's stability and, by doing so, kept a structured role for the father defensible. The father remains a parent in this case with terms he can meet and a way to prove he met them. Workers, judges, and timing held pieces of this outcome, as they always do. The record — the part both parents control — is still being written, and its next draft starts the week after June 15."
+   ]
+  },
+  {
+   "id": "end_thin",
+   "kicker": "Day 42 — Monday, June 15, 2026 — BOTH TRACKS",
+   "dayOffset": 42,
+   "title": "Ending — The Existing Plan Stands; the Next Steps Are Written",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: At the June 15 review, the father's paper trail was too thin to carry a change. The court kept the existing plan, and — this matters — it wrote down his next steps for a later review: respond and confirm in writing, keep contact and availability current on paper, flag conflicts in advance, attend and document every contact. That is not banishment, and this scenario refuses to write it as one. It is a specification, issued by the only room whose specifications count, and a father who follows it arrives at the next review as a different evidentiary object.",
+    "WHAT WAS MISSING (verified law only): The tools existed all spring and were underused on this path. Counsel could have been asked for — in writing, early — under 42 Pa.C.S. § 6337 (a party's entitlement to counsel at all stages, with court-provided counsel if without financial resources or otherwise unable to employ counsel). The record could have been requested in writing under 55 Pa. Code § 3130.44(d) ('shall be released upon request'), and its notice and service-plan dates would have shown, in May, how old the case's clock already was. In the published cases behind this composite, the fathers who fared worst were rarely the ones who cared least; they were the ones whose care left no dated trace a court could weigh — calls unlogged, contacts unconfirmed, explanations dated after the gaps they explained.",
+    "BOTH PARENTS, PLAINLY: The mother did not win this ending; she documented a child's stability, and the court protected it, as it was always going to when only one folder was complete. The father was not found uncaring — he was found undocumented, which in a record-driven system is the finding that decides reviews. Workers rotated, a judge weighed sincerity against paper and was bound to prefer paper, and luck played its usual part. What remains within his control is unchanged and still available: the next six weeks of dated, kept, written follow-through. The file is thin. Files, unlike rulings, can grow."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s18';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["school|teacher|classroom|class", "School"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+function plateHTML(plateName) {
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

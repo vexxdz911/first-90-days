@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Long Way Home</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 27 — The Long Way Home (a fictional composite)",
+  "startDateISO": "2026-01-05",
+  "startNode": "named_at_table",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "A willing aunt in another state, a child in stranger foster care, and a placement that can die of silence between two filing systems."
+ },
+ "nodes": [
+  {
+   "id": "named_at_table",
+   "kicker": "Week 1 — Monday, January 12, 2026",
+   "dayOffset": 7,
+   "title": "The Name You Say First",
+   "body": [
+    "Your son Milo, six, has been in foster care with a family he had never met before this month. At the family meeting — a table, a worker, a list of questions that move faster than grief — you are asked whether there is family. There is.",
+    "Your sister Carla, Milo's aunt, lives in another state, in the house with the yard where Milo spent two summers. She has known him since he was born. She is, you say, the first name. The worker writes it down, and a second process — slower, farther away, and run between two states' offices — begins beside your own case.",
+    "Nobody at the table can tell you how long that process takes. You will learn why: it does not take time the way a line takes time. It takes time the way weather takes time — in systems nobody at this table can see whole."
+   ],
+   "choices": [
+    {
+     "text": "Give Carla's name, address, and phone number in writing before you leave",
+     "next": "aunt_call",
+     "addHidden": [
+      "Family meeting — aunt in another state named by Mother in writing on day one"
+     ],
+     "note": "Written at the first table where writing was possible. That timing will matter more than anyone here can yet say."
+    }
+   ]
+  },
+  {
+   "id": "aunt_call",
+   "kicker": "Week 2 — Monday, January 19, 2026",
+   "dayOffset": 14,
+   "title": "Carla Says Yes Before You Finish",
+   "body": [
+    "You call her from the visit room phone with your list beside you, because good news delivered badly still has to be delivered. You get as far as 'Milo is—' before she says: 'He comes here. Tell them he comes here. What do I sign?'",
+    "She means it completely, which is not the same as the system being ready for her to mean it. Her yes starts a file in two states. It also starts a clock on her own life: forms, checks, visits to her home, questions about rooms and income and everyone who lives there — an examination she did not cause and does not resent, yet.",
+    "Your job, you will learn, is not only your own plan. It is keeping this yes alive, and documented, across however many months the distance takes."
+   ],
+   "choices": [
+    {
+     "text": "Write down Carla's yes, the date, and everything she is told to expect — in your folder",
+     "next": "local_checks",
+     "setFlags": [
+      "auntNamed"
+     ],
+     "addHidden": [
+      "Aunt's agreement — dated, with her contact details confirmed in writing"
+     ],
+     "note": "A yes is a fact. A dated yes, in a folder, is a fact that can travel."
+    }
+   ]
+  },
+  {
+   "id": "local_checks",
+   "kicker": "Month 1 — Monday, February 2, 2026",
+   "dayOffset": 28,
+   "title": "Her Local Checks Come Back Clear",
+   "body": [
+    "The first news is good and quick, which will make the rest harder to understand. Carla's local checks — the ones run where she lives — come back clear. Her references speak well of her. By every early measure her state can run quickly, she is who you said she was: willing, related, and known to Milo.",
+    "Then the process changes altitude. Her home must be studied by her state's system, requested through yours. Forms must travel between offices that measure urgency in different units. The worker here is kind about it: 'It's moving,' she says, in the tone of a person reading a status she did not write.",
+    "Milo, meanwhile, starts a new school from a stranger's address, and learns his foster family's dog's name, and asks you on visits when Aunt Carla's house is."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, what has been sent to Carla's state and when",
+     "next": "own_plan",
+     "note": "The answer you get is a verb: 'requested.' Verbs without dates are where this scenario lives."
+    }
+   ]
+  },
+  {
+   "id": "own_plan",
+   "kicker": "Month 1 — Monday, February 9, 2026",
+   "dayOffset": 35,
+   "title": "Your Own Plan, in Parallel",
+   "body": [
+    "Your case plan is not small: treatment, parenting work, housing, employment — the ordinary architecture of a parent rebuilding in public. You start it the week it is handed to you, because Milo's case has never had the luxury of a parent who waits, and because your track is the one track you fully touch.",
+    "Hold both truths, because the case will: Carla's placement is a real, parallel path to Milo being with family — and it is not a substitute for your plan. If her paperwork fails, your plan is the whole case. If your plan finishes first, her paperwork becomes a safety net that was never needed. Either way, both tracks have to be run as if the other might fail. That is not pessimism. That is the design.",
+    "Your worker, Ms. Bell, is fair within her caseload: 'Do your plan like she's never coming,' she says. 'And help me keep her coming like your plan is all that matters. Both. I know how it sounds.'"
+   ],
+   "choices": [
+    {
+     "text": "Start treatment intake and the parenting program this week",
+     "next": "forms_claim",
+     "cash": -20,
+     "setFlags": [
+      "planStarted"
+     ],
+     "addHidden": [
+      "Mother's plan — treatment and parenting started in the first month"
+     ],
+     "note": "Fees, bus fare, copies. Your track starts moving at the only speed you control: yours."
+    }
+   ]
+  },
+  {
+   "id": "forms_claim",
+   "kicker": "Month 2 — Monday, February 23, 2026",
+   "dayOffset": 49,
+   "title": "'Sent,' Says the File",
+   "body": [
+    "At the next meeting, Ms. Bell has an update with a clean shape: the request for Carla's home study has been sent to her state. The forms are in motion. Carla should expect contact. Everyone at the table relaxes by exactly the amount a clean shape allows.",
+    "You ask a question that will become this scenario's refrain: sent when, and to whom, and how would we know if it arrived? Ms. Bell does not take offense. She writes the sending date on a sticky note for you — the first date in the interstate part of your file that anyone has handed you on paper.",
+    "Carla, that weekend, has heard nothing. 'It's early,' you tell her, and mean it. It is early. Early is a real place, and files also get lost there."
+   ],
+   "choices": [
+    {
+     "text": "Put the sticky-note date in your log, and tell Carla to keep every envelope she receives",
+     "next": "waiting",
+     "addHidden": [
+      "Home study request — sending date obtained from worker and logged by Mother"
+     ],
+     "note": "A date received verbally is a start. A date in your log is a tool."
+    }
+   ]
+  },
+  {
+   "id": "waiting",
+   "kicker": "Month 2 — Monday, March 9, 2026",
+   "dayOffset": 63,
+   "title": "Month Three, in Two States",
+   "body": [
+    "Your track moves in visible units: sessions attended, a certificate in progress, a part-time job found through the treatment program. Milo's visits are the week's fixed star. You are, by the ratings language of your plan, progressing.",
+    "Carla's track moves invisibly. She has rearranged the spare room. She has told her employer she may need flexibility 'for family.' She has received, in three months, one form — which she completed and returned within the week, keeping her copy, because you asked her to run her own folder the way you run yours.",
+    "Two systems, two states, one child waiting with strangers between them. Nobody is refusing anything. That is the hardest part to explain later: how a placement can starve in a room where everyone says yes."
+   ],
+   "choices": [
+    {
+     "text": "Ask to see your own file — find out exactly where Carla's paperwork is",
+     "next": "records_choice",
+     "note": "You have been patient with summaries. Summaries are where this placement currently lives."
+    }
+   ]
+  },
+  {
+   "id": "records_choice",
+   "kicker": "Month 2 — Monday, March 16, 2026",
+   "dayOffset": 70,
+   "title": "Reading Your Own Record",
+   "body": [
+    "You may request your case record, and it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). Parents in this system ask for their files for many reasons. Yours is specific and new in your caseworker's experience: not to argue about the past, but to locate a piece of paper in the present — where, exactly, between two states, is Carla's home study request?",
+    "The request is one page. You name what you need: the interstate placement correspondence log — what was sent, when, to which office, and what came back.",
+    "Ms. Bell signs off on the visit to review it without a flicker. 'Honestly,' she says, 'I'd like to know too.'"
+   ],
+   "choices": [
+    {
+     "text": "Sign and send the records request, naming the interstate correspondence specifically",
+     "next": "records_reveal",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records request — interstate correspondence log specifically named"
+     ],
+     "note": "One page, dated, copied. Somewhere, a file is about to be opened by the person it is about."
+    },
+    {
+     "text": "Take Ms. Bell's summaries — she is on your side; don't make it formal",
+     "next": "no_records",
+     "note": "She is on your side. Her summaries are still summaries — written from a system that can only see its own half of the distance."
+    }
+   ]
+  },
+  {
+   "id": "records_reveal",
+   "kicker": "Month 3 — Monday, March 30, 2026",
+   "dayOffset": 84,
+   "title": "Logged as Sent. Never Received.",
+   "body": [
+    "The correspondence log is a tidy page, and its tidiness is the problem. Request sent — dated, initialed, correct form. Follow-up: none recorded. Response from Carla's state: a blank where a receipt should be.",
+    "You do the arithmetic nobody had done in one sitting: the request your state logged as sent was never logged as received by hers. Somewhere between an outbox and an inbox — a wrong office, a changed address, a system migration nobody announced — Milo's aunt's home study spent two months not existing, in a case where everyone involved believed it was underway.",
+    "There is no villain in this paragraph. There is a blank in a log, a child in a stranger's home, and a date — today's, yours — when someone finally looked."
+   ],
+   "choices": [
+    {
+     "text": "Put the gap in writing to Ms. Bell — dates, the blank, and a request to resend and confirm receipt",
+     "next": "resend",
+     "setFlags": [
+      "gapFound"
+     ],
+     "addHidden": [
+      "Interstate log — request logged as sent; no receipt ever recorded in the receiving state"
+     ],
+     "note": "Written, dated, unaccusatory. A gap described precisely is a gap that can finally be filled."
+    }
+   ]
+  },
+  {
+   "id": "no_records",
+   "kicker": "Month 3 — Monday, March 23, 2026",
+   "dayOffset": 77,
+   "title": "Summaries, Reassured",
+   "body": [
+    "'Still in process,' Ms. Bell reports, after checking. 'These take time. Carla's side is probably scheduling.' It sounds true. It has the texture of everything you have been told, which is the texture of a system reporting on its own intentions.",
+    "Carla, that weekend, laughs the laugh of a woman who has rearranged a room for a child and heard from no one: 'If they're scheduling, they're scheduling quietly.' You both let it go. Letting it go feels like patience, and patience feels like what good parents in cases are supposed to supply in unlimited quantity.",
+    "Somewhere, a request sits in a log marked sent, in a state that never received it. This month, nobody looks. The looking was the whole skill, and it was available, and it waits — records requests do not expire unmade; they just start later, over older gaps."
+   ],
+   "choices": [
+    {
+     "text": "Go on — work your plan, and keep Carla close the ways you can",
+     "next": "resend",
+     "note": "Your plan is real work and it matters. So would the file. The case is about to charge interest on the difference."
+    }
+   ]
+  },
+  {
+   "id": "resend",
+   "kicker": "Month 3 — Monday, April 13, 2026",
+   "dayOffset": 98,
+   "title": "Resent — and This Time, Confirmed",
+   "body": [
+    "Whether you found the gap in the log or Ms. Bell found it in a routine check a month later, it is found: the study request is resent, and this time the process grows a second half — confirmation. Carla's state acknowledges receipt, with a date, and the acknowledgment is forwarded to you because you asked for it in writing.",
+    "Carla gets her first real call from her own state's worker. She cries a little afterward, from relief and embarrassment at relief. 'I thought they'd decided no and were being polite,' she says. Nobody had decided anything. That is the sentence this scenario was built to contain: nobody had decided anything, for two months, about a six-year-old's home.",
+    "You log both dates: sent, received. The distance between them is now a fact with edges. Facts with edges can be argued from."
+   ],
+   "choices": [
+    {
+     "text": "Ask Carla to log every call and letter from her state, and to send you copies monthly",
+     "next": "study_visit",
+     "setFlags": [
+      "receiptConfirmed"
+     ],
+     "addHidden": [
+      "Home study request — resent; receipt confirmed with a date by the receiving state"
+     ],
+     "note": "Two folders, two states, one log between them. You are building the bridge the systems didn't."
+    }
+   ]
+  },
+  {
+   "id": "study_visit",
+   "kicker": "Month 4 — Monday, May 11, 2026",
+   "dayOffset": 126,
+   "title": "The Study Visit Is Scheduled. Then It Isn't.",
+   "body": [
+    "Carla's home study visit is scheduled — a real appointment, a worker's name, a Saturday she cleans for like a holiday. Then it is postponed: her worker's caseload, a training, a week that filled. Then it is rescheduled, weeks later, by a different worker, who asks Carla questions the first worker's forms had already answered, because the forms and the worker changed places in a queue.",
+    "None of this is refusal. All of it is elapsed time, billed to a child who is learning a second foster family's routines while his aunt's spare room holds a bed in plastic wrap.",
+    "What Carla does with the postponement is the playable skill of this entire scenario, and it is not in her hands alone. It is in yours, on the phone, on Sunday nights, keeping a willing woman willing inside a process that keeps forgetting to speak to her."
+   ],
+   "choices": [
+    {
+     "text": "Set a standing Sunday call with Carla — case talk, then ordinary family talk, logged briefly",
+     "next": "approvals_clock",
+     "setFlags": [
+      "sundayCalls"
+     ],
+     "addHidden": [
+      "Aunt contact — standing weekly calls between Mother and aunt, logged"
+     ],
+     "note": "Engagement is a practice, not a feeling. Practices survive postponements. Feelings file for extensions less reliably."
+    },
+    {
+     "text": "Give her space — she knows you're grateful; calls every week might feel like pressure",
+     "next": "approvals_clock",
+     "note": "Space is kind in ordinary life. In a months-long process run on paper, silence reads as something else entirely."
+    }
+   ]
+  },
+  {
+   "id": "approvals_clock",
+   "kicker": "Month 5 — Monday, June 8, 2026",
+   "dayOffset": 154,
+   "title": "Approvals Age, Even When People Don't Change",
+   "body": [
+    "A letter arrives for Carla that she forwards to you with three exclamation points of alarm: one of her approval steps — a clearance she completed at the very start — has a validity window, and the window is closing while her study is still pending. Nothing about her has changed. Paper, unlike aunts, expires on schedule.",
+    "This is the second clock you did not know your case had: not the child's, not yours — the paperwork's own. Each document in Carla's file was born on a date and some of them die on one, and renewal requires her to notice, act, and document, again, while being told the placement itself is 'close.'",
+    "She asks you, in a smaller voice than her yes had: 'How many times do I have to become approved?' You do not have an answer. You have a log, a calendar, and a Sunday call. In this system, those are not nothing. They are, in fact, most of what there is."
+   ],
+   "choices": [
+    {
+     "text": "Put every expiry in Carla's file on both your calendars, with a month's warning",
+     "next": "renewal_beat",
+     "note": "Two calendars, one set of dates. Expiring paper is a surprise only once."
+    }
+   ]
+  },
+  {
+   "id": "renewal_beat",
+   "kicker": "Month 6 — Monday, June 22, 2026",
+   "dayOffset": 168,
+   "title": "Renewal Season",
+   "body": [
+    "You build Carla's renewal kit together by phone and mail: fresh forms where forms are wanted, her kept copies where copies will serve, a cover note that lists what is enclosed and when the originals were filed. She sends it before the window closes and keeps her proof of sending the way you taught her — dated, copied, logged.",
+    "It is unglamorous in the precise way permanency actually is. No courtroom, no speech. A woman in one state re-proving, to a second state, a set of facts that never stopped being true, so that a file about a child in a third place — the foster home where Milo is doing second-grade math — can stay alive.",
+    "Her study visit, when it finally happens, goes well. The worker likes the house, the room, the yard, and Carla. 'If it were up to the visit,' Carla says, 'we'd be done.' It is not up to the visit. It is up to the paper about the visit, traveling."
+   ],
+   "choices": [
+    {
+     "text": "Help Carla renew early — kit sent, proof kept, copies to you",
+     "next": "study_draft",
+     "cash": -10,
+     "setFlags": [
+      "renewalDone"
+     ],
+     "addHidden": [
+      "Aunt's approvals — renewed before expiry; proof of sending kept and copied"
+     ],
+     "note": "Cost: copies, postage, an evening. Benefit: a file that never lapses while it waits."
+    },
+    {
+     "text": "Trust the timeline — the study is done; renewal can wait until they ask",
+     "next": "study_draft",
+     "note": "They will ask. The asking and the expiring do not consult each other, and the gap between them is billed in months."
+    }
+   ]
+  },
+  {
+   "id": "study_draft",
+   "kicker": "Month 7 — Monday, August 3, 2026",
+   "dayOffset": 210,
+   "title": "A Finished Study, Traveling Slowly",
+   "body": [
+    "Carla's home study is finished and favorable — a document that says, in professional language, what you said at a table in one sentence months ago: this child is known here, wanted here, and the home is ready. She reads you the conclusion line over the phone and you both sit in the sound of it.",
+    "Then the finished study begins its own journey: from her worker to her state's office, from her state to yours, from your state's office to your worker and the court file. Each handoff is, by itself, days or weeks of queue. The study is a fact. In transit, it is a rumor with excellent documentation.",
+    "Milo's foster family, who have been kind, ask Ms. Bell whether they should stop saving his place at their table for weekends after a move 'in case it confuses him.' Kind people, making reasonable plans, inside elapsed time. Elapsed time is the only antagonist this story needs."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, where the finished study is this week — and log the answer",
+     "next": "parent_progress",
+     "note": "The refrain, again: where is it, when was it sent, how do we know it arrived. Asking is tracking. Tracking is the case."
+    }
+   ]
+  },
+  {
+   "id": "parent_progress",
+   "kicker": "Month 8 — Monday, August 31, 2026",
+   "dayOffset": 238,
+   "title": "Your Track, Suddenly Interesting",
+   "body": [
+    "While paper travels, your plan completes its middle chapters: treatment certificate filed, parenting program done, employment steady, and housing — the goal that looked least movable — opens a real door: a two-bedroom through a program your counselor names, with a wait measured in weeks, not seasons. Your progress rating reaches the plan's strongest word.",
+    "Ms. Bell says it carefully at the review table: 'If your housing lands, your track may finish before Carla's paperwork does. I did not expect to say that sentence when this started.'",
+    "Two paths home, racing at bureaucratic and human speeds respectively. Milo's case now has the strangest of its problems: abundance, arriving late, in an order nobody scheduled."
+   ],
+   "choices": [
+    {
+     "text": "Tell Carla the truth — your housing may land first, and her yes still matters completely",
+     "next": "foster_beat",
+     "setFlags": [
+      "truthTold"
+     ],
+     "addHidden": [
+      "Mother's progress — treatment and parenting complete; housing opening documented"
+     ],
+     "note": "A family that can survive good news delivered honestly can survive this process. She takes it the way she took everything: 'Then I'll be the backup plan every kid deserves.'"
+    }
+   ]
+  },
+  {
+   "id": "foster_beat",
+   "kicker": "Month 9 — Monday, September 28, 2026",
+   "dayOffset": 266,
+   "title": "What Waiting Looks Like From Milo's Chair",
+   "body": [
+    "Milo has been in care for most of a school year. He has a foster family's routines, a best friend on their street, and a reading level his teacher is proud of. He also lights up for your visits in a way that makes the visit supervisor write the same sentence month after month, and he asks about Carla's dog by name on video calls.",
+    "On those calls — arranged through the workers, kept to schedule — Carla reads him a chapter a week of a book she is also sending, a chapter behind, to his foster home, so the story lives in both houses. It is a small, deliberate thread across a year of process.",
+    "Whether that thread is logged anywhere is, like everything else in this case, a choice somebody makes on paper."
+   ],
+   "choices": [
+    {
+     "text": "Ask the workers to log Carla's video calls with Milo — dates, in the file",
+     "next": "where_records",
+     "setFlags": [
+      "contactLogged"
+     ],
+     "addHidden": [
+      "Aunt-child contact — regular video calls arranged and logged"
+     ],
+     "note": "A bond that is logged is a bond a court can see. A bond that lives only in kitchens is real, and invisible, in unequal measure."
+    },
+    {
+     "text": "The calls are family business, not case business — leave them unlogged",
+     "next": "where_records",
+     "note": "Family business, warmly kept. The file, asked later what relationship waited on the other end of all that paperwork, will have to answer from memory."
+    }
+   ]
+  },
+  {
+   "id": "where_records",
+   "kicker": "Month 10 — Monday, October 26, 2026",
+   "dayOffset": 294,
+   "title": "Asking Where It Is, Again",
+   "body": [
+    "The study is finished. The placement is not made. The distance between those two sentences is where this case now lives, and it deserves one more precise question, asked in the tool this scenario keeps handing you: request the record again — the record 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — and trace, this time, the finished study's journey, office by office, date by date.",
+    "You have done this before. That is the point. A parent who asks twice is not difficult. She is a tracking system for a child who cannot track his own paperwork."
+   ],
+   "choices": [
+    {
+     "text": "Send the second records request — trace the finished study's transmission, with dates",
+     "next": "trace_reveal",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested",
+      "studyTraced"
+     ],
+     "addHidden": [
+      "Second records request — finished study's transmission to be traced with dates"
+     ],
+     "note": "One page. The answer will either produce the study's location or produce the admission that nobody has it. Both are progress."
+    },
+    {
+     "text": "Call Ms. Bell instead — she'll check informally",
+     "next": "trace_skip",
+     "note": "She will, and she'll mean it, and informal checking produces no dated artifact for anyone — including her, when she needs leverage inside her own system."
+    }
+   ]
+  },
+  {
+   "id": "trace_reveal",
+   "kicker": "Month 10 — Monday, November 9, 2026",
+   "dayOffset": 308,
+   "title": "The Study Was in a Queue With No Name",
+   "body": [
+    "The trace works the way the first one did: by making someone assemble dates in one place. The finished study reached your state and entered a review queue. There it sat, complete and favorable, while reviews of Milo's case reported the placement as 'pending study.' The study was not pending. Its being acted on was pending — a distinction that cost a season and belongs to no villain, only to a queue with no name and no clock of its own.",
+    "With the trace in the file, the sentence changes everywhere it is repeated: at the next review, Ms. Bell reports the study as 'received, favorable, and awaiting final placement approval' — because now the paper says so, in her own system's handwriting.",
+    "You log the dates — finished, sent, received, found. Four dates. Together they are the proof that the delay in this case was process, not family. Proof like that has a legal use you are about to meet."
+   ],
+   "choices": [
+    {
+     "text": "Take the four dates to the next review, and ask what they change",
+     "next": "hearing_late",
+     "setFlags": [
+      "delayDocumented"
+     ],
+     "addHidden": [
+      "Study trace — delay shown to be transmission and queue time, documented with four dates"
+     ],
+     "note": "Process, not family: five words, with dates under them. Keep them dry. Dry facts travel furthest in courtrooms."
+    }
+   ]
+  },
+  {
+   "id": "trace_skip",
+   "kicker": "Month 10 — Monday, November 9, 2026",
+   "dayOffset": 308,
+   "title": "'Still Pending,' One More Season",
+   "body": [
+    "Ms. Bell checks, kindly, and reports what her screen says: study 'pending.' It is what her screen has said for months. Neither of you says the thing the first records request taught this case: screens summarize queues they cannot see into, and a finished document can be pending in a system the way a letter can be pending in a drawer.",
+    "Carla renews another expiring item. Her voice on Sundays has acquired a note you each pretend not to hear — the sound of a person deciding, in real time, how much more of this she can hold. She has not decided anything. Drift does not announce itself as a decision. That is its entire method.",
+    "Your own track, meanwhile, does not drift at all. It is close enough now to cast a shadow on the whole interstate question."
+   ],
+   "choices": [
+    {
+     "text": "Go to the late review with your plan's record — and Carla's endurance, as you know it",
+     "next": "hearing_late",
+     "note": "You know both tracks by heart. The file knows one of them well. Which one it knows is about to matter at review speed."
+    }
+   ]
+  },
+  {
+   "id": "hearing_late",
+   "kicker": "Month 11 — Monday, December 7, 2026",
+   "dayOffset": 336,
+   "title": "The Review Where the Clock Speaks",
+   "body": [
+    "A new voice appears at reviews when a case gets long, and it appears now: the federal timeline. Milo has been in care since January 5, 2026. At fifteen of the most recent twenty-two months — April 5, 2027 — the agency's duty about filing a termination petition changes. Nobody says it to threaten you. It is said to the record, in your presence, which in this system amounts to the same weather arriving through a different window.",
+    "And with it, a door you have been building without knowing its name: among the exceptions to that filing duty (42 U.S.C. § 675(5)(E)) is the case where the child is being cared for by a relative — and, beside it, the need for the file to show what is true. Carla is not yet Milo's placement. But a documented record that a relative placement has been pursued continuously, and delayed by process rather than by family, is the raw material from which courts and agencies document why a case should continue toward that relative instead of filing on a schedule.",
+    "Ms. Bell looks at you across the table. 'This is where the paperwork becomes the argument,' she says. 'All of it. At once. In the next few weeks.'"
+   ],
+   "choices": [
+    {
+     "text": "Ask what gets built, for which ending, starting this week",
+     "next": "aunt_fatigue",
+     "note": "Four endings are still in this room. The next month decides how many of them leave it."
+    }
+   ]
+  },
+  {
+   "id": "aunt_fatigue",
+   "kicker": "Month 12 — Monday, January 4, 2027",
+   "dayOffset": 364,
+   "title": "Carla's Voice, Thinner",
+   "body": [
+    "The Sunday call runs short. Carla's employer has stopped being flexible. Another renewal notice arrived — addressed, she says, 'to the woman I was at the start of this.' Her sister asks her, reasonably, whether anyone is ever actually sending this child, or whether she is keeping a room ready for a system that has forgotten her address in every sense but the literal one.",
+    "She has not quit. Quitting is not how placements like this die. They die the way she is describing: a form answered a week slower, a renewal let lapse, a call not returned within the window a tired person allows a queue — silence, accumulating at both ends of a process that runs on replies.",
+    "Keeping her is not a sentiment. It is logistics, gratitude, and dates — delivered by you, weekly, on purpose. This is the month it counts most, because it is the month it is hardest."
+   ],
+   "choices": [
+    {
+     "text": "Go to Carla — a visit, her folder reviewed together, her importance said plainly and in writing to the file",
+     "next": "parent_housing",
+     "cash": -30,
+     "setFlags": [
+      "auntHeld"
+     ],
+     "addHidden": [
+      "Aunt's engagement — sustained through the final stretch; her file complete and current"
+     ],
+     "note": "Bus fare, a day, a letter for the record naming what she has done and kept current. Expensive in your currency. Priced correctly."
+    },
+    {
+     "text": "She is family — family doesn't need tending; focus everything on your housing finish",
+     "next": "parent_housing",
+     "note": "Family, untended across a year of queues, behaves the way everything untended does. The file will use the word 'drift' if anyone writes a summary."
+    }
+   ]
+  },
+  {
+   "id": "parent_housing",
+   "kicker": "Month 13 — Monday, February 1, 2027",
+   "dayOffset": 392,
+   "title": "Your Housing Letter Arrives",
+   "body": [
+    "The program's letter is real: your name, a unit, a move-in window weeks — not months — away. Your lawyer reads it twice at the review table with the expression of a person watching a race change leaders in the final stretch.",
+    "If the unit lands and Milo trials at home before the fifteen-month point, the interstate process becomes what Carla, with her whole heart, already volunteered to be: the backup, the summers, the safety net — family in reserve instead of family in queue.",
+    "If it slips — and housing letters in this system have slipped before — Carla's file, current and documented, is the whole ballgame. The final build must therefore do something that feels unfair and is simply true: prepare both endings at full strength, in the same weeks, with the same paper."
+   ],
+   "choices": [
+    {
+     "text": "Build the final record with Ms. Bell and your lawyer — for every door still open",
+     "next": "strategy_choice",
+     "note": "One build season. Four doors. The file you have actually made decides which of them can bear weight."
+    }
+   ]
+  },
+  {
+   "id": "strategy_choice",
+   "kicker": "Month 14 — Monday, March 1, 2027",
+   "dayOffset": 420,
+   "title": "Choosing the Final Build",
+   "body": [
+    "The clock date is April 5, 2027. Your lawyer lays out the builds plainly. Push Carla's placement to completion now — study favorable, trace done, approvals current: it could land before the clock. Or build the exception record — the dated proof that a relative placement was pursued without pause and delayed by process — so that if the clock arrives first, the file documents why filing should wait for the relative. Or lead with your own track: housing, completion, trial return — the ending that makes every other paper moot. Or let the season pass on summaries, renewals unchased, and Carla's silence compounding.",
+    "'Each build spends the same weeks,' she says. 'Choose where the paper goes.'"
+   ],
+   "choices": [
+    {
+     "text": "Push the placement — every office, every date, weekly written follow-ups until Carla's approval lands",
+     "next": "push_aunt",
+     "setFlags": [
+      "pushBuilt"
+     ],
+     "note": "Pressure, politely, in writing, at the speed of queues that only move when watched."
+    },
+    {
+     "text": "Build the exception record — assemble the dated proof of continuous family effort and process delay",
+     "next": "exception_packet",
+     "setFlags": [
+      "exceptionBuilt"
+     ],
+     "note": "If the clock wins the race, this packet is the reason the race doesn't end the case."
+    },
+    {
+     "text": "Lead with reunification — finish your track at full strength, Carla documented as the standing backup",
+     "next": "parent_first",
+     "setFlags": [
+      "parentLed"
+     ],
+     "note": "Your housing, your certificates, your visits — and Carla's file, current, in reserve."
+    },
+    {
+     "text": "Let it ride — everyone means well; the systems will sort it out",
+     "next": "drift_path",
+     "note": "Meaning well is the fuel this process has run on all year. Elapsed time is what it produces."
+    }
+   ]
+  },
+  {
+   "id": "push_aunt",
+   "kicker": "Month 14 — Monday, March 15, 2027",
+   "dayOffset": 434,
+   "title": "Watched Queues Move",
+   "body": [
+    "It is not magic and it is not fairness — it is the physics of watched paper. Written follow-ups, dated, weekly, from you and (twice) from your lawyer, asking each office the only two questions in this scenario: where is it, and what happens next, by when. Carla keeps her end current to the day. Her state's final approval is issued and transmitted — with, this time, a confirmation of receipt logged on both ends within the same week.",
+    "The approval lands days before the fifteen-month point, close enough that Ms. Bell reads the date twice before she smiles.",
+    "Milo packs a bag in a foster kitchen, kindly, with a card from the family who kept him while two states learned to talk to each other. He is moving to family. He has been, in the paperwork sense, moving there for over a year. Now the moving is real."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review — placement with Carla, before the clock date",
+     "next": "review_push",
+     "note": "The review is almost short. Almost-short reviews are what a finished record buys."
+    }
+   ]
+  },
+  {
+   "id": "exception_packet",
+   "kicker": "Month 14 — Monday, March 15, 2027",
+   "dayOffset": 434,
+   "title": "The Packet of Dates",
+   "body": [
+    "It assembles like an argument because it is one: the family meeting note naming Carla at the start. Her dated yes. The first request, logged as sent and never received — and the date you found the gap, in a record you requested. The resend, and the confirmed receipt. Her renewals, each before its expiry. The Sunday-call log. The video-call log. The study's four dates: finished, sent, received, found in a queue. Her final approvals, current.",
+    "Laid end to end, the dates tell one story in the file's own language: this family never stopped. The delay was made of transmission, queues, and expiring paper — process, documented as process, month by month.",
+    "Your lawyer's cover letter asks for exactly one thing: that if the clock arrives before the placement completes, the record document the relative-placement path as the reason filing waits (42 U.S.C. § 675(5)(E)) — a child headed, on paper and in fact, to a relative's care."
+   ],
+   "choices": [
+    {
+     "text": "File the packet before the clock date, with the court and the agency",
+     "next": "review_exception",
+     "note": "Filed early, so the fifteen-month review reads dates instead of hearing about them."
+    }
+   ]
+  },
+  {
+   "id": "parent_first",
+   "kicker": "Month 14 — Monday, March 15, 2027",
+   "dayOffset": 434,
+   "title": "Your Track, at Full Strength",
+   "body": [
+    "Your build is the oldest work in the case, finished at full strength: the housing letter with its window, the certificates, the visit record that grew from supervised to long weekends as the year turned, the counselor's final letter. Carla's file rides in the packet too — current, documented, and labeled honestly: the family's standing placement, pursued without pause, ready if this ending falters.",
+    "Your lawyer is blunt about the race: 'If your move-in holds, the court may never have to decide anything about interstate paperwork. The best way to beat a slow process is to finish a fast one. Yours became fast when the housing landed. Keep it landed.'",
+    "You do the unglamorous final tasks in order: deposits, documents, the room made ready — a bed actually assembled this time, in a home that is yours, for a child whose year has been spent between other people's tables."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review leading with the return",
+     "next": "review_parent",
+     "note": "Your folder, her folder, one child. The court finally gets to choose between two goods with dates on them."
+    }
+   ]
+  },
+  {
+   "id": "drift_path",
+   "kicker": "Month 14 — Monday, March 15, 2027",
+   "dayOffset": 434,
+   "title": "A Quiet Month, Compounding",
+   "body": [
+    "Nobody decides anything this month, which is itself the decision this path is about. Carla's renewal notice sits in a drawer during a hard week at her job. Her Sunday call goes to voicemail twice — once from her side, once from yours. A form her state sends to the address it has is answered after its window, by a woman who has been approved, in every human sense, since the first month — and whose paper now says otherwise.",
+    "Your own track continues — you finish strongly, but a step slower than the build season required, because a parent's weeks are finite and you spent yours trusting queues.",
+    "At the month's end, Ms. Bell calls with her voice arranged carefully: Carla's file has been closed in her state's system for non-response — 'without prejudice to reopening,' the notice says, in the coldest warm phrase in this scenario. Reopening is possible. Reopening is also a beginning, and beginnings are what this child has already had too many of."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review and hear what a closed file does to a case",
+     "next": "review_drift",
+     "note": "The review will be conducted, as all of them are, from the paper. The paper just changed authors."
+    }
+   ]
+  },
+  {
+   "id": "review_push",
+   "kicker": "Month 15 — Monday, March 29, 2027",
+   "dayOffset": 448,
+   "title": "The Final Review — Approved, in Time",
+   "body": [
+    "The placement approval is in the file — received, confirmed, current — and the review is the rare one that spends its time on arrangements instead of obstacles: travel, school records, the chapter book's remaining pages to be read in the right house.",
+    "The fifteen-month point, April 5, 2027, is days away and, for once, beside the point: Milo will be cared for by a relative, which is the first of the exceptions the law names (42 U.S.C. § 675(5)(E)) — not argued, described. Your case remains open; your plan continues; your visits become trips to a house where your sister keeps your son's room.",
+    "Ms. Bell closes her folder. 'It should not have taken this long,' she says, to the room generally. The room, which contains no villains, agrees, generally."
+   ],
+   "choices": [
+    {
+     "text": "Sign the placement paperwork, and call Carla from the courthouse steps",
+     "next": "end_aunt",
+     "note": "She answers on the first ring. She has been, in every way the file can now prove, answering all year."
+    }
+   ]
+  },
+  {
+   "id": "review_exception",
+   "kicker": "Month 15 — Monday, April 5, 2027",
+   "dayOffset": 455,
+   "title": "The Fifteen-Month Review — The Packet of Dates",
+   "body": [
+    "The clock date arrives: April 5, 2027. Carla's final placement approval has not quite landed — a last transmission sits in its last queue — and the agency's lawyer rises to address the filing duty, in the tone of a person reading weather they did not make.",
+    "Then your lawyer stands with the packet. Date by date, the record shows a relative named at the start, a yes never withdrawn, requests lost and resent and confirmed, renewals kept current, contact logged, a study completed and then located, by a parent's records request, in a queue with no name. The delay in this case, the packet concludes, was process — and here is its biography, in the system's own dates.",
+    "The agency does not contest a single date. Contesting your own log tends to concentrate the mind wonderfully on agreeing with it."
+   ],
+   "choices": [
+    {
+     "text": "Listen for the words 'documented' and 'deferred' in the same sentence",
+     "next": "end_exception",
+     "note": "A continuance toward a relative is not the ending anyone drew in the first month. It is the ending the record built when time ran out."
+    }
+   ]
+  },
+  {
+   "id": "review_parent",
+   "kicker": "Month 15 — Monday, March 29, 2027",
+   "dayOffset": 448,
+   "title": "The Final Review — Your Track, Finished First",
+   "body": [
+    "The housing held. The letter became keys, the keys became a trial schedule, and the final review is held with Milo's overnight bag already, in the plan's careful language, 'transitioning.' The judge spends her questions where this case's strength has quietly moved: your completion, your visits, the room, the school plan — your track, documented at every step you controlled.",
+    "Carla appears in the order in one sentence your lawyer insisted on and the file fully supports: the relative placement, pursued continuously and near completion, is noted and held in reserve should it ever be needed. It will, everyone in the room now believes, never be needed. It is in the order anyway, because this family has learned what undone paperwork costs.",
+    "The interstate process does not get finished today. It gets something better: outrun, by a parent, in public, on paper."
+   ],
+   "choices": [
+    {
+     "text": "Take Milo home on the trial schedule — the paperwork still traveling behind you",
+     "next": "end_reunified",
+     "note": "Keys in one hand, folder in the other. The folder got lighter this year only once: today."
+    }
+   ]
+  },
+  {
+   "id": "review_drift",
+   "kicker": "Month 15 — Monday, April 5, 2027",
+   "dayOffset": 455,
+   "title": "The Fifteen-Month Review — The Closed File",
+   "body": [
+    "The clock date is April 5, 2027, and the review is conducted from a file that changed while nobody was tending it. Carla's placement: closed for non-response in her state, reopening possible, timeline unknown — the worker reads it flatly, the way one reads any fact one did not cause and cannot repair from a chair. Your track: strong, and months from housing — honored in the report and insufficient, today, to carry the hearing alone.",
+    "No exception is documented. The relative is not caring for Milo, and the record of why not — a year of process delay that was never assembled into dates while it happened — cannot be built retroactively in a morning, though your lawyer, to her credit, tries with what exists. The agency states it will file, and the judge, who can only rule on the record in front of her, does not disagree on the record in front of her.",
+    "In the corridor afterward, you call Carla. She is horrified — at the closure, at herself, at a system that let a willing aunt lapse on a form. 'I didn't quit,' she says, and she is right, and the file says otherwise, and both of those facts will outlive this afternoon."
+   ],
+   "choices": [
+    {
+     "text": "Go home and open a new folder — labeled, this time, with everything you've learned",
+     "next": "end_collapse",
+     "note": "The case resets to one track. Yours. It has been the strongest track all along; now it has to be the only one, and on a harder clock."
+    }
+   ]
+  },
+  {
+   "id": "end_aunt",
+   "kicker": "Month 15 — Friday, April 2, 2027",
+   "dayOffset": 452,
+   "title": "Ending — With Carla, Before the Clock",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: Three clocks ran. Milo's reached toward fifteen of the most recent twenty-two months — the point, April 5, 2027, when the agency's filing duty changes (42 U.S.C. § 675(5)(E)) — and the placement landed days before it. Carla's paperwork clock ran its own race of expiries and renewals, and finished current. Your clock ran in parallel the whole way: treatment, parenting, work, housing-in-progress — unfinished at the placement, and deliberately so; your case stays open, your plan continues, and the goal it now serves is a child already living with family.",
+    "WHAT THE RECORD SHOWED: A relative named in writing at the first table. A study request lost between states — and found, because a parent requested her record (55 Pa. Code § 3130.44(d): 'shall be released upon request') and read a log nobody had assembled. A resend with a confirmed receipt. Renewals made before their windows closed. A finished study traced through a nameless queue by a second records request, its delay documented as transmission and queue time — process, not family. In the end the exception in § 675(5)(E) for a child being cared for by a relative was not an argument anyone had to make. It was a description the paperwork finally caught up to.",
+    "WHAT WAS NEVER YOURS TO CONTROL: Two states' queues, a caseworker's caseload in a state you have never visited, which judge read the file, Carla's employer's flexibility, and plain luck — the lost first request could have stayed lost another season, and in many cases like this one, it does. Outcomes turn on workers, judges, and luck as much as on families. What your choices controlled was whether the family's effort stayed visible and current while time passed. Time passed anyway. The effort is why it did not pass in vain."
+   ]
+  },
+  {
+   "id": "end_exception",
+   "kicker": "Month 16 — Monday, May 3, 2027",
+   "dayOffset": 483,
+   "title": "Ending — The Clock Struck; the Record Answered",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: Milo's clock struck fifteen of the most recent twenty-two months on April 5, 2027 (42 U.S.C. § 675(5)(E)) with the placement approved in substance but not yet complete — the last paperwork still traveling. Carla's clock finished current: every renewal made, every form answered, her file never lapsing. Your clock kept running beside both — progress documented, housing not yet landed — and your case remains open on your track, unfiled-against and unfinished. Days after the review, the final approval completed its journey, and Milo's placement with Carla was made — after the clock date, on the strength of a record built before it.",
+    "WHAT THE RECORD SHOWED: The exception was documented, not presumed. At the fifteen-month review, the file — in the agency's own correspondence logs and the packet assembled from them — showed a relative placement pursued from the first month, delayed at identified points by a request never received, a study waiting in a queue, and paper expiring on schedule: delay by process, proved with dates, not delay by family. On that record the agency documented its reason and deferred filing while the relative placement completed (42 U.S.C. § 675(5)(E)). Read the victory precisely: no rights were terminated, none were restored, and your reunification track was neither won nor lost — it was preserved, alongside a child now living with his aunt. The records requests that found the gaps (55 Pa. Code § 3130.44(d)) were the hinge: without them, this packet is a family's sincere claim. With them, it was the system's own biography of its year.",
+    "WHAT WAS NEVER YOURS TO CONTROL: The queues themselves, the lost request, the expiry dates, a stranger-judge's reading, Carla's stamina being finite, and the luck that the gaps in your case were findable gaps. Another family, equally continuous, whose lost paper left no log to request, reaches the filing ending in this same scenario. Outcomes turn on workers, judges, and luck. What your family controlled — a yes maintained, dated, renewed, and logged across fifteen months — turned out to be the only currency the clock accepts. You paid it on time, in installments, all year."
+   ]
+  },
+  {
+   "id": "end_reunified",
+   "kicker": "Month 15 — Monday, April 19, 2027",
+   "dayOffset": 469,
+   "title": "Ending — Home With You; the Paperwork Outrun",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: Milo's clock was days from its fifteen-month point (April 5, 2027; 42 U.S.C. § 675(5)(E)) when the trial return began — ordered before the point, on your track's documented completion: treatment, parenting, employment, and housing that landed, after a year of looking unlandable, in the final stretch. Carla's clock finished the year current and unneeded: her placement remains noted in the order as the family's standing resource, approved in substance, its paperwork completing at its own pace behind an ending that no longer waits on it. The interstate process — the slow antagonist of this whole scenario — was not defeated. It was outrun, which is the only way it ever loses.",
+    "WHAT THE RECORD SHOWED: Two complete files. Yours: a plan started in the first month and finished in the open, visits that grew as you did, a housing letter that became keys. Carla's: a relative named on day one (in your writing), a yes sustained and documented — records requested and read (55 Pa. Code § 3130.44(d)), a lost request found and resent, renewals met, contact logged — so that at the final review the court was choosing between two documented goods instead of rescuing one stranded hope. That abundance was built, not found: it exists because both tracks were run, all year, as if the other might fail. Either track alone reaches a poorer room in this scenario; together they reached this one.",
+    "WHAT WAS NEVER YOURS TO CONTROL: The housing program's timing most of all — a letter arriving a season later moves this child to his aunt's ending or worse, through no change in your effort — plus two states' queues, Carla's employer, judicial assignment, and the foster family's kindness, which was luck wearing a human face. Reunification orders also come with supervision and a case that closes slowly behind them; this ending is a beginning with paperwork, not a curtain. Outcomes turn on workers, judges, and luck. Your piece was running both tracks on paper until one of them came home. One of them did."
+   ]
+  },
+  {
+   "id": "end_collapse",
+   "kicker": "Month 15 — Monday, April 19, 2027",
+   "dayOffset": 469,
+   "title": "Ending — The Placement That Died of Silence",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: Milo's clock struck fifteen of the most recent twenty-two months on April 5, 2027 with no exception documented, and the agency filed as its duty directed (42 U.S.C. § 675(5)(E)). Carla's clock is the cautionary one: her approvals did not fail — they lapsed, unanswered, in the final stretch, and her file was closed for non-response, reopenable in theory at the speed of a new beginning. Your clock was the strongest of the three and still short: documented progress, housing months away — a track that must now carry the whole case, alone, under a filed petition, on a harder schedule than any it has run yet.",
+    "WHAT THE RECORD SHOWED: A willing aunt, proved willing for a year and then unprovable in the month it counted, because willingness lives in the file only where it is renewed, logged, and answered. The early record was genuinely good — named at the start, checks clear, study favorable — but the late record is the one reviews are conducted from, and the late record showed gaps where renewals and replies should have been, because the tracking tools this scenario keeps offering — records requested and read (55 Pa. Code § 3130.44(d)), dated logs in two states — were used early and then set down. No villain closed Carla's file. Elapsed time and silence did, operating exactly as designed on everything unmaintained. The judge did not find that this family did not care. She found a file that could no longer prove it in time, which in this system is the colder and more useful lesson.",
+    "WHAT WAS NEVER YOURS TO CONTROL — AND WHAT REMAINS: The lost first request, two queues, Carla's job, a dozen pieces of luck — much of this collapse was weather, not choice, and it is not a verdict on anyone's love, least of all Carla's: drift is what the process does to unlogged devotion, in every state. Read the filing accurately, too: a petition is an accusation with a hearing attached, not a termination; grounds must still be proved by clear and convincing evidence, with counsel beside you and your — now strongest — track as the centerpiece. Carla's file can be reopened; your housing can land; the record from here can be built the way the early record was, without the late silence. Parents reach this ending with their devotion intact and their documentation lapsed. What remains fully theirs is the file from today. It is still being written."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s27';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

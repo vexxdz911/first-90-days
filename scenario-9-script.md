@@ -1,0 +1,237 @@
+# THE FIRST 90 DAYS — Scenario 9: “The Neighbor’s Couch” (Foundation tier)
+
+*Human-readable script. This document and `scenario-9.json` are generated from a single source and match node-for-node: same IDs, same order, same choices, same effects.*
+
+**The family is fictional — a composite. No real person's story appears here.**
+
+**Content note:** This scenario depicts a burst pipe, a voluntary safety plan with a neighbor, and a plan with no end date. There is no graphic content. Players may skip any scene or use the quick exit at any time.
+
+**How to read effects:** `cash −4` changes the player's cash. `FLAG: name` sets a flag the engine tracks. `HIDDEN + item` means the case file quietly records that item at this choice — the player does not see it when it happens. `NOTE:` is text shown to the player right after choosing.
+
+Start date: Friday, May 1, 2026. Day offsets are days since the scenario's start date. Starting cash: $135.
+
+## [start] The Burst Pipe
+*Day 0 — Friday, May 1, 2026 (dayOffset 0)*
+
+On Friday afternoon, a pipe in your kitchen wall gives up, and by supper the floor is a shallow lake and the landlord is saying words like 'shutoff valve' and 'maybe Monday, maybe Wednesday' about the repair.
+
+Your son Sam is seven. The apartment will have no water and a hole in the wall. Your caseworker, Ms. Tran, is on the phone being reasonable — nobody is talking about court, or removal, or anything with a judge in it. She is suggesting something simpler and, in its way, slipperier: a voluntary safety plan. Sam stays with your neighbor, Ms. Abernathy, 'for the weekend,' while the pipes get fixed.
+
+**Choices:**
+- Ask what exactly the plan would say — and who signs it → **n2**
+  - NOTE (shown after choosing): Reasonable suggestions deserve specific questions. "For the weekend" is a duration. It is also, currently, just a phrase.
+- Say yes gratefully — Ms. Abernathy is wonderful with Sam → **n2**
+  - NOTE (shown after choosing): She is. Gratitude and paperwork are not enemies, but only one of them has a memory.
+
+## [n2] The Kitchen-Table Plan
+*Day 0 — Friday, May 1, 2026 (dayOffset 0)*
+
+Ms. Abernathy, seventy and unflappable, agrees before she's even heard the details — Sam can have the spare room, the cat can be negotiated with, Monday's school run is no trouble. The three of you stand in her dry kitchen while yours drips.
+
+Ms. Tran joins by phone. The plan, as spoken: Sam stays here starting tomorrow, you visit daily, the repair gets done, Sam comes home. Everyone nods. It sounds complete. Spoken plans always sound complete.
+
+**Choices:**
+- Ask for it in writing before Sam’s bag is packed — with dates → **records**
+  - NOTE (shown after choosing): A short silence. Then Ms. Tran, to her credit: "That’s fair. Let me draft it."
+- Let the spoken plan be enough — don’t make a kind offer awkward → **records**
+  - NOTE (shown after choosing): Kindness unrecorded is still kindness. It is just not a document anyone can point to on day nine.
+
+## [records] The Copy You’re Entitled To
+*Day 0 — Friday, May 1, 2026 (dayOffset 0)*
+
+Here is the thing nobody mentions on a Friday afternoon: whatever plan is made — spoken or written — becomes part of your case record, and your case record is something you are allowed to read.
+
+You ask Ms. Tran to send you a copy of whatever plan is entered, in writing, so that what Sam's week looks like exists in your hands and not only in the agency's system.
+
+**Choices:**
+- Ask for a written copy of the safety plan as entered → **prep**  _(FLAG: recordsRequested; HIDDEN + Records — parent requested a written copy of the safety plan)_
+  - NOTE (shown after choosing): Under 55 Pa. Code § 3130.44(d), your record — plan included — is released on request. The copy, when it comes, will say exactly what the plan does and does not contain.
+- Assume the copy will be in your mailbox if it matters → **prep**
+  - NOTE (shown after choosing): It matters on the day it matters. Mailboxes are not where you want your only leverage vacationing.
+
+## [prep] What’s Not in It
+*Day 1 — Saturday, May 2, 2026 (dayOffset 1)*
+
+The draft arrives by email Saturday morning (Ms. Tran works weekends when pipes burst; not all of them do). You read it at Ms. Abernathy's table while Sam negotiates with the cat.
+
+It says: placement with the neighbor, daily parent contact, parent to arrange the repair. It does not say — you read it twice — when Sam comes home. There is no end date. There is no review date. 'For the weekend' became, in type, forever-until-further-notice.
+
+**Choices:**
+- Write down the two missing things: an end date, and a review if the repair slips → **eve**  _(FLAG: gapsNoted; HIDDEN + Plan review — parent identified the missing end date and review date)_
+  - NOTE (shown after choosing): Sunday the 3rd, home by bedtime — or a review on Monday if the plumber slips. Two dates. That is all a spoken weekend needs to become a bounded one.
+- Decide not to be difficult about a technicality → **eve**
+  - NOTE (shown after choosing): Open-endedness is never a technicality to the person inside the plan. It is only a technicality to the person who wrote it.
+
+## [eve] Sam’s Bag
+*Day 1 — Saturday, May 2, 2026 (dayOffset 1)*
+
+Sam packs like an explorer: two shirts, the dinosaur pajamas, a book, a rock that is apparently essential. He is excited about the spare room and the cat and entirely untroubled, because seven-year-olds trust the adults' faces over the adults' paperwork, every time.
+
+The paperwork, such as it is, travels with neither of you. It sits in an email, missing its two most important dates, while the grown-ups decide whether to mention that.
+
+**Choices:**
+- Text Ms. Tran tonight: "Can we add the end date and review before he goes?" → **split**  _(FLAG: askedInText)_
+  - NOTE (shown after choosing): A text is writing. The asking now has a timestamp on it — before Sam spends a single night away.
+- Leave it until Monday — the office will be open and calmer → **split**
+  - NOTE (shown after choosing): Monday offices are calmer. Monday is also after two nights of a plan with no end in it.
+
+## [split] Before the First Night
+*Day 1 — Saturday, May 2, 2026 (dayOffset 1)*
+
+Sam is at Ms. Abernathy's door with his bag, doing the explorer face. Ms. Tran is on your phone, finalizing. This is the last cheap moment — the last moment when adding two dates to a plan costs nobody anything.
+
+After tonight, the same request is still legal, still reasonable, and noticeably harder: you will be asking to change a plan that is running, instead of completing one that isn't.
+
+**Choices:**
+- Ask now, plainly: end date Sunday night, review Monday if the repair slips — in the written plan → **p1**  _(FLAG: endDateAdded; HIDDEN + Plan — end date and review date added at parent’s request before placement began)_
+  - NOTE (shown after choosing): She edits it on the call — line added, copy re-sent while you stand there. "Home Sunday by bedtime; review Monday 10 a.m. if repair incomplete." The weekend now has a shape.
+- Let him go on the spoken plan — everyone means well, and Monday is soon → **u1**  _(HIDDEN + Plan — child placed under safety plan with no end date or review date recorded)_
+  - NOTE (shown after choosing): Everyone does mean well. Meaning well is the water this particular boat is made of, and it is not, by itself, a hull.
+
+## [p1] The Weekend, Bounded
+*Day 3 — Monday, May 4, 2026 (dayOffset 3)*
+
+The weekend runs the way bounded things run: you visit twice a day, Sam shows you the cat's surrender terms, the plumber comes Saturday and — because this is a story about a pipe — announces the part won't arrive until Tuesday. The repair slips. In the old version of this plan, that sentence is where the drift begins.
+
+In this one, Monday 10 a.m. is already on the calendar: the review. The slip triggers a meeting instead of a slide.
+
+**Choices:**
+- Confirm the Monday review in a text, so the trigger is written both places → **p2**  _(FLAG: reviewConfirmed)_
+  - NOTE (shown after choosing): "Review still on for 10, given the part delay?" — "Yes. See you there." Two lines of text; the plan’s spine, in duplicate.
+- Trust the calendar entry you saw in the plan → **p2**
+  - NOTE (shown after choosing): It is there. Confirming is how you find out whether there and real are the same thing this week.
+
+## [p2] Monday, 10 A.M.
+*Day 3 — Monday, May 4, 2026 (dayOffset 3)*
+
+The review is short because the plan was specific: repair status (part Tuesday, work Wednesday), Sam's state (thriving, slightly spoiled by a seventy-year-old's cooking), school (walked there by Ms. Abernathy, who has appointed herself).
+
+The extension writes itself the same way the plan did: Sam stays through Wednesday, home Thursday by bedtime after the final inspection, with a check-in call Wednesday night. In writing, again. Dated, again.
+
+**Choices:**
+- Read the extension before you sign it, dates first → **p3**  _(FLAG: extensionRead)_
+  - NOTE (shown after choosing): Extension to Thursday, inspection Wednesday, home by bedtime. You sign a document whose every date you can recite.
+- Sign it quickly — it’s the same plan, just longer → **u3**  _(HIDDEN + Extension — signed without the parent reading the updated terms)_
+  - NOTE (shown after choosing): It is not the same plan. It is a new one wearing the old one’s coat, and you have just agreed to terms you haven’t met.
+
+## [p3] Thursday
+*Day 6 — Thursday, May 7, 2026 (dayOffset 6)*
+
+The part arrives Tuesday. The wall closes Wednesday. The inspector signs Thursday at noon, and finds — miracle of miracles — nothing further. Sam comes home Thursday by bedtime, per the plan, a sentence that deserves its plainness.
+
+He inspects his room like a returning sea captain and announces the cat may visit. Ms. Abernathy, who has fed everyone involved at least once, is declared an official relative.
+
+**Choices:**
+- Call Ms. Tran to close the loop: he’s home, per the plan → **p4**  _(FLAG: closureNoted)_
+  - NOTE (shown after choosing): She notes it on the call. "Home Thursday, as extended." The plan’s last fact is now as written as its first.
+- Let Ms. Abernathy’s lasagna be the closing ceremony → **p4**
+  - NOTE (shown after choosing): It is a fine ceremony. The file, unsentimental, prefers the phone call.
+
+## [p4] The Closure Letter
+*Day 8 — Saturday, May 9, 2026 (dayOffset 8)*
+
+Days later a short letter arrives: the safety plan is closed, Sam was with the neighbor from Saturday to Thursday, home since, no further action. It is the written memory of the whole episode, and it will be the version available to any future reader — a new worker, a reviewer, a stranger deciding what kind of case this is.
+
+It comes with a copy for your signature of receipt, and the small print of your attention to give it.
+
+**Choices:**
+- Read it fully, keep the copy with the plan and the extension → **p5**  _(FLAG: closureKept)_
+  - NOTE (shown after choosing): Three documents, one episode, beginning-middle-end. Your file and the agency’s now tell the same short story.
+- Sign the receipt and recycle the letter — it’s over → **p5**
+  - NOTE (shown after choosing): It is over. Its paperwork is now the only part still in the room, forever.
+
+## [p5] On File, Closed
+*Day 12 — Wednesday, May 13, 2026 (dayOffset 12)*
+
+Ms. Tran's monthly review includes a line she reads to you because, by now, she knows you'll want to hear it: 'Voluntary safety plan, completed as written, child home.'
+
+There was no hearing in this story, no judge, no drama the system would recognize. A pipe burst, a neighbor helped, a plan had dates, and everyone went home. The signature line on the review is the last formality standing between this episode and its ending.
+
+**Choices:**
+- Sign, having read it — the line matches what happened → **end_good**  _(FLAG: readBeforeSigning)_
+  - NOTE (shown after choosing): It does. That is what a bounded plan buys: a true sentence at the end of it.
+- Sign without reading — Ms. Tran has been straight with you throughout → **end_partial**
+  - NOTE (shown after choosing): She has — and the review line, written by her supervisor, says "extended placement, resolved." Straight workers have supervisors too, and supervisors have adjectives.
+
+## [end_good] A Weekend With an End Date
+*Day 14 — Friday, May 15, 2026 (dayOffset 14)*
+
+**ENDING.** Debrief:
+
+- The win here is honest and modest: Sam was home Thursday, the plan closed in writing, and the file says the thing that actually happened — a voluntary plan, bounded by dates, completed as written. No court was ever involved, and none was needed.
+- The law inside this story: under 55 Pa. Code § 3130.44(d), the plan that governs your child's week is in your record, and your record is released on request. Reading the draft is how the missing end date was caught on Saturday — while catching it still cost nothing.
+- Notice the shape of the strategy: none of it was refusal. You said yes to the plan and yes to the neighbor — and asked, in writing, before the first night, for the two dates that made the yes mean something finite.
+- Honesty requires this: Ms. Tran added the dates when asked, and a different worker sighs, or stalls, or writes 'mother anxious about placement' in the margin. The plumber's part could have taken three weeks instead of one, testing even a dated plan. Workers vary and pipes vary. Dates are how a family's intentions survive both.
+
+## [u1] The Weekend, and Then Monday
+*Day 3 — Monday, May 4, 2026 (dayOffset 3)*
+
+The weekend itself is lovely — that is the treacherous part. Sam thrives, the cat surrenders, you visit twice a day. Then the plumber announces the part won't arrive until Tuesday, and the plan — which has no opinion about Tuesday, or any day — simply continues, the way water continues: by finding the available space.
+
+Nobody decides to extend Sam's stay. It extends itself, in the absence of a date that says otherwise.
+
+**Choices:**
+- Text Ms. Tran Monday: "Can we set the review and the end date now, in writing?" → **u2**  _(FLAG: askedLate)_
+  - NOTE (shown after choosing): Asking on day three is weaker than asking on day zero. It is also incomparably stronger than not asking.
+- Wait for the repair to finish — asking now feels like complaining → **u2**
+  - NOTE (shown after choosing): The repair will finish when the part arrives. Requests made after finishes are called complaints by everyone, including, eventually, you.
+
+## [u2] Five Days In
+*Day 6 — Thursday, May 7, 2026 (dayOffset 6)*
+
+Five days in. The part arrived, then the wrong part arrived, then the right one. Sam has spent five nights at Ms. Abernathy's. School has been told a story about 'a few days.' Ms. Abernathy — who would keep him forever and feed the whole street doing it — is starting to ask you what the plan is, which is the exact question the plan was supposed to answer.
+
+Ms. Tran is sympathetic on the phone and very busy. A review, she says, can probably be scheduled this week. Probably is a word with no date in it.
+
+**Choices:**
+- Put the request in writing — email, dated — asking for a review this week and an end date → **p3**  _(FLAG: reviewRequestedWriting; HIDDEN + Plan — parent requested review and end date in writing on day five)_
+  - NOTE (shown after choosing): The email gets an answer in two hours — a review Thursday, and a note that Sam’s stay is now formally extended in the record until then. Writing moved in two hours what sympathy hadn’t in four days.
+- Accept the "probably" — she’s busy, and Sam is safe → **u3**  _(HIDDEN + Plan — stay continuing without a written review date as of day eight)_
+  - NOTE (shown after choosing): Sam is safe. Safety was never the question in this story. Shape was.
+
+## [u3] Two Sundays
+*Day 10 — Monday, May 11, 2026 (dayOffset 10)*
+
+Two Sundays have now been spent at Ms. Abernathy's. The repair finished Wednesday; the inspection is pending an inspector with a calendar like a tide table. At school, 'a few days' has quietly become an attendance note. Sam asks, at dinner, whether his room is still his room, and the cat cannot answer that one.
+
+The system's word for this is 'placement drift.' It has no villain. It has a missing date, an unanswered email chain, and a child doing arithmetic about his own bedroom.
+
+**Choices:**
+- Escalate kindly, in writing: inspection date, home date, or a review with all three of you → **u4**
+  - NOTE (shown after choosing): Kind escalation is still escalation — dated, specific, addressed. It tends to work because it gives busy people something definite to do.
+- Keep waiting — the inspector is the last piece → **u4**
+  - NOTE (shown after choosing): The inspector is the last piece of the repair. He is not the last piece of the plan, because the plan, lacking dates, has no pieces — only duration.
+
+## [u4] The Review, Eventually
+*Day 12 — Wednesday, May 13, 2026 (dayOffset 12)*
+
+A review convenes — helped, in the end, by your written request being the kind of document that asks to be answered. The inspector comes Friday. Sam can be home Friday by bedtime if the inspection passes, and Ms. Tran proposes to close the plan in writing at that point.
+
+It is everything you asked for at the start, arriving now at the speed of paper that starts late.
+
+**Choices:**
+- Ask for the closure terms in writing before Friday: home date, inspection, who confirms → **p5**  _(FLAG: closureInWriting; HIDDEN + Plan — closure terms requested and received in writing by parent)_
+  - NOTE (shown after choosing): They come in writing this time — home Friday, inspection noon, Ms. Abernathy to confirm by phone. The plan’s ending, at least, will have the shape its beginning lacked.
+- Accept the verbal plan for Friday — it’s nearly over → **u5**
+  - NOTE (shown after choosing): Nearly over is where open-ended things live longest.
+
+## [u5] Friday, and One More Weekend
+*Day 15 — Saturday, May 16, 2026 (dayOffset 15)*
+
+The inspection passes Friday at noon. But the confirmation loop — worker, neighbor, paperwork — misses its Friday window, and nobody has written down who was supposed to close what by when, so Sam stays the weekend, because weekends are where unfinished processes sleep.
+
+He comes home Monday. The total: sixteen nights. The plan that was for the weekend.
+
+**Choices:**
+- Welcome him home, and ask for the closure letter anyway → **end_partial**
+  - NOTE (shown after choosing): Always ask for the letter. The letter is what the next reader gets.
+
+## [end_partial] The Weekend That Kept Going
+*Day 17 — Monday, May 18, 2026 (dayOffset 17)*
+
+**ENDING.** Debrief:
+
+- Sam is home, and was safe and loved every night away — Ms. Abernathy saw to that, and this ending is not about danger. It is about shape: a weekend plan ran sixteen nights because nothing in writing said when it ended, and everyone involved was too kind, too busy, or too tired to invent the ending mid-stream. The file records an 'extended informal placement,' a phrase that makes a burst pipe sound like a parenting condition.
+- The law inside this story: under 55 Pa. Code § 3130.44(d), your copy of the plan was yours on request — and a copy read early, on Saturday, is where a missing end date is visible while adding it still costs a text message.
+- Voluntary plans run on consent, and consent without dates is a door that only opens one way. The entire strategy — ask before the first night, in writing, for an end date and a review — exists to keep a kind offer from quietly becoming an arrangement nobody chose.
+- Honesty requires this: Ms. Tran was responsive once paper started moving, and the written request, once it came, genuinely helped. A stiffer worker might have read the drift as instability and dug in; a luckier plumber finishes in a day and the missing dates never matter. You cannot pick your worker or your pipe. You can pick whether 'the weekend' is a phrase or a pair of dates.

@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Daycare Letter</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The Daycare Letter",
+  "subtitle": "Scenario 20 — The Daycare Letter (a fictional composite)",
+  "startDateISO": "2026-02-02",
+  "startNode": "start",
+  "startCash": 230,
+  "tier": "Hard",
+  "summary": "A daycare worker and mother in an open dependency case gets an indicated report from a relative's child's fall — and must run a 90-day CPSL appeal clock and a June dependency review on two separate records at once."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, February 2, 2026",
+   "dayOffset": 0,
+   "title": "Two Envelopes, One Kitchen Table",
+   "body": [
+    "You are Lena Morales, thirty-four, and you live your life in two files that do not know each other's names.",
+    "In the first file, you are a mother working a service plan. Your son Eli, seven, has been in a dependency placement since last autumn — placed before this story begins, in a case with its own judge, its own lawyer for you, and its own calendar. Your plan says parenting classes, visits twice a week, and steady work. You have been doing all three, and the visit log, at least, says so in ink.",
+    "In the second file — as of this morning — you are something else. In January you were watching your cousin's daughter Ana, five, at a family gathering when she slipped on the porch steps and struck the concrete walk. A bruise bloomed along her ribs. At the hospital you answered every question. A caseworker came. You answered again.",
+    "Today's mail holds the letter from the Department: the report about Ana's fall has been marked “indicated,” and your name has been entered in the statewide database as a perpetrator. You read that sentence standing up, in your coat, in a kitchen where Eli's drawing from Saturday's visit is still on the refrigerator.",
+    "You also work — worked — in the preschool room at the Sunflower daycare, four days a week. That is the third thing the letter touches, and it may be the first one that bleeds."
+   ],
+   "choices": [
+    {
+     "text": "Read the whole letter again, slowly, with a pen",
+     "next": "read_letter",
+     "note": "The back page is where letters like this keep their most important part."
+    },
+    {
+     "text": "Put it in the kitchen drawer and make dinner",
+     "next": "drawer",
+     "note": "The drawer closes softly. Paper is patient. That is the whole problem."
+    }
+   ]
+  },
+  {
+   "id": "read_letter",
+   "kicker": "Day 1 — Tuesday, February 3, 2026",
+   "dayOffset": 1,
+   "title": "What the Letter Actually Says",
+   "body": [
+    "The back page is plain once you read it at the speed of breathing. If you believe an indicated report is inaccurate, or is being kept in a way the law does not allow, you may ask — in writing — for it to be amended or expunged (23 Pa.C.S. § 6341(a)(2)).",
+    "The request must be made within 90 days of being notified. You were notified Monday, February 2, 2026. Ninety days from February 2 runs to Sunday, May 3, 2026. You circle it on the kitchen calendar, in red, next to Eli's visit days and your class nights.",
+    "Ninety days is a season. It is also a deadline, and deadlines in this system do not send reminders — and this one lands on a Sunday, which means the practical last mailing day is earlier than the circled one."
+   ],
+   "choices": [
+    {
+     "text": "Tell Ms. Bell at Sunflower before she hears it any other way",
+     "next": "daycare",
+     "addHidden": [
+      "Letter — the 90-day date circled: Sunday, May 3, 2026"
+     ],
+     "note": "Tomorrow. First thing. Before the cubbies, before the coffee."
+    }
+   ]
+  },
+  {
+   "id": "drawer",
+   "kicker": "Day 1 — Tuesday, February 3, 2026",
+   "dayOffset": 1,
+   "title": "The Drawer",
+   "body": [
+    "The drawer holds the letter the way it holds batteries and a bent screwdriver: completely, and without comment.",
+    "Eli's drawing goes up on the refrigerator over it. Dinner happens. A normal evening is not nothing — in your life right now, it is nearly everything. But the calendar on the wall has a date on it now, whether or not anyone has circled it."
+   ],
+   "choices": [
+    {
+     "text": "Pull it out after dinner and read the back page",
+     "next": "read_letter",
+     "note": "Day 1 of 90. The clock did not pause while you rested — but it did not run out, either."
+    },
+    {
+     "text": "Leave it. Paper cannot raise a child, and it cannot ruin one",
+     "next": "quiet_wait",
+     "note": "Most of life is elsewhere, and better. The letter waits the way only paper can."
+    }
+   ]
+  },
+  {
+   "id": "daycare",
+   "kicker": "Day 3 — Thursday, February 5, 2026",
+   "dayOffset": 3,
+   "title": "Sunflower's Process",
+   "body": [
+    "Ms. Bell listens the way she listens to parents at pickup: all the way through, without interrupting. Then she opens a binder, because Ms. Bell is a binder person, and reads you her center's own written process — Sunflower's process, stated as Sunflower's process.",
+    "“While a report like this is unresolved, we pause classroom scheduling. Not the office, not the kitchen as a favor — the schedule. I can hold your place on the roster while you sort the paperwork, but I cannot put you on the classroom rota, and I cannot pay hours you do not work.” She is sorry in the specific way of people reading from a page they did not write and cannot bend.",
+    "Four days a week becomes zero days a week, effective Monday. Your service plan's “steady work” line and your parenting-class fees and the bus fare to Eli's visits all ran through that paycheck. Nobody in this room made a law. A schedule simply closed, the way schedules do."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the pause in writing, with the date on it",
+     "next": "two_clocks",
+     "addHidden": [
+      "Employer — classroom scheduling paused under the center's own stated process, Feb 2026"
+     ],
+     "note": "Paper again. You are learning to collect it the way you collect Eli's drawings: everything, dated."
+    },
+    {
+     "text": "Ask whether the hours can come back if the report is expunged",
+     "next": "two_clocks",
+     "note": "“Bring me the outcome letter,” she says, “and we will talk about the rota the same day.” A door, described precisely — which is more than most doors get."
+    }
+   ]
+  },
+  {
+   "id": "two_clocks",
+   "kicker": "Day 7 — Monday, February 9, 2026",
+   "dayOffset": 7,
+   "title": "Two Clocks",
+   "body": [
+    "Your dependency caseworker, Ms. Hart, calls about Thursday's visit and hears it in your voice. You tell her about the letter. There is a pause that is not unkind — it is a professional locating the right shelf.",
+    "“That report is a separate track from Eli's case,” she says. “Different file, different decision-maker, different question. Eli's case asks how his plan is going — your classes, your visits, your progress. The letter's track asks whether that one report about Ana is accurate. They can touch each other — mostly through your wallet and your Thursdays — but neither one decides the other.”",
+    "She gives you the second clock: “Eli's next permanency review is Monday, June 1, 2026. The judge will read this case's record to get there — the visit log, the class certificates, the plan. Not the other file's letter, unless somebody carries it into the room and makes it the story. Keep your record legible, Lena.”",
+    "Two clocks, then. May 3 for the letter. June 1 for Eli. Both already running."
+   ],
+   "choices": [
+    {
+     "text": "Write both dates on the calendar, in two colors",
+     "next": "counsel",
+     "addHidden": [
+      "Two clocks noted — CPSL appeal by May 3, 2026; dependency review June 1, 2026"
+     ],
+     "note": "Red for the letter. Blue for Eli. The calendar looks like a small, honest flag."
+    }
+   ]
+  },
+  {
+   "id": "counsel",
+   "kicker": "Day 10 — Thursday, February 12, 2026",
+   "dayOffset": 10,
+   "title": "The Lawyer Who Is Already Yours",
+   "body": [
+    "You already have a lawyer in Eli's case — parents in dependency proceedings have the right to counsel (42 Pa.C.S. § 6337) — and Ms. Okafor, yours, agrees to fifteen minutes on the other file, because the other file is about to eat the first one's budget.",
+    "She is precise in a way that feels like respect. “The appeal of the indicated report is in writing, within ninety days of notice — for you, by Sunday, May 3, 2026 (23 Pa.C.S. § 6341(a)(2)). At that hearing, the burden is not yours: the department or county agency must prove by substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)). And once you appeal, the agency must give you the evidence it gathered in that investigation — including anything that helps you (23 Pa.C.S. § 6341(c.2)(4)).”",
+    "“Eli's dependency record is a different drawer,” she says. “You can ask for that record too, under a different rule — 55 Pa. Code § 3130.44(d), which says the case record shall be released upon request. Do not confuse the two requests. One is the investigation evidence about Ana. The other is Eli's case record — your plan, your visits, your progress. You may need both. They are not the same paper.”"
+   ],
+   "choices": [
+    {
+     "text": "File the written appeal this week, while the gathering of paper happens around it",
+     "next": "appeal_filed",
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "Clinic note — appeal filed early in the 90 days; burden at the hearing is the agency's"
+     ],
+     "note": "In writing. Dated. A copy for you. The May 3 clock is answered in February."
+    },
+    {
+     "text": "Gather everything first, and file when the packet feels complete",
+     "next": "wait_risk",
+     "note": "“Complete is a feeling,” Ms. Okafor says, not unkindly. “Deadlines are not. Mind the Sunday.”"
+    }
+   ]
+  },
+  {
+   "id": "appeal_filed",
+   "kicker": "Day 13 — Sunday, February 15, 2026",
+   "dayOffset": 13,
+   "title": "Filed, Stamped, Copied",
+   "body": [
+    "The appeal is one page. It asks, in writing, that the indicated report about Ana's fall be amended or expunged, because it is inaccurate. You sign it at the kitchen table, under Eli's drawing, and mail it with a certificate of mailing, and keep the stamped copy in a folder that now has a label: LETTER — MAY 3 ✓.",
+    "Filing does not fix Sunflower's schedule, or pay a class fee, or move June 1 by an inch. What it does is narrower and real: the question is now officially open, the hearing machinery can start, and the agency's duty to hand over its investigation evidence can be invoked.",
+    "Some weeks, in this system, a stamped copy is what progress looks like. This is one of those weeks."
+   ],
+   "choices": [
+    {
+     "text": "Now request Eli's dependency case record, in writing, under § 3130.44(d)",
+     "next": "records_dep",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Dependency record requested in writing under 55 Pa. Code § 3130.44(d)"
+     ],
+     "note": "A different drawer, a different rule, a different request. Ms. Okafor would approve of the labeling."
+    },
+    {
+     "text": "Skip the record request — one file at a time is enough",
+     "next": "service_plan",
+     "note": "Understandable. It means June's review will be prepared from summaries, and summaries are where nuance goes to be shortened."
+    }
+   ]
+  },
+  {
+   "id": "records_dep",
+   "kicker": "Day 17 — Thursday, February 19, 2026",
+   "dayOffset": 17,
+   "title": "Eli's Record, in Your Hands",
+   "body": [
+    "The packet that comes back is Eli's case, on paper: the service plan, the visit log — twice a week, kept, with two late arrivals honestly noted — the parenting-class enrollment, two certificates already earned, and the caseworker's running notes.",
+    "The notes are warmer than summaries usually are. “Mother prepared; child runs to her.” “Class work taken seriously.” And one line that matters for June: “Remaining plan items are scheduled and fee-dependent: final parenting module (paid), twice-weekly visit transport.” Fee-dependent. In a file, that phrase is a weather report.",
+    "You now hold both truths at once: in Eli's record, you are a mother mid-plan, progressing. In the other file, a letter calls you a perpetrator. Both papers exist. Neither one erases the other. June's judge will read the first file. The hearing officer will weigh the second. Your job is to keep each record accurate — and funded."
+   ],
+   "choices": [
+    {
+     "text": "Put the visit log and certificates in the June folder, in date order",
+     "next": "service_plan",
+     "setFlags": [
+      "depFolder"
+     ],
+     "addHidden": [
+      "Dependency record — visit log kept twice weekly; two class certificates earned"
+     ],
+     "note": "Folder first. Strategy second. In paper systems, that order is not an accident."
+    }
+   ]
+  },
+  {
+   "id": "wait_risk",
+   "kicker": "Day 20 — Sunday, February 22, 2026",
+   "dayOffset": 20,
+   "title": "Gathering First",
+   "body": [
+    "You spend February gathering instead of filing: the hospital printout, your cousin's number, photographs of the porch you keep meaning to take. The packet grows more satisfying by the week. So does a quieter number: the days left of ninety.",
+    "Ms. Okafor's sentence keeps its shape in your head: complete is a feeling; deadlines are not. The appeal still exists. It is simply, now, a thing that must survive your schedule, your budget, and a Sunday in May."
+   ],
+   "choices": [
+    {
+     "text": "File it now — late February is still early enough to mean it",
+     "next": "filed_late",
+     "setFlags": [
+      "appealFiled"
+     ],
+     "note": "Not the February filing you imagined. Still a filing, still in writing, still inside the window — with a thinner spring left to build in."
+    },
+    {
+     "text": "Keep gathering. The packet is not ready, and neither are you",
+     "next": "quiet_wait",
+     "note": "The drawer of the mind has a drawer. The calendar does not."
+    }
+   ]
+  },
+  {
+   "id": "service_plan",
+   "kicker": "Day 24 — Thursday, February 26, 2026",
+   "dayOffset": 24,
+   "title": "The Fee-Dependent Line",
+   "body": [
+    "The final parenting module costs $45, due before the March session, and it is the last box on that part of Eli's plan. With Sunflower's schedule paused, $45 is no longer a errand; it is an allocation — rent, bus fare, class fee, choose the order and live in it.",
+    "Ms. Hart, to her credit, says the quiet part plainly: “The plan does not pause because your income did. If the module slips, June's review will show a gap, and gaps get read as choices unless the record says otherwise. If you pay it and keep the receipt, the record says otherwise all by itself.”",
+    "This is how the two files actually touch: not in a courtroom, but in a wallet, on a Thursday."
+   ],
+   "choices": [
+    {
+     "text": "Pay the $45 and keep the receipt in the June folder",
+     "next": "visit",
+     "cash": -45,
+     "setFlags": [
+      "classPaid"
+     ],
+     "addHidden": [
+      "Service plan — final parenting module paid Feb 2026; receipt kept"
+     ],
+     "note": "The certificate will say completed. The receipt says something the certificate cannot: what it cost, and that you paid it anyway."
+    },
+    {
+     "text": "Let the module slip to April and hope the schedule pause lifts",
+     "next": "visit",
+     "note": "A hope, recorded as a gap. June will read whatever is there."
+    }
+   ]
+  },
+  {
+   "id": "visit",
+   "kicker": "Day 31 — Thursday, March 5, 2026",
+   "dayOffset": 31,
+   "title": "Thursday, Twice a Week",
+   "body": [
+    "Visits with Eli happen at the agency's visit room, which has a rug shaped like a road and a clock that everyone watches politely. Eli builds a tower, knocks it down for the pleasure of your face, and asks whether the daycare kids miss you.",
+    "“They do,” you tell him, which is true, and not the whole of the truth, which is also a kind of parenting.",
+    "The bus home costs what it costs. Twice a week, every week, it is the best money in your budget and the board in this game where your choices are most visible: the log fills, line by line, in a hand that is not yours. That is what a record is — other people's handwriting about your constancy."
+   ],
+   "choices": [
+    {
+     "text": "Pay the week's fares and keep the visit streak unbroken",
+     "next": "evidence_packet",
+     "cash": -18,
+     "addHidden": [
+      "Visit log — streak unbroken through March 2026"
+     ],
+     "note": "Line by line. The June folder gets heavier in the only way that helps."
+    },
+    {
+     "text": "Skip one visit this week to save the fare",
+     "next": "evidence_packet",
+     "note": "One blank line. The log does not explain blanks; it only keeps them."
+    }
+   ]
+  },
+  {
+   "id": "evidence_packet",
+   "kicker": "Day 38 — Thursday, March 12, 2026",
+   "dayOffset": 38,
+   "title": "What the Agency Has to Hand Over",
+   "body": [
+    "Because you appealed, the scheduling order has entered — and with it, the other side of the appeal: the department or county agency must provide you with all evidence gathered during the investigation that is relevant to the determination, including potentially exculpatory evidence (23 Pa.C.S. § 6341(c.2)(4)). The packet arrives in a fat envelope that smells of copier heat.",
+    "Inside: the caseworker's summary, which says your account of Ana's fall “varied between tellings” — “off the porch” to the hospital, “down the steps” to the caseworker. The emergency physician's note: bruising “not typical of a short fall onto a flat surface.”",
+    "And, on page six, nearly invisible under its own modesty, Ana's pediatrician's line, given to the investigator and filed without emphasis: the bruise pattern, she had said, was consistent with a fall down steps onto a concrete edge — because the walk at the bottom of those steps is not a flat surface, and never was.",
+    "The file was never only the accusation. It also held the beginnings of the answer. Now, because of the rule and your February filing, so do you."
+   ],
+   "choices": [
+    {
+     "text": "Build the hearing around what the packet actually says",
+     "next": "divided",
+     "addHidden": [
+      "CPSL disclosure received under § 6341(c.2)(4) — including pediatrician's line, page six"
+     ],
+     "note": "Your words are about to be in the file too. That is what the disclosure was for."
+    }
+   ]
+  },
+  {
+   "id": "divided",
+   "kicker": "Day 45 — Thursday, March 19, 2026",
+   "dayOffset": 45,
+   "title": "Porch, Steps, Walk",
+   "body": [
+    "You stand in your cousin's yard in March light and finally take the photographs: the porch, the four steps, the concrete walk with its raised edge, the toy bin Ana had been carrying. One structure. Three names. “Off the porch.” “Down the steps.” Both sentences describe the same four feet of January afternoon.",
+    "The medicine divides the same way the words did. The emergency physician, who saw a bruise and not a fall, said “not typical — of a short fall onto a flat surface.” Ana's pediatrician, who has known the child since infancy, said the pattern fits steps and a concrete edge. Neither doctor saw the fall. The hearing will not rewind January; it will weigh paper about January.",
+    "In the published cases this scenario is built from, hearing officers have tested exactly this: an account called inconsistent that matched the medical record on a closer read, and an agency case that thinned when its own file was laid flat. Paper, laid flat, is a strategy."
+   ],
+   "choices": [
+    {
+     "text": "Print the photographs, three angles, dated, one caption each",
+     "next": "gather",
+     "setFlags": [
+      "photos"
+     ],
+     "addHidden": [
+      "Photographs — porch, steps, and concrete walk are a single structure"
+     ],
+     "note": "“Off the porch.” “Down the steps.” One structure, in evidence."
+    },
+    {
+     "text": "Rely on your testimony alone — you were there, the paper was not",
+     "next": "gather",
+     "note": "True, and thinner. Hearings weigh what is in front of them, and testimony alone is the lightest thing in the room."
+    }
+   ]
+  },
+  {
+   "id": "gather",
+   "kicker": "Day 52 — Thursday, March 26, 2026",
+   "dayOffset": 52,
+   "title": "Ounces",
+   "body": [
+    "“Ounce for ounce,” Ms. Okafor says, looking at your folder. “Their side has to be heavier — that is the burden, and it is theirs. Our job is to make sure the scale holds everything true, not just everything filed first.”",
+    "Two more ounces are available. Ms. Bell will write what she has actually seen: three years of you with other people's children, no concerns, a schedule paused for paperwork and not for conduct. And your cousin — Ana's mother — will sign a statement of what she saw from the kitchen door, which is most of the fall and none of the landing.",
+    "Each costs something: a morning, a bus ride, the particular courage of asking people to write down that you are trustworthy while a database says otherwise."
+   ],
+   "choices": [
+    {
+     "text": "Collect both letters, in person, this week",
+     "next": "prehearing",
+     "cash": -12,
+     "setFlags": [
+      "letters"
+     ],
+     "addHidden": [
+      "Daycare director's letter — three years observed, no concerns",
+      "Cousin's signed statement — saw the fall from the kitchen door"
+     ],
+     "note": "Two pages, signed, dated. Ounces that can be weighed."
+    },
+    {
+     "text": "Save the money and the asking — go with what you have",
+     "next": "prehearing",
+     "note": "A lighter folder walks into April. Light is a choice, and hearings notice weight."
+    }
+   ]
+  },
+  {
+   "id": "quiet_wait",
+   "kicker": "Day 59 — Thursday, April 2, 2026",
+   "dayOffset": 59,
+   "title": "April, Unfiled",
+   "body": [
+    "April arrives with the letter still unanswered — not refused, exactly; deferred, the way frightening paper gets deferred by people whose weeks are already full of other people's emergencies.",
+    "Sunflower's pause has become a fact of the season. The parenting module's March session has come and gone unpaid, and Ms. Hart's note for the file is factual and devastating in its plainness: module incomplete; two visits missed when the fare ran out. She does not write why in the summary line. Summaries rarely do.",
+    "Thirty-one days remain of the ninety. The window is open. It is not wide, and it lands on a Sunday, and it will not get wider."
+   ],
+   "choices": [
+    {
+     "text": "File tonight — April is late, and late is still inside the window",
+     "next": "filed_late",
+     "setFlags": [
+      "appealFiled"
+     ],
+     "addHidden": [
+      "File status — appeal filed in April, inside the 90 days"
+     ],
+     "note": "A thinner spring, a thinner packet — and a clock answered. Thin and filed beats complete and late, every time this system has ever run."
+    },
+    {
+     "text": "Let it go. You cannot fight a database and a calendar at once",
+     "next": "deadline_passes",
+     "note": "A human sentence. The calendar hears it the way calendars hear everything: as a date passing."
+    }
+   ]
+  },
+  {
+   "id": "prehearing",
+   "kicker": "Day 66 — Thursday, April 9, 2026",
+   "dayOffset": 66,
+   "title": "Exchange",
+   "body": [
+    "April's work is unglamorous and decisive: copies of everything — photographs, letters, the pediatrician's page, your one-page timeline of January in your own hand — sent to the agency with a list, a mailing receipt kept, nothing held back for surprise.",
+    "Surprise is a television strategy. In a hearing room, evidence the other side has never seen can be kept out, and a packet exchanged early makes the hearing about the evidence instead of about the mail.",
+    "Ms. Okafor reads your timeline once and changes nothing. “Tell it in this order,” she says, “and stop when you are done. Porch, steps, walk. One structure. You have been saying it correctly since January — the file just spelled it two ways.”"
+   ],
+   "choices": [
+    {
+     "text": "Mail the packet, keep the receipt, and prepare to testify in order",
+     "next": "hearing_strong",
+     "setFlags": [
+      "disclosed"
+     ],
+     "note": "Received, stamped, undeniable. May can now be about the evidence."
+    }
+   ]
+  },
+  {
+   "id": "filed_late",
+   "kicker": "Day 73 — Thursday, April 16, 2026",
+   "dayOffset": 73,
+   "title": "Filed, in April",
+   "body": [
+    "The appeal goes in in April — in writing, inside the ninety days, with your January timeline attached and not much else, because April filings do not come with March's gathering time.",
+    "The scheduling machinery starts, as it does. The disclosure packet will come, but the calendar between here and a May hearing is short, and the June folder — Eli's folder — has its own gaps by now: the module, the missed visits, the summary lines that do not explain themselves.",
+    "You have answered the clock. What you could not recover is the season the clock was guarding."
+   ],
+   "choices": [
+    {
+     "text": "Prepare with what the disclosure gives you, and testify carefully",
+     "next": "prehearing_thin",
+     "note": "Less paper. The same burden on the agency — but a lighter scale pan of your own to put against it."
+    }
+   ]
+  },
+  {
+   "id": "prehearing_thin",
+   "kicker": "Day 80 — Thursday, April 23, 2026",
+   "dayOffset": 80,
+   "title": "A Short Runway",
+   "body": [
+    "The disclosure packet arrives with the same page six — the pediatrician's line is there, because the rule that produced it does not grade on filing dates. What is missing is everything February would have built around it: no photographs in evidence, no director's letter, no cousin's signed statement, and no time left to exchange them properly before May.",
+    "Ms. Okafor is honest in the doorway of the hearing room. “We argue the burden. We argue page six. We do not argue what we cannot show. Walk in knowing the difference between a winnable hearing and this one — and walk in anyway, because the record of having argued it is not nothing, for June or for later.”"
+   ],
+   "choices": [
+    {
+     "text": "Go in with the burden, page six, and your testimony in order",
+     "next": "hearing_thin",
+     "note": "Porch, steps, walk. Even a thin file deserves to be told straight."
+    }
+   ]
+  },
+  {
+   "id": "deadline_passes",
+   "kicker": "Day 91 — Monday, May 4, 2026",
+   "dayOffset": 91,
+   "title": "Monday, May 4",
+   "body": [
+    "Sunday, May 3, 2026 was the ninetieth day. Nothing happened on it — that is the nature of this particular catastrophe. No letter arrived, no door closed audibly. Eli ate a grilled cheese. A neighbor's dog barked at a bicycle. The right to ask for a hearing on the indicated report simply stopped existing, sometime between breakfast and bedtime, because calendars, not character, operate deadlines.",
+    "On Monday you call the number on the letter, and the kind voice reads the script's kind answer: the window for a written appeal under § 6341(a)(2) has closed.",
+    "The report itself has not closed anything like that quickly. It remains in the statewide database. Sunflower's binder has a process, and the process now has no outcome letter coming to interrupt it."
+   ],
+   "choices": [
+    {
+     "text": "Ask Ms. Bell, plainly, what happens to the held roster place now",
+     "next": "missed_services",
+     "note": "You already know. Hearing it in her voice, at her desk, makes it a fact instead of a dread."
+    }
+   ]
+  },
+  {
+   "id": "hearing_strong",
+   "kicker": "Day 99 — Tuesday, May 12, 2026",
+   "dayOffset": 99,
+   "title": "The Hearing, May 12",
+   "body": [
+    "The hearing room is smaller than its reputation. The hearing officer states the frame at the outset, for the record: this proceeding decides whether the indicated report about Ana's fall is accurate and should remain categorized as indicated — and the burden of proving that, by substantial evidence, rests on the agency (23 Pa.C.S. § 6341(c.2)(5)).",
+    "The agency's case is its file, laid flat: the summary's word “varied,” and the emergency physician's “not typical.” Then the cross-examination lays the rest of the file beside it: “not typical of a fall onto a flat surface” — and the photographs show a surface that is not flat, and the steps that are not a porch, and are. The pediatrician's line, page six, in the agency's own disclosure, says the pattern fits those steps.",
+    "Your cousin testifies to the kitchen door and the fall she saw. Ms. Bell's letter is already in evidence. You testify last, in order — porch, steps, walk — and stop when you are done.",
+    "The officer does not decide from the bench. Decisions in this track are entered in writing after the hearing concludes. Yours, she says, will come within the statutory window. June 1, meanwhile, is nineteen days away, in a different building, on a different record."
+   ],
+   "choices": [
+    {
+     "text": "Thank the room, and turn — entirely — to Eli's June folder",
+     "next": "review_prep_exp",
+     "note": "One track weighed. The other track was never waiting for it, which is the point you finally believe."
+    }
+   ]
+  },
+  {
+   "id": "hearing_thin",
+   "kicker": "Day 99 — Tuesday, May 12, 2026",
+   "dayOffset": 99,
+   "title": "The Hearing, May 12",
+   "body": [
+    "The same small room, the same frame stated for the record: the agency bears the burden of proving by substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)).",
+    "The agency's file, laid flat, is the same file: “varied,” and “not typical.” Ms. Okafor walks the officer to page six — the pediatrician's line is real, and it helps, and it is one line, unaccompanied: no photographs in evidence to show the steps it describes, no signed statement placing the fall, no letter giving your three years in a classroom any weight in this room.",
+    "You testify in order, and well. But a hearing weighs what is in front of it, and in front of it, this time, their side of the scale holds two documents and yours holds a line and a voice. The officer thanks you without inflection and does not decide from the bench.",
+    "June 1 is nineteen days away, in a different building, on a record with gaps in it that have nothing to do with January and everything to do with April's wallet."
+   ],
+   "choices": [
+    {
+     "text": "Turn to Eli's June folder — gaps and all, it is still a separate record",
+     "next": "review_prep_uph",
+     "note": "The dependency judge will read Eli's file, not this room's scale. What is in that file is the argument now."
+    }
+   ]
+  },
+  {
+   "id": "missed_services",
+   "kicker": "Day 105 — Monday, May 18, 2026",
+   "dayOffset": 105,
+   "title": "The Roster, Released",
+   "body": [
+    "Ms. Bell closes the binder gently. Without an outcome to wait for, the held place cannot be held through another season; the classroom rota for summer is posted with another name on your line. She is sorry. The binder is sorry. Sorry, in this system, is not a schedule.",
+    "What follows is arithmetic, not judgment: no classroom income means the module stays unpaid, the fares get chosen over other things twice and missed twice, and Ms. Hart's June summary acquires the lines that summaries acquire. Your parenting — the towers, the rug shaped like a road, Eli running to you — has not changed. Your documented progress has. In a paper system, the second sentence is the one that travels."
+   ],
+   "choices": [
+    {
+     "text": "Keep every remaining visit, and ask Ms. Hart to note the reason for the gaps in the full record",
+     "next": "quiet_review",
+     "cash": -18,
+     "addHidden": [
+      "Dependency summary — module incomplete; visits missed when fares ran out"
+     ],
+     "note": "She writes it in the notes, in full sentences. The summary line stays short. Both will be in the room on June 1."
+    }
+   ]
+  },
+  {
+   "id": "review_prep_exp",
+   "kicker": "Day 112 — Monday, May 25, 2026",
+   "dayOffset": 112,
+   "title": "The Week Before June",
+   "body": [
+    "The hearing decision has not arrived yet — it is not due to; the window runs after the hearing, and waiting is built into this track's design. What you can finish is Eli's folder: visit log, certificates, the paid module's receipt, the caseworker's warm notes, in date order, with a one-page summary in your own words of what the plan asked and what you did.",
+    "Nothing from the letter's file goes in it. That is deliberate, and Ms. Okafor underlines it twice: “June's judge decides Eli's case on Eli's record. If anyone tries to make the letter the whole story, the answer is not to hide the letter — it is to point at the record: two years of plan, kept. Separate track, separate proof.”"
+   ],
+   "choices": [
+    {
+     "text": "Walk into June 1 with the folder, the receipt, and the dates in two colors",
+     "next": "review_exp",
+     "note": "Red answered in February. Blue is about to be read aloud."
+    }
+   ]
+  },
+  {
+   "id": "review_prep_uph",
+   "kicker": "Day 112 — Monday, May 25, 2026",
+   "dayOffset": 112,
+   "title": "The Week Before June",
+   "body": [
+    "The hearing decision has not arrived, and the folder you carry toward June 1 is honest and thin in specific places: the module incomplete, two visit lines blank, the warm notes still warm but older. Ms. Okafor helps you write the one-page summary anyway — what the plan asked, what you did, what the schedule pause cost, in dates and dollars, without adjectives.",
+    "“We do not argue that the letter decided Eli's case,” she says. “We argue that Eli's case must be decided on Eli's record — all of it, including the parts where the record shows effort against a closed wallet. Judges can read arithmetic. Let them.”"
+   ],
+   "choices": [
+    {
+     "text": "Walk into June 1 with the folder as it is — gaps labeled, not hidden",
+     "next": "review_uph",
+     "note": "A record that labels its own gaps reads as honest. Honest is a weight, too."
+    }
+   ]
+  },
+  {
+   "id": "review_exp",
+   "kicker": "Day 119 — Monday, June 1, 2026",
+   "dayOffset": 119,
+   "title": "Monday, June 1 — Eli's Review",
+   "body": [
+    "The dependency courtroom has better light and a worse clock. Eli's judge reads from Eli's record, because that is the record of this case: the visit log, twice a week, kept; the certificates; the final module, paid in February against a paused paycheck, receipt in the file.",
+    "The agency's summary mentions the indicated report once, in a subordinate clause, the way a weather report mentions another county. The judge's questions do not follow it there. They follow the plan: visits, classes, progress, next steps. When Ms. Okafor says, “The report is on its own track, Your Honor, with its own hearing and its own burden, and it is being decided there,” the judge nods the nod of a person being told something the file already showed.",
+    "Dependency continues, the plan continues, and the review's findings record progress as progress. Eli is not ordered home today — that was never what this review promised — but the road to it is, on this record, visibly shorter than it was in February."
+   ],
+   "choices": [
+    {
+     "text": "Walk out into June light and wait for the letter's track to finish speaking",
+     "next": "decision_exp",
+     "note": "One decision read aloud. One still in an envelope, somewhere between a hearing room and your mailbox."
+    }
+   ]
+  },
+  {
+   "id": "review_uph",
+   "kicker": "Day 119 — Monday, June 1, 2026",
+   "dayOffset": 119,
+   "title": "Monday, June 1 — Eli's Review",
+   "body": [
+    "Eli's judge reads Eli's record — all of it, including the gaps, which Ms. Okafor's summary has labeled with their dates and their arithmetic instead of leaving them to be guessed at.",
+    "The indicated report is mentioned, because it exists, and then the review does the thing this scenario has been promising it can do: it evaluates your parenting and your services on this case's own evidence. The visit log's kept lines count. The warm notes count. The incomplete module and the missed fares count too — as incompleteness, weighed in context, not as a verdict imported from another file.",
+    "Dependency continues; the plan is extended with the module rescheduled and transport addressed on the record. It is not a triumph. It is something rarer in this story: a room that decided the question it was actually asked, from the record that actually belonged to it."
+   ],
+   "choices": [
+    {
+     "text": "Walk out and wait for the hearing decision, which is now the only envelope left",
+     "next": "decision_uph",
+     "note": "June has spoken on its own track. May's room still owes you its answer."
+    }
+   ]
+  },
+  {
+   "id": "quiet_review",
+   "kicker": "Day 119 — Monday, June 1, 2026",
+   "dayOffset": 119,
+   "title": "Monday, June 1 — Eli's Review",
+   "body": [
+    "Eli's judge reads Eli's record: a strong autumn, a kept visit log that frays in spring, a module incomplete, summary lines that had to be explained by the fuller notes beneath them — which Ms. Hart, to her credit, reads aloud herself.",
+    "No one in this room mentions the indicated report as a deciding thing, because in this room it is not one. What slows the case is not the letter's accusation. It is the letter's arithmetic: the income that stopped, the fees that went unpaid, the fares that ran out. The plan is extended; the timeline lengthens; Eli asks, at the next visit, whether June was the day, and you have to say the truest available thing: “Not yet, baby. Still working.”",
+    "The review is fair. That is part of what makes it hurt. A fair reading of a record with gaps in it produces a slower road, and the gaps were dug by a deadline in another file that nobody in this room controlled."
+   ],
+   "choices": [
+    {
+     "text": "Go home to a kitchen with two calendars' worth of lessons on the wall",
+     "next": "end_quiet",
+     "note": "Red uncircled until it expired. Blue, still running. Both lessons stay up."
+    }
+   ]
+  },
+  {
+   "id": "decision_exp",
+   "kicker": "Day 124 — Saturday, June 6, 2026",
+   "dayOffset": 124,
+   "title": "The Envelope, June 5",
+   "body": [
+    "The decision is entered, filed, and served on Friday, June 5, 2026 — twenty-four days after the hearing concluded on May 12, inside the forty-five days the prompt-decision rule allows (23 Pa.C.S. § 6341(c.3)).",
+    "You read it at the kitchen table, with a pen, the way frightened people and careful people read everything now. Then you read it again, standing up, in your coat, the way you read the first letter — because this is its mirror."
+   ],
+   "choices": [
+    {
+     "text": "Read the operative line a third time, out loud, to the refrigerator drawings",
+     "next": "end_expunged",
+     "note": "Eli's drawing is still up. It has been up for both letters. It will be up for whatever comes next."
+    }
+   ]
+  },
+  {
+   "id": "decision_uph",
+   "kicker": "Day 124 — Saturday, June 6, 2026",
+   "dayOffset": 124,
+   "title": "The Envelope, June 5",
+   "body": [
+    "The decision is entered, filed, and served on Friday, June 5, 2026 — twenty-four days after the hearing concluded on May 12, inside the forty-five days the prompt-decision rule allows (23 Pa.C.S. § 6341(c.3)).",
+    "You read it at the kitchen table. The operative line is the other one. The report remains indicated. The reasoning is careful, and its care is almost worse than carelessness would be: on the record presented, the agency's evidence outweighed the inconsistent evidence against it. Page six is noted, and weighed, and found to be one line.",
+    "June's review already happened, on a separate record, and it did not import this result. Two envelopes, two rooms, two answers. Only one of them is the one you wanted."
+   ],
+   "choices": [
+    {
+     "text": "Call Ms. Okafor before the weekend is out — there are clocks in this envelope too",
+     "next": "end_upheld",
+     "note": "Fifteen days and thirty days, from a mailing date. This time, the calendar gets circled in the first hour."
+    }
+   ]
+  },
+  {
+   "id": "end_expunged",
+   "kicker": "Day 126 — Monday, June 8, 2026",
+   "dayOffset": 126,
+   "title": "Ending — Expunged, and Read Accurately",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: The hearing officer found that the agency did not carry its burden, and the indicated report about Ana's fall was ordered expunged. Read the reasoning the way the officer wrote it: the “variation” was two names for one structure, visible in the photographs; the emergency note's “not typical” was expressly about a flat surface the fall never involved; and Ana's pediatrician's line — in the agency's own disclosure all along — fit the steps and the concrete edge. Weighed together, the agency's evidence did not outweigh the inconsistent evidence against it. Separately, on June 1, Eli's dependency review evaluated your plan on Eli's record — visits kept, module paid and completed, progress recorded as progress — and treated the CPSL track as what it is: a separate track. Eli was not ordered home at that review, and this ending does not pretend otherwise. What you won is real and bounded: a name out of a database, a schedule that can be talked about again at Sunflower with the outcome letter in hand, and a dependency record that enters the summer legible and moving.",
+    "THE LAW UNDER THIS PATH: Your written appeal had to be made within 90 days of notification — notified February 2, 2026, the deadline was Sunday, May 3, 2026 — and you filed in February (23 Pa.C.S. § 6341(a)(2)). The agency was required to give you all evidence gathered in the investigation relevant to the determination, including potentially exculpatory evidence, and page six is what that duty looks like when it matters (23 Pa.C.S. § 6341(c.2)(4)). At the hearing the burden was the agency's: proof by substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)). The decision was entered June 5, 2026, twenty-four days after the May 12 hearing concluded, within the 45-day prompt-decision window (23 Pa.C.S. § 6341(c.3)). Eli's dependency case record came to you under a different rule and for a different purpose — the case record “shall be released upon request” (55 Pa. Code § 3130.44(d)) — and his review was decided on that record, not on the CPSL file. Two tracks, two records, two burdens: the distinction is not a technicality in this scenario. It is the plot.",
+    "THE HONEST PART: This was not a finding that January happened exactly as you said — no hearing can rewind a fall. It is a finding that the agency's proof did not outweigh the rest of a record you worked to complete. A different hearing officer could have weighed the same doctors differently; credibility and weight are human judgments. And even in this ending, the spring cost what it cost: months off the rota, a module paid out of a paused paycheck, a son who spent June 1 still in placement. Workers, officers, judges, and luck held pieces of this. What you held was the filings, the folder, and the photographs — the part of the record that was yours to build, built in time."
+   ]
+  },
+  {
+   "id": "end_upheld",
+   "kicker": "Day 126 — Monday, June 8, 2026",
+   "dayOffset": 126,
+   "title": "Ending — Upheld, but Not the Whole Story",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: The hearing officer found the agency's burden carried on the record presented, and the indicated report remains. Notice what did and did not decide that: two documents and a summary line outweighed one pediatrician's line and your testimony, in a hearing where February's photographs and letters were never built. Notice, too, what happened five days earlier in a different building: on June 1, Eli's dependency review evaluated your parenting and your services on Eli's own record — kept visits counted, the module's gap weighed in its arithmetic context, the plan extended — rather than treating the indicated letter as the whole story of your motherhood. Both outcomes are real. Neither cancels the other. That separation is not a consolation prize; it is the system working as designed in one room while it disappoints you in the other.",
+    "THE LAW UNDER THIS PATH: The burden at the hearing was the agency's — proof by substantial evidence that the report should remain indicated (23 Pa.C.S. § 6341(c.2)(5)) — and on this record the officer found it carried. “Indicated” is an administrative categorization, not a criminal conviction, and it is not a dependency adjudication; no judge in Eli's case adopted it as a finding there. The decision was entered June 5, 2026, within the 45-day prompt-decision window after the May 12 hearing (23 Pa.C.S. § 6341(c.3)). The road does not end at this envelope: a party may ask the secretary to reconsider within 15 calendar days of the mailing date of the Bureau of Hearings and Appeals' final order, or appeal to Commonwealth Court, perfecting that appeal within 30 calendar days of that mailing date (23 Pa.C.S. § 6341(g)). Those clocks run from the mailing date on the final order — read the envelope, not just the decision. Sunflower's scheduling remains governed by Sunflower's stated process and the report's continued presence in the database; this scenario asserts no employment-law right or consequence beyond the fictional employer's process as stated in February.",
+    "THE HONEST PART: Parents reach this ending with thinner files than yours and the other ending with thicker luck; the line between them runs through how much paper a frightened person could build in a shortened spring, and through a hearing officer's weighing of two doctors who never saw the same fall. What your April filing changed — and it matters — is that the clock was answered, the evidence was disclosed to you, the argument was made on the record, and Eli's case was still decided in Eli's room. A loss on one track, honestly documented, is a different inheritance for the next filing than silence would have been."
+   ]
+  },
+  {
+   "id": "end_quiet",
+   "kicker": "Day 126 — Monday, June 8, 2026",
+   "dayOffset": 126,
+   "title": "Ending — The Sunday That Passed Quietly",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT HAPPENED: No appeal was filed by Sunday, May 3, 2026, and without an outcome letter to interrupt Sunflower's stated process, the paused schedule became a released roster place and the daycare income ended in-story. The dependency consequences arrived by arithmetic rather than accusation: the final parenting module went unpaid, two visits were missed when fares ran out, and the June 1 review — fairly, on Eli's own record — recorded slower progress and a longer plan. Eli's case was never decided by the indicated letter. It was slowed by the letter's shadow on a wallet, which is a different mechanism, and in some ways a crueler one, because no hearing ever gave it a room.",
+    "THE LAW UNDER THIS PATH: The right you had was real and time-limited: a written request to amend or expunge an indicated report must be made within 90 days of being notified of its status (23 Pa.C.S. § 6341(a)(2)). Your 90 days ran from February 2 to May 3, 2026, and on May 4 the right to a hearing under that window had closed — not because anything about you or about Ana's fall changed, but because calendars, not character, operate deadlines. Because no appeal was filed, the disclosure duty that an appeal triggers (23 Pa.C.S. § 6341(c.2)(4)) and the agency's burden at a hearing (23 Pa.C.S. § 6341(c.2)(5)) were never put to work; page six of the investigation file may still say what it said in February, unread by anyone deciding anything. The report remains in the statewide database and will surface when a child-care clearance is run. Eli's record, by contrast, was always available on request (55 Pa. Code § 3130.44(d)) — a separate record, on a separate track, that June's court did in fact read on its own terms.",
+    "THE HONEST PART — AND IT MATTERS HERE: This ending is about documentation and regret, not about moral worth. The letter arrived addressed to the most frightening afternoon of your year, in a dialect of threat, in the same envelope season as a paused paycheck and a son in placement; that a tired mother deferred it is one of the most understandable sentences in this entire scenario. Nothing here finds that the report was accurate — accuracy was simply never tested, because testing it had a date. Nothing here finds you a lesser parent — Eli's own record, gaps and all, says otherwise in a caseworker's warm handwriting. Workers, binders, fares, and a Sunday decided this outcome. If the system takes a lesson from it, it is the same one as in February: a right with a ninety-day fuse is only as real as a frightened parent's ability to find the back page of the letter in time."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s20';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

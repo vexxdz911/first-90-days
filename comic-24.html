@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Appeal Record</title>
+<style>
+  :root{
+    --ink:#0d1520; --navy:#16283f; --navy2:#1f3a5c;
+    --amber:#e8b04b; --amber-deep:#c98f2b; --paper:#f3d9a4; --cream:#f7ead0;
+    --red:#b3202a; --accent:#e8b04b;
+  }
+  body[data-tier="foundation"]{ --accent:#e8b04b; }
+  body[data-tier="hard"]{ --accent:#7e93a8; }
+  body[data-tier="complex"]{ --accent:#5b83ad; }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(rgba(22,40,63,.20) 1.2px, transparent 1.35px);
+    background-size:9px 9px;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--navy);color:var(--cream);border-bottom:4px solid var(--ink);}
+  header#topbar .brand{font-weight:800;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  /* ---------- Watch Mode bar ---------- */
+  #watchbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    background:var(--ink);color:var(--cream);padding:8px 14px;
+    border-bottom:3px solid var(--amber);}
+  #watchbar .watch-label{font-weight:700;font-size:.92rem;letter-spacing:.02em;}
+  #watchbar .watch-controls{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  #watchbar button{min-height:44px;padding:6px 12px;font-size:.92rem;font-weight:700;cursor:pointer;
+    background:var(--navy2);color:var(--cream);border:2px solid var(--cream);border-radius:6px;}
+  #watchbar button:active{transform:translateY(1px);}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.15em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:#3d4750;margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--navy);margin:0 0 6px;}
+  .kicker.tab{display:inline-block;background:var(--amber);color:var(--ink);
+    border:2px solid var(--ink);padding:3px 10px;box-shadow:3px 3px 0 rgba(13,21,32,.8);}
+  .card{background:var(--cream);border:2.5px solid var(--ink);border-radius:6px;
+    padding:16px;margin:14px 0;box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .disclaimer{font-weight:700;}
+  .warning{border-width:3px;}
+  .warning h3{margin-top:0;text-transform:uppercase;letter-spacing:.08em;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:6px;cursor:pointer;
+    background:var(--cream);color:var(--ink);border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(13,21,32,.8);}
+  .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(13,21,32,.8);}
+  .btn.primary{background:var(--amber);border-color:var(--ink);color:var(--ink);text-align:center;}
+  .btn.center{text-align:center;}
+  .btn:focus-visible, button:focus-visible{outline:3px solid var(--amber-deep);outline-offset:2px;}
+  /* ---------- HUD / caption strip ---------- */
+  .hud{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;
+    background:var(--navy);color:var(--cream);padding:8px 12px;
+    border:2.5px solid var(--ink);box-shadow:4px 4px 0 rgba(13,21,32,.6);
+    text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;margin-bottom:14px;}
+  .hud .date{font-weight:800;}
+  .hud .cash{font-weight:700;}
+  /* ---------- THE CLOCK (red is reserved for this and the stamp) ---------- */
+  .clockbox{display:flex;gap:12px;align-items:center;background:var(--ink);color:var(--cream);
+    border:3px solid var(--red);padding:10px 12px;margin:0 0 14px;font-weight:700;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .clock-tab{background:var(--red);color:var(--cream);font-weight:800;letter-spacing:.16em;
+    padding:3px 9px;font-size:.8rem;white-space:nowrap;}
+  /* ---------- Hero plate ---------- */
+  .plate{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 16px;line-height:0;}
+  .plate svg{display:block;width:100%;height:auto;}
+  .cover{border:4px solid var(--ink);box-shadow:8px 8px 0 rgba(13,21,32,.8);
+    background:var(--navy);margin:0 0 18px;line-height:0;}
+  .cover svg{display:block;width:100%;height:auto;}
+  /* ---------- Caption box narration ---------- */
+  .captionbox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:14px 16px 6px;box-shadow:5px 5px 0 rgba(13,21,32,.55);margin:0 0 8px;}
+  .captionbox p{margin:0 0 10px;}
+  .captionbox p:first-child{font-style:italic;}
+  /* ---------- Choices as panel-option rows ---------- */
+  .choices{counter-reset:choice;}
+  .choices .btn{counter-increment:choice;position:relative;padding-left:52px;}
+  .choices .btn::before{content:counter(choice);position:absolute;left:0;top:0;bottom:0;
+    width:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--navy);color:var(--cream);font-weight:800;
+    border-right:2.5px solid var(--ink);}
+  .choices .btn.auto-chosen{background:var(--amber);
+    box-shadow:0 0 0 3px var(--ink),6px 6px 0 rgba(13,21,32,.8);}
+  .watch-chose{background:var(--paper);border:2px dashed var(--ink);padding:8px 12px;
+    font-style:italic;margin:12px 0 4px;}
+  /* ---------- The case file ---------- */
+  .panel{position:relative;border:2.5px dashed var(--ink);border-radius:4px;
+    padding:14px 16px;margin:26px 0 16px;
+    background:linear-gradient(var(--cream),var(--paper));}
+  .panel::before{content:"CASE FILE";position:absolute;top:-25px;left:-2.5px;
+    background:var(--amber);border:2.5px solid var(--ink);border-bottom:none;
+    padding:2px 12px;font-size:.72rem;font-weight:800;letter-spacing:.16em;}
+  .panel.revealed{border-style:solid;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:#3d4750;font-style:italic;}
+  /* ---------- THE STAMP (the one impact effect; red reserved) ---------- */
+  .stamp{position:absolute;top:12px;right:12px;color:var(--red);
+    border:3px solid var(--red);outline:1.5px solid var(--red);outline-offset:3px;
+    padding:2px 12px;font-weight:800;letter-spacing:.2em;font-size:1.05rem;
+    background:rgba(247,234,208,.88);transform:rotate(-12deg);opacity:.94;
+    animation:stampIn .18s ease-out;pointer-events:none;}
+  @keyframes stampIn{from{transform:rotate(-12deg) scale(2.2);opacity:0;}
+    to{transform:rotate(-12deg) scale(1);opacity:.94;}}
+  .notebox{background:var(--cream);border:2.5px solid var(--ink);
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;font-style:italic;
+    box-shadow:5px 5px 0 rgba(13,21,32,.55);}
+  .epilogue{background-color:var(--cream);
+    background-image:repeating-linear-gradient(transparent,transparent 27px,rgba(22,40,63,.16) 28px);}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:#3d4750;border-top:2px solid var(--ink);
+    padding-top:12px;}
+  .loop-toggle{display:flex;gap:10px;align-items:center;margin:14px 0 4px;
+    font-size:.98rem;font-weight:600;cursor:pointer;min-height:48px;}
+  .loop-toggle input{width:22px;height:22px;accent-color:var(--navy);}
+  .loop-note{font-style:italic;background:var(--paper);border:2px dashed var(--ink);
+    padding:8px 12px;margin:12px 0;}
+  /* Weather decoy (unchanged, neutral) */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none;transition:opacity .3s ease;}
+    .btn:active{transform:none;}
+  }
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+  <button id="soundBtn" type="button" aria-label="Toggle sound">Sound: Off</button>
+</header>
+
+<div id="watchbar" hidden>
+  <span class="watch-label">WATCHING — choices are random. The strategy guide shows the winning route.</span>
+  <span class="watch-controls">
+    <button id="watchPauseBtn" type="button">Pause</button>
+    <button id="watchSpeedBtn" type="button">Speed: 1&times;</button>
+    <button id="watchControlBtn" type="button">Take control</button>
+  </span>
+</div>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<!-- ======== COMIC KIT: gradients, halftone, cast figures, location plates ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="gradWarm" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f7ead0"/><stop offset=".55" stop-color="#f3d9a4"/>
+  <stop offset="1" stop-color="#e8b04b"/>
+</linearGradient>
+<linearGradient id="gradCold" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#2a4a73"/><stop offset=".6" stop-color="#1f3a5c"/>
+  <stop offset="1" stop-color="#16283f"/>
+</linearGradient>
+<linearGradient id="gradCover" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#0d1520"/><stop offset=".5" stop-color="#16283f"/>
+  <stop offset="1" stop-color="#7a4d16"/>
+</linearGradient>
+<pattern id="ht" width="9" height="9" patternUnits="userSpaceOnUse">
+  <circle cx="2" cy="2" r="1.6" fill="#0d1520"/>
+</pattern>
+
+<!-- ===== Cast (viewBox 0 0 120 240; body fill = currentColor; props in paper) ===== -->
+<symbol id="fig-mother" viewBox="0 0 120 240">
+  <circle cx="60" cy="15" r="8"/><circle cx="60" cy="34" r="15"/>
+  <path d="M34 58 Q60 47 86 58 L93 152 L27 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="80" y="122" width="34" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(10 97 134)"/>
+</symbol>
+<symbol id="fig-grandmother" viewBox="0 0 120 240">
+  <circle cx="60" cy="38" r="15"/><circle cx="76" cy="28" r="6"/>
+  <path d="M29 64 L60 52 L91 64 L97 142 L23 142 Z"/>
+  <rect x="40" y="142" width="14" height="90"/><rect x="66" y="142" width="14" height="90"/>
+  <line x1="100" y1="112" x2="107" y2="230" stroke-width="5" stroke="currentColor"/>
+</symbol>
+<symbol id="fig-caseworker" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M36 56 L84 56 L89 152 L31 152 Z"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+  <rect x="83" y="86" width="31" height="43" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <rect x="93" y="81" width="11" height="8"/>
+</symbol>
+<symbol id="fig-attorney" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M40 56 L80 56 L85 150 L35 150 Z"/>
+  <path d="M56 58 L64 58 L60 86 Z" fill="#f7ead0"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+  <rect x="6" y="96" width="30" height="41" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-judge" viewBox="0 0 120 240">
+  <circle cx="60" cy="32" r="15"/>
+  <path d="M33 55 L87 55 L95 132 L25 132 Z"/>
+  <rect x="4" y="130" width="112" height="17"/>
+  <rect x="88" y="102" width="20" height="7" transform="rotate(24 98 105)"/>
+</symbol>
+<symbol id="fig-teen" viewBox="0 0 120 240">
+  <path d="M41 36 A19 19 0 0 1 79 36 L79 47 L41 47 Z"/>
+  <circle cx="60" cy="36" r="14"/>
+  <path d="M44 56 L76 56 L79 152 L41 152 Z"/>
+  <rect x="45" y="152" width="12" height="82"/><rect x="64" y="152" width="12" height="82"/>
+  <rect x="85" y="102" width="12" height="21" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-child" viewBox="0 0 120 240">
+  <circle cx="58" cy="98" r="13"/>
+  <path d="M43 119 L73 119 L77 178 L39 178 Z"/>
+  <rect x="44" y="178" width="11" height="54"/><rect x="62" y="178" width="11" height="54"/>
+  <rect x="78" y="124" width="19" height="31" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+</symbol>
+<symbol id="fig-father" viewBox="0 0 120 240">
+  <path d="M43 27 A17 12 0 0 1 77 27 L86 31 L34 31 Z"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M29 59 L91 59 L95 152 L25 152 Z"/>
+  <rect x="38" y="152" width="16" height="80"/><rect x="67" y="152" width="16" height="80"/>
+  <rect x="88" y="100" width="26" height="34" fill="#f7ead0" stroke="#0d1520" stroke-width="3" transform="rotate(-8 101 117)"/>
+</symbol>
+<symbol id="fig-officer" viewBox="0 0 120 240">
+  <rect x="42" y="13" width="36" height="11"/><rect x="37" y="24" width="46" height="6"/>
+  <circle cx="60" cy="41" r="14"/>
+  <path d="M34 59 L86 59 L90 152 L30 152 Z"/>
+  <circle cx="74" cy="85" r="5" fill="#f7ead0"/>
+  <rect x="39" y="152" width="15" height="80"/><rect x="66" y="152" width="15" height="80"/>
+</symbol>
+<symbol id="fig-doctor" viewBox="0 0 120 240">
+  <circle cx="60" cy="34" r="15"/>
+  <path d="M38 56 L82 56 L87 150 L33 150 Z" fill="#f7ead0" stroke="#0d1520" stroke-width="3"/>
+  <path d="M52 58 L68 58 L60 84 Z"/>
+  <path d="M48 62 Q46 92 60 97 Q74 92 72 62" fill="none" stroke="#0d1520" stroke-width="4"/>
+  <circle cx="60" cy="102" r="5"/>
+  <rect x="39" y="150" width="15" height="82"/><rect x="66" y="150" width="15" height="82"/>
+</symbol>
+
+<!-- ===== Plates (viewBox 0 0 400 225) ===== -->
+<symbol id="plate-doorway" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <ellipse cx="205" cy="150" rx="150" ry="105" fill="#f7ead0" opacity=".35"/>
+  <rect x="148" y="16" width="122" height="198" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>
+  <rect x="164" y="32" width="90" height="112" fill="#f7ead0" opacity=".95"/>
+  <use href="#fig-caseworker" x="177" y="38" width="64" height="128" color="#16283f" opacity=".85"/>
+  <rect x="176" y="160" width="68" height="10" fill="#0d1520"/>
+  <circle cx="258" cy="122" r="4" fill="#e8b04b"/>
+  <use href="#fig-mother" x="290" y="56" width="74" height="150" color="#c98f2b"/>
+  <rect y="214" width="400" height="11" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-kitchen" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="18" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="270" y="18" width="112" height="46" fill="#c98f2b" opacity=".55" stroke="#0d1520" stroke-width="3"/>
+  <rect x="163" y="14" width="74" height="56" fill="#f7ead0" opacity=".85" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-mother" x="52" y="50" width="66" height="134" color="#c98f2b"/>
+  <use href="#fig-caseworker" x="282" y="50" width="66" height="134" color="#16283f"/>
+  <rect x="38" y="158" width="324" height="14" fill="#0d1520"/>
+  <rect x="58" y="172" width="12" height="42" fill="#0d1520"/><rect x="330" y="172" width="12" height="42" fill="#0d1520"/>
+  <rect x="130" y="144" width="52" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="196" y="146" width="44" height="11" fill="#f7ead0" stroke="#0d1520" stroke-width="2" transform="rotate(-3 218 151)"/>
+  <rect x="252" y="144" width="38" height="13" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-office" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="220" y="13" width="122" height="8" fill="#f7ead0" opacity=".85"/>
+  <rect x="16" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="94" x2="82" y2="94" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="130" x2="82" y2="130" stroke="#0d1520" stroke-width="3"/>
+  <line x1="16" y1="166" x2="82" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <rect x="316" y="58" width="66" height="144" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="112" x2="382" y2="112" stroke="#0d1520" stroke-width="3"/>
+  <line x1="316" y1="166" x2="382" y2="166" stroke="#0d1520" stroke-width="3"/>
+  <use href="#fig-caseworker" x="212" y="46" width="66" height="134" color="#0d1520"/>
+  <rect x="118" y="150" width="224" height="14" fill="#0d1520"/>
+  <rect x="136" y="118" width="36" height="42" fill="#0d1520" opacity=".85"/>
+  <rect x="128" y="136" width="46" height="13" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="238" y="138" width="40" height="12" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-courtroom" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <use href="#fig-judge" x="176" y="14" width="50" height="100" color="#0d1520"/>
+  <rect x="118" y="94" width="184" height="56" fill="#0d1520"/>
+  <rect x="108" y="86" width="204" height="10" fill="#0d1520"/>
+  <rect x="94" y="28" width="4" height="112" fill="#0d1520"/>
+  <rect x="98" y="28" width="32" height="19" fill="#e8b04b"/>
+  <rect x="120" y="168" width="220" height="12" fill="#0d1520" opacity=".8"/>
+  <rect x="120" y="192" width="220" height="12" fill="#0d1520" opacity=".65"/>
+  <use href="#fig-mother" x="14" y="82" width="86" height="142" color="#b57f27"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-visit" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="334" y="38" width="50" height="124" fill="#1f3a5c" stroke="#0d1520" stroke-width="3"/>
+  <rect x="347" y="54" width="24" height="24" fill="#f7ead0"/>
+  <rect x="88" y="110" width="224" height="32" fill="#c98f2b" stroke="#0d1520" stroke-width="3"/>
+  <rect x="88" y="140" width="224" height="34" fill="#0d1520"/>
+  <use href="#fig-mother" x="48" y="62" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-child" x="192" y="94" width="46" height="94" color="#16283f"/>
+  <rect x="262" y="196" width="16" height="16" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="196" width="16" height="16" fill="#16283f"/>
+  <rect x="272" y="180" width="16" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-hospital" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="318" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="336" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <rect x="354" y="20" width="3" height="132" fill="#f7ead0" opacity=".5"/>
+  <use href="#fig-mother" x="92" y="56" width="62" height="126" color="#c98f2b"/>
+  <use href="#fig-doctor" x="288" y="50" width="64" height="132" color="#0d1520"/>
+  <rect x="56" y="146" width="224" height="16" fill="#0d1520"/>
+  <rect x="56" y="114" width="14" height="48" fill="#0d1520"/>
+  <rect x="76" y="130" width="46" height="14" fill="#f7ead0"/>
+  <rect x="248" y="196" width="42" height="22" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-school" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradWarm)"/>
+  <rect x="88" y="68" width="224" height="112" fill="#c98f2b" opacity=".6" stroke="#0d1520" stroke-width="3"/>
+  <path d="M78 70 L200 34 L322 70 Z" fill="#0d1520"/>
+  <rect x="198" y="8" width="4" height="30" fill="#0d1520"/>
+  <rect x="202" y="8" width="30" height="16" fill="#e8b04b"/>
+  <rect x="184" y="128" width="30" height="52" fill="#0d1520"/>
+  <rect x="106" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="88" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="106" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="264" y="130" width="30" height="24" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="70" y="180" width="260" height="10" fill="#0d1520"/>
+  <rect x="52" y="194" width="296" height="10" fill="#0d1520" opacity=".8"/>
+  <use href="#fig-child" x="308" y="94" width="48" height="96" color="#16283f"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".13"/>
+</symbol>
+<symbol id="plate-exterior" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <rect x="58" y="28" width="284" height="172" fill="#16283f" stroke="#0d1520" stroke-width="3"/>
+  <rect x="80" y="48" width="34" height="26" fill="#e8b04b"/>
+  <rect x="134" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="232" y="48" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="286" y="48" width="34" height="26" fill="#e8b04b" opacity=".75"/>
+  <rect x="80" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <rect x="134" y="92" width="34" height="26" fill="#e8b04b" opacity=".6"/>
+  <rect x="232" y="92" width="34" height="26" fill="#e8b04b"/>
+  <rect x="286" y="92" width="34" height="26" fill="#1f3a5c" stroke="#0d1520" stroke-width="2"/>
+  <circle cx="200" cy="126" r="13" fill="#e8b04b" opacity=".3"/>
+  <circle cx="200" cy="126" r="5" fill="#e8b04b"/>
+  <rect x="185" y="138" width="30" height="62" fill="#0d1520"/>
+  <rect y="200" width="400" height="25" fill="#0d1520"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-mail" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g fill="#1f3a5c" stroke="#f7ead0" stroke-width="1.5">
+    <rect x="24" y="48" width="62" height="36"/><rect x="94" y="48" width="62" height="36"/>
+    <rect x="164" y="48" width="62" height="36"/><rect x="234" y="48" width="62" height="36"/>
+    <rect x="24" y="92" width="62" height="36"/><rect x="164" y="92" width="62" height="36"/>
+    <rect x="234" y="92" width="62" height="36"/>
+    <rect x="24" y="136" width="62" height="36"/><rect x="94" y="136" width="62" height="36"/>
+    <rect x="164" y="136" width="62" height="36"/><rect x="234" y="136" width="62" height="36"/>
+  </g>
+  <rect x="94" y="92" width="62" height="36" fill="#f7ead0"/>
+  <rect x="106" y="101" width="38" height="20" fill="#e8b04b" stroke="#0d1520" stroke-width="2"/>
+  <use href="#fig-mother" x="306" y="62" width="60" height="122" color="#c98f2b"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+<symbol id="plate-records" viewBox="0 0 400 225">
+  <rect width="400" height="225" fill="url(#gradCold)"/>
+  <g stroke="#0d1520" stroke-width="1.5">
+    <rect x="30" y="24" width="16" height="34" fill="#f7ead0"/><rect x="50" y="24" width="16" height="34" fill="#e8b04b"/>
+    <rect x="70" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="90" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="110" y="24" width="16" height="34" fill="#e8b04b"/><rect x="130" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="254" y="24" width="16" height="34" fill="#e8b04b"/><rect x="274" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="294" y="24" width="16" height="34" fill="#1f3a5c"/><rect x="314" y="24" width="16" height="34" fill="#f7ead0"/>
+    <rect x="30" y="66" width="16" height="34" fill="#e8b04b"/><rect x="50" y="66" width="16" height="34" fill="#f7ead0"/>
+    <rect x="70" y="66" width="16" height="34" fill="#f7ead0"/><rect x="90" y="66" width="16" height="34" fill="#1f3a5c"/>
+    <rect x="274" y="66" width="16" height="34" fill="#f7ead0"/><rect x="294" y="66" width="16" height="34" fill="#e8b04b"/>
+    <rect x="314" y="66" width="16" height="34" fill="#f7ead0"/>
+  </g>
+  <use href="#fig-caseworker" x="48" y="52" width="62" height="126" color="#0d1520"/>
+  <rect x="28" y="158" width="344" height="14" fill="#0d1520"/>
+  <rect x="216" y="140" width="52" height="16" fill="#f7ead0" stroke="#0d1520" stroke-width="2"/>
+  <rect x="282" y="142" width="44" height="14" fill="#e8b04b" stroke="#0d1520" stroke-width="2" transform="rotate(-4 304 149)"/>
+  <rect width="400" height="225" fill="url(#ht)" opacity=".15"/>
+</symbol>
+</defs>
+</svg>
+
+<script>
+/* === AUDIO CUES — inlined from audio-cues.js (WebAudio, synthesized, off by default) === */
+/* ============================================================================
+ * The First 90 Days — audio-cues.js
+ * Comic-edition sound library for play-comic.html (Tactic Watch simulation).
+ *
+ * Implements the contract the game is built against:
+ *   Cue.play('page' | 'stamp' | 'tick' | 'unlock' |
+ *            'chord_warm' | 'chord_flat' | 'knock')   (+ 'door_close', 'phone'
+ *                                                      spec'd for v1.1)
+ *   Cue.setEnabled(bool)   — persists to localStorage key 'f90d-sound'
+ *   Cue.isEnabled()        — sound is OFF by default
+ *   Cue.unlock()           — optional: warm/resume the context from the
+ *                            Start-button gesture without playing a sound
+ *
+ * Design: audio-bible.md. Documentary restraint — paper, stamps, doors.
+ * Pure WebAudio: oscillators + filtered noise. No files, no network,
+ * no dependencies. Every entry point is guarded: no path in this file may
+ * throw into the game. If WebAudio is missing or sound is off, play()
+ * returns immediately and silently.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'f90d-sound';
+  var MASTER_GAIN = 0.6;
+
+  var root = (typeof window !== 'undefined') ? window
+           : (typeof globalThis !== 'undefined') ? globalThis : this;
+
+  /* ---- persisted on/off state (OFF by default, failures resolve to OFF) -- */
+  function readStored() {
+    try {
+      if (root.localStorage) return root.localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* private mode / no storage — OFF */ }
+    return false;
+  }
+  function writeStored(on) {
+    try {
+      if (root.localStorage) root.localStorage.setItem(STORAGE_KEY, on ? '1' : '0');
+    } catch (e) { /* persistence is best-effort; in-memory state still works */ }
+  }
+
+  var enabled = readStored();
+  var ctx = null;        // AudioContext, created lazily inside a gesture path
+  var master = null;     // master gain -> compressor -> destination
+  var noiseBuf = null;   // one shared 1s white-noise buffer per context
+
+  function audioCtor() {
+    return root.AudioContext || root.webkitAudioContext || null;
+  }
+
+  function ensureCtx() {
+    if (ctx) return ctx;
+    var AC = audioCtor();
+    if (!AC) return null;
+    try {
+      ctx = new AC();
+      var comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -18;
+      comp.knee.value = 18;
+      comp.ratio.value = 12;
+      comp.attack.value = 0.003;
+      comp.release.value = 0.25;
+      comp.connect(ctx.destination);
+      master = ctx.createGain();
+      master.gain.value = MASTER_GAIN;
+      master.connect(comp);
+      // Shared noise buffer: 1 second of white noise, generated once.
+      var len = ctx.sampleRate;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    } catch (e) {
+      ctx = null; master = null; noiseBuf = null;
+      return null;
+    }
+    return ctx;
+  }
+
+  function tryResume() {
+    try {
+      if (ctx && ctx.state === 'suspended') {
+        var p = ctx.resume();
+        if (p && typeof p.catch === 'function') p.catch(function () { /* lost cue is acceptable */ });
+      }
+    } catch (e) { /* never throw into the game */ }
+  }
+
+  /* ---- synthesis helpers ------------------------------------------------ */
+
+  // A single oscillator tone with a shaped envelope.
+  // o: {t0, dur, peak, type, f0, f1 (optional end freq), attack (s), dest}
+  function tone(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.005, dur / 2);
+    var osc = ctx.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) osc.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 1), t0 + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(o.dest || master);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+  }
+
+  // A burst of filtered noise from the shared buffer.
+  // o: {t0, dur, peak, type ('lowpass'|'bandpass'|'highpass'), f0, f1, q, attack, dest}
+  function noise(o) {
+    var t0 = o.t0, dur = o.dur, peak = o.peak;
+    var attack = Math.min(o.attack || 0.008, dur / 2);
+    var src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+    try { src.loopStart = Math.random() * 0.5; } catch (e) { /* cosmetic */ }
+    var filt = ctx.createBiquadFilter();
+    filt.type = o.type || 'bandpass';
+    filt.frequency.setValueAtTime(o.f0, t0);
+    if (o.f1) filt.frequency.exponentialRampToValueAtTime(Math.max(o.f1, 10), t0 + dur);
+    filt.Q.value = o.q || 0.9;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(filt); filt.connect(g); g.connect(o.dest || master);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+
+  // A soft piano-ish chord: triangle partials through one shared lowpass.
+  function chord(notes, t0, opts) {
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = opts.cutoff;
+    filt.Q.value = 0.4;
+    filt.connect(master);
+    for (var i = 0; i < notes.length; i++) {
+      tone({ t0: t0, dur: opts.dur, peak: opts.perNote, type: 'triangle',
+             f0: notes[i], attack: opts.attack, dest: filt });
+      // A whisper of fundamental under each note for body on small speakers.
+      tone({ t0: t0, dur: opts.dur * 0.8, peak: opts.perNote * 0.5, type: 'sine',
+             f0: notes[i] / 2, attack: opts.attack, dest: filt });
+    }
+  }
+
+  function thump(t0, peak) { // the low body of knock / stamp / door
+    tone({ t0: t0, dur: 0.11, peak: peak, type: 'sine', f0: 92, f1: 54, attack: 0.004 });
+  }
+
+  /* ---- the cues (audio-bible.md §2) -------------------------------------- */
+
+  var CUES = {
+
+    // Two firm thumps ~180 ms apart. A knock, not a warning.
+    knock: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.19;
+        tone({ t0: t, dur: 0.10, peak: 0.34, type: 'sine', f0: 115, f1: 68, attack: 0.003 });
+        noise({ t0: t, dur: 0.045, peak: 0.12, type: 'lowpass', f0: 420, attack: 0.002 });
+      }
+    },
+
+    // The signature: contact, body, then the form sliding away.
+    stamp: function (t0) {
+      noise({ t0: t0, dur: 0.05, peak: 0.22, type: 'lowpass', f0: 700, attack: 0.002 });
+      thump(t0, 0.46);
+      noise({ t0: t0 + 0.07, dur: 0.22, peak: 0.10, type: 'bandpass', f0: 1250, f1: 580, q: 1.4, attack: 0.02 });
+    },
+
+    // Paper turning: lift, sweep, settle.
+    page: function (t0) {
+      noise({ t0: t0, dur: 0.42, peak: 0.16, type: 'bandpass', f0: 380, f1: 2400, q: 0.8, attack: 0.12 });
+      noise({ t0: t0 + 0.18, dur: 0.20, peak: 0.07, type: 'bandpass', f0: 1800, f1: 760, q: 0.8, attack: 0.05 });
+    },
+
+    // One tick. Once. The game does not nag.
+    tick: function (t0) {
+      noise({ t0: t0, dur: 0.028, peak: 0.13, type: 'highpass', f0: 3000, attack: 0.001 });
+      tone({ t0: t0, dur: 0.04, peak: 0.05, type: 'sine', f0: 1750, attack: 0.001 });
+    },
+
+    // Latch, paper unfolding, one quiet note under it.
+    unlock: function (t0) {
+      tone({ t0: t0, dur: 0.035, peak: 0.10, type: 'square', f0: 1150, attack: 0.001 });
+      noise({ t0: t0 + 0.05, dur: 0.32, peak: 0.12, type: 'bandpass', f0: 500, f1: 1100, q: 0.7, attack: 0.09 });
+      tone({ t0: t0 + 0.10, dur: 0.30, peak: 0.07, type: 'sine', f0: 659.25, attack: 0.03 });
+    },
+
+    // Home: C major triad, warm filter, room around the notes.
+    chord_warm: function (t0) {
+      chord([261.63, 329.63, 392.00], t0,
+            { cutoff: 1250, attack: 0.045, dur: 1.1, perNote: 0.10 });
+    },
+
+    // The file stays open: diminished color, duller filter, no resolution.
+    chord_flat: function (t0) {
+      chord([220.00, 261.63, 311.13], t0,
+            { cutoff: 820, attack: 0.07, dur: 1.05, perNote: 0.08 });
+    },
+
+    /* -- v1.1 (spec'd in the bible; not fired by the v1 visual build) ----- */
+
+    // A door closing softly and completely. Never a slam.
+    door_close: function (t0) {
+      noise({ t0: t0, dur: 0.20, peak: 0.14, type: 'lowpass', f0: 780, f1: 190, attack: 0.03 });
+      tone({ t0: t0 + 0.13, dur: 0.10, peak: 0.20, type: 'sine', f0: 82, f1: 58, attack: 0.004 });
+      noise({ t0: t0 + 0.24, dur: 0.03, peak: 0.08, type: 'bandpass', f0: 2100, q: 2.0, attack: 0.001 });
+    },
+
+    // A phone buzzing on a table. Not a ringtone.
+    phone: function (t0) {
+      for (var i = 0; i < 2; i++) {
+        var t = t0 + i * 0.22;
+        tone({ t0: t, dur: 0.10, peak: 0.13, type: 'sawtooth', f0: 118, attack: 0.008 });
+        noise({ t0: t, dur: 0.09, peak: 0.05, type: 'lowpass', f0: 500, attack: 0.005 });
+      }
+    }
+  };
+
+  /* ---- public contract ---------------------------------------------------- */
+
+  var Cue = {
+    // Names this build can play (contract cues first, then v1.1 extras).
+    cues: Object.keys(CUES),
+
+    play: function (name) {
+      if (!enabled) return;
+      var fn = CUES[name];
+      if (!fn) return;                       // unknown cue: ignore, never throw
+      try {
+        if (!ensureCtx()) return;            // no WebAudio: silent no-op
+        tryResume();                         // cues fire from click handlers
+        fn(ctx.currentTime + 0.02);
+      } catch (e) { /* sound must never break the game */ }
+    },
+
+    setEnabled: function (on) {
+      enabled = !!on;
+      writeStored(enabled);
+      if (enabled) {                         // toggle click is a user gesture
+        try { if (ensureCtx()) tryResume(); } catch (e) { /* guarded */ }
+      }
+      return enabled;
+    },
+
+    isEnabled: function () { return enabled; },
+
+    // Call from the Start-button handler so the context is born inside the
+    // gesture and the first real cue is not eaten by autoplay policy.
+    unlock: function () {
+      if (!enabled) return false;
+      try {
+        if (!ensureCtx()) return false;
+        tryResume();
+        return true;
+      } catch (e) { return false; }
+    }
+  };
+
+  root.Cue = Cue;
+})();
+
+</script>
+<script>
+
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine, COMIC EDITION
+   One self-contained file. No external assets, no network calls.
+   Presentation per visual-bible.md: duotone plates, caption boxes,
+   THE CLOCK, the RATED stamp, Watch Mode, choice gating.
+   The scenario is data, not code: the STUB_SCENARIO object below is
+   byte-identical to the plain build's (scenario-1.json contents).
+   ===================================================================== */
+
+/* ---------- Audio cue contract (real library replaces this stub) ---------- */
+window.Cue = window.Cue || { play: function(){}, setEnabled: function(){}, isEnabled: function(){ return false; } };
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 24 — The Appeal Record (a fictional composite)",
+  "startDateISO": "2026-01-12",
+  "startNode": "start",
+  "startCash": 170,
+  "tier": "Complex",
+  "summary": "An appeal told in flashback: what was objected to, offered, and said below decides what can be argued above — while the case below never pauses."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, January 12, 2026",
+   "dayOffset": 0,
+   "title": "The Order in the Mail",
+   "body": [
+    "Your name is Mara Ellison. Your son Eli is eight. He has been living with a foster family since May 7, 2025, and learning — the way children do, faster than anyone wants — the geography of a second home.",
+    "Today's mail holds the next piece of paper: the court has ruled in Eli's dependency case, and your lawyer is filing an appeal. An appeal, she told you on the phone, is not a second hearing. Nobody new testifies. Nobody new explains.",
+    "An appeal is a reading. A panel of judges will read the record of what already happened — every word said, every paper offered, every silence — and decide whether the law was followed in the making of it. This story is about that reading, and about the days when the record was still being written."
+   ],
+   "choices": [
+    {
+     "text": "Meet your appellate lawyer and learn what an appeal can actually reach",
+     "next": "lawyer_map",
+     "note": "Her office has three chairs, a kettle, and a shelf of bound transcripts like bricks."
+    }
+   ]
+  },
+  {
+   "id": "lawyer_map",
+   "kicker": "Day 3 — Thursday, January 15, 2026",
+   "dayOffset": 3,
+   "title": "Ms. Okafor Draws Two Timelines",
+   "body": [
+    "Ms. Okafor, your appellate lawyer, draws two lines on a legal pad. The top line is the appeal: filings, briefs, argument, a decision — moving at the speed of paper.",
+    "The bottom line is Eli's case below, and it does not pause. Reviews will still be held. Visits will still happen or not happen. And the federal timeline keeps counting the months Eli has been in care: at fifteen of the most recent twenty-two months, the agency's duty about filing a termination petition changes, unless an exception is documented. (42 U.S.C. § 675(5)(E)) That date, on Eli's clock, is Friday, August 7, 2026.",
+    "\"Two rules will run this whole story,\" she says. \"The panel can only review what is in the record that was made below. And an issue nobody raised down there is, generally, an issue the panel will not reach up here. So before we argue about what the record means, we have to find out what the record is.\""
+   ],
+   "choices": [
+    {
+     "text": "Ask what 'the record' includes, exactly",
+     "next": "boxes",
+     "note": "\"Transcripts. Exhibits that were actually offered. Orders.\" She taps the pad. \"Not memories. Not intentions. Paper and spoken words, preserved.\""
+    },
+    {
+     "text": "Ask whether you can just explain it to the panel yourself",
+     "next": "boxes",
+     "note": "She is gentle about it. \"That is the hardest part of an appeal. The explaining had a season. We are in the reading season now.\""
+    }
+   ]
+  },
+  {
+   "id": "boxes",
+   "kicker": "Day 10 — Thursday, January 22, 2026",
+   "dayOffset": 10,
+   "title": "The Record Arrives in Boxes",
+   "body": [
+    "The certified record arrives the way weather arrives: in bulk, without apology. Two boxes of transcripts from the hearings last spring and summer, the agency's reports, the court's orders — the whole case, flattened into paper.",
+    "Ms. Okafor has a checklist. Transcripts can be ordered in full, and the agency's records can be requested — records in the agency's file are to be released on request. (55 Pa. Code § 3130.44(d)) Ordering the complete set costs money and takes weeks. Working from the excerpts the agency already provided costs nothing, and might skip the very pages the appeal will turn on.",
+    "Everything in this scenario turns on a version of this choice, made over and over: build the written record, or trust that somebody else did."
+   ],
+   "choices": [
+    {
+     "text": "Order the complete transcripts and request the full agency record, in writing",
+     "next": "flash_shelter",
+     "cash": -35,
+     "setFlags": [
+      "recordsRequested",
+      "transcriptOrdered"
+     ],
+     "addHidden": [
+      "Transcripts — complete set ordered; agency record requested in writing"
+     ],
+     "note": "The receipt goes in your folder. Weeks from now, a page number you paid for will matter more than anything you could say out loud."
+    },
+    {
+     "text": "Work from the agency's excerpts for now and save the money",
+     "next": "flash_shelter",
+     "note": "Ms. Okafor writes 'excerpts only' on the checklist and circles it, the way you circle a word you are not sure is spelled right."
+    }
+   ]
+  },
+  {
+   "id": "flash_shelter",
+   "kicker": "Day 14 — reading the transcript — Monday, January 26, 2026",
+   "dayOffset": 14,
+   "title": "Flashback: The First Hearing",
+   "body": [
+    "FLASHBACK — Friday, May 9, 2025. You are reading the transcript now, in Ms. Okafor's office, but the words are yours, spoken when Eli had been in care for two days.",
+    "The shelter care hearing came quickly, because the law makes it come quickly: an informal hearing not later than 72 hours after a child is placed in shelter care. (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)) Before it began, the court told you what Ms. Okafor underlines now: you had the right to counsel, and to appointed counsel if you could not afford one. (42 Pa.C.S. § 6337) Your trial lawyer, Mr. Bennett, sat beside you smelling faintly of courthouse coffee.",
+    "The agency asked that Eli stay placed while things were sorted out. Mr. Bennett said one sentence Ms. Okafor has marked with a sticky note: \"For the record, my client's mother — Eli's grandmother, Mrs. Doyle — is in the hallway and is willing to be assessed as a placement today.\" Then the hearing moved on."
+   ],
+   "choices": [
+    {
+     "text": "In the flashback: that sentence was enough — let the hearing move on",
+     "next": "flash_shelter_after",
+     "setFlags": [
+      "kinshipOnRecord"
+     ],
+     "addHidden": [
+      "Transcript — grandmother named on the record at shelter care as a placement resource"
+     ],
+     "note": "One sentence. It will still be sitting in the transcript, exactly there, on the day the panel reads it."
+    },
+    {
+     "text": "In the flashback: assume the caseworker will note grandmother's name in her own file",
+     "next": "flash_shelter_after",
+     "note": "She meant to. Caseworkers mean to write down many things. The transcript only keeps what was said out loud, in the room."
+    }
+   ]
+  },
+  {
+   "id": "flash_shelter_after",
+   "kicker": "Day 17 — reading the transcript — Thursday, January 29, 2026",
+   "dayOffset": 17,
+   "title": "What a Sentence Can Carry",
+   "body": [
+    "Ms. Okafor closes that transcript. \"People think a record is a summary of a case,\" she says. \"It isn't. It's the case, for anyone who wasn't in the room. The panel wasn't in the room.\"",
+    "She opens the next volume — the adjudication hearing, Monday, June 2, 2025 — and her sticky notes multiply. \"This,\" she says, \"is the day the appeal was mostly written. You just didn't know it yet.\""
+   ],
+   "choices": [
+    {
+     "text": "Turn the page into the adjudication hearing",
+     "next": "first_read",
+     "note": "Your own handwriting is in the margin of your copy, from last summer: 'long day.' It was."
+    }
+   ]
+  },
+  {
+   "id": "first_read",
+   "kicker": "Day 20 — reading the transcript — Sunday, February 1, 2026",
+   "dayOffset": 20,
+   "title": "How to Read a Transcript",
+   "body": [
+    "Ms. Okafor teaches you to read the way the panel will: not for story, but for rulings. Every 'Objection' is a door someone built. Every 'Admitted' without one is a wall. Speaker labels, page numbers, the clerk's timestamps — the transcript is not a summary of the hearing. For everyone who was not in the room, it replaces the hearing.",
+    "\"You were there,\" she says, \"so your memory will keep volunteering. The panel doesn't have your memory. They have this. When the two disagree about what the case is, this wins.\""
+   ],
+   "choices": [
+    {
+     "text": "Open the adjudication transcript",
+     "next": "flash_adjud",
+     "note": "June of last year, in type. Your handwriting is not in this margin. It will be, in pencil, by day 24."
+    }
+   ]
+  },
+  {
+   "id": "flash_adjud",
+   "kicker": "Day 24 — reading the transcript — Thursday, February 5, 2026",
+   "dayOffset": 24,
+   "title": "Flashback: The Exhibit",
+   "body": [
+    "FLASHBACK — Monday, June 2, 2025. The adjudication hearing. The agency's lawyer offers a packet: the caseworker's report, with a one-page scored assessment form summary stapled to the back — a form that sorts Eli's case into categories and a score band, with no one in the room who filled it out.",
+    "The judge looks at Mr. Bennett. This is the moment Ms. Okafor has read four times. \"Everything in an appeal,\" she says quietly, over the transcript, \"is either side of this moment. If your lawyer objects — objects to the summary coming in without anyone to answer questions about it — the objection, and the judge's ruling, are in the record forever, and the panel can reach them. If nobody objects, the page comes in like weather, and the moment passes out of the record's reach.\"",
+    "You are back in that chair. Mr. Bennett is looking at the packet. The judge is looking at Mr. Bennett."
+   ],
+   "choices": [
+    {
+     "text": "OBJECT — \"Objection. The summary should not come in without a witness who can be questioned about it.\"",
+     "next": "obj_made",
+     "setFlags": [
+      "preservedObjection"
+     ],
+     "addHidden": [
+      "Transcript — objection to assessment summary made and ruled on at adjudication"
+     ],
+     "note": "The judge hears argument and rules. Win or lose the ruling, the objection now exists where appeals live: on the record."
+    },
+    {
+     "text": "Stay silent — the judge has seen a hundred of these packets; objecting feels like making a scene",
+     "next": "obj_silent",
+     "note": "The packet is admitted without discussion. The hearing moves to the next witness. Nothing in the transcript marks the moment at all."
+    }
+   ]
+  },
+  {
+   "id": "obj_made",
+   "kicker": "Day 24 — reading the transcript — Thursday, February 5, 2026",
+   "dayOffset": 24,
+   "title": "The Line in the Transcript",
+   "body": [
+    "On the page, it takes four lines: the objection, the agency's answer, the judge's ruling admitting the summary anyway, and Mr. Bennett's \"Note my exception\" — old-fashioned words that mean: this is preserved.",
+    "Ms. Okafor exhales. \"The panel may agree with the ruling or not,\" she says. \"But they can reach it. That is the difference between an argument and a regret.\""
+   ],
+   "choices": [
+    {
+     "text": "Keep reading — the agency rests its case",
+     "next": "flash_exhibit"
+    }
+   ]
+  },
+  {
+   "id": "obj_silent",
+   "kicker": "Day 24 — reading the transcript — Thursday, February 5, 2026",
+   "dayOffset": 24,
+   "title": "The Page Where Nothing Happens",
+   "body": [
+    "On the page, the packet is simply \"admitted.\" No objection, no argument, no ruling to examine. Ms. Okafor turns the transcript page slowly, as if the moment might be hiding under it.",
+    "\"I want to be honest with you,\" she says. \"We can still describe this page in a brief. But an appellate panel reviews rulings. Where there is no objection, there is usually no ruling — and generally, nothing for them to reach. We'll build what we can from the rest of the record.\""
+   ],
+   "choices": [
+    {
+     "text": "Keep reading — your side of the case is next",
+     "next": "flash_exhibit"
+    }
+   ]
+  },
+  {
+   "id": "flash_exhibit",
+   "kicker": "Day 31 — reading the transcript — Thursday, February 12, 2026",
+   "dayOffset": 31,
+   "title": "Flashback: The Folder in Your Lap",
+   "body": [
+    "FLASHBACK — later the same hearing day, Monday, June 2, 2025. Your side of the case. In your lap that day was a folder: your treatment-completion certificate, your work schedule, and a letter from Eli's pediatrician about his asthma care at your home — the inhaler log you kept on the refrigerator, in your careful handwriting.",
+    "An exhibit only enters the record if it is offered — handed up, marked, and admitted or refused on the record. A folder in a lap is not an exhibit. A letter at home is not an exhibit. Ms. Okafor's voice, over the transcript: \"Watch your hands in this part. Whatever they did is what the panel gets.\""
+   ],
+   "choices": [
+    {
+     "text": "OFFER the folder — ask Mr. Bennett to hand up the certificate, the schedule, and the pediatrician's letter",
+     "next": "offer_made",
+     "setFlags": [
+      "exhibitInRecord"
+     ],
+     "addHidden": [
+      "Exhibits — treatment certificate, work schedule, pediatrician letter offered and marked at adjudication"
+     ],
+     "note": "The clerk marks them. The judge admits two and takes the letter under advisement — but offered is offered: they are in the record now, numbered, permanent."
+    },
+    {
+     "text": "Hold the folder — the judge seems impatient, and the letter feels thin compared to the agency's packet",
+     "next": "offer_held",
+     "note": "The folder goes home in your bag. The hearing ends without it ever being mentioned. The transcript does not know it existed."
+    }
+   ]
+  },
+  {
+   "id": "offer_made",
+   "kicker": "Day 31 — reading the transcript — Thursday, February 12, 2026",
+   "dayOffset": 31,
+   "title": "Marked and Numbered",
+   "body": [
+    "Respondent's Exhibits 1 through 3. In the transcript they are only numbers; in the boxes in Ms. Okafor's office they are the actual pages, stamped and filed.",
+    "\"When we write the brief,\" she says, \"we will cite these by page. A panel can hold them. That is what 'support in the record' means — not that something was true, but that it is there, where they are allowed to look.\""
+   ],
+   "choices": [
+    {
+     "text": "Keep reading — the last witness decision of the day",
+     "next": "flash_testify"
+    }
+   ]
+  },
+  {
+   "id": "offer_held",
+   "kicker": "Day 31 — reading the transcript — Thursday, February 12, 2026",
+   "dayOffset": 31,
+   "title": "What the Record Doesn't Know",
+   "body": [
+    "\"Can we send the panel the letter now?\" you ask. Ms. Okafor shakes her head, not unkindly. \"An appeal is decided on the record that was made below. A letter that was never offered isn't in it. Sending it now doesn't put it in — it just proves it existed, somewhere the panel can't use.\"",
+    "She turns the page. \"One more decision that day is in here. The biggest one, for a lot of parents.\""
+   ],
+   "choices": [
+    {
+     "text": "Keep reading — whether to testify",
+     "next": "flash_testify"
+    }
+   ]
+  },
+  {
+   "id": "flash_testify",
+   "kicker": "Day 38 — reading the transcript — Thursday, February 19, 2026",
+   "dayOffset": 38,
+   "title": "Flashback: Your Name Is Called",
+   "body": [
+    "FLASHBACK — the end of the adjudication hearing. Mr. Bennett leans over: \"You can testify, or you can rest on the agency's evidence. Testifying puts your account — the inhaler log, the work shifts, who was home that week — into the record in your own words, where the panel can read it. It also means cross-examination, and every answer is permanent. Resting means the only account in the transcript is the agency's.\"",
+    "There is no safe choice here. There is only the choice whose consequences you understand. Ms. Okafor, over the page: \"Whatever you did, we're about to read it.\""
+   ],
+   "choices": [
+    {
+     "text": "TESTIFY — tell it in your own words, and take the cross-examination",
+     "next": "testified",
+     "setFlags": [
+      "parentTestified"
+     ],
+     "addHidden": [
+      "Transcript — parent testified at adjudication; account of care and work schedule on the record"
+     ],
+     "note": "It is not smooth. It is sworn, specific, and yours — dates, times, the refrigerator log. The cross is hard and also permanent, in both directions."
+    },
+    {
+     "text": "REST — do not testify; the agency should have to prove its case on its own evidence",
+     "next": "rested",
+     "note": "A principled choice, and a real one — the burden was the agency's. But silence is also a record: the transcript's only narrative of that week is theirs."
+    }
+   ]
+  },
+  {
+   "id": "testified",
+   "kicker": "Day 38 — reading the transcript — Thursday, February 19, 2026",
+   "dayOffset": 38,
+   "title": "Your Voice, in Type",
+   "body": [
+    "Reading your own testimony is strange: your sentences, flattened into transcript type, with \"(pause)\" where you cried.",
+    "\"Panels read this,\" Ms. Okafor says. \"Not to decide if they like you. To decide what the trial court had in front of it. Your account was in front of it. That widens what we can argue — and it means we argue from the record, not around it.\""
+   ],
+   "choices": [
+    {
+     "text": "Close the adjudication transcript",
+     "next": "inventory"
+    }
+   ]
+  },
+  {
+   "id": "rested",
+   "kicker": "Day 38 — reading the transcript — Thursday, February 19, 2026",
+   "dayOffset": 38,
+   "title": "The Quiet Pages",
+   "body": [
+    "The transcript ends your case in two lines: counsel rests; the court takes the matter under advisement.",
+    "\"We work with the record we have,\" Ms. Okafor says. \"Resting protected you from cross. It also means that when the panel looks for your account of that week, the chair is empty. Both of those are true at once. That's most of appellate law, honestly.\""
+   ],
+   "choices": [
+    {
+     "text": "Close the adjudication transcript",
+     "next": "inventory"
+    }
+   ]
+  },
+  {
+   "id": "inventory",
+   "kicker": "Day 45 — Thursday, February 26, 2026",
+   "dayOffset": 45,
+   "title": "The Inventory",
+   "body": [
+    "Ms. Okafor makes the inventory on the legal pad, in two columns: IN THE RECORD / NOT IN THE RECORD. Everything the flashbacks decided sits in one column or the other. The brief can only be built from the left-hand column.",
+    "\"One more volume,\" she says. \"Disposition — Monday, June 30, 2025. And then we stop reading the past and go watch the present, because Eli's case below is having a review next week, appeal or no appeal.\""
+   ],
+   "choices": [
+    {
+     "text": "Read the disposition transcript first",
+     "next": "flash_dispo",
+     "note": "The disposition hearing decided where Eli would live and what the plan would be. Appeals reach backward to it, too."
+    }
+   ]
+  },
+  {
+   "id": "flash_dispo",
+   "kicker": "Day 52 — reading the transcript — Thursday, March 5, 2026",
+   "dayOffset": 52,
+   "title": "Flashback: Disposition and the Plan",
+   "body": [
+    "FLASHBACK — Monday, June 30, 2025. At disposition, the agency presents the family service plan and recommends Eli remain placed, with visits at the agency office. Its report mentions grandmother only as \"a relative expressing interest\" — no name, no assessment date.",
+    "Mr. Bennett can object and ask the court to order the kinship assessment of Mrs. Doyle on the record, with the plan corrected — or he can raise it informally with the caseworker in the hallway afterward, where hallway agreements live and die."
+   ],
+   "choices": [
+    {
+     "text": "OBJECT and ask, on the record, for grandmother's assessment to be ordered and the plan corrected",
+     "next": "dispo_object",
+     "setFlags": [
+      "preservedDispo"
+     ],
+     "addHidden": [
+      "Transcript — disposition objection; kinship assessment of grandmother ordered on the record"
+     ],
+     "note": "The judge orders the assessment and says the plan will be corrected in writing. It is now a ruling — reachable, enforceable, real."
+    },
+    {
+     "text": "Handle it in the hallway — the caseworker promises to \"get grandmother assessed soon\"",
+     "next": "dispo_hallway",
+     "note": "She meant it, probably. Hallway promises are not rulings. Nothing in the transcript will ever mention it."
+    }
+   ]
+  },
+  {
+   "id": "dispo_object",
+   "kicker": "Day 52 — reading the transcript — Thursday, March 5, 2026",
+   "dayOffset": 52,
+   "title": "A Ruling, Not a Promise",
+   "body": [
+    "Ms. Okafor adds a line to the left-hand column. \"This one matters twice,\" she says. \"Up here, it's a preserved issue. Down below, it's an order the agency actually has to follow while the appeal crawls. The record isn't only for judges. It's how anything gets done.\""
+   ],
+   "choices": [
+    {
+     "text": "Go to Eli's review hearing below — the present tense resumes",
+     "next": "review_below1"
+    }
+   ]
+  },
+  {
+   "id": "dispo_hallway",
+   "kicker": "Day 52 — reading the transcript — Thursday, March 5, 2026",
+   "dayOffset": 52,
+   "title": "Soon, Unwritten",
+   "body": [
+    "The assessment, the transcript suggests, was still 'being scheduled' at the next two reviews.",
+    "\"Soon,\" Ms. Okafor says, \"is the saddest word in a case file. It never has a date attached.\" She closes the last volume. \"Now — the present. Eli's review is Thursday, and the judge below has never heard of our appeal strategy and is not required to care.\""
+   ],
+   "choices": [
+    {
+     "text": "Go to Eli's review hearing below",
+     "next": "review_below1"
+    }
+   ]
+  },
+  {
+   "id": "review_below1",
+   "kicker": "Day 60 — Friday, March 13, 2026",
+   "dayOffset": 60,
+   "title": "Meanwhile, Below: The Review",
+   "body": [
+    "The review hearing below is smaller and faster than you remembered from inside the flashbacks — because this time you are watching the record being made, in real time, with Ms. Okafor's two columns in your head.",
+    "Your progress is reported: treatment done, work steady, visits kept. The caseworker reports grandmother's assessment is 'in process.' The judge continues Eli's placement and sets the next review. Nothing about the appeal is mentioned. The appeal does not stop this room; this room does not wait for the appeal.",
+    "You can hand the judge a short written summary of your progress — dated, with the certificates attached — so it enters this record too, or you can let the caseworker's oral report carry it."
+   ],
+   "choices": [
+    {
+     "text": "Hand up the written summary with certificates attached, and ask that it be filed",
+     "next": "work_shifts",
+     "cash": -10,
+     "setFlags": [
+      "reviewRecord"
+     ],
+     "addHidden": [
+      "Review record — parent's written progress summary filed at review during appeal"
+     ],
+     "note": "The clerk stamps it. Below, as above: paper filed is paper that exists."
+    },
+    {
+     "text": "Let the oral report carry it — the caseworker said it all anyway",
+     "next": "work_shifts",
+     "note": "She said most of it. The transcript of this review will keep her version, at her length, in her words."
+    }
+   ]
+  },
+  {
+   "id": "work_shifts",
+   "kicker": "Day 66 — Thursday, March 19, 2026",
+   "dayOffset": 66,
+   "title": "Two Courts, One Work Schedule",
+   "body": [
+    "The appeal's least legal problem is its most human one: everything happens at 10 a.m. on weekdays, in two different buildings, and your shifts are also on weekdays. Your supervisor, who has covered for you twice, starts a sentence with 'Company policy…' and you hear the third covering become a different conversation.",
+    "Ms. Okafor cannot fix this and does not pretend to. \"Put every request in writing,\" she says, \"to your job and to the courts. If a date ever has to move, the side with the paper trail about asking moves it.\" Another record. They are all another record."
+   ],
+   "choices": [
+    {
+     "text": "Put the schedule requests in writing, to work and to both courts",
+     "next": "gap_pages",
+     "setFlags": [
+      "schedulePaper"
+     ],
+     "addHidden": [
+      "Schedule — court-date accommodation requests made in writing"
+     ],
+     "note": "Three short letters. The folder gains a section you never wanted and will absolutely need."
+    },
+    {
+     "text": "Handle it by phone — people have been understanding so far",
+     "next": "gap_pages",
+     "note": "So far is a tense. The letters would have been a record; the calls are a memory, held by people whose job is not to hold it."
+    }
+   ]
+  },
+  {
+   "id": "gap_pages",
+   "kicker": "Day 74 — Friday, March 27, 2026",
+   "dayOffset": 74,
+   "title": "The Missing Forty Pages",
+   "body": [
+    "Bad news in a thin envelope: the transcript set is incomplete. Forty pages of the disposition hearing — the part with the plan discussion — were never transcribed, and the agency's excerpt packet skips the same stretch.",
+    "Ms. Okafor is calm. The missing pages can be ordered and the record corrected — that is paperwork, and paperwork can be done. The agency's own file can also still be requested in full; agency records are released on request. (55 Pa. Code § 3130.44(d)) Both take time the briefing clock will feel. Skipping them means arguing the disposition issue from memory — hers, yours, anyone's. Appeals do not run on memory."
+   ],
+   "choices": [
+    {
+     "text": "Order the missing transcript pages and renew the written request for the complete agency file",
+     "next": "brief_draft",
+     "cash": -20,
+     "setFlags": [
+      "recordsRequested",
+      "recordComplete"
+     ],
+     "addHidden": [
+      "Record — missing disposition pages ordered; complete agency file requested in writing"
+     ],
+     "note": "It costs weeks and dollars. It buys the only currency the panel accepts: pages."
+    },
+    {
+     "text": "Brief around the gap — argue the disposition point from the excerpts you have",
+     "next": "brief_draft",
+     "note": "Ms. Okafor writes 'gap — disposition' in the margin of the draft, in pencil, the way you mark a place you may fall through."
+    }
+   ]
+  },
+  {
+   "id": "brief_draft",
+   "kicker": "Day 92 — Tuesday, April 14, 2026",
+   "dayOffset": 92,
+   "title": "The Brief Takes Shape",
+   "body": [
+    "The draft brief comes back with Ms. Okafor's marginalia. The arguments are sorted the way panels sort them: what was preserved and is in the record goes in the front, argued fully, with page citations. Anything else — however true, however unfair it felt — can only be described, not argued, because a panel reviews the record made below and generally will not reach an issue that was never raised there.",
+    "She asks you to read it and mark anything factually wrong. \"Your job now,\" she says, \"is accuracy. Mine is architecture. The record's job is everything else.\""
+   ],
+   "choices": [
+    {
+     "text": "Read it line by line against the transcripts, checking every page citation",
+     "next": "appendix_beat",
+     "setFlags": [
+      "briefChecked"
+     ],
+     "addHidden": [
+      "Brief — every citation checked against the certified record"
+     ],
+     "note": "Slow, unglamorous, decisive. Two citations were wrong. Now they aren't."
+    },
+    {
+     "text": "Skim it and sign off — she does this for a living",
+     "next": "appendix_beat",
+     "note": "She does. The brief goes out with two citations pointing at pages that say something adjacent to, but not quite, the point."
+    }
+   ]
+  },
+  {
+   "id": "appendix_beat",
+   "kicker": "Day 100 — Wednesday, April 22, 2026",
+   "dayOffset": 100,
+   "title": "The Appendix Fight",
+   "body": [
+    "Ms. Okafor holds up two binders. The thin one is the certified record — the official set, the only set the panel is bound to treat as existing. The thick one is the reproduced record, the excerpts your side prints for convenience, which may contain anything — and proves nothing by containing it.",
+    "\"A document that lives only in the thick binder,\" she says, \"is, to the panel, a rumor with a tab. I have read decisions that say it in almost those words: what is not in the certified record is treated as non-existent, and stapling it into your own appendix does not cure that.\" She checks, one by one, that every page the brief cites is in the thin binder — or the citation comes out."
+   ],
+   "choices": [
+    {
+     "text": "Check every cited page against the certified record, line by line",
+     "next": "visits_below",
+     "setFlags": [
+      "certifiedChecked"
+     ],
+     "addHidden": [
+      "Brief — all citations verified against the certified record, not the appendix"
+     ],
+     "note": "One beloved page is appendix-only. It comes out of the brief, and Ms. Okafor's face does the arithmetic of a lawyer who has seen this exact page sink an appeal before."
+    },
+    {
+     "text": "Trust the appendix — the pages are real, whoever bound them",
+     "next": "visits_below",
+     "note": "The pages are real. Reality, in this building, is a property conferred by certification, not by existence."
+    }
+   ]
+  },
+  {
+   "id": "visits_below",
+   "kicker": "Day 110 — Saturday, May 2, 2026",
+   "dayOffset": 110,
+   "title": "Visits, in the Present Tense",
+   "body": [
+    "Eli has grown an inch during the appeal. He shows you, standing against the agency office doorframe where other children's heights are penciled — a whole archive of other people's children, in graphite.",
+    "Visits are the part of the bottom timeline that does not feel like paperwork, which is exactly why the paperwork about them matters: the visit log is a record too, and it is being written every week, by whoever holds the pen."
+   ],
+   "choices": [
+    {
+     "text": "Ask, in writing, for the visit log to note today's make-up visit and Eli's school award",
+     "next": "eli_school",
+     "setFlags": [
+      "visitLog"
+     ],
+     "addHidden": [
+      "Visit log — make-up visit and school award noted in writing"
+     ],
+     "note": "The worker adds it while you watch. A good week, on paper, where good weeks count."
+    },
+    {
+     "text": "Just enjoy the visit — not everything needs to be a document",
+     "next": "eli_school",
+     "note": "Both things are true. Only one of them will be in the file at the next review."
+    }
+   ]
+  },
+  {
+   "id": "eli_school",
+   "kicker": "Day 120 — Tuesday, May 12, 2026",
+   "dayOffset": 120,
+   "title": "The School Report, Meanwhile",
+   "body": [
+    "Eli's teacher sends a note through the foster parents: his reading has jumped a level; he told the class his mom is 'working with the judges.' The foster mother, Mrs. Ito, passes it along promptly and without commentary, which you have learned is her form of kindness — the file gets the fact, not her feelings about the fact.",
+    "Below, this goes into a school record the next review will see. Above, it goes nowhere — it postdates the record, and the panel reviews the record that was made below, not the boy's spring. Holding both of those truths at once, without letting either erase the other, is the emotional arithmetic of an appeal."
+   ],
+   "choices": [
+    {
+     "text": "Thank Mrs. Ito, and file the teacher's note with the case below where it belongs",
+     "next": "argument_prep",
+     "note": "In the right binder, at last: the present-tense one, where the boy's spring is exactly what the next hearing is about."
+    },
+    {
+     "text": "Ask Ms. Okafor to send it to the panel anyway — they should know",
+     "next": "argument_prep",
+     "note": "She explains, once more, gently: sending it doesn't put it in the record. Knowing why is most of what she's for."
+    }
+   ]
+  },
+  {
+   "id": "argument_prep",
+   "kicker": "Day 132 — Sunday, May 24, 2026",
+   "dayOffset": 132,
+   "title": "Preparing for Questions",
+   "body": [
+    "Argument prep is Ms. Okafor reading the panel's likely questions aloud in a kind voice that does not soften them: \"Counsel, where in the record was that objected to?\" \"Counsel, where is that exhibit?\" \"Counsel, what ruling are we being asked to reverse?\"",
+    "Every question is the same question, really: show me the page. The appeal you have is the set of pages you can answer with."
+   ],
+   "choices": [
+    {
+     "text": "Practice answering each question with a page number",
+     "next": "asfa_packet",
+     "note": "Where a page exists, the answer is short. Where one doesn't, the silence in the practice room is the whole lesson."
+    },
+    {
+     "text": "Ask her to lead with fairness — the panel should hear how it felt",
+     "next": "asfa_packet",
+     "note": "\"They should,\" she says, \"and the way they hear it is through the record. Feeling travels on paper or it doesn't travel.\""
+    }
+   ]
+  },
+  {
+   "id": "asfa_packet",
+   "kicker": "Day 152 — Saturday, June 13, 2026",
+   "dayOffset": 152,
+   "title": "The Other Clock, Up Close",
+   "body": [
+    "The bottom timeline arrives on paper: a notice that Eli's case is approaching fifteen months in care, on Friday, August 7, 2026. The agency's filing duty changes then — unless an exception is documented: Eli being cared for by a relative, a documented compelling reason a termination filing would not serve him, or services the agency was required to provide but did not. (42 U.S.C. § 675(5)(E))",
+    "Exceptions, Ms. Okafor reminds you, are not hopes. They are documents. Your lawyer below can submit a packet now — grandmother's status, your completed services, the visit record — asking that an exception be documented in the file, or the packet can be 'mentioned' at the next review and live the way hallway promises live."
+   ],
+   "choices": [
+    {
+     "text": "Build and file the written exception packet below, with grandmother's status and your service record attached",
+     "next": "review_below2",
+     "cash": -10,
+     "setFlags": [
+      "compellingPacket"
+     ],
+     "addHidden": [
+      "ASFA — written exception packet filed below before the fifteen-month date"
+     ],
+     "note": "Stamped, filed, dated before the clock strikes. Whatever the agency decides, it will have to decide about a document."
+    },
+    {
+     "text": "Raise it orally at the next review — the judge already knows your progress",
+     "next": "review_below2",
+     "note": "The judge knows a version of it. The file will know the caseworker's version of the review. Those are not the same knowledge."
+    }
+   ]
+  },
+  {
+   "id": "review_below2",
+   "kicker": "Day 160 — Sunday, June 21, 2026",
+   "dayOffset": 160,
+   "title": "Meanwhile, Below: Another Review",
+   "body": [
+    "The review below has its own weather. Eli is doing well in placement — a fact that helps him and complicates you, and the judge says both halves of that sentence out loud, to the record, which is more honesty than the system always manages.",
+    "Your packet is in the file. The agency reports the kinship assessment complete and the exception question 'under review at the agency level' — a phrase with no date attached, sitting next to your packet, which has several. The judge continues placement, notes the pending appeal in one sentence, and moves to the next case on the list. Two courts, one boy, no pauses anywhere."
+   ],
+   "choices": [
+    {
+     "text": "Ask your lawyer below to press for a date on the exception decision — in writing",
+     "next": "the_wait",
+     "note": "A date, requested in writing, answered or not. Either way, the asking joins the record."
+    },
+    {
+     "text": "Accept 'under review' — pressing might annoy the agency",
+     "next": "the_wait",
+     "note": "It might. Silence has annoyed no one in this case so far, and has accomplished roughly the same amount."
+    }
+   ]
+  },
+  {
+   "id": "the_wait",
+   "kicker": "Day 168 — Monday, June 29, 2026",
+   "dayOffset": 168,
+   "title": "The Court's Calendar",
+   "body": [
+    "Two messages arrive the same week. The appellate court offers an argument date — and it is close, and Ms. Okafor is ready, and the brief is the brief the record allows. Separately, Eli's next review below is set, and life, which has not consulted either court, schedules your work shifts across both.",
+    "The appellate court's calendar also holds a later slot — months later, past August 7, 2026. Taking it would be easier on everyone's schedule. It would also mean the bottom timeline reaches its date while the top timeline is still waiting to be heard."
+   ],
+   "choices": [
+    {
+     "text": "Take the first argument date — argue the appeal before the other clock strikes",
+     "next": "argument_day",
+     "note": "Ready or not, the record is what it is — and it is not getting longer. That, in the end, is the point of it."
+    },
+    {
+     "text": "Take the later, easier slot — months from now, when work is calmer",
+     "next": "end_pending",
+     "note": "The confirmation letter is polite and routine. So is the other letter it will eventually cross in the mail."
+    }
+   ]
+  },
+  {
+   "id": "argument_day",
+   "kicker": "Day 183 — Tuesday, July 14, 2026",
+   "dayOffset": 183,
+   "title": "Argument Day",
+   "body": [
+    "The courtroom up here is quiet in a different way: no witnesses, no Eli, no folder in your lap. Three judges, a clock, and the record — two boxes, now tabbed and cited, sitting on counsel's table like the case's skeleton.",
+    "Ms. Okafor rises. What she can argue — really argue, with pages — depends entirely on what those boxes contain. She looks at the tabs, and chooses her lead."
+   ],
+   "choices": [
+    {
+     "text": "Ms. Okafor makes the argument the record allows",
+     "next": "decision_wait",
+     "note": "Twenty-five minutes. Three judges, a dozen questions, and every answer she gives is a page number or an honest silence."
+    }
+   ]
+  },
+  {
+   "id": "decision_wait",
+   "kicker": "Day 190 — Tuesday, July 21, 2026",
+   "dayOffset": 190,
+   "title": "Counsel Rises",
+   "body": [
+    "The argument itself takes twenty-five minutes, and it is built — visibly, audibly — out of the boxes. Each of the panel's questions lands on a page or on an absence. Ms. Okafor answers the ones the record lets her answer, concedes the ones it doesn't with a steadiness you recognize as its own kind of advocacy, and sits down.",
+    "What happens next will happen in writing, in weeks, in a room you will never see. What it can contain was decided by which lead was available to her when she stood up."
+   ],
+   "choices": [
+    {
+     "text": "Lead with the preserved objection AND the offered exhibits — 'The objection is at page 112; the exhibits the court had are Respondent's 1 through 3.'",
+     "next": "end_remand",
+     "requiresFlags": [
+      "preservedObjection",
+      "exhibitInRecord"
+     ],
+     "note": "This argument exists because the objection was made and the folder was offered. Both sentences are literally true."
+    },
+    {
+     "text": "Lead with the preserved objection alone — the ruling was wrong even without the exhibits",
+     "next": "end_mixed",
+     "requiresFlags": [
+      "preservedObjection"
+     ],
+     "note": "This argument exists because the objection was made. It is narrower, and the panel hears the narrowness."
+    },
+    {
+     "text": "Try to lead with the assessment summary anyway — object now, on appeal, for the first time",
+     "next": "end_affirmed",
+     "requiresNoFlags": [
+      "preservedObjection"
+     ],
+     "note": "This is the only lead left when the moment passed in silence below. The panel's first question is already on the practice-room wall."
+    },
+    {
+     "text": "Ask the panel to consider the pediatrician's letter, which is in your bag, as it was in your lap",
+     "next": "end_affirmed",
+     "requiresNoFlags": [
+      "exhibitInRecord"
+     ],
+     "note": "The letter is real. It is also, in the only sense this room recognizes, not here."
+    }
+   ]
+  },
+  {
+   "id": "end_remand",
+   "kicker": "Day 200 — Friday, July 31, 2026",
+   "dayOffset": 200,
+   "title": "Remand — The Argument That Existed",
+   "body": [
+    "The panel's decision arrives as a document, the way everything in this story arrives. On the preserved issue, the court agrees: the scored assessment summary should not have been admitted the way it was, on a record that gave the trial court — and you — no one to question about it. The adjudication order is vacated and the case is remanded: sent back below for a new hearing, on a proper record.",
+    "Read it twice, the way Ms. Okafor taught you. It does not say Eli comes home. It does not say the agency was wrong about everything. It says the argument that existed — because an objection was spoken and a folder was offered on a day last summer — was reached, and it was right, and the case must be done again, correctly.",
+    "Eli is told, in words for an eight-year-old, that there will be another hearing. His placement continues until there is. The bottom timeline did not stop for any of this — but the packet you filed is in the record below, dated before August 7, 2026, and it will be on the table at the new hearing too."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, MAPPED — Appeal track: argued on Tuesday, July 21, 2026 and decided on Friday, July 31, 2026, before the fifteen-month date of Friday, August 7, 2026. The decisive argument was reachable only because two flashback choices built it: the objection (flag: preservedObjection) created a ruling to review, and the offered exhibits (flag: exhibitInRecord) gave the panel the parent's evidence in citable form. The complete transcripts and agency record (flag: recordsRequested) are what let the brief cite pages instead of memories.",
+    "Placement/review track below: reviews continued throughout the appeal; Eli remained placed; the written progress summary and visit log entries (flags: reviewRecord, visitLog) are the record the new hearing will start from. ASFA track: Eli reaches fifteen of twenty-two months on Friday, August 7, 2026; the filed exception packet (flag: compellingPacket) means any filing decision must reckon with a documented exception claim — relative care, a documented compelling reason, or services not provided (42 U.S.C. § 675(5)(E)) — rather than with silence.",
+    "What was never in your control: the panel's reading of the ruling, the trial judge's original decision to admit the summary, the appellate calendar, and the pace of the new hearing. A remand is a second chance at a fair process, not a verdict on your worth as a parent — outcomes in this system also turn on workers, judges, and luck, and this one turned on something narrower and more durable than luck: words spoken at the right moment, in the room, on the record."
+   ]
+  },
+  {
+   "id": "end_mixed",
+   "kicker": "Day 200 — Friday, July 31, 2026",
+   "dayOffset": 200,
+   "title": "Split — One Door Open, One Closed",
+   "body": [
+    "The decision splits, the way Ms. Okafor warned you decisions do. On the preserved objection, the panel agrees the assessment summary was admitted without a proper foundation and that part of the order cannot stand. On everything that would have given the argument its full force — the exhibits that were never offered, the account that exists only in the agency's telling — the panel has nothing before it to review, and says so, in the courteous language courts use for locked doors.",
+    "The case goes back below on the one issue, and continues on all the others. Eli's placement continues under the parts of the order that were affirmed. There will be another hearing, narrower than a fresh start and wider than nothing."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, MAPPED — Appeal track: argued Tuesday, July 21, 2026, decided Friday, July 31, 2026. One issue was reached and won because it was preserved (flag: preservedObjection); the rest of the appeal ran aground on the empty places — an exhibit never offered is not in the record, and a panel reviews the record that was made below. That is the whole mechanics of this ending: one door was built in the flashbacks, and only that door opened.",
+    "Placement/review track below: Eli remained placed through every review held during the appeal; the case below never paused. ASFA track: the fifteen-month date is Friday, August 7, 2026. Whether a documented exception is in the file (flag: compellingPacket, if you filed the packet) now decides how much room the case below has; if it was only raised orally, the file holds the agency's version of that conversation.",
+    "What was never in your control: how the panel weighed the one preserved issue, the trial court's rulings, the calendars of two courts at once. A split outcome is not a grade on your parenting. It is an exact map of a record — what was built in time, and what was not — and outcomes here also turn on workers, judges, and luck."
+   ]
+  },
+  {
+   "id": "end_affirmed",
+   "kicker": "Day 200 — Friday, July 31, 2026",
+   "dayOffset": 200,
+   "title": "Affirmed — The Empty Chair",
+   "body": [
+    "The decision is short, and its shortness is the story. Again and again, the panel's answer is the practice-room question: where was this raised below? The assessment summary came in without objection, so there is no ruling to reverse. The letter was never offered, so it is not in the record the panel may review. Issue by issue, the appeal does not lose on the merits. It is never reached at all.",
+    "The order below is affirmed. Eli's case continues in the court that has always held it — reviews, plans, visits — under the order as written. Ms. Okafor puts the decision in your folder, on top. \"The next record,\" she says, \"starts at the next review. It is always being written. That part is still yours.\""
+   ],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, MAPPED — Appeal track: argued Tuesday, July 21, 2026, decided Friday, July 31, 2026, affirmed. The record showed: no objection at the decisive moment (no preservedObjection flag), so no ruling existed for the panel to examine; any exhibit never offered (no exhibitInRecord flag) was outside the certified record, however real it was in a lap or a kitchen. Appellate courts review the record made below, and unpreserved issues are generally not reached — this ending is that principle, experienced from the inside.",
+    "Placement/review track below: reviews continued all along, unaffected by the appeal; Eli remained placed, and the affirmed order governs the case going forward. ASFA track: Eli reaches fifteen of twenty-two months on Friday, August 7, 2026; from here the fight moves entirely to the court below — including whether a documented exception under 42 U.S.C. § 675(5)(E) is in the file when the agency weighs a termination filing, where the agency would still have to prove its grounds clearly and convincingly.",
+    "What was never in your control: the panel's hands were tied by the same record that tied yours; the original rulings, the other lawyer's choices that day, and the calendars were never yours either. This outcome measures a transcript, not a mother. Outcomes in this system also turn on workers, judges, and luck — and the record of the next hearing, unlike the last one, has not been written yet."
+   ]
+  },
+  {
+   "id": "end_pending",
+   "kicker": "After the date — Saturday, August 29, 2026",
+   "dayOffset": 229,
+   "title": "Still Pending — The Other Clock Struck First",
+   "body": [
+    "The later slot was easier on everyone's schedule. That part was true. The rest arrived by mail, in two envelopes, eleven days apart.",
+    "First, the notice from below: Eli has now been in care for fifteen of the most recent twenty-two months — the date was Friday, August 7, 2026 — and the agency has filed the petition the federal timeline points it toward, the exception question to be argued from whatever the file holds. A petition is not a termination; the agency would still have to prove its grounds clearly and convincingly at a hearing. But the weather of the case below has changed, permanently, while the appeal was still waiting for its morning in court.",
+    "Second, the appellate court's scheduling letter, setting argument — finally — for next month. Two timelines, drawn on one legal pad in January. The bottom one reached its date first."
+   ],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, MAPPED — Appeal track: still pending at Saturday, August 29, 2026; no decision, no ruling on any issue — preserved or not, the record's contents (flags: preservedObjection, exhibitInRecord, recordsRequested, if set) still wait, intact, for a panel that has not yet read them. Nothing about the appeal was lost except time, and time turned out to be the one thing the other track was counting.",
+    "Placement/review track below: reviews continued throughout; Eli remained placed; his case acquired, on Friday, August 7, 2026, a termination petition that will now run on its own track, in its own court, whether or not the appeal later succeeds — a successful appeal could still unsettle the orders beneath it, but it does not un-file a petition or un-run a clock. ASFA track: struck on schedule at fifteen of twenty-two months (42 U.S.C. § 675(5)(E)); whether a documented exception was in the file (flag: compellingPacket) is now the first argument in the case below.",
+    "What was never in your control: the appellate court's calendar was never yours — the choice here was only which slot to accept, inside a system that set both. Judges' schedules, workers' filings, and luck all moved on their own tracks. This ending is not a judgment on your worth; it is a collision between two clocks, only one of which ever claimed to be waiting for you."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s24';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  /* Watch Mode runs in memory only: a watch never writes the manual save. */
+  if (watchMode) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- choice gating (generic engine rule) ----------
+   requiresFlags: choice renders only when ALL listed flags are set.
+   requiresNoFlags: choice renders only when NONE of them are set.
+   Unmet choices are NOT rendered (hidden, never shown locked). */
+function choiceAvailable(choice) {
+  if (!choice) return false;
+  if (choice.requiresFlags) {
+    const req = Array.isArray(choice.requiresFlags) ? choice.requiresFlags : [choice.requiresFlags];
+    for (let i = 0; i < req.length; i++) { if (!hasFlag(req[i])) return false; }
+  }
+  if (choice.requiresNoFlags) {
+    const ban = Array.isArray(choice.requiresNoFlags) ? choice.requiresNoFlags : [choice.requiresNoFlags];
+    for (let j = 0; j < ban.length; j++) { if (hasFlag(ban[j])) return false; }
+  }
+  return true;
+}
+
+/* ---------- comic kit: plates ---------- */
+const PLATE_RULES = [
+  ["hospital|clinic|doctor|nurse|medical|exam", "Hospital"],
+  ["court|hearing|judge|shelter care", "Courtroom"],
+  ["knock|door|house|the visit|removal|doorstep|threshold", "Doorway"],
+  ["supervised|visit room|one hour", "Visit Room"],
+  ["school|teacher|classroom|class", "School"],
+  ["records|file|flyer|reading|written|case against you|packet|redact", "Records Desk"],
+  ["mail|letter|envelope|notice", "Mail Room"],
+  ["interview|questions|supervisor|service plan|review|check-in|lawyer|attorney|counsel|decision|plan|form", "Agency Office"],
+  ["apartment|building|street|porch|outside", "Apartment Exterior"],
+  ["evening|morning|kitchen|table|home|gap", "Kitchen"]
+];
+const PLATE_IDS = {
+  "Hospital": "plate-hospital", "Courtroom": "plate-courtroom", "Doorway": "plate-doorway",
+  "Visit Room": "plate-visit", "School": "plate-school", "Records Desk": "plate-records",
+  "Mail Room": "plate-mail", "Agency Office": "plate-office",
+  "Apartment Exterior": "plate-exterior", "Kitchen": "plate-kitchen"
+};
+function plateFor(node) {
+  const text = ((node.kicker || '') + ' ' + (node.title || '')).toLowerCase();
+  for (let i = 0; i < PLATE_RULES.length; i++) {
+    if (new RegExp(PLATE_RULES[i][0]).test(text)) return PLATE_RULES[i][1];
+  }
+  return "Kitchen"; /* fallback: the family's ground */
+}
+function plateHTML(plateName) {
+  return '<div class="plate" role="img" aria-label="Scene: ' + esc(plateName.toLowerCase()) + '">' +
+    '<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<use href="#' + PLATE_IDS[plateName] + '"/></svg></div>';
+}
+function coverHTML() {
+  return '<div class="cover" role="img" aria-label="Cover scene: a mother before her front door; a caseworker silhouette waits behind the frosted glass">' +
+    '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+    '<rect width="400" height="300" fill="url(#gradCover)"/>' +
+    '<rect x="128" y="58" width="132" height="232" fill="#1f3a5c" stroke="#0d1520" stroke-width="4"/>' +
+    '<rect x="144" y="76" width="100" height="122" fill="#f7ead0" opacity=".95"/>' +
+    '<use href="#fig-caseworker" x="166" y="84" width="58" height="116" color="#16283f" opacity=".9"/>' +
+    '<rect x="168" y="212" width="68" height="10" fill="#0d1520"/>' +
+    '<circle cx="248" cy="150" r="4" fill="#e8b04b"/>' +
+    '<use href="#fig-mother" x="262" y="118" width="90" height="174" color="#c98f2b"/>' +
+    '<rect y="290" width="400" height="10" fill="#0d1520"/>' +
+    '<rect width="400" height="300" fill="url(#ht)" opacity=".13"/></svg></div>';
+}
+
+/* ---------- cue bookkeeping ---------- */
+let pendingStamp = false;   // a rating landed; stamp the next rendered panel
+let pendingUnlock = false;  // records were just released
+let clockAnnounced = false; // THE CLOCK has appeared this run
+function consumeCues() {
+  if (pendingUnlock) { Cue.play('unlock'); pendingUnlock = false; }
+  if (pendingStamp) {
+    const p = app.querySelector('.panel');
+    if (p) {
+      p.classList.add('stamped');
+      const s = document.createElement('div');
+      s.className = 'stamp';
+      s.textContent = 'RATED';
+      s.setAttribute('aria-hidden', 'true');
+      p.appendChild(s);
+    }
+    Cue.play('stamp');
+    pendingStamp = false;
+  }
+}
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="clockbox" role="alert"><span class="clock-tab">THE CLOCK</span>' +
+      '<span class="clock-text">Shelter care hearing deadline: ' + esc(fmtDate(deadline)) + '</span></div>';
+    if (!clockAnnounced) { clockAnnounced = true; Cue.play('tick'); }
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel casefile' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+const watchbar = document.getElementById('watchbar');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = coverHTML() +
+    '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  h += '<button class="btn center" id="watchBtn" type="button">Watch it play itself</button>' +
+    '<label class="loop-toggle"><input type="checkbox" id="loopToggle"> Loop for presentations</label>';
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+  document.getElementById('watchBtn').addEventListener('click', function () {
+    startWatch(!!document.getElementById('loopToggle').checked);
+  });
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+  scheduleWatch();
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  const hadRecords = hasFlag('recordsRequested');
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (!hadRecords && hasFlag('recordsRequested')) pendingUnlock = true;
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+    if (items.length) pendingStamp = true;
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function storyPanelHTML(node, plate) {
+  let h = plateHTML(plate) +
+    '<p class="kicker tab">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2><div class="captionbox">';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  return h + '</div>';
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  Cue.play('page');
+  const plate = plateFor(node);
+  if (plate === 'Doorway') Cue.play('knock');
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  h += hiddenPanelHTML(false);
+  h += '<div class="choices">';
+  (node.choices || []).forEach(function (choice, i) {
+    if (!choiceAvailable(choice)) return; /* gated choices are hidden, never locked */
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  h += '</div>';
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  consumeCues();
+  window.scrollTo(0, 0);
+  scheduleWatch();
+}
+
+function renderEnding(node) {
+  view = 'story';
+  const plate = plateFor(node);
+  let h = hudHTML(node) + storyPanelHTML(node, plate);
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card epilogue"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  if (watchMode) {
+    h += '<button class="btn primary" id="watchAgainBtn" type="button">Watch again — new random path</button>' +
+      '<button class="btn center" id="stopWatchBtn" type="button">Stop watching</button>';
+    if (loopEnabled) {
+      h += '<p class="loop-note">Looping for presentations: a new random run starts in about 20 seconds. “Stop watching” ends the loop.</p>';
+    }
+  } else {
+    h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+      '<button class="btn center" id="otherBtn" type="button">Try the other path</button>';
+  }
+  h += '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  Cue.play(node.id === 'end_home' ? 'chord_warm' : 'chord_flat');
+  if (watchMode) {
+    document.getElementById('watchAgainBtn').addEventListener('click', function () {
+      clearTimeout(loopTimer);
+      state = freshState();
+      renderNode();
+    });
+    document.getElementById('stopWatchBtn').addEventListener('click', function () { stopWatch(); });
+    scheduleLoop();
+  } else {
+    document.getElementById('againBtn').addEventListener('click', function () {
+      clearSave();
+      state = null;
+      renderStart();
+    });
+    document.getElementById('otherBtn').addEventListener('click', function () {
+      clearSave();
+      state = freshState();
+      save();
+      renderNode();
+    });
+  }
+  consumeCues();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Watch Mode ----------
+   The game plays itself with uniformly random choices. Watch state lives
+   in memory only: save() is disabled while watchMode is on, so a manual
+   Continue save is never written, overwritten, or cleared by a watch run. */
+let watchMode = false;
+let watchPaused = false;
+let watchSpeed = 1;
+let watchTimer = null;
+let watchTimer2 = null;
+let loopTimer = null;
+let loopEnabled = false;
+
+function wordCount(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+function readingDelay(text) {
+  const ms = wordCount(text) / 200 * 60000; /* ~200 words per minute */
+  return Math.max(2500, Math.min(12000, ms)) / watchSpeed;
+}
+function noteDelay(text) {
+  const ms = wordCount(text) / 200 * 60000;
+  return Math.max(1500, Math.min(6000, ms)) / watchSpeed;
+}
+function clearWatchTimers() {
+  if (watchTimer) { clearTimeout(watchTimer); watchTimer = null; }
+  if (watchTimer2) { clearTimeout(watchTimer2); watchTimer2 = null; }
+}
+function scheduleWatch() {
+  clearWatchTimers();
+  if (!watchMode || watchPaused) return;
+  if (view === 'interstitial') {
+    watchTimer = setTimeout(function () {
+      const b = document.getElementById('noteContinue');
+      if (b) b.click();
+    }, noteDelay(state.pendingNote));
+    return;
+  }
+  if (view !== 'story' || !state) return;
+  const node = NODES[state.nodeId];
+  if (!node || node.ending) return; /* endings are never auto-advanced */
+  const text = (node.title || '') + ' ' + (node.body || []).join(' ');
+  watchTimer = setTimeout(function () {
+    const btns = app.querySelectorAll('[data-choice]');
+    if (!btns.length) return;
+    const btn = btns[Math.floor(Math.random() * btns.length)]; /* uniform over rendered choices */
+    const choice = node.choices[Number(btn.getAttribute('data-choice'))];
+    btn.classList.add('auto-chosen');
+    const strip = document.createElement('div');
+    strip.className = 'watch-chose';
+    strip.textContent = 'The story chose: ' + choice.text;
+    const box = app.querySelector('.choices');
+    if (box) box.parentNode.insertBefore(strip, box);
+    watchTimer2 = setTimeout(function () { applyChoice(choice, node); }, 1000 / watchSpeed);
+  }, readingDelay(text));
+}
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (!watchMode || !loopEnabled || watchPaused) return;
+  loopTimer = setTimeout(function () {
+    if (!watchMode) return;
+    state = freshState();
+    renderNode();
+  }, 20000);
+}
+function startWatch(loop) {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  loopEnabled = !!loop;
+  watchMode = true;
+  watchPaused = false;
+  watchSpeed = 1;
+  document.getElementById('watchSpeedBtn').textContent = 'Speed: 1×';
+  document.getElementById('watchPauseBtn').textContent = 'Pause';
+  watchbar.hidden = false;
+  clockAnnounced = false;
+  state = freshState(); /* memory only — save() is disabled in watch mode */
+  renderNode();
+}
+function stopWatch() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  state = null;
+  renderStart();
+}
+function takeControl() {
+  clearWatchTimers();
+  clearTimeout(loopTimer);
+  const node = state && NODES[state.nodeId];
+  watchMode = false;
+  watchPaused = false;
+  watchbar.hidden = true;
+  if (!node || node.ending) { state = null; renderStart(); return; }
+  /* The handover is the one moment a watch state may become a save:
+     from here it is the viewer's own run, in exactly this state. */
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+document.getElementById('watchPauseBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchPaused = !watchPaused;
+  this.textContent = watchPaused ? 'Resume' : 'Pause';
+  if (watchPaused) { clearWatchTimers(); clearTimeout(loopTimer); }
+  else {
+    const node = state && NODES[state.nodeId];
+    if (node && node.ending) { scheduleLoop(); } else { scheduleWatch(); }
+  }
+});
+document.getElementById('watchSpeedBtn').addEventListener('click', function () {
+  if (!watchMode) return;
+  watchSpeed = (watchSpeed === 1) ? 2 : 1;
+  this.textContent = 'Speed: ' + watchSpeed + '×';
+  scheduleWatch(); /* restart the current beat at the new speed */
+});
+document.getElementById('watchControlBtn').addEventListener('click', function () {
+  if (watchMode) takeControl();
+});
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  clearWatchTimers();       /* the watch timer pauses while the decoy is shown */
+  clearTimeout(loopTimer);
+  app.hidden = true;
+  topbar.hidden = true;
+  if (watchbar) watchbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (watchMode && watchbar) watchbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode(); /* re-render reschedules the watch beat (unless paused) */
+});
+
+/* ---------- init ---------- */
+document.body.setAttribute('data-tier', (META.tier || 'standard').toLowerCase());
+renderStart();
+</script>
+
+<script>
+/* === SOUND WIRING === */
+(function () {
+  function sync() {
+    var b = document.getElementById('soundBtn');
+    if (b && window.Cue) b.textContent = Cue.isEnabled() ? 'Sound: On' : 'Sound: Off';
+  }
+  document.addEventListener('click', function (e) {
+    if (!window.Cue) return;
+    if (e.target && e.target.id === 'soundBtn') {
+      Cue.setEnabled(!Cue.isEnabled());
+      if (Cue.unlock) Cue.unlock();
+      sync();
+    } else if (e.target && (e.target.id === 'startBtn' || e.target.id === 'watchBtn' || e.target.id === 'continueBtn')) {
+      if (Cue.unlock) Cue.unlock();
+    }
+  });
+  if (document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
+</body>
+</html>

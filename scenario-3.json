@@ -1,0 +1,561 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 3 — Fifteen Months (a fictional composite)",
+  "startDateISO": "2025-03-03",
+  "startNode": "recap",
+  "startCash": 160,
+  "tier": "Complex",
+  "summary": "Month 13 of placement: services nearly complete, housing the last condition, and ASFA’s three exceptions in play."
+ },
+ "nodes": [
+  {
+   "id": "recap",
+   "kicker": "Month 13 — Friday, April 3, 2026",
+   "dayOffset": 396,
+   "title": "Thirteen Months In",
+   "body": [
+    "Thirteen months ago, in the worst winter of your life, your son Noah — then six — was placed in foster care. The eviction had come first, then the relapse after two years sober, then a night you will not describe because Noah was safe with your neighbor and that is the part you hold onto. The court placed him anyway. Courts deal in the whole picture, and the whole picture was bad.",
+    "Here is the picture now. Treatment: completed in December, month nine, certificate in your folder. Parenting program: completed. Job: the hospital cafeteria, five shifts a week, pay stubs in the same folder. Visits: unsupervised Saturdays since February — Noah taught you a card game you're still losing on purpose less often than he thinks.",
+    "One goal remains open on the family service plan, in the same bold type as the others: HOUSING. You live at New Roots, a recovery residence with a waiting list of women who would take your bed tomorrow. Its rule is absolute and not unkind: no children live there. You cannot reunify into a bed in a shared room. Everyone agrees on this. Agreement has not yet produced an apartment."
+   ],
+   "choices": [
+    {
+     "text": "Look at the two calendars on the residence wall — yours, and the case's",
+     "next": "status",
+     "note": "Yours runs in weeks. The case's runs in months. You are about to learn the conversion rate."
+    }
+   ]
+  },
+  {
+   "id": "status",
+   "kicker": "Month 13 — Friday, April 3, 2026",
+   "dayOffset": 396,
+   "title": "What 'Almost' Looks Like",
+   "body": [
+    "At New Roots, your counselor keeps a chart with your name in the top row now — the women arriving in their first thirty days eat dinner studying it the way you once did.",
+    "Your caseworker, Ms. Delgado, is fair within the limits of her caseload, which is to say: she answers your texts within two days, and she has never once lied to you about where things stand. Where things stand, she said last week, is “close, with one barrier.”",
+    "The barrier has an address-shaped hole in your life. The recovery work is done. The apartment is not. And somewhere in the case, a clock you have never been shown is louder than both."
+   ],
+   "choices": [
+    {
+     "text": "Go to the month-13 permanency review and listen for it",
+     "next": "review13",
+     "note": "Court clothes. Folder. The pay stubs ride along, in case."
+    }
+   ]
+  },
+  {
+   "id": "review13",
+   "kicker": "Month 13 — Thursday, April 9, 2026",
+   "dayOffset": 402,
+   "title": "The Review Where a New Word Appears",
+   "body": [
+    "The courtroom part is almost warm. Ms. Delgado's report calls your progress “substantial” — the rating word the plan uses — and the judge says so out loud, to you, which has not always happened in this room.",
+    "Then the agency's lawyer stands, in the tone of a person reading a train schedule, and says the file should reflect the federal timeline: Noah has been in care thirteen months; at fifteen of the most recent twenty-two, the agency's obligation regarding a termination petition changes.",
+    "Nobody looks at you while this is said. It is not said to you. It is said to the record, in your presence, which is a different thing — and the difference is the whole design of this scenario."
+   ],
+   "choices": [
+    {
+     "text": "Catch your lawyer in the hallway and ask what just happened",
+     "next": "lawyer1",
+     "addHidden": [
+      "Court report — progress rated 'substantial' (month 13)"
+     ],
+     "note": "Ms. Whitaker is already waiting by the water fountain. She has been waiting, you understand later, for this exact question since month six."
+    },
+    {
+     "text": "Go straight to your shift — good news was said out loud; hold onto that",
+     "next": "lawyer1",
+     "addHidden": [
+      "Court report — progress rated 'substantial' (month 13)"
+     ],
+     "note": "The phrase rides the bus home with you anyway: fifteen of twenty-two."
+    }
+   ]
+  },
+  {
+   "id": "lawyer1",
+   "kicker": "Month 13 — Thursday, April 16, 2026",
+   "dayOffset": 409,
+   "title": "Ms. Whitaker Draws the Map",
+   "body": [
+    "Your lawyer's office has a plant she waters and a whiteboard she actually uses. She draws a line, marks 15 on it, and then — to your surprise — draws three doors in the line.",
+    "“At fifteen of the last twenty-two months, the law tells the agency: file a petition to terminate parental rights — unless an exception is documented in the record.” (42 U.S.C. § 675(5)(E)) “Unless is doing heavy work in that sentence. The exceptions are: Noah is being cared for by a relative. Or the file documents a compelling reason that filing would not be in his best interest. Or the agency did not actually provide services the plan said were necessary for him to come home safely.”",
+    "“A petition is not a termination,” she says. “They'd still have to prove their grounds, clearly and convincingly, at a hearing months from now. But a petition changes the weather of a case. Our job before June is not to hope. It is to make one of those doors true — on paper, where judges live.”"
+   ],
+   "choices": [
+    {
+     "text": "Ask which door is closest to true already",
+     "next": "housing_grind",
+     "note": "“Housing,” she says, “is either your weakest fact or your best-documented one. Let's find out which.”"
+    },
+    {
+     "text": "Ask how long 'documented' takes — June is six weeks away",
+     "next": "housing_grind",
+     "note": "“Six weeks is enough time to build a record,” she says, “if we start with what the file already says. All of what it says.”"
+    }
+   ]
+  },
+  {
+   "id": "housing_grind",
+   "kicker": "Month 13 — Thursday, April 23, 2026",
+   "dayOffset": 416,
+   "title": "Position 214",
+   "body": [
+    "The housing office waiting room has chairs bolted in rows and a ticket machine that gives you a number for your wait about your wait.",
+    "Your voucher application is active. Your position on the list for a two-bedroom is 214. The clerk, who is not the enemy, says movement has been “steady” and will not say a month, because she has been yelled at by people who were told a month.",
+    "A position on a list is either a fact or a rumor, depending on whether it is written down with your name on it."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the letter: your name, your position, today's date, on letterhead",
+     "next": "residence_rule",
+     "setFlags": [
+      "waitlistLetter"
+     ],
+     "addHidden": [
+      "Housing — waitlist position documented, dated, on letterhead"
+     ],
+     "note": "She prints it without fuss. Facts are easy to give to people who ask at a counter, calmly, with a folder."
+    },
+    {
+     "text": "Take the verbal estimate and save the trip's second hour for your shift",
+     "next": "residence_rule",
+     "note": "“Steady,” you tell Ms. Whitaker later. She writes it down and underlines it once, the way you underline a word you're not sure is spelled right."
+    }
+   ]
+  },
+  {
+   "id": "residence_rule",
+   "kicker": "Month 13 — Monday, April 27, 2026",
+   "dayOffset": 420,
+   "title": "The Director's Letter",
+   "body": [
+    "The director of New Roots finds you after dinner. She has run the residence for eleven years and has buried two former residents and married off, as she puts it, “a statistical improbability of brides.”",
+    "“I will write you the best letter I have in me,” she says. “Your progress, your urine screens, your mentoring of the new women — all true, all signed. But understand what my letter cannot do. My beds are licensed for women in recovery, not for children. The rule that keeps Noah out is the same rule that kept you safe at month two. I won't apologize for it, and you shouldn't ask me to.”",
+    "You don't. It is one of the honest documents in your case: a door that is locked for a reason, held by a person who tells you so to your face."
+   ],
+   "choices": [
+    {
+     "text": "Take the letter for the file, and thank her",
+     "next": "visits_beat",
+     "setFlags": [
+      "directorLetter"
+     ],
+     "note": "Paper that tells the truth about a barrier is worth more than paper that pretends there isn't one."
+    },
+    {
+     "text": "Ask whether any family recovery housing exists that takes children",
+     "next": "visits_beat",
+     "note": "“Two programs in the county,” she says. “Both have waitlists. Both were in the plan as referrals.” She pauses. “Were you referred?” You don't know. That not-knowing is about to matter."
+    }
+   ]
+  },
+  {
+   "id": "visits_beat",
+   "kicker": "Month 13 — Thursday, April 30, 2026",
+   "dayOffset": 423,
+   "title": "The Third Cancellation",
+   "body": [
+    "Saturday's visit is canceled — the third time. Mrs. Oduya, Noah's foster mother, has a family emergency of her own; she is sorry; she is also, you know, raising three other people's children on a stipend and goodwill.",
+    "The pattern is not cruelty. The pattern is arithmetic: one foster home, four children, one car. Your Saturdays land where they land. But the visit log does not record arithmetic. It records a blank where a visit goes.",
+    "A make-up visit has never been offered. It has also, until now, never been requested — in writing, where requests become facts."
+   ],
+   "choices": [
+    {
+     "text": "Text Ms. Delgado, politely and in writing, asking for a make-up date",
+     "next": "noahs_question",
+     "setFlags": [
+      "makeupAsked"
+     ],
+     "addHidden": [
+      "Visit log — cancellation #3; make-up requested in writing"
+     ],
+     "note": "She replies Tuesday: she'll check. The text exists either way. In this system, existing is most of the battle."
+    },
+    {
+     "text": "Absorb it — Noah's foster home is stretched thin, and goodwill matters",
+     "next": "noahs_question",
+     "addHidden": [
+      "Visit log — cancellation #3; no make-up; no request on record"
+     ],
+     "note": "Goodwill does matter. So does the log. The two facts will sit in the same file, unintroduced."
+    }
+   ]
+  },
+  {
+   "id": "noahs_question",
+   "kicker": "Month 14 — Monday, May 4, 2026",
+   "dayOffset": 427,
+   "title": "Why Can't I Sleep at Your House?",
+   "body": [
+    "It comes at a make-up-less Saturday's end, in the foster home's driveway, with Noah's backpack already on: “Why can't I sleep at your house? You HAVE a house. Mrs. Oduya said it's a big house.”",
+    "The big house has eleven bedrooms and one rule, and explaining licensing law to a seven-year-old in a driveway is the kind of parenting this system assigns without a manual.",
+    "You tell him the truth at his size: your house is a house for people getting better, and kids can't sleep there, and that is why Mom is getting a house with his room in it — with the door that closes and the poster wall. He considers this. “Position 214,” he says gravely, repeating what he's heard, and goes in to dinner."
+   ],
+   "choices": [
+    {
+     "text": "Drive back to New Roots and do the week's paperwork like it's a job — because it is one",
+     "next": "payday",
+     "note": "The folder gets a new section that night. You label it HOUSING, in the darkest marker."
+    }
+   ]
+  },
+  {
+   "id": "payday",
+   "kicker": "Month 14 — Thursday, May 7, 2026",
+   "dayOffset": 430,
+   "title": "Pay Stubs and a Teacher's Letter",
+   "body": [
+    "Payday. The stubs go in the folder — twenty-six of them now, a paper year of cafeteria shifts.",
+    "Noah's teacher has sent a note home through the visit bag, addressed to you, which almost no one in this process has thought to do: his reading is up two levels; he tells the class his mom works at the hospital “where the food is medicine.”",
+    "At dinner, the new woman in your old bed — thirty days in, shaky — asks how you got the court to call you “substantial.” You hear yourself say the sentence that runs this whole scenario: “I asked for a copy of my file, back at month four. Everything since then, I've known what it says.” Her eyes widen. “You can DO that?”"
+   ],
+   "choices": [
+    {
+     "text": "Tell her the sentence about the file — and realize you haven't done it since month four",
+     "next": "records",
+     "addHidden": [
+      "Employment — twenty-six pay stubs in the folder"
+     ],
+     "note": "Files keep being written after you stop reading them. Hers is. Yours is."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Month 14 — Thursday, May 14, 2026",
+   "dayOffset": 437,
+   "title": "Asking Again",
+   "body": [
+    "The right did not expire when you used it once. A parent may request their case record — it “shall be released upon request” (55 Pa. Code § 3130.44(d)) — and a case at month fourteen has fourteen months of record, most of it written since you last looked.",
+    "Ms. Whitaker approves of the instinct with unusual warmth. “People think the record request is an accusation,” she says. “It isn't. It's a subscription. You should know what the file says before the judge reads it in June.”",
+    "The request is one page. You have sent this page before. It is heavier this time, because June is on it."
+   ],
+   "choices": [
+    {
+     "text": "Sign and send the request this week",
+     "next": "reveal",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "note": "A stamp, a date, a copy for the folder. The cheapest power in this whole system, exercised twice."
+    },
+    {
+     "text": "Let it ride — your lawyer has the court reports; that may be enough",
+     "next": "counsel_strategy",
+     "note": "Court reports are summaries. You have been taught, by now, what summaries leave out. The lesson and the choice sit together anyway."
+    }
+   ]
+  },
+  {
+   "id": "reveal",
+   "kicker": "Month 14 — Thursday, May 21, 2026",
+   "dayOffset": 444,
+   "title": "The Line That Isn't There",
+   "body": [
+    "The packet comes in a week: ratings first — minimal, then moderate, then the word you've earned, substantial, holding steady since December. The canceled visits, logged flatly. The make-up you requested, noted as “pending.”",
+    "Then you reach the family service plan's housing page, the one with the two referral boxes. Program A: referred, month three, your attendance confirmed in the margin. Program B — the family housing program, the one whose whole purpose is mothers in exactly your position — reads: “Referral — to be sent,” dated month four.",
+    "There is no send date. There is no follow-up note. For thirteen months, while judges asked you about housing, the referral that was supposed to help you get it sat in a box, in the state's own handwriting, unsent. You read the page four times. Then you call Ms. Whitaker and read it to her once, slowly, and the silence on her end has a professional quality, like a held breath in a courtroom."
+   ],
+   "choices": [
+    {
+     "text": "Take the page to your lawyer's office in person",
+     "next": "counsel_strategy",
+     "setFlags": [
+      "referralSeen"
+     ],
+     "addHidden": [
+      "Service plan — housing referral marked 'to be sent,' month 4; never sent",
+      "Internal note — 'Mother compliant; housing is the barrier'"
+     ],
+     "note": "“Don't be angry in June,” she says, spreading the pages. “Be documented in June. Anger fades. This—” she taps the empty box “—testifies.”"
+    }
+   ]
+  },
+  {
+   "id": "counsel_strategy",
+   "kicker": "Month 14 — Monday, May 25, 2026",
+   "dayOffset": 448,
+   "title": "Choosing a Door",
+   "body": [
+    "The whiteboard again: the line, the 15, the three doors. The June review is nine days away. Ms. Whitaker uncaps the marker and looks at you the way she must have looked at juries, once: like the decision is yours and she means it.",
+    "“Relative: Grace's home study came back approved last week — Noah's aunt, two counties away, the holiday house. If he were placed with her, the first exception is simply true. Compelling reason: your waitlist letter, the director's letter, 'substantial' in their own ratings — a documented case that filing in June, weeks before a possible unit, serves no one, least of all Noah. Services: the referral in the empty box — the law's third exception exists for exactly a plan that promised help and didn't send it.”",
+    "“Each door needs its record built this week. We lead with one. Choose like a person who has to live in the outcome — because you do.”"
+   ],
+   "choices": [
+    {
+     "text": "Build the relative record — Grace, and the approved study",
+     "next": "kinship_path",
+     "note": "A true fact, with a study attached, two counties away."
+    },
+    {
+     "text": "Build the compelling-reason packet — the whole paper year",
+     "next": "compelling_path",
+     "note": "Position 214, in writing, with everything around it."
+    },
+    {
+     "text": "Put the missing services on the record — the empty box, in a lawyer's letter",
+     "next": "services_path",
+     "note": "Short, dated, factual. Let the file correct itself out loud."
+    },
+    {
+     "text": "Keep your head down — 'substantial' should speak for itself",
+     "next": "thin_path",
+     "note": "Ratings speak in summaries. June will be conducted in documents."
+    }
+   ]
+  },
+  {
+   "id": "kinship_path",
+   "kicker": "Month 14 — Thursday, May 28, 2026",
+   "dayOffset": 451,
+   "title": "Grace's House",
+   "body": [
+    "Grace is Noah's father's sister, which in this case is not a complication but a bridge — she kept Noah for the whole summer he was four, and her study, begun in March, has come back approved: home, clearances, the spare room already painted the blue he picked from a photograph.",
+    "A move to Grace is not reunification. Noah would still be in care; your case would still be open; the goal would still be your home. But he would be with family — and the federal rule's first exception is not an argument. It is a description: a child being cared for by a relative.",
+    "Ms. Whitaker files the study with the court this week, with Grace's letter and the holiday photographs, so that in June the description is available to be true."
+   ],
+   "choices": [
+    {
+     "text": "Ask the agency to support the kinship move at the June review",
+     "next": "review_kin",
+     "setFlags": [
+      "kinshipReady"
+     ],
+     "note": "Ms. Delgado, to her credit, says the study is 'one of the better ones we've had this year.'"
+    },
+    {
+     "text": "Ask for two weekends of overnights at Grace's first, so the move is gentle",
+     "next": "review_kin",
+     "note": "Slow is not the same as stuck. The judge has grandchildren; judges notice pacing."
+    }
+   ]
+  },
+  {
+   "id": "compelling_path",
+   "kicker": "Month 14 — Thursday, May 28, 2026",
+   "dayOffset": 451,
+   "title": "The Packet",
+   "body": [
+    "It assembles on Ms. Whitaker's conference table like a small, unglamorous wall: the waitlist letter with position 214 and April's date; the housing office's second letter — a unit class expected to open in July; the director's letter with its honest locked door; twenty-six pay stubs; the treatment certificate; the teacher's note about food being medicine; and the court's own word from April: substantial.",
+    "“A compelling reason isn't a feeling the judge has,” Ms. Whitaker says, “It's a reason, documented, in the case plan, for why filing a petition would not be in Noah's best interest. So we don't ask the court to feel. We hand it the documentation and ask it to write one sentence.”",
+    "The packet goes to the agency and the court this week — early, so that June is a discussion and not an ambush. Ambushes are for people who don't intend to win twice."
+   ],
+   "choices": [
+    {
+     "text": "File the packet and ask for the compelling-reason finding in writing",
+     "next": "review_compelling",
+     "setFlags": [
+      "packetBuilt"
+     ],
+     "note": "One sentence is all you need. Sentences, in files, are load-bearing."
+    }
+   ]
+  },
+  {
+   "id": "services_path",
+   "kicker": "Month 14 — Thursday, May 28, 2026",
+   "dayOffset": 451,
+   "title": "A Short Letter",
+   "body": [
+    "The letter is one page, and Ms. Whitaker drafts it the way she does everything: like it's already being read aloud by someone skeptical.",
+    "It lists, with dates: the family service plan's identification of family housing as a necessary service; the referral marked “to be sent” in month four; the absence of any send date through month fourteen; the three canceled Saturday visits and the make-up requested and not yet scheduled. It asks the agency to confirm or correct each item before the June review, and to provide the referral now, fourteen months in, with the June timeline noted.",
+    "“We are not accusing anyone of villainy,” she says. “Referrals fall through cracks in every office in America. We are establishing, on the record, that the service was identified, was necessary, and was not provided. The law has a door shaped exactly like that fact. We would simply like it opened.”"
+   ],
+   "choices": [
+    {
+     "text": "Sign it and send it — agency, court, and a copy for the folder",
+     "next": "review_services",
+     "setFlags": [
+      "servicesLetter"
+     ],
+     "addHidden": [
+      "Counsel's letter — the services gap, placed on the record with dates"
+     ],
+     "note": "A letter in the file is a fact. A fact in June is a door."
+    },
+    {
+     "text": "Hold it unless June goes badly — no need to embarrass anyone",
+     "next": "review_services",
+     "note": "Ms. Whitaker sends it anyway, after a look at you that contains multitudes, because 'unless it goes badly' is a strategy for a month that has already happened."
+    }
+   ]
+  },
+  {
+   "id": "thin_path",
+   "kicker": "Month 14 — Thursday, May 28, 2026",
+   "dayOffset": 451,
+   "title": "Head Down",
+   "body": [
+    "The last days of May are good days, taken singly. A Saturday visit that happens. Noah's reading, out loud, mostly smooth. Your counselor uses your chart with the new women.",
+    "What does not happen: paper. No packet is filed, no letter is sent, no study is attached to anything. The file that will be open in front of the judge in June is the file as the system wrote it — a strong summary, a proud rating, an open housing goal, and a federal timeline arriving on schedule like weather.",
+    "You have done the work. The question June asks is narrower than the work: not what you have done, but what is documented as a reason."
+   ],
+   "choices": [
+    {
+     "text": "Go to the June review with your folder and your year",
+     "next": "review_thin",
+     "addHidden": [
+      "File — no exception documentation as of month 14"
+     ],
+     "note": "The folder is real. Whether the court can use it depends on whether it becomes the court's paper too."
+    }
+   ]
+  },
+  {
+   "id": "review_kin",
+   "kicker": "Month 15 — Wednesday, June 3, 2026",
+   "dayOffset": 457,
+   "title": "The Fifteen-Month Review — Kinship",
+   "body": [
+    "Fifteen months. The date the agency's lawyer named in April arrives in June wearing ordinary clothes: a Wednesday, a courtroom, a flag by the door.",
+    "But the record arriving with it is not the record of April. Grace's approved study is in the file. The agency's own report recommends the kinship placement. The judge asks Noah's advocate one question — “Does he know this home?” — and the answer is a summer, a blue room, and a photograph.",
+    "When a child is being cared for by a relative, the filing duty the lawyer described simply does not attach in the same way — the exception is the placement itself. The judge turns to the placement question, which is the only question left in the room."
+   ],
+   "choices": [
+    {
+     "text": "Say yes — move him to Grace's this month, with your Saturdays expanded",
+     "next": "end_kinship",
+     "note": "Not home. Closer to home than any foster address has ever been. Family is a direction, not just a description."
+    },
+    {
+     "text": "Ask for the two-weekend transition you planned — slow, and on the record",
+     "next": "end_kinship",
+     "note": "The judge agrees, in the tone of a person recognizing her own family's handwriting in someone else's plan."
+    }
+   ]
+  },
+  {
+   "id": "review_compelling",
+   "kicker": "Month 15 — Wednesday, June 3, 2026",
+   "dayOffset": 457,
+   "title": "The Fifteen-Month Review — The Packet",
+   "body": [
+    "The packet is in the file. The judge has read it — you can tell, because she asks the agency's lawyer about position 214 by number, the way people cite things they have actually read.",
+    "The agency's lawyer stands. Somewhere offstage, conferences have happened: the agency, rather than argue that June requires a filing its own ratings contradict, has drafted the sentence Ms. Whitaker described in April — a documented compelling reason, entered in the case plan, that filing a termination petition now would not be in Noah's best interest.",
+    "The judge asks whether the housing picture is likely to change soon. Two answers are possible in this room, and for once, both of them are yours to have lived."
+   ],
+   "choices": [
+    {
+     "text": "The agency documents the compelling reason and holds the petition — 'review in ninety days'",
+     "next": "end_deferred",
+     "note": "A sentence in a case plan. You have learned what sentences in files can carry."
+    },
+    {
+     "text": "Hear the housing office's news, delivered by your lawyer like a weather change: your number has come up",
+     "next": "keys",
+     "note": "Position 214 was a fact. Facts, unlike fears, sometimes finish."
+    }
+   ]
+  },
+  {
+   "id": "keys",
+   "kicker": "Month 15 — Friday, June 12, 2026",
+   "dayOffset": 466,
+   "title": "A Key That Is Yours",
+   "body": [
+    "The unit is on the second floor: two bedrooms, a kitchen window over a parking lot that will have to do as a view until the poster wall goes up in the small room — Noah's room, with a door that closes.",
+    "The lease has your name on it alone, which has not been true of any document that mattered in fifteen months. The voucher covers its share; the envelope in your folder covers the movers and the first groceries; Mrs. Oduya sends Noah's things in labeled bags, with the card-game deck on top.",
+    "He sleeps there that Friday under the plan's trial terms — a guest in the apartment that is about to be his home, in the only bureaucracy of hope you have ever liked: almost, documented, dated."
+   ],
+   "choices": [
+    {
+     "text": "Stand in his doorway after he's asleep, once, before the month-16 review",
+     "next": "end_reunified",
+     "cash": -60,
+     "note": "The poster wall can wait until it's official. The standing cannot."
+    }
+   ]
+  },
+  {
+   "id": "review_services",
+   "kicker": "Month 15 — Wednesday, June 3, 2026",
+   "dayOffset": 457,
+   "title": "The Fifteen-Month Review — The Empty Box",
+   "body": [
+    "Ms. Whitaker's letter is in the file, and files, in June, get read aloud by their consequences.",
+    "The agency does not contest the letter. Its own plan said the housing program was necessary for Noah to come home safely; its own page shows the referral unsent for fourteen months; its own log shows the make-up visit still “pending.” The agency's lawyer, to her professional credit, says the words plainly: the referral has now been sent, the make-ups are scheduled, and the agency is not prepared to say the plan was fully provided — because it wasn't.",
+    "The law's third exception exists for this exact shape of fact. The judge's pen moves. The word 'documented' turns out to be the hinge the whole spring swung on."
+   ],
+   "choices": [
+    {
+     "text": "Listen to the pen, and to your own breathing, in that order",
+     "next": "end_deferred",
+     "note": "Not a victory speech. An entry, in a file, where the right people will find it in September."
+    }
+   ]
+  },
+  {
+   "id": "review_thin",
+   "kicker": "Month 15 — Wednesday, June 3, 2026",
+   "dayOffset": 457,
+   "title": "The Fifteen-Month Review — The Thin Record",
+   "body": [
+    "The review is short. The worker's summary is fair and even warm: substantial progress, one barrier, housing unresolved, waitlist position — the judge asks — and the answer comes from memory: “Around two hundred, I believe.”",
+    "Your folder is on your lap, with the letter you never requested a copy of in writing, the rating you never filed, the referral whose status you never checked. The judge can only rule on the record in front of her, and the record in front of her contains a strong mother and an unbuilt exception.",
+    "The agency's lawyer rises and says the sentence the spring was always going to produce somewhere: the agency will file."
+   ],
+   "choices": [
+    {
+     "text": "Look at Noah's photograph on the folder, and then at your lawyer",
+     "next": "end_filed",
+     "note": "Ms. Whitaker is already writing. Filing, you are about to learn, is a door too — a harder one, with its own clocks."
+    }
+   ]
+  },
+  {
+   "id": "end_kinship",
+   "kicker": "Month 15 — Tuesday, June 9, 2026",
+   "dayOffset": 463,
+   "title": "Ending — Family, While You Finish",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Underneath this path sat a ratings climb — minimal, moderate, substantial — and one durable gap shaped like an apartment. What changed in June was not your effort, which the file already showed. It was the file's contents: an approved kinship study, filed early, with a summer and a blue room behind it. Notice what is not on the list of things that saved this month: nobody's speech about your worthiness. A description became true, on paper, before a deadline.",
+    "THE LAW UNDER THIS PATH: At 15 of the most recent 22 months in foster care, the agency must file or join a petition to terminate parental rights — unless an exception applies (42 U.S.C. § 675(5)(E)). The first exception is this ending: the child is being cared for by a relative. Noah's placement with Grace means the petition is not filed; your case remains open with reunification as its goal, now pursued from inside the family instead of outside it. Nothing about today terminates or restores your rights — those questions were never reached, which is precisely what an exception is for.",
+    "THE HONEST PART: This ending turned on a relative existing, being willing, being study-able, and finishing in time — a sum of other people's lives and luck as much as your work. A mother identical to you, with an aunt one county farther or one month slower, reaches a different June. The system's clocks do not grade effort; they grade documentation and dates. What your choices changed was which facts the calendar met when it arrived."
+   ]
+  },
+  {
+   "id": "end_deferred",
+   "kicker": "Month 15 — Tuesday, June 9, 2026",
+   "dayOffset": 463,
+   "title": "Ending — Documented",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Two shapes of fact did the work on the paths to this ending. On one: a paper year — a waitlist position with a date, a director's honest letter, twenty-six pay stubs, the court's own word, substantial — assembled into the one sentence that matters, a documented compelling reason. On the other: an empty box — a referral marked “to be sent” in month four and never sent, three canceled Saturdays, a make-up “pending” — a service the plan itself called necessary, never actually provided. Either way, the June decision was made out of documents. The file, read in time, was the case.",
+    "THE LAW UNDER THIS PATH: The agency's duty to file a termination petition at 15 of the most recent 22 months carries three exceptions (42 U.S.C. § 675(5)(E)): the child is being cared for by a relative; the agency has documented in the case plan a compelling reason that filing would not be in the child's best interest; or the agency has not provided the services the plan identified as necessary for the child's safe return. Your June ended in the second or third of those doors — the filing is deferred, not forbidden forever: the case continues, reviews continue, and the housing question now has the agency's own commitments attached to it, with dates. Had a petition been filed, the agency would still have had to prove statutory grounds by clear and convincing evidence at a separate hearing. The exceptions matter because they keep that hearing from being scheduled on an incomplete record.",
+    "THE HONEST PART: A deferral is a reprieve with homework, not a rescue. The waitlist is still a list; the referral, sent at last, leads to a program with its own line. Parents who reach this ending have bought the most valuable and least sentimental thing this system sells: time, in writing. What they do with September decides the next June — and other parents, with thinner files or slower mail, watched the same spring end in a filing. The difference was documentation and timing. It usually is."
+   ]
+  },
+  {
+   "id": "end_reunified",
+   "kicker": "Month 16 — Monday, July 6, 2026",
+   "dayOffset": 490,
+   "title": "Ending — Home at Month Sixteen",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A ratings climb, a waitlist letter with a number that eventually finished, and a June in which the agency — presented with the whole paper year — documented its way to patience instead of filing its way to a petition. The unit did not arrive because you deserved it more in June than in March. It arrived because lists move at the speed they move. What you controlled was whether, when your number came up, the file told a story a judge could act on. It did.",
+    "THE LAW UNDER THIS PATH: The fifteen-month date (June 3, 2026 — fifteen months after Noah's March 2025 placement) triggered the agency's duty to file or document an exception (42 U.S.C. § 675(5)(E)). Your reunification did not defeat that law; it satisfied the purpose the law keeps pointing at — a permanent home, arrived at before the petition track became the only track left. Noah returns under the court's order at the month-16 review, with the case closing behind him on the ordinary terms: a period of supervision, then the file's long quiet. Your record request back in May (55 Pa. Code § 3130.44(d)) mattered here the way it matters everywhere in this system: you negotiated June knowing what the file said, including the parts no one had planned to read aloud.",
+    "THE HONEST PART: Sixteen months is most of a second-grader's memory of first grade. Noah will remember the foster home's driveway and the poster wall going up, in an order only he knows. This ending is the system's best one, and it still cost a childhood season — which is why the law puts clocks on agencies and not only on parents, and why the exceptions exist for the cases where the clocks and the truth disagree. Workers, waitlists, a director's honesty, a lawyer's whiteboard, and luck all hold pieces of this. Your piece was the record. You kept it like it was Noah's, because it was."
+   ]
+  },
+  {
+   "id": "end_filed",
+   "kicker": "Month 15 — Saturday, June 6, 2026",
+   "dayOffset": 460,
+   "title": "Ending — The Petition Is Filed",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A strong summary and an unbuilt exception. Your ratings climb was real; so was the waitlist letter you took verbally, the director's letter never requested for the file, the kinship study never filed, and — on the page nobody asked for — a referral marked “to be sent” in month four, still unsent, which might have been the strongest document in the case. June was not decided by your worth or even by your progress. It was decided by which facts existed in the court's paper by June 3. The others existed in the world. The world is not the record.",
+    "THE LAW UNDER THIS PATH: At 15 of the most recent 22 months, with no exception documented, the agency filed as the law directs (42 U.S.C. § 675(5)(E)). Read the last part of that sentence again: filed. A petition is an accusation with a court date, not a termination. Before any rights could be ended, the agency would have to prove statutory grounds by clear and convincing evidence at a hearing months away, with your counsel beside you, your record — the whole record, including the empty box — admissible to the story, and Noah's interests examined on their own. Parents win those hearings. Parents also build, in the months before them, exactly the documentation this spring was for. The work is not over. It has changed rooms.",
+    "THE HONEST PART: This ending is the one the spring was quietly organized to avoid, and reaching it does not make you the cautionary tale of your own life. It makes you a person who did the human work — treatment, shifts, Saturdays — inside a system whose decisive currency is paper filed by dates. Another caseworker, a checked referral, a lawyer who drew the map earlier, a waitlist that moved in May: the same mother lands in a different ending, as the same mother reached this one. What remains fully yours is the record from here — and the record, as every scenario in this series insists, is still being written."
+   ]
+  }
+ ]
+}

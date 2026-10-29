@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The School Note</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The School Note",
+  "subtitle": "Scenario 7 — The School Note (a fictional composite)",
+  "startDateISO": "2026-09-08",
+  "startNode": "start",
+  "startCash": 130,
+  "tier": "Foundation",
+  "summary": "A truancy warning after a bus-route change and asthma appointments — answer in writing, with proof, by the date."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Tuesday, September 8, 2026",
+   "dayOffset": 0,
+   "title": "The Letter from School",
+   "body": [
+    "Your son Eli is nine, and small for it, and brave about exactly one thing: his inhaler, which he handles like a tool he respects. He has asthma — managed, documented, and mostly boring, which is how his doctor likes it.",
+    "This fall the district changed the bus routes. Eli's pickup moved twenty minutes earlier and two streets over, and the new stop has no shelter and a crossing guard who arrives when she arrives. Twice this month he has missed the bus entirely. Three times he has been late. And twice, breathing appointments across town ran long and swallowed a school morning."
+   ],
+   "choices": [
+    {
+     "text": "Read the letter that came home in Eli’s backpack tonight",
+     "next": "n2",
+     "note": "Backpack letters are the school’s way of whispering. This one is not whispering."
+    },
+    {
+     "text": "Put it with the other school papers and deal with it this weekend",
+     "next": "n2",
+     "note": "The letter has a date on it. Dates in letters are rarely decoration."
+    }
+   ]
+  },
+  {
+   "id": "n2",
+   "kicker": "Day 1 — Wednesday, September 9, 2026",
+   "dayOffset": 1,
+   "title": "Seven Absences, It Says",
+   "body": [
+    "The letter is a warning: Eli's attendance shows seven absences and five tardies since September, and the pattern 'must improve.' It asks for a written response by Sunday, September 20, 2026, and it says a copy has gone to the family's support worker — which means it is in two files now, not one.",
+    "What the letter does not say: bus route, crossing guard, pulmonology. Letters like this count. Counting is all they do."
+   ],
+   "choices": [
+    {
+     "text": "Call Ms. Ruiz, your family support worker, and tell her the letter came",
+     "next": "records",
+     "note": "She has seen the copy. \"I wondered when you’d call,\" she says, in a tone that could go either way."
+    },
+    {
+     "text": "Plan to explain it all at the next home visit",
+     "next": "records",
+     "note": "The home visit is in three weeks. The letter’s deadline is in twelve days. One of those dates matters to the letter."
+    }
+   ]
+  },
+  {
+   "id": "records",
+   "kicker": "Day 2 — Thursday, September 10, 2026",
+   "dayOffset": 2,
+   "title": "The Record, Requested",
+   "body": [
+    "Before you answer a letter, it helps to know exactly what it was answering. Ms. Ruiz can show you the attendance summary the school sent — across a desk, briefly — or you can have your own copy, to sit with at your own table.",
+    "You ask, in writing, for a copy of the attendance summary and the school's referral note from your record, so your response can meet the actual numbers."
+   ],
+   "choices": [
+    {
+     "text": "File the written request for the attendance summary and referral note",
+     "next": "prep",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records — parent requested copies of the attendance summary and school referral"
+     ],
+     "note": "Under 55 Pa. Code § 3130.44(d), the record is released on request. The summary arrives the next morning: seven absences, five tardies — and no codes, no notes, no reasons attached to any of them."
+    },
+    {
+     "text": "Work from the letter’s numbers — seven and five are close enough",
+     "next": "prep",
+     "note": "Close enough is how a response ends up answering the wrong absence."
+    }
+   ]
+  },
+  {
+   "id": "prep",
+   "kicker": "Day 3 — Friday, September 11, 2026",
+   "dayOffset": 3,
+   "title": "Proof, Gathered Slowly",
+   "body": [
+    "The proof exists. It is just scattered like Eli's homework: the district's route-change notice (mailed in August, filed by you under 'school stuff'), the clinic's appointment slips for the two breathing visits, and the pharmacy printout showing the new inhaler picked up on time, every time.",
+    "Nobody assembled it because assembling things is a job, and it was nobody's job. It is about to be yours."
+   ],
+   "choices": [
+    {
+     "text": "Spend the evening assembling it: route notice, clinic slips, pharmacy printout",
+     "next": "eve",
+     "setFlags": [
+      "proofGathered"
+     ],
+     "addHidden": [
+      "Proof — district route-change notice and clinic slips collected by parent"
+     ],
+     "note": "Three documents and a timeline. The seven absences shrink, on paper, into two stories — a bus and a pair of lungs — both of them true."
+    },
+    {
+     "text": "Decide the letter can be answered from memory — you lived those mornings",
+     "next": "eve",
+     "note": "You did. The file, however, was not there, and the file is who you are answering."
+    }
+   ]
+  },
+  {
+   "id": "eve",
+   "kicker": "Day 4 — Saturday, September 12, 2026",
+   "dayOffset": 4,
+   "title": "The Draft",
+   "body": [
+    "At the kitchen table, with the summary on one side and the proof on the other, the response almost writes itself — or it would, if kitchen tables wrote letters. They don't. Pens do, held by tired people.",
+    "The deadline is Sunday, September 20, 2026. The school office, the support worker, and the file are all waiting to see what kind of answer yours will be: a document, or a conversation they have to remember for you."
+   ],
+   "choices": [
+    {
+     "text": "Write the draft tonight, while the proof is warm",
+     "next": "split",
+     "setFlags": [
+      "draftWritten"
+     ],
+     "note": "Four paragraphs. No anger, no apology tour — just dates, documents, and a plan for the new bus stop."
+    },
+    {
+     "text": "Sleep on it — there are still days left",
+     "next": "split",
+     "note": "There are. Days left is a resource that spends itself."
+    }
+   ]
+  },
+  {
+   "id": "split",
+   "kicker": "Day 5 — Sunday, September 13, 2026",
+   "dayOffset": 5,
+   "title": "Send It, or Say It",
+   "body": [
+    "Morning. The response is drafted — or mostly drafted, in the way of things written at kitchen tables. The school office is on your way to work. Ms. Ruiz's next visit is not for weeks, but her phone number is right there, and explaining feels so much more human than envelopes.",
+    "The letter asked for a written response by a date. That request was not a formality. It was the whole game, stated plainly."
+   ],
+   "choices": [
+    {
+     "text": "Send the written response — school and Ms. Ruiz — with the proof attached, before the deadline",
+     "next": "p1",
+     "setFlags": [
+      "responseSent"
+     ],
+     "addHidden": [
+      "Response — written response with documentation received before the deadline"
+     ],
+     "note": "Two copies mailed, one hand-carried, receipts kept. The answer now lives in every file the question lived in."
+    },
+    {
+     "text": "Wait and explain it properly, in person, at the home visit",
+     "next": "u1",
+     "addHidden": [
+      "Response — no written response received by the deadline"
+     ],
+     "note": "The deadline passes quietly, the way deadlines do when nobody is watching them for you."
+    }
+   ]
+  },
+  {
+   "id": "p1",
+   "kicker": "Day 7 — Tuesday, September 15, 2026",
+   "dayOffset": 7,
+   "title": "Received and Stamped",
+   "body": [
+    "The school secretary stamps your copy without looking up, which is the sound of a system working. Ms. Ruiz calls two days later, and her tone has changed — the letter is in front of her, with its little army of attachments.",
+    "'The route change,' she says. 'Nobody told us the stop moved.' Nobody had. Telling them, in writing, with the district's own notice attached, was the entire trick."
+   ],
+   "choices": [
+    {
+     "text": "Ask her what happens to the absences now that the proof is in",
+     "next": "p2",
+     "note": "The two clinic mornings can be coded as medical. The bus mornings need a plan, not a code — and plans, she says, are next."
+    },
+    {
+     "text": "Thank her and let the process take it from here",
+     "next": "p2",
+     "note": "The process is people with paper. Right now, the paper is good."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "kicker": "Day 8 — Wednesday, September 16, 2026",
+   "dayOffset": 8,
+   "title": "Codes and Plans",
+   "body": [
+    "The clinic absences are the easy part — slips in hand, they become 'medical' in the record. The bus mornings are the real item: five tardies and two missed buses, caused by a stop that moved and a guard who comes when she comes.",
+    "Ms. Ruiz proposes a short attendance plan: a neighbor two doors down — whose daughter rides the same bus — as the bad-morning backup, and a call to the school on any morning the bus fails, before first period."
+   ],
+   "choices": [
+    {
+     "text": "Agree to the plan, and ask for it in writing with your name spelled right",
+     "next": "p3",
+     "setFlags": [
+      "planInWriting"
+     ],
+     "note": "A plan in writing is a plan you can be measured against — which cuts both ways, and both ways are fairer than being measured against a rumor."
+    },
+    {
+     "text": "Agree warmly and skip the writing part",
+     "next": "u3",
+     "addHidden": [
+      "Plan — attendance plan agreed verbally; no written copy to parent"
+     ],
+     "note": "Warm agreement, cool record. If the plan is ever disputed, the file will contain a plan-shaped space."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "kicker": "Day 10 — Friday, September 18, 2026",
+   "dayOffset": 10,
+   "title": "A Morning the Bus Fails",
+   "body": [
+    "On Friday, September 18, 2026, the bus simply does not come — the plan's first test, arriving right on schedule, as tests do. The neighbor's daughter knocks at 7:05. By 7:20 Eli is in a car he knows, with a seatbelt he can work, driven two miles by a woman who has known him since he was four.",
+    "At 7:40 you call the school, per the plan, before first period. The absence-that-wasn't is logged as a plan success instead — your call, timed and noted."
+   ],
+   "choices": [
+    {
+     "text": "Note the morning in your own records tonight — date, time, who drove",
+     "next": "p4",
+     "setFlags": [
+      "ownNotes"
+     ],
+     "note": "Your notes and the school’s now agree. Agreement between records is the quietest form of winning."
+    },
+    {
+     "text": "Skip the notes — the day worked out",
+     "next": "p4",
+     "note": "It did. Worked-out days still benefit from being written down, because the next reader was not there."
+    }
+   ]
+  },
+  {
+   "id": "p4",
+   "kicker": "Day 12 — Sunday, September 20, 2026",
+   "dayOffset": 12,
+   "title": "The Deadline, Met",
+   "body": [
+    "The response deadline arrives and finds nothing to punish: the letter is answered, the absences are coded, the plan is written and already tested once. Ms. Ruiz closes the school item in her review with a sentence you get to hear read aloud.",
+    "'Family responded in writing with documentation,' she reads. 'Attendance plan in place.' It is not poetry. It is better than poetry. It is a file, behaving."
+   ],
+   "choices": [
+    {
+     "text": "Ask for a copy of the review page for your records",
+     "next": "p5",
+     "setFlags": [
+      "copyFiled"
+     ],
+     "note": "She prints it while you wait. Your side of this story is now in two buildings and your own folder, saying the same thing."
+    },
+    {
+     "text": "Let the review live in her file",
+     "next": "p5",
+     "note": "Her file is a fine home for it. Yours would have been a second one."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "kicker": "Day 14 — Tuesday, September 22, 2026",
+   "dayOffset": 14,
+   "title": "The Follow-Up Letter",
+   "body": [
+    "A follow-up letter comes from the school: the warning is resolved, the plan continues, thank you for your response. It is the kind of letter that asks for nothing. It still gets opened carefully, at the kitchen table, the way all letters get opened now.",
+    "There is a line at the bottom to acknowledge receipt."
+   ],
+   "choices": [
+    {
+     "text": "Sign the acknowledgment after reading it — and file the letter",
+     "next": "end_good",
+     "setFlags": [
+      "readBeforeSigning"
+     ],
+     "note": "Resolved, in writing, in your folder. The warning letter and its answer will outlive the bus route that caused them."
+    },
+    {
+     "text": "Sign it at the door for the mail carrier’s convenience",
+     "next": "end_partial",
+     "note": "You miss the middle paragraph: the resolved warning stays on Eli’s school record as \"resolved after escalation.\" Nothing escalated. Nobody will ever know that but you — and you didn’t read it."
+    }
+   ]
+  },
+  {
+   "id": "end_good",
+   "kicker": "Day 16 — Thursday, September 24, 2026",
+   "dayOffset": 16,
+   "title": "Answered, With Proof",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The warning is resolved on the strength of an answer: written, documented, and early. The absences are coded for what they were — two medical mornings and a bus route the district moved — and the plan that replaced the warning was built with you, not handed to you.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), your copy of the attendance summary came from your record, on request. Answering the school's actual numbers — instead of the letter's summary of them — is what made the response land.",
+    "Notice what won: not an argument, an assembly. Route notice, clinic slips, pharmacy printout, one kitchen-table letter. The school counted absences; you supplied the mornings.",
+    "Honesty requires this: a school office can lose a stamped letter, and a support worker can read proof ungenerously. Ms. Ruiz read it fairly. Workers vary, offices vary, luck varies. A written answer is the only version of your mornings that attends every meeting after you."
+   ]
+  },
+  {
+   "id": "u1",
+   "kicker": "Day 7 — Tuesday, September 15, 2026",
+   "dayOffset": 7,
+   "title": "The Quiet Deadline",
+   "body": [
+    "The deadline passes on an ordinary day. No one calls about it. That is the thing about deadlines in letters: they do not punish you loudly. They simply move your name from one mental pile to another in an office you will never see.",
+    "In the school file, the warning now carries a second line: 'No response received.' Four words, and every reader from now on will meet them before they meet you."
+   ],
+   "choices": [
+    {
+     "text": "Call Ms. Ruiz now and tell her the explanation, before the visit",
+     "next": "u2",
+     "note": "Late is not never. But late is a genre, and you are now writing in it."
+    },
+    {
+     "text": "Wait for the home visit — it’ll be better face to face",
+     "next": "u2",
+     "note": "It will be warmer face to face. It will also be three weeks after the letter asked, in writing, by a date."
+    }
+   ]
+  },
+  {
+   "id": "u2",
+   "kicker": "Day 8 — Wednesday, September 16, 2026",
+   "dayOffset": 8,
+   "title": "Explaining, Late",
+   "body": [
+    "On the phone, the mornings sound like what they were: a bus, a boy, a pair of lungs, a mother doing arithmetic at a curb. Ms. Ruiz listens like a person. Then she does the thing people in her job must do — she asks what you can show her.",
+    "Memory is vivid on your side of the phone. On her side, there is a form, and the form has boxes, and none of the boxes is labeled 'she sounded sincere.'"
+   ],
+   "choices": [
+    {
+     "text": "Gather the proof now — route notice, clinic slips — and send the written response, late, with them attached",
+     "next": "p3",
+     "setFlags": [
+      "responseSent"
+     ],
+     "addHidden": [
+      "Response — written response with documentation received after the deadline"
+     ],
+     "note": "Late paper is still paper. It goes into the file with a date on it, and files are read in order — your answer will sit right behind the \"no response\" line and correct it forever."
+    },
+    {
+     "text": "Tell her the proof is all at home somewhere, and you’ll bring it to the visit",
+     "next": "u3",
+     "addHidden": [
+      "Response — explanation given by phone; documentation not yet provided"
+     ],
+     "note": "Somewhere is not an address a file can use."
+    }
+   ]
+  },
+  {
+   "id": "u3",
+   "kicker": "Day 10 — Friday, September 18, 2026",
+   "dayOffset": 10,
+   "title": "The Plan, Handed Down",
+   "body": [
+    "At the home visit — moved up, the way unanswered warnings move things up — the plan arrives already written: stricter than the one in the other version of this story, because it was built from a file with an unanswered warning in it. Daily check-ins for a month. A requirement to call the agency — not the school — on any absence, before 8 a.m. A review in sixty days.",
+    "Eli's mornings have not changed. What changed is who authored the plan about them, and how much trust its terms assume."
+   ],
+   "choices": [
+    {
+     "text": "Read the plan carefully and ask what would shorten the check-in period",
+     "next": "u4",
+     "note": "A fair question, and she gives a fair answer: a clean month, documented. Documented is doing heavy lifting in that sentence."
+    },
+    {
+     "text": "Sign it to get the meeting over with",
+     "next": "u4",
+     "note": "It is signed either way. The difference is whether you know what it says."
+    }
+   ]
+  },
+  {
+   "id": "u4",
+   "kicker": "Day 12 — Sunday, September 20, 2026",
+   "dayOffset": 12,
+   "title": "A Clean Month, Documented",
+   "body": [
+    "She offers the door plainly: one month of mornings, documented — calls made, slips kept, the bus plan in writing — and the check-ins end early and the warning is marked resolved-with-monitoring instead of open.",
+    "It is the same work as the letter would have been. It is simply later, and louder, and done under supervision instead of at a kitchen table."
+   ],
+   "choices": [
+    {
+     "text": "Do the month in writing — every call logged, every slip filed — and send the packet at month’s end",
+     "next": "p5",
+     "setFlags": [
+      "packetSent"
+     ],
+     "addHidden": [
+      "Documentation — parent submitted a documented month of attendance records"
+     ],
+     "note": "The packet goes in complete. Whatever the review concludes, the file’s last word about Eli’s mornings will be yours and dated."
+    },
+    {
+     "text": "Do the month and trust the check-ins to speak for themselves",
+     "next": "u5",
+     "note": "Check-ins speak in checkboxes. Your packet would have spoken in sentences."
+    }
+   ]
+  },
+  {
+   "id": "u5",
+   "kicker": "Day 14 — Tuesday, September 22, 2026",
+   "dayOffset": 14,
+   "title": "Sixty Days",
+   "body": [
+    "The month passes cleanly — because the mornings were never the problem the letter imagined. Eli rides the neighbor's car twice, the bus mostly behaves, the inhaler does its quiet work.",
+    "What remains open is the shape of the ending: whether the file closes this chapter with your documentation in it, or with the school's count and the agency's plan and nothing in your hand at all."
+   ],
+   "choices": [
+    {
+     "text": "Wait for the review letter",
+     "next": "end_partial",
+     "note": "It will come. They always come. The question was only ever what would be in the file when it was written."
+    }
+   ]
+  },
+  {
+   "id": "end_partial",
+   "kicker": "Day 16 — Thursday, September 24, 2026",
+   "dayOffset": 16,
+   "title": "A Warning Left Unanswered",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "The warning resolved eventually — the mornings were always explainable — but it resolved on the system's schedule and the system's terms: a plan handed down instead of built, a month of check-ins, and a file whose first draft of your family was a count without reasons. Eli stayed home throughout. What was lost was authorship.",
+    "The law inside this story: under 55 Pa. Code § 3130.44(d), the attendance summary in your record was yours for the asking, early — answering the real numbers, with proof attached, is a different letter than answering a warning from memory.",
+    "Letters that ask for a written response by a date are not being formal. They are telling you the rules of the room your family will be discussed in: paper, dated, filed. This scenario is about answering in the room's language.",
+    "Honesty requires this: Ms. Ruiz offered a genuine repair door, and many workers would not have. A different office escalates an unanswered warning further and faster. You cannot choose the reader. You can choose whether your mornings exist in the file before the reader forms an opinion."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s7';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

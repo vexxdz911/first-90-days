@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The First 90 Days — The Night Shift</title>
+<style>
+  :root{
+    --ink:#14181d; --paper:#f7f5f0; --card:#ffffff; --line:#14181d;
+    --accent:#0b5394; --accent-ink:#ffffff; --danger:#8b1a1a; --ok:#14532d;
+    --muted:#3d4750;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:18px;line-height:1.55;}
+  header#topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;
+    justify-content:space-between;gap:12px;padding:10px 14px;
+    background:var(--ink);color:#fff;}
+  header#topbar .brand{font-weight:700;font-size:1rem;letter-spacing:.02em;}
+  #quickExitBtn{background:#ffd23f;color:#14181d;border:2px solid #14181d;border-radius:8px;
+    font-size:1rem;font-weight:700;min-height:48px;padding:8px 16px;cursor:pointer;}
+  main#app{max-width:680px;margin:0 auto;padding:18px 16px 48px;}
+  h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em;}
+  h2{font-size:1.45rem;line-height:1.25;margin:.2em 0 .4em;}
+  .subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 14px;}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;
+    color:var(--accent);margin:0 0 6px;}
+  .card{background:var(--card);border:2px solid var(--line);border-radius:12px;
+    padding:16px;margin:14px 0;}
+  .disclaimer{font-weight:700;}
+  .warning{border-color:var(--danger);}
+  .warning h3{color:var(--danger);margin-top:0;}
+  .btn{display:block;width:100%;min-height:56px;margin:10px 0;padding:14px 16px;
+    font-size:1.05rem;font-weight:600;text-align:left;border-radius:10px;cursor:pointer;
+    background:var(--card);color:var(--ink);border:2px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+    text-align:center;}
+  .btn.center{text-align:center;}
+  .hud{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;
+    border-bottom:3px solid var(--line);padding-bottom:10px;margin-bottom:6px;}
+  .hud .date{font-weight:700;font-size:1.05rem;}
+  .hud .cash{font-weight:700;}
+  .deadline{background:var(--danger);color:#fff;border-radius:10px;
+    padding:12px 14px;margin:12px 0;font-weight:700;}
+  .panel{border:2px dashed var(--muted);border-radius:12px;padding:14px 16px;margin:16px 0;
+    background:#efede7;}
+  .panel.revealed{border:2px solid var(--ok);background:#eef7ee;}
+  .panel h3{margin:0 0 6px;font-size:1.05rem;}
+  .panel ul{margin:8px 0 4px;padding-left:22px;}
+  .panel .caption{font-size:.9rem;color:var(--muted);font-style:italic;}
+  .notebox{background:#fff8d6;border:2px solid var(--line);border-radius:12px;
+    padding:18px 16px;margin:18px 0;font-size:1.1rem;}
+  .debrief li{margin:8px 0;}
+  .credit{margin-top:22px;font-size:.95rem;color:var(--muted);border-top:2px solid var(--line);
+    padding-top:12px;}
+  /* Weather decoy */
+  #decoy{max-width:680px;margin:0 auto;padding:22px 16px 48px;}
+  #decoy .big{font-size:3rem;font-weight:700;}
+  #decoy table{width:100%;border-collapse:collapse;margin-top:12px;}
+  #decoy td{padding:8px 6px;border-bottom:1px solid #c9cdd2;}
+  #backBtn{margin-top:26px;background:none;border:none;color:#5a646e;font-size:.85rem;
+    cursor:pointer;text-decoration:underline;min-height:44px;}
+</style>
+</head>
+<body>
+<header id="topbar">
+  <span class="brand">The First 90 Days</span>
+  <button id="quickExitBtn" type="button" aria-label="Quick exit — show a neutral weather page">Quick Exit</button>
+</header>
+
+<main id="app"><!-- screens render here --></main>
+
+<!-- Neutral decoy page (Quick Exit). Static and plausible; no story content. -->
+<div id="decoy" hidden>
+  <p class="kicker" style="color:#0b5394;">Local Weather</p>
+  <h2>Lancaster, PA</h2>
+  <p class="big">61&deg;F</p>
+  <p>Partly cloudy &middot; High 64&deg;F &middot; Low 45&deg;F &middot; Wind NW 8 mph</p>
+  <table>
+    <tr><td>Tonight</td><td>Clear and cool</td><td>45&deg;F</td></tr>
+    <tr><td>Tomorrow</td><td>Sunny</td><td>66&deg;F</td></tr>
+    <tr><td>Wednesday</td><td>Scattered showers</td><td>59&deg;F</td></tr>
+    <tr><td>Thursday</td><td>Mostly sunny</td><td>63&deg;F</td></tr>
+    <tr><td>Friday</td><td>Partly cloudy</td><td>65&deg;F</td></tr>
+  </table>
+  <p style="color:#5a646e;font-size:.9rem;">Hourly conditions available from your local forecast office.</p>
+  <button id="backBtn" type="button">Back to the story</button>
+</div>
+
+<script>
+'use strict';
+/* =====================================================================
+   THE FIRST 90 DAYS — engine
+   One self-contained file. No external assets, no network calls.
+   The scenario is data, not code: replace the STUB_SCENARIO object
+   below with the contents of scenario-1.json (same schema) and the
+   engine runs it unchanged.
+   ===================================================================== */
+
+/* === SCENARIO DATA — replace stub with scenario-1.json contents === */
+const STUB_SCENARIO = {
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 13 — The Night Shift (a fictional composite)",
+  "startDateISO": "2026-04-13",
+  "startNode": "start",
+  "startCash": 165,
+  "tier": "Hard",
+  "summary": "Every service is scheduled inside a night-shift mother's sleep — an employer letter and a written amendment request, or quit the job, with neither path free."
+ },
+ "nodes": [
+  {
+   "id": "start",
+   "kicker": "Day 0 — Monday, April 13, 2026",
+   "dayOffset": 0,
+   "title": "The Schedule on the Refrigerator",
+   "body": [
+    "Your son Eli, seven, is staying with a foster family twenty minutes away while you work the case plan — and the plan, you have to admit, is not crazy. Parenting classes. Random screens. Visits twice a week. You want all of it. You have wanted all of it since the first day.",
+    "The problem is printed in the plan's own handwriting, in the column nobody read against your life: parenting class Tuesdays and Thursdays at 9:30 A.M. Screens on random weekday mornings. Visits Wednesdays at 10. You work the warehouse line from 11 P.M. to 7 A.M., five nights a week, and 9:30 A.M. is — for you — the middle of the night. The plan was scheduled for a person who sleeps in the dark. You sleep in the light, with foil on the windows and a fan for the hallway noise."
+   ],
+   "choices": [
+    {
+     "text": "Tape the plan next to your shift schedule and look at the collision honestly",
+     "next": "first_class",
+     "note": "Side by side, they don't overlap. They occupy the same hours the way two tenants occupy one bed: by taking turns being impossible."
+    }
+   ]
+  },
+  {
+   "id": "first_class",
+   "kicker": "Day 2 — Wednesday, April 15, 2026",
+   "dayOffset": 2,
+   "title": "9:30 A.M.",
+   "body": [
+    "You go to the first class straight off shift — no sleep at all, because sleeping first means waking at 9:15 in a panic. You take the bus in your work clothes. The instructor is kind, the material is not stupid, and somewhere around the module on routines, your body files its own report and your head goes down on the table for maybe ninety seconds.",
+    "The sign-in sheet records you present. The instructor's session note — you will not see it for weeks, which is part of the point of this scenario — records something else: 'Parent appeared fatigued; head down during module; engagement unclear.' In this system, you are what the notes say you were, at 9:30 in your personal midnight."
+   ],
+   "choices": [
+    {
+     "text": "Stay to the end and thank the instructor — then go home and think",
+     "next": "choice_point",
+     "cash": -5,
+     "addHidden": [
+      "Class note — 'appeared fatigued; engagement unclear' (first session, straight off shift)"
+     ],
+     "note": "You were there. The sheet says you were there. The note says something adjacent to there, and notes outrank sheets."
+    }
+   ]
+  },
+  {
+   "id": "choice_point",
+   "kicker": "Day 5 — Saturday, April 18, 2026",
+   "dayOffset": 5,
+   "title": "Two Kinds of Tired",
+   "body": [
+    "At your kitchen table, in the four hours that are supposed to be your deep sleep, you lay out the actual options, because nobody at the agency has laid them out for you. Option one: ask your employer to document your shift, and ask the agency — in writing — to amend the plan's times. Paper against paper, slow, uncertain. Option two: keep going exactly like this, on coffee and alarms, and hope the notes stay kind. Option three: quit the job. Attend everything, glowing, at 9:30 A.M. — and lose the income that pays for the apartment Eli is supposed to come home to, and the employment goal the plan itself requires.",
+    "Every option costs something real. That is not a flaw in this scenario. That is the scenario."
+   ],
+   "choices": [
+    {
+     "text": "Talk to your supervisor first — find out what the job can put in writing",
+     "next": "ask_boss",
+     "note": "Break room, end of shift, fluorescent light. You have had harder conversations in worse light."
+    },
+    {
+     "text": "Keep going as-is — alarms, coffee, willpower",
+     "next": "grind",
+     "note": "Willpower is a real resource. It is also a depleting one, and the plan runs for months."
+    },
+    {
+     "text": "Do the math on quitting before you decide anything",
+     "next": "quit_think",
+     "note": "Rent, bus pass, Eli's room, the employment goal in the same plan that schedules you into your sleep. The math has a lot of columns."
+    }
+   ]
+  },
+  {
+   "id": "ask_boss",
+   "kicker": "Day 6 — Sunday, April 19, 2026",
+   "dayOffset": 6,
+   "title": "The Break Room Conversation",
+   "body": [
+    "Your supervisor, Dana, has loaded trucks beside you for two years and does not waste your time. 'I can't move you to days — days is seniority, you know that. But your schedule isn't a secret. If the agency needs it in writing, I'll write it: shift, hours, the overtime pattern, all of it. What I can't do is write it to nobody. Get me a name or make your request and attach it.'",
+    "It is the first useful sentence anyone has given you in this case: the job can testify, but only in writing, and only into a process that asks. Dana also says the thing you needed to hear from the one person who can't fix it: 'Don't quit over a class time, Renee. Quitting is the one thing on that list you can't undo by Friday.'"
+   ],
+   "choices": [
+    {
+     "text": "Thank her, sleep four hours, and go see what the plan actually says — in the file, not from memory",
+     "next": "records_fork",
+     "setFlags": [
+      "employerWilling"
+     ],
+     "note": "A promise of a letter is not a letter. But it is a name to put in one: Dana's, and the word 'attach.'"
+    }
+   ]
+  },
+  {
+   "id": "grind",
+   "kicker": "Day 6 — Sunday, April 19, 2026",
+   "dayOffset": 6,
+   "title": "Coffee and Alarms",
+   "body": [
+    "You set three alarms across the room, the way people do who know their own weakness at 9 A.M. It works for the Tuesday class — you are awake, upright, and so tired the instructor's voice arrives a half-second after her mouth moves. It works for the visit. It works until Thursday, when it doesn't.",
+    "The random screen call comes at 8:40 Thursday morning, ninety minutes into your sleep, on the one morning you silenced the phone because the neighbor's dog had kept you up past noon the day before. The window to report is short. By the time you wake at 3 P.M., the window is closed and the log has a new line in it."
+   ],
+   "choices": [
+    {
+     "text": "Call the screener the moment you wake and explain — today, not tomorrow",
+     "next": "missed_screen",
+     "cash": -5,
+     "note": "Explanations made the same day have a weight class of their own. Not enough to erase a line. Enough to stand next to it."
+    }
+   ]
+  },
+  {
+   "id": "missed_screen",
+   "kicker": "Day 8 — Tuesday, April 21, 2026",
+   "dayOffset": 8,
+   "title": "The Closed Window",
+   "body": [
+    "The screener is professional and immovable: the screen is recorded as missed. Your explanation is 'noted' — that word again, the smallest house in the language — and she advises you to raise scheduling concerns 'through your caseworker and the plan process.'",
+    "You stand in your kitchen at 3 P.M. in the daylight you live backwards in, and you understand the geometry of your case: every element of the plan is scheduled inside your sleep; every failure to appear inside your sleep is recorded in the language of refusal. The file is not lying about you. It is describing a night worker in a day worker's vocabulary, and the vocabulary is winning."
+   ],
+   "choices": [
+    {
+     "text": "Go see what the plan actually says — in the file, in writing",
+     "next": "records_fork",
+     "addHidden": [
+      "Screen — 'missed' (call came during parent's sleep hours after night shift)"
+     ],
+     "note": "'Raise it through the plan process.' Fine. Processes run on paper. It is time to find out what the paper says."
+    }
+   ]
+  },
+  {
+   "id": "quit_think",
+   "kicker": "Day 6 — Sunday, April 19, 2026",
+   "dayOffset": 6,
+   "title": "The Math of Quitting",
+   "body": [
+    "The math, done honestly at the kitchen table: quitting frees every 9:30 in the world and deletes $2,400 a month. Rent is $950. The apartment has Eli's room in it — the room the plan's housing goal is about. Employment is not separate from the plan; it is one of the plan's own goals, listed two lines above the class times that make the job impossible to keep.",
+    "You could attend everything and fail the plan by succeeding at it. Or keep the job and fail the plan by sleeping. The plan, read closely, contradicts itself — but contradictions in documents are not resolved by the people the documents are about. They are resolved, if at all, in writing, by name, on the record. You put the pencil down without quitting. For now, 'for now' is a decision too."
+   ],
+   "choices": [
+    {
+     "text": "Go see what the plan actually says — in the file, in writing",
+     "next": "records_fork",
+     "note": "If the plan contradicts itself, the place to prove that is the plan. The real one, from the file."
+    }
+   ]
+  },
+  {
+   "id": "records_fork",
+   "kicker": "Day 10 — Thursday, April 23, 2026",
+   "dayOffset": 10,
+   "title": "What the Plan Actually Says",
+   "body": [
+    "Your lawyer asks whether you have ever read the plan as filed — not the summary the worker walked through, the document. You have not. Most parents haven't; the plan is 'reviewed with' families the way weather is reviewed with farmers. A party may request the case record in writing, and it 'shall be released upon request' (55 Pa. Code § 3130.44(d)).",
+    "What you are looking for is specific: every service time, in the plan's own words, and anything the file already says about your work schedule — whether the plan that schedules you at 9:30 A.M. anywhere admits that you work until 7."
+   ],
+   "choices": [
+    {
+     "text": "Sign the written request for the record — the plan and the service notes",
+     "next": "plan_copy",
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "note": "The request goes in with your name spelled right and the plan named by its date. Precision is a form of respect you can afford."
+    },
+    {
+     "text": "Work from the summary you were given — it's close enough",
+     "next": "memory",
+     "note": "Summaries are written by the summarized. The summary of your schedule, as you're about to keep learning, rounds your life in the agency's favor."
+    }
+   ]
+  },
+  {
+   "id": "plan_copy",
+   "kicker": "Day 14 — Monday, April 27, 2026",
+   "dayOffset": 14,
+   "title": "The Plan, in Writing",
+   "body": [
+    "The filed plan is eleven pages, and your work schedule appears in it exactly once, on page nine, in a sentence that does a great deal of quiet damage: 'Parent is employed full-time.' Nothing about nights. Nothing about 11 to 7. Full-time — the plan's own author knew you worked and built a 9:30 A.M. plan anyway, or built it from a template and never looked up. Either way, the filed document contradicts itself in its own pages: it requires your employment and your presence in the same hours.",
+    "The service notes hold the other half: 'fatigued; engagement unclear.' 'Missed screen.' Each note is accurate about a moment and wrong about a person, and both kinds of wrong are now exhibits — if someone assembles them."
+   ],
+   "choices": [
+    {
+     "text": "Ask Dana for the letter this week — shift, hours, overtime, on company letterhead",
+     "next": "letter_draft",
+     "addHidden": [
+      "Case plan — services at 9:30 A.M.; parent's night shift recorded only as 'employed full-time'"
+     ],
+     "note": "Dana writes it in two days. Employers' letters are short because employers are busy. Short is fine. Letterhead does the talking."
+    }
+   ]
+  },
+  {
+   "id": "memory",
+   "kicker": "Day 14 — Monday, April 27, 2026",
+   "dayOffset": 14,
+   "title": "From Memory",
+   "body": [
+    "From the summary, your recollection is right about the big things and fuzzy about the filings: you know the class is 9:30 because you live it. What you don't have is the plan's own page nine — 'employed full-time,' nothing about nights — the single most useful sentence in your case, sitting in a document you've never been handed.",
+    "You can still ask Dana for the letter, and you do. An employer's letter proves your shift. What it can't prove by itself is that the agency knew — and the plan, the filed one, is where knowledge lives in this system. You'll be asking the agency to amend a document you haven't read. People do it every day. It works exactly as well as that sounds."
+   ],
+   "choices": [
+    {
+     "text": "Get Dana's letter anyway — it's the strongest paper you can hold this week",
+     "next": "letter_draft",
+     "note": "Half a record is not no record. It's the half the next four choices are about."
+    }
+   ]
+  },
+  {
+   "id": "letter_draft",
+   "kicker": "Day 17 — Thursday, April 30, 2026",
+   "dayOffset": 17,
+   "title": "Two Letters",
+   "body": [
+    "Dana's letter arrives on letterhead: your name, your shift — 11 P.M. to 7 A.M., Sunday through Thursday — your overtime pattern, and one line Dana added without being asked: 'Employee is in good standing and her position depends on continued availability for her assigned shift.' The job, testifying.",
+    "Now the second letter: yours. A written request to amend the plan's service times — evening parenting cohort, screens on your days off or early evening, visits after school for Eli anyway — with Dana's letter attached and, if you requested it, the filed plan's page nine cited by number. Your lawyer reviews the draft and changes one word: 'request' stays, 'beg' goes. This is the fork the whole scenario has been walking toward, and all three roads are still open."
+   ],
+   "choices": [
+    {
+     "text": "File the written amendment request — your letter, Dana's letter attached, copy to your lawyer",
+     "next": "filed",
+     "cash": -4,
+     "setFlags": [
+      "amendmentFiled"
+     ],
+     "addHidden": [
+      "Plan amendment request — filed in writing with employer letter attached"
+     ],
+     "note": "Filed, stamped, copied. The plan now has a pending objection with a date on it, written by the person it schedules."
+    },
+    {
+     "text": "Ask your caseworker verbally at Wednesday's visit — she's sympathetic, and paper feels confrontational",
+     "next": "verbal",
+     "note": "She is sympathetic. Sympathy, like goodwill, is a quality of a person. Amendments are qualities of documents."
+    },
+    {
+     "text": "Quit the job — attend everything, and rebuild the money later",
+     "next": "quit_path",
+     "note": "You hand in notice at 6:50 A.M., ten minutes before your shift ends, so you won't have to come back and do it."
+    }
+   ]
+  },
+  {
+   "id": "filed",
+   "kicker": "Day 19 — Saturday, May 2, 2026",
+   "dayOffset": 19,
+   "title": "Stamped and Attached",
+   "body": [
+    "The amendment request goes in on a Friday. By Wednesday, three things have happened, in the order paper makes things happen: your caseworker calls — actually calls — and says the request is 'with the supervisor'; the class provider's office emails your lawyer asking what evening capacity they would need; and your file acquires a new section, which is the real event. Your objection now exists where objections are adjudicated: inside the record, dated, with an employer's letterhead behind it.",
+    "Nothing is granted yet. Providers run cohorts on funding cycles; supervisors answer in their own time. But the question before the case has changed. It is no longer 'why does this parent keep failing to engage?' It is 'the parent has asked, in writing, with documentation — what is the agency's answer?'"
+   ],
+   "choices": [
+    {
+     "text": "Wait for the answer — and attend what you can, exactly as the filed request describes",
+     "next": "response",
+     "note": "Attending 'what you can' while a documented request pends is a different record from missing. The request explains the pattern before the pattern can be misread."
+    }
+   ]
+  },
+  {
+   "id": "verbal",
+   "kicker": "Day 19 — Saturday, May 2, 2026",
+   "dayOffset": 19,
+   "title": "She Said She'd Ask",
+   "body": [
+    "Your caseworker is genuinely sympathetic at Wednesday's visit. She says the times are 'just when the provider runs it,' says she'll 'see what can be done,' and writes something in her notebook — her notebook, which is not the file, which is not the plan. Eli shows you a LEGO structure and the visit ends on time.",
+    "Two weeks later, nothing has moved, because nothing was ever formally asked. There is no request in the file for a supervisor to deny or grant, no employer letter attached to anything, no date from which delay could even be measured. You had a conversation. The plan had a month. Only one of those is a document."
+   ],
+   "choices": [
+    {
+     "text": "Attend the next 9:30 class off shift and think about what paper would have done",
+     "next": "no_response",
+     "note": "You already know. The knowing is the tuition this scenario charges; the review is where it gets spent."
+    }
+   ]
+  },
+  {
+   "id": "quit_path",
+   "kicker": "Day 19 — Saturday, May 2, 2026",
+   "dayOffset": 19,
+   "title": "Day Shift, No Shift",
+   "body": [
+    "Without the alarm set for a shift that no longer exists, you sleep at night like the plan's imaginary parent, and you attend the Tuesday class rested, early, with the readings done. The instructor's note for that session — you will see this one eventually — says 'engaged, prepared, a pleasure.' It is the note you always deserved. It cost $2,400 a month.",
+    "You tell Eli's caseworker you've left the job 'to focus on the plan,' and you watch her write it down, and you cannot tell from her face whether she has noticed that the plan also has an employment goal, and a housing goal, and that both of them just walked out of the warehouse with you. The landlord notices faster than the agency does. Landlords always do."
+   ],
+   "choices": [
+    {
+     "text": "Attend everything, perfectly, and let the other goals wait their turn",
+     "next": "quit_strain",
+     "note": "Attendance: perfect. The plan has four goals. You are now excelling at the ones with chairs."
+    }
+   ]
+  },
+  {
+   "id": "response",
+   "kicker": "Day 26 — Saturday, May 9, 2026",
+   "dayOffset": 26,
+   "title": "The Provider's Answer",
+   "body": [
+    "The answer takes a week and arrives as a plan, not a verdict: the provider runs a funded evening cohort that starts in three weeks — parenting classes at 6 P.M., full curriculum, same credit. Screens move to your two evenings off, by written arrangement. Visits stay Wednesdays at 10 for now, because Eli's school and the foster family's mornings are also real, but they move to late afternoon when the school term turns.",
+    "Three weeks of the old schedule remain — the gap between a granted request and a changed world, which in this system is where parents are most often lost. The request being granted does not attend those three weeks for you. But it changes what those weeks mean in the file: they are now the documented tail of a schedule the agency itself has agreed was wrong."
+   ],
+   "choices": [
+    {
+     "text": "Bridge the three weeks exactly as your filing described — and write down every session you attend or miss, with the reason",
+     "next": "interim",
+     "note": "A short bridge, walked in writing. Three weeks is twelve alarms. You have set harder ones."
+    }
+   ]
+  },
+  {
+   "id": "no_response",
+   "kicker": "Day 26 — Saturday, May 9, 2026",
+   "dayOffset": 26,
+   "title": "The Third Note",
+   "body": [
+    "By the third 9:30 session note — 'fatigued,' again, in the same hand — the file has a pattern, and patterns in files acquire names. At the team meeting you are not in, the pattern's name is 'engagement concerns.' Nobody in that room is lying. Nobody in that room works nights. The one document that could rename the pattern — a filed amendment request with an employer's letter — does not exist in this path, because it was never filed.",
+    "Your lawyer, preparing for the review, puts it plainly: 'We can still file. Late paper is worse than early paper and better than no paper, because at the review I'll have to explain the notes, and right now the only explanation is your voice.'"
+   ],
+   "choices": [
+    {
+     "text": "File the amendment request now — late, with Dana's letter, before the review",
+     "next": "interim_b",
+     "setFlags": [
+      "amendmentFiled"
+     ],
+     "addHidden": [
+      "Plan amendment request — filed late, after three 'fatigued' session notes"
+     ],
+     "note": "Late, stamped, real. The review will now contain both things: the notes, and the dated proof that you eventually answered them in the only language the system files."
+    },
+    {
+     "text": "Keep grinding to the review — no paper, just attendance and hope",
+     "next": "interim_b",
+     "note": "Attendance you have. Hope is not a filing. The review will run on what exists."
+    }
+   ]
+  },
+  {
+   "id": "quit_strain",
+   "kicker": "Day 26 — Saturday, May 9, 2026",
+   "dayOffset": 26,
+   "title": "Perfect Attendance, Empty Fridge",
+   "body": [
+    "The attendance record is, as promised, perfect — and the rest of the plan has begun to fail in the opposite direction. The employment goal: unmet, by resignation. The housing goal: the landlord, a decent man with a mortgage of his own, gives you until the end of next month, in writing, because even decent men put it in writing. Your lawyer gets a copy of that letter too. Everyone in this story documents things. It's only ever been a question of whose documents get read as the case.",
+    "At the team meeting, your perfect attendance is noted with approval, and then the housing slide is shown, and the room's temperature changes. The plan was a system. You optimized the part of it that met at 9:30 A.M. and broke the parts that met at the first of the month."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review and answer for the whole plan — all four goals, not one",
+     "next": "quit_review",
+     "note": "You will present a paradox in person: the most compliant parent in the building, and a plan further from reunification than when she quit."
+    }
+   ]
+  },
+  {
+   "id": "interim",
+   "kicker": "Day 33 — Saturday, May 16, 2026",
+   "dayOffset": 33,
+   "title": "Three Weeks at 9:30",
+   "body": [
+    "The bridge weeks are exactly as bad as advertised, and you walk them the way your filing said you would: two classes attended off shift, notes be damned; one screen on an evening off, arranged in writing; and one class — the second Thursday — that you notify the provider about in advance, in writing, because a mandatory overtime shift lands on your sleep and the letter says, in the sentence your lawyer underlined when she drafted it, 'as documented in my pending amendment request, now granted, effective in three weeks.'",
+    "That notification is the smallest document in this scenario and maybe the most important: it converts a miss into a correspondence. When the provider's log for that Thursday is written, it says 'parent notified in advance; amendment effective [date].' Compare the vocabulary of the paths not taken. Same mother. Same sleep. Different paper."
+   ],
+   "choices": [
+    {
+     "text": "Sleep a full day, then prepare for the review with your lawyer",
+     "next": "review_prep_a",
+     "addHidden": [
+      "Interim class — parent notified provider in writing in advance, citing the granted amendment"
+     ],
+     "note": "The evening cohort roster has your name on it. Rosters are promises with columns."
+    }
+   ]
+  },
+  {
+   "id": "interim_b",
+   "kicker": "Day 33 — Saturday, May 16, 2026",
+   "dayOffset": 33,
+   "title": "What the Review Will See",
+   "body": [
+    "Review preparation is an inventory, and inventories are honest: three 'fatigued' notes, one missed screen, an employer's letter (if you got it), an amendment request (if you filed it, whenever you filed it), and a supervisor's verbal sympathy that exists in no inventory anywhere because it was never written down.",
+    "Your lawyer arranges what exists in date order and tells you the truth about reviews: the judge will not see your exhaustion, your alarms, or your intentions. She will see the inventory. The best remaining move is the one you have always had: make the inventory tell the story in the order it actually happened — a day-scheduled plan, a night-working parent, and paper that is either early, late, or absent."
+   ],
+   "choices": [
+    {
+     "text": "Go to the review with the inventory as it is",
+     "next": "hearing_b",
+     "note": "Whatever is in the folder goes. Whatever isn't, doesn't. That sentence is the whole curriculum of this game."
+    }
+   ]
+  },
+  {
+   "id": "review_prep_a",
+   "kicker": "Day 41 — Sunday, May 24, 2026",
+   "dayOffset": 41,
+   "title": "Paper for the Review",
+   "body": [
+    "Your lawyer's folder for the review is thin and devastating: the filed plan (page nine: 'employed full-time'); Dana's letter; your amendment request with its stamp; the provider's written answer; the evening roster with your name on it; and the interim notification. Six documents that tell one story in date order: the plan was scheduled against a documented life; the parent said so, in writing, with proof; the system, to its credit, moved.",
+    "'The early notes are still in the file,' your lawyer says. 'Fatigued, engagement unclear — they'll stay there. Notes don't get erased. But they stop being the story when the story gets longer.'"
+   ],
+   "choices": [
+    {
+     "text": "Go to the review",
+     "next": "hearing_a",
+     "note": "You sleep until 4 P.M. the day before, like a person whose life is scheduled by someone who has read her file. Because now, finally, it is."
+    }
+   ]
+  },
+  {
+   "id": "quit_review",
+   "kicker": "Day 41 — Sunday, May 24, 2026",
+   "dayOffset": 41,
+   "title": "The Other Goals",
+   "body": [
+    "Preparing for the review on the quitting path is a different inventory: perfect class attendance; glowing session notes; an employer's letter that now describes a job you no longer have; a landlord's letter with a date in it; and two plan goals — employment, housing — moving backwards in the same weeks the service goals completed.",
+    "Your lawyer does not scold you. She does something worse: she shows you the plan's four goals printed on one page, the way the judge will see them, and lets the page make the argument. 'You didn't fail the plan,' she says. 'You obeyed it one goal at a time. The plan failed to be one plan. Our job at the review is to make the court see that — and it is a harder argument than the amendment letter would have been.'"
+   ],
+   "choices": [
+    {
+     "text": "Go to the review and make the argument in person",
+     "next": "hearing_quit",
+     "note": "You attend, as you now attend everything: rested, early, and unsure which of those the court will count."
+    }
+   ]
+  },
+  {
+   "id": "hearing_a",
+   "kicker": "Day 49 — Monday, June 1, 2026",
+   "dayOffset": 49,
+   "title": "The Review — The Plan Moves",
+   "body": [
+    "The review is almost anticlimactic, which is what winning in this system usually feels like from inside. The agency reports the amendment as implemented: evening cohort, adjusted screens, visits moving at the term's turn. Your lawyer places the six documents in the record without drama, because drama is what paper is for avoiding. The 'fatigued' notes are not mentioned by anyone, and they do not need to be: they have been answered by a roster.",
+    "The judge confirms the amended plan and sets the next review. Eli's foster mother, leaving, tells you the Wednesday visits will suit Eli better anyway — he'll come straight from school, full of the day, instead of being woken into them. Nobody says the sentence out loud, so you say it in the car, to the steering wheel: the plan moved. Not the mother. The plan."
+   ],
+   "choices": [
+    {
+     "text": "Go home, set no alarm, and sleep in the daylight like it's your shift — because it is",
+     "next": "end_amended",
+     "note": "The evening cohort starts Monday. Your name is on the roster, in the right column, at an hour when you are a person."
+    }
+   ]
+  },
+  {
+   "id": "hearing_b",
+   "kicker": "Day 49 — Monday, June 1, 2026",
+   "dayOffset": 49,
+   "title": "The Review — Counted as Missed",
+   "body": [
+    "The review runs on the inventory, exactly as your lawyer promised it would. The agency's report uses the file's vocabulary: 'engagement concerns,' 'missed screen,' 'inconsistent participation.' Your testimony about the shift is true, and the judge does not disbelieve you — you can watch her not disbelieve you, which is its own education. Belief is not the currency. The record is, and the record's account of why a night worker kept appearing at 9:30 A.M. unready is three notes long.",
+    "If a late amendment request is in the file, she acknowledges it — 'the parent has now raised the scheduling conflict in writing' — and directs the agency to respond to it before the next review. If it isn't, she directs you, kindly, to raise concerns 'through the plan process,' the same sentence the screener gave you in your kitchen. Either way, this review closes on the notes that exist."
+   ],
+   "choices": [
+    {
+     "text": "Leave with the judge's direction in your notebook — the process sentence, one more time",
+     "next": "end_counted",
+     "note": "Raised through the plan process. In writing. With a letter attached. You knew the sentence before she said it. Knowing and filing are different verbs."
+    }
+   ]
+  },
+  {
+   "id": "hearing_quit",
+   "kicker": "Day 49 — Monday, June 1, 2026",
+   "dayOffset": 49,
+   "title": "The Review — Everything Attended",
+   "body": [
+    "Your attendance is praised, on the record, by everyone — and then the housing and employment goals are read, and the praise changes key. The agency's position is not cruel; it is structural: Eli cannot be returned to an apartment that will not exist next month, and a plan goal cannot be met by a job that was resigned, however excellent the reason.",
+    "The judge looks at the four goals on one page for a long moment. 'The plan asked this parent to be in two places at once,' she says, to the agency's counsel, not to you. 'And she chose the place with the chairs.' It is the fairest sentence anyone has written about your spring — and it is a sentence about the plan, delivered at a review whose outcome still runs on the goals as they stand: two complete, two collapsing."
+   ],
+   "choices": [
+    {
+     "text": "Hear the outcome with your folder of perfect attendance on your lap",
+     "next": "end_quit",
+     "note": "Every page of it true. Every page of it insufficient. The folder and the plan fail together, in opposite directions."
+    }
+   ]
+  },
+  {
+   "id": "end_amended",
+   "kicker": "Day 56 — Monday, June 8, 2026",
+   "dayOffset": 56,
+   "title": "Ending — The Plan Moves",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): The early notes never left your file — 'fatigued; engagement unclear,' a missed screen, recorded in the vocabulary of refusal. What changed is that they stopped being the file's conclusion. Your amendment request, filed in writing with your employer's letter attached, is dated and stamped; the provider's answer and the evening roster follow it in sequence. Read in order, the record now tells the true story: a plan scheduled against a documented night shift, a parent who objected on paper with proof, and a system that — slowly, on its own calendar — moved. The notes remain. They are now the first chapter instead of the whole book.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): This win was built from the two verified tools this scenario uses: the right to the record itself (the case record 'shall be released upon request,' 55 Pa. Code § 3130.44(d)) — which is how you found page nine, the plan conceding your full-time job while scheduling you into your sleep — and counsel to aim the request (42 Pa.C.S. § 6337). No verified rule in this set entitled you to evening classes. What the written request did was convert a private hardship into a pending item the agency had to answer on the record, with the employer's letter making the hardship undeniable and the filing date making the agency's response time measurable. And note the win's honest shape: the job survived, the services survived, and three bad weeks were bridged, not erased. The plan moved. That was always the only thing that needed to.",
+    "THE HONEST PART: A different provider might have had no evening cohort to offer; a different supervisor might have answered slower, or not at all, leaving the review to weigh a pending request instead of a granted one — which still beats weighing unexplained notes, but by less. Dana's willingness to write the letter, your lawyer's single-word edit, and the funding cycle that happened to open a 6 P.M. cohort were all partly luck. What was not luck: the request existed, in writing, with documentation, early enough for luck to act on. In the published cases this scenario is built from, parents described impossible schedules in testimony — afterward, in the past tense, to judges reading notes that had already hardened. The difference in this path is tense. You said it in the present, on paper, while it could still be fixed."
+   ]
+  },
+  {
+   "id": "end_counted",
+   "kicker": "Day 49 — Monday, June 1, 2026",
+   "dayOffset": 49,
+   "title": "Ending — Counted as Missed",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): Three session notes about fatigue, one missed screen, and a judicial direction to raise scheduling concerns 'through the plan process.' That is the whole record of a structural impossibility — a plan whose every service sat inside a night worker's sleep — as written by the system's ordinary vocabulary. Your exhaustion was real, your attendance mostly happened, and your reasons were believed by everyone who heard them aloud. None of that is in the file in a form a future reader can act on, because almost none of it was ever filed.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): Hearings and reviews decide from records, and records are made of documents. The tools to build a different one were present the entire time: the case record on written request (55 Pa. Code § 3130.44(d)) — the filed plan's page nine, conceding your full-time employment, was the strongest single page available to you — and counsel (42 Pa.C.S. § 6337) to draft the amendment request the situation called for. A verbal ask to a sympathetic worker creates no pending item, no response deadline, and no exhibit; a written request with an employer's letter creates all three. This ending is not a punishment for being tired. It is the mechanical result of a mismatch described only in speech, inside a system that files speech nowhere.",
+    "THE HONEST PART: It is worth saying plainly that the underlying fault was never yours: a plan that schedules a night worker's services at 9:30 A.M. is a defective plan, and on a fuller record a court might have said so in stronger terms. Judges vary; some would have pressed the agency on the schedule even from this thin file, and workers with different caseloads might have moved the times on a hallway conversation. But 'might have' is the tax this path pays at every step. And the door is not closed: the judge's direction at this review — raise it through the plan process — is the amendment request, still available, now with a court's sentence behind it. Filed next week, it changes the next review. The scenario ends here because semesters end; cases, mercifully and otherwise, continue."
+   ]
+  },
+  {
+   "id": "end_quit",
+   "kicker": "Day 56 — Monday, June 8, 2026",
+   "dayOffset": 56,
+   "title": "Ending — Everything Attended, Nothing Stable",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "WHAT THE FILE HELD (the hidden record, revealed): A bifurcated record — attendance pages that glow and goal pages that collapse, in the same binder. The class notes praise your engagement in the vocabulary the early notes denied you; the employment and housing pages record a resignation and a landlord's deadline. Read together, which is how judges read, the file tells a story nobody intended: a parent who complied with the plan so literally that she complied herself out of the apartment and the job the plan also required. The system's own witness said it best at your review: the plan asked you to be in two places at once, and you chose the place with the chairs.",
+    "THE PROCESS UNDER THIS PATH (described, keeping to this scenario's verified law): A case plan is adjudicated as a whole, because reunification is a whole: a child returns to a home, a job, a schedule — not to a stack of completed classes. That is why the amendment route existed, and why it mattered that it be written: a filed request (built on the record you could obtain under 55 Pa. Code § 3130.44(d), with counsel's help under 42 Pa.C.S. § 6337) asks the agency to repair the plan's internal contradiction at the agency's cost. Quitting repaired it at yours — converting the plan's defect into your deficits, which then appeared in the file under your name instead of the plan's. The attendance was real and the sacrifice was real. Neither could be spent at the review on the goals that were failing.",
+    "THE HONEST PART: This path was not foolishness; it was a rational response to a file that kept calling your sleep 'disengagement,' and some parents who quit under this pressure do land on their feet — a new day job, a lenient landlord, a judge who credits the sacrifice. Luck and local labor markets decide much of that, and this scenario will not pretend your choice was a moral failure, because it wasn't one. It was a strategic transfer: you paid the plan's debt out of your own account. The apartment, the job, and the timeline can all be rebuilt — parents in the published record this scenario draws from rebuilt more from less — but they rebuild on the case's clock, not yours, and the clock was the one resource the warehouse job was buying you. What you keep from this ending is the knowledge, bought dearly, of what the written ask was actually worth: everything it would have cost the agency nothing but a signature to grant."
+   ]
+  }
+ ]
+};
+/* === END SCENARIO DATA === */
+
+const SCENARIO = STUB_SCENARIO;
+const META = SCENARIO.meta || {};
+const NODES = {};
+(SCENARIO.nodes || []).forEach(function (n) { NODES[n.id] = n; });
+const STORAGE_KEY = 'first90days-save-v1-s13';
+
+/* ---------- date helpers (weekdays always computed, never hard-coded) ---------- */
+function parseISO(iso) {
+  const p = String(iso).split('-').map(Number);
+  return new Date(p[0], (p[1] || 1) - 1, p[2] || 1);
+}
+function addDays(d, n) { const t = new Date(d); t.setDate(t.getDate() + n); return t; }
+function toISO(d) {
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+function fmtDate(d) {
+  return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+function nodeDate(node) { return addDays(parseISO(META.startDateISO), node.dayOffset || 0); }
+function fmtCash(n) { return (n < 0 ? '-$' : '$') + Math.abs(n); }
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/* ---------- state ---------- */
+let state = null;        // active run state
+let view = 'start';      // 'start' | 'interstitial' | 'story'
+
+function freshState() {
+  return {
+    nodeId: META.startNode,
+    cash: (typeof META.startCash === 'number' ? META.startCash : 240),
+    flags: [],
+    hidden: [],
+    removalDateISO: null,
+    pendingNote: null
+  };
+}
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+}
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!s || !NODES[s.nodeId]) return null;
+    if (!Array.isArray(s.flags)) s.flags = [];
+    if (!Array.isArray(s.hidden)) s.hidden = [];
+    return s;
+  } catch (e) { return null; }
+}
+function clearSave() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+}
+function hasFlag(f) { return state && state.flags.indexOf(f) !== -1; }
+
+/* ---------- shared fragments ---------- */
+function hudHTML(node) {
+  let h = '<div class="hud">' +
+    '<span class="date">' + esc(fmtDate(nodeDate(node))) + '</span>' +
+    '<span class="cash">Cash: ' + esc(fmtCash(state.cash)) + '</span></div>';
+  if (hasFlag('removed') && state.removalDateISO) {
+    const deadline = addDays(parseISO(state.removalDateISO), 3);
+    h += '<div class="deadline" role="alert">Shelter care hearing deadline: ' +
+      esc(fmtDate(deadline)) + '</div>';
+  }
+  return h;
+}
+
+function hiddenPanelHTML(revealAll) {
+  const count = state.hidden.length;
+  const released = hasFlag('recordsRequested');
+  let h = '<section class="panel' + ((released || revealAll) ? ' revealed' : '') +
+    '" aria-label="Assessment panel">';
+  if (released || revealAll) {
+    h += '<h3>Assessment — record</h3>';
+    if (count === 0) {
+      h += '<p>No items have been rated yet.</p>';
+    } else {
+      h += '<p>Items rated so far: <strong>' + count + '</strong></p><ul>';
+      state.hidden.forEach(function (item) { h += '<li>' + esc(item) + '</li>'; });
+      h += '</ul>';
+    }
+    if (released) h += '<p class="caption">Released on request — 55 Pa. Code § 3130.44(d)</p>';
+  } else {
+    h += '<h3>🔒 Assessment — you are being rated on items you cannot see</h3>' +
+      '<p>Items rated so far: <strong>' + count + '</strong></p>' +
+      '<p class="caption">The contents of this record are hidden from you.</p>';
+  }
+  return h + '</section>';
+}
+
+/* ---------- screens ---------- */
+const app = document.getElementById('app');
+
+function renderStart() {
+  view = 'start';
+  const existing = loadSave();
+  let h = '<p class="kicker">A Tactic Watch simulation</p>' +
+    '<h1>' + esc(META.title || 'The First 90 Days') + '</h1>' +
+    '<p class="subtitle">' + esc(META.subtitle || '') + '</p>' +
+    '<div class="card">' +
+    '<p class="disclaimer">A fictional composite story — no real family\'s case</p>' +
+    '<p class="disclaimer">Prototype — pending attorney verification</p>' +
+    '<p class="disclaimer">General information, not legal advice</p>' +
+    '</div>' +
+    '<div class="card warning"><h3>Content warning</h3>' +
+    '<p>This story involves the child welfare system and the possible removal of children from their home. It may be upsetting. You can pause, skip, or exit at any time — the Quick Exit button at the top of every screen instantly switches to a neutral page.</p></div>' +
+    '<button class="btn primary" id="startBtn" type="button">Start the story</button>';
+  if (existing) {
+    h += '<button class="btn center" id="continueBtn" type="button">Continue where you left off</button>';
+  }
+  app.innerHTML = h;
+  document.getElementById('startBtn').addEventListener('click', function () {
+    state = freshState();
+    save();
+    renderNode();
+  });
+  if (existing) {
+    document.getElementById('continueBtn').addEventListener('click', function () {
+      state = loadSave();
+      if (!state) { renderStart(); return; }
+      if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+    });
+  }
+}
+
+function renderInterstitial() {
+  view = 'interstitial';
+  const node = NODES[state.nodeId];
+  app.innerHTML = hudHTML(node) +
+    '<div class="notebox" role="note">' + esc(state.pendingNote || '') + '</div>' +
+    '<button class="btn primary" id="noteContinue" type="button">Continue</button>';
+  document.getElementById('noteContinue').addEventListener('click', function () {
+    state.pendingNote = null;
+    save();
+    renderNode();
+  });
+}
+
+function applyChoice(choice, currentNode) {
+  if (typeof choice.cash === 'number') state.cash += choice.cash;
+  if (choice.setFlags) {
+    const flags = Array.isArray(choice.setFlags) ? choice.setFlags : Object.keys(choice.setFlags);
+    flags.forEach(function (f) {
+      if (state.flags.indexOf(f) === -1) state.flags.push(f);
+      if (f === 'removed' && !state.removalDateISO) {
+        /* Removal date = the in-story date of the node where the flag was set. */
+        state.removalDateISO = toISO(nodeDate(currentNode));
+      }
+    });
+  }
+  if (choice.addHidden) {
+    const items = Array.isArray(choice.addHidden) ? choice.addHidden
+      : (typeof choice.addHidden === 'string' ? [choice.addHidden] : []);
+    items.forEach(function (item) { state.hidden.push(String(item)); });
+  }
+  state.nodeId = choice.next;
+  state.pendingNote = choice.note || null;
+  save();
+  if (state.pendingNote) { renderInterstitial(); } else { renderNode(); }
+}
+
+function renderNode() {
+  view = 'story';
+  const node = NODES[state.nodeId];
+  if (!node) { renderStart(); return; }
+  if (node.ending) { renderEnding(node); return; }
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  h += hiddenPanelHTML(false);
+  (node.choices || []).forEach(function (choice, i) {
+    h += '<button class="btn" type="button" data-choice="' + i + '">' + esc(choice.text) + '</button>';
+  });
+  app.innerHTML = h;
+  Array.prototype.forEach.call(app.querySelectorAll('[data-choice]'), function (btn) {
+    btn.addEventListener('click', function () {
+      applyChoice(node.choices[Number(btn.getAttribute('data-choice'))], node);
+    });
+  });
+  window.scrollTo(0, 0);
+}
+
+function renderEnding(node) {
+  view = 'story';
+  let h = hudHTML(node);
+  h += '<p class="kicker">' + esc(node.kicker || '') + '</p>' +
+    '<h2>' + esc(node.title || '') + '</h2>';
+  (node.body || []).forEach(function (p) { h += '<p>' + esc(p) + '</p>'; });
+  if (node.debrief && node.debrief.length) {
+    h += '<div class="card"><h3>Debrief — the real law behind this story</h3><ul class="debrief">';
+    node.debrief.forEach(function (line) { h += '<li>' + esc(line) + '</li>'; });
+    h += '</ul></div>';
+  }
+  /* On ending screens the full hidden record is always revealed. */
+  h += '<div class="card"><h3>The assessment record, revealed</h3>' + hiddenPanelHTML(true) + '</div>';
+  h += '<button class="btn primary" id="againBtn" type="button">Play again</button>' +
+    '<button class="btn center" id="otherBtn" type="button">Try the other path</button>' +
+    '<p class="credit">Built with the Tactic Watch law library — every deadline in this story is real law, cited in the debrief</p>';
+  app.innerHTML = h;
+  document.getElementById('againBtn').addEventListener('click', function () {
+    clearSave();
+    state = null;
+    renderStart();
+  });
+  document.getElementById('otherBtn').addEventListener('click', function () {
+    clearSave();
+    state = freshState();
+    save();
+    renderNode();
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Quick Exit decoy ---------- */
+const decoy = document.getElementById('decoy');
+const topbar = document.getElementById('topbar');
+document.getElementById('quickExitBtn').addEventListener('click', function () {
+  app.hidden = true;
+  topbar.hidden = true;
+  decoy.hidden = false;
+  window.scrollTo(0, 0);
+});
+document.getElementById('backBtn').addEventListener('click', function () {
+  decoy.hidden = true;
+  app.hidden = false;
+  topbar.hidden = false;
+  if (view === 'start') renderStart();
+  else if (view === 'interstitial') renderInterstitial();
+  else renderNode();
+});
+
+/* ---------- init ---------- */
+renderStart();
+</script>
+</body>
+</html>

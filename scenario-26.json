@@ -1,0 +1,774 @@
+{
+ "meta": {
+  "title": "The First 90 Days",
+  "subtitle": "Scenario 26 — The Incarcerated Father (a fictional composite)",
+  "startDateISO": "2025-10-06",
+  "startNode": "mail_arrives",
+  "startCash": 140,
+  "tier": "Complex",
+  "summary": "A father learns of his children's case by mail from inside — every move he has is paper, while the mother's track and the 15-month clock run beside his."
+ },
+ "nodes": [
+  {
+   "id": "mail_arrives",
+   "kicker": "Month 1 — Monday, November 17, 2025",
+   "dayOffset": 42,
+   "title": "An Envelope, Weeks Late",
+   "body": [
+    "Mail call is a list of names read out loud. Yours is on it, and the envelope is thick — court return address, a postmark from weeks ago, and your name spelled right, which feels like the first accurate thing in a while.",
+    "Inside: your children, Eli, eight, and June, five, were placed in foster care last month after their mother Dana's relapse and an unsafe night at home. There is a case. There have already been hearings. The case has been moving, at court speed, without you in the room.",
+    "You are in a state correctional facility. Everything you can do in this case, you will do on paper — so the paper is where this story lives."
+   ],
+   "choices": [
+    {
+     "text": "Read every page twice, slowly, with a pencil",
+     "next": "papers",
+     "note": "Dates first. Names second. Feelings can have the third reading."
+    }
+   ]
+  },
+  {
+   "id": "papers",
+   "kicker": "Month 1 — Thursday, November 20, 2025",
+   "dayOffset": 45,
+   "title": "What the Pages Say",
+   "body": [
+    "The pages say less than they threaten. A shelter care hearing was held within 72 hours of the children coming into care (42 Pa.C.S. § 6332; 23 Pa.C.S. § 6315(d)) — before this envelope reached you. A judge found the children dependent. A review is set months out.",
+    "What the pages do not say: what you are supposed to do, from here, to be part of this. The plan goals listed for Dana are detailed. For you, one line: 'Father is incarcerated. Father to contact the agency.'",
+    "Contact it how, you write in the margin. It is the first true sentence of your case, and you wrote it."
+   ],
+   "choices": [
+    {
+     "text": "Keep the envelope and the postmark with the papers",
+     "next": "mother_first",
+     "addHidden": [
+      "Envelope — postmark weeks before delivery; late notice preserved"
+     ],
+     "note": "A postmark is a date that argues for itself."
+    }
+   ]
+  },
+  {
+   "id": "mother_first",
+   "kicker": "Month 2 — Thursday, November 27, 2025",
+   "dayOffset": 52,
+   "title": "Dana's Track, Running Beside Yours",
+   "body": [
+    "A short letter from Dana arrives through a counselor, and a caseworker summary comes with the next mail. Dana is in treatment. She has visits. She has a list of goals she can actually reach from where she lives — classes in her town, screens, a housing list.",
+    "Her clock and yours are not the same clock. She can show up in person and be seen trying. You can be trying just as hard and be seen not at all, because trying, from here, looks like envelopes.",
+    "The worker's summary ends kindly and vaguely: 'Father's cooperation is noted as pending.' Pending is what a file says about a person it has not heard from."
+   ],
+   "choices": [
+    {
+     "text": "Write your first letter — to the court, not just the agency",
+     "next": "first_letter",
+     "note": "Addressed, dated, and signed. You keep the carbon in your property box."
+    }
+   ]
+  },
+  {
+   "id": "first_letter",
+   "kicker": "Month 2 — Monday, December 1, 2025",
+   "dayOffset": 56,
+   "title": "The First Letter",
+   "body": [
+    "The letter is harder to write than it looks. You need to say who you are, that you only just learned of the case, that you want to take part, and that you need a lawyer — without sounding like you are arguing the whole case in a hallway.",
+    "A man two doors down who has done this before gives you the only advice that matters here: 'Short. Dated. Ask for one thing per letter. Keep your copy.'",
+    "You may have a lawyer appointed if you cannot afford one — a party's right to counsel in these proceedings is in the law your lawyer will later cite for you (42 Pa.C.S. § 6337). Tonight, your job is only to ask, in writing."
+   ],
+   "choices": [
+    {
+     "text": "Ask the court, in writing, for appointed counsel and for notice of every hearing",
+     "next": "counsel_reply",
+     "cash": -5,
+     "setFlags": [
+      "counselAsked"
+     ],
+     "addHidden": [
+      "Father's letter to the court — counsel and notice requested, dated and kept"
+     ],
+     "note": "Stamps are money here. This one is spent like it matters, because it does."
+    },
+    {
+     "text": "Wait — the agency said father to contact them; a caseworker will sort it out",
+     "next": "counsel_reply",
+     "note": "Waiting is also a choice. The file will record it in its own words: no contact."
+    }
+   ]
+  },
+  {
+   "id": "counsel_reply",
+   "kicker": "Month 2 — Monday, December 15, 2025",
+   "dayOffset": 70,
+   "title": "A Lawyer's Handwriting",
+   "body": [
+    "A letter comes back on plain paper, in handwriting that leans left. Ms. Hart, appointed as your counsel (42 Pa.C.S. § 6337), cannot visit often and will not pretend otherwise. She works by mail and by scheduled legal calls, and she writes the sentence you will read all year: 'In this case, your letters are your presence. Make them count and keep every copy.'",
+    "She encloses a list of the plan's goals for you: a parenting program, two evaluations, and 'maintain contact with the children and the agency.' Then her note in the margin: 'Tell me which of these this facility actually offers. In writing, please.'",
+    "Nobody has asked you that before. The plan was written as if you lived somewhere else."
+   ],
+   "choices": [
+    {
+     "text": "Start the list — what this facility actually offers",
+     "next": "plan_arrives",
+     "note": "The gap between the plan on paper and the programs in this building is about to become the center of your case."
+    }
+   ]
+  },
+  {
+   "id": "plan_arrives",
+   "kicker": "Month 3 — Monday, December 22, 2025",
+   "dayOffset": 77,
+   "title": "A Plan Written for Somewhere Else",
+   "body": [
+    "You ask around the way you do everything here: politely, twice, in different offices. The parenting program exists — in another unit, with a waiting list. One evaluation is not offered here at all. The other requires a referral nobody has sent.",
+    "Dana's goals, in her summary, come with addresses and start dates. Yours come with verbs and no doors.",
+    "Ms. Hart's margin note starts to look less like a question and more like a strategy."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the whole file — your records and the case plan, in writing",
+     "next": "records_choice",
+     "note": "If the plan does not match this building, the file is where that fact will have to live."
+    }
+   ]
+  },
+  {
+   "id": "records_choice",
+   "kicker": "Month 3 — Monday, December 29, 2025",
+   "dayOffset": 84,
+   "title": "Asking for the File From Inside",
+   "body": [
+    "Ms. Hart explains the tool plainly in her next letter. A parent may request their case record and it 'shall be released upon request' (55 Pa. Code § 3130.44(d)). The right does not shrink because the request is mailed from a facility. Neither does it exercise itself.",
+    "The request is one page: your name, the children's names, what you are asking for — the case record, the current case plan, and the service referrals made for you — and a date.",
+    "It will take weeks to come back, if it comes back cleanly at all. Mail here moves the way weather moves: eventually, and on its own schedule."
+   ],
+   "choices": [
+    {
+     "text": "Sign it, date it, copy it, and send the records request this week",
+     "next": "records_packet",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested"
+     ],
+     "addHidden": [
+      "Records request — case record, case plan, and father's referrals requested in writing"
+     ],
+     "note": "One page out. One copy kept. The clock on an answer starts from a date you can prove."
+    },
+    {
+     "text": "Ask verbally at your next counselor call and save the stamps",
+     "next": "skip_records",
+     "note": "A spoken ask leaves no copy. What the file says later about this month will be the file's version, not yours."
+    }
+   ]
+  },
+  {
+   "id": "records_packet",
+   "kicker": "Month 3 — Monday, January 12, 2026",
+   "dayOffset": 98,
+   "title": "The File, in a Manila Envelope",
+   "body": [
+    "It comes in pieces over two mail days: court reports, Dana's progress notes, visit logs — and yours, which fits on half a page. October: 'No contact from Father.' November: 'No contact from Father.' The first entry postdates the envelope that reached you at week six.",
+    "The service page is the quiet part. Beside your parenting program and your evaluations, where Dana's page has referral dates, yours has blanks — no referral sent, no facility program named. The plan required things. So far, on paper, nobody has made them possible.",
+    "You read it three times. Then you do the least dramatic and most important thing available to a man in your position: you write down, with dates, what is missing."
+   ],
+   "choices": [
+    {
+     "text": "Send Ms. Hart the missing-services list, with dates",
+     "next": "services_search",
+     "setFlags": [
+      "gapListSent"
+     ],
+     "addHidden": [
+      "Case record — father's service referrals blank; 'no contact' entries predate his notice"
+     ],
+     "note": "A list with dates is not a complaint. It is the beginning of a record a judge can use."
+    }
+   ]
+  },
+  {
+   "id": "skip_records",
+   "kicker": "Month 3 — Monday, January 5, 2026",
+   "dayOffset": 91,
+   "title": "The Summary Version",
+   "body": [
+    "Your counselor passes on what she was told: the plan is 'standard,' Dana is 'engaged,' and your part is to 'stay in touch and complete services on release.' It is not unkind. It is also not the file.",
+    "You do not see the half-page about you. You do not see the blank spaces beside your services. You cannot miss what you have never been shown — which is exactly the problem Ms. Hart will name later, gently, in a letter you will wish you had gotten sooner.",
+    "The month closes. Somewhere, a file records it in the file's own words."
+   ],
+   "choices": [
+    {
+     "text": "Go on with what you have — ask the facility what programs exist here",
+     "next": "services_search",
+     "note": "You are working. You are working, for now, from a summary of a summary."
+    }
+   ]
+  },
+  {
+   "id": "services_search",
+   "kicker": "Month 4 — Monday, February 2, 2026",
+   "dayOffset": 119,
+   "title": "What This Building Offers",
+   "body": [
+    "The answer, assembled over weeks of asking, is short enough to memorize. A parenting program: yes, one, with a waiting list you can join. Anger management: yes, when a cohort opens. The two evaluations in your plan: not provided here; an outside provider would have to be arranged, and arranging is not your job description or your power.",
+    "A staff member is honest with you at a window: 'Half the men who ask me that are asking because a court paper told them to do something we've never run.' He is not the enemy. He is a window, with hours.",
+    "Your plan, from the court's side, assumes a menu. This building serves part of it, sometimes, to some units."
+   ],
+   "choices": [
+    {
+     "text": "Get on the parenting program waiting list today, and keep the slip",
+     "next": "program_waitlist",
+     "addHidden": [
+      "Facility inquiry — parenting waitlist joined; evaluations not offered on site"
+     ],
+     "note": "A waiting-list slip is a small paper. In your case, small papers are the whole army."
+    }
+   ]
+  },
+  {
+   "id": "program_waitlist",
+   "kicker": "Month 4 — Monday, February 16, 2026",
+   "dayOffset": 133,
+   "title": "Position on a List You Cannot See",
+   "body": [
+    "You are on the list. The slip says so, with a date and a stamp, and it goes into your folder (you have a folder now; men in here who are serious about a case outside always end up with a folder).",
+    "What the slip cannot tell you: when a seat opens, whether your unit will be called, whether a transfer will move you to a building where the list starts over. Transfers happen here the way weather happened to your mail.",
+    "Dana, this month, finishes a class and gets a certificate with her name in calligraphy. You are glad for her, mostly. The file will hold her certificate. It will hold your slip, too — if you send a copy out."
+   ],
+   "choices": [
+    {
+     "text": "Ask for the program and evaluations in writing — to the agency and Ms. Hart — and keep your copy",
+     "next": "request_writing",
+     "note": "Asking out loud got you a list. Asking in writing gets you a record."
+    }
+   ]
+  },
+  {
+   "id": "request_writing",
+   "kicker": "Month 5 — Monday, February 23, 2026",
+   "dayOffset": 140,
+   "title": "The Request Is the Record",
+   "body": [
+    "Ms. Hart's advice, underlined this time: ask for each service by name, say where you are, say what the facility told you, and ask what arrangement will be made. Then, when the answer is a program, a date, or silence — all three are facts, if they are dated.",
+    "You write it carefully. Parenting program: requested, waitlisted here. Evaluations: requested; not offered in this facility; asking the agency how they will be provided. Contact with the children: requested; asking what form it can take from here.",
+    "This is the beat the whole scenario turns on, and it does not look like anything: a man at a table, writing a letter he has already written in his head ten times."
+   ],
+   "choices": [
+    {
+     "text": "Send it to the agency and Ms. Hart, dated, and file your copy",
+     "next": "silence_month",
+     "cash": -10,
+     "setFlags": [
+      "fatherRequests"
+     ],
+     "addHidden": [
+      "Father's written service requests — parenting, evaluations, and child contact, each dated"
+     ],
+     "note": "Now the file can say two things about you, not one. Which one it says depends on what is in it."
+    },
+    {
+     "text": "You've asked at the window twice — that should be enough; save the effort",
+     "next": "silence_month",
+     "note": "At the window, twice, out loud. If it is not in the file later, it will be surprisingly hard to prove it happened at all."
+    }
+   ]
+  },
+  {
+   "id": "silence_month",
+   "kicker": "Month 6 — Monday, March 23, 2026",
+   "dayOffset": 168,
+   "title": "A Month of No Answer",
+   "body": [
+    "Four weeks. Dana's summary says she started a new goal. The children's visit log, in the report Ms. Hart forwards, shows birthdays handled kindly by their foster family. Of your requests: no reply, no referral, no arrangement.",
+    "Silence is hard to hold. It feels like nothing, and nothing feels like your fault for not pushing harder in a building where pushing has limits you did not set.",
+    "Ms. Hart writes one line: 'Keep the dates. A silence with dates around it is evidence. A silence without them is just a sad story.' You copy the dates onto the folder's inside cover."
+   ],
+   "choices": [
+    {
+     "text": "Write one short follow-up — 'following up on my letter' — with both dates in it",
+     "next": "video_hearing",
+     "cash": -5,
+     "setFlags": [
+      "followUpSent"
+     ],
+     "addHidden": [
+      "Follow-up letter — original request and its date restated; no reply received"
+     ],
+     "note": "Polite, dated, unmistakable. The second letter is what turns the first one into a timeline."
+    }
+   ]
+  },
+  {
+   "id": "video_hearing",
+   "kicker": "Month 6 — Monday, April 6, 2026",
+   "dayOffset": 182,
+   "title": "A Hearing, by Video",
+   "body": [
+    "The review hearing is on April 6, 2026 and you attend the way you attend everything in this case: through a screen, in a room with a clock, after a wait you were not told the length of. The connection holds. Some hearings in these cases do not, and men lose their one appearance to a frozen frame — today, you are lucky, and luck will be part of this story no matter what you do.",
+    "Dana is there in person. Her progress is called 'moderate.' Her lawyer speaks for her in complete sentences. Ms. Hart, on the phone line, says one thing on your behalf, and it is the right thing: 'Father's written requests for services and contact are in the file, Your Honor, with dates. The responses are not.' The judge asks the agency to address the father's services before the next review. It is not a ruling. It is a sentence in a transcript, and sentences in transcripts are load-bearing.",
+    "Eli, the report says, asked whether his dad knows where he lives now. You sit with that sentence for a long time after the screen goes dark."
+   ],
+   "choices": [
+    {
+     "text": "Write to the children this week — through the caseworker, the way the plan allows",
+     "next": "mother_setback",
+     "cash": -10,
+     "addHidden": [
+      "Review hearing — father appeared by video; court asked agency to address father's services"
+     ],
+     "note": "Cards and short letters, sent the approved way, dated in your log. Contact you can prove is contact the file must carry."
+    }
+   ]
+  },
+  {
+   "id": "mother_setback",
+   "kicker": "Month 7 — Monday, May 4, 2026",
+   "dayOffset": 210,
+   "title": "Dana's Hard Month",
+   "body": [
+    "Tracks cross. Dana misses two screens, loses a housing placement she had been counting on, and her progress word slides from 'moderate' to a phrase no parent wants read aloud about them. Her lawyer asks for time. The agency's report calls her 'at a crossroads.'",
+    "Your first feeling surprises you with its smallness: the case was supposed to be carried by her track while you built yours, and her track just narrowed. Your second feeling is the truer one: she is the children's mother, doing a hard thing in the open, while you do yours in an envelope.",
+    "What you do about her setback is also part of your record. The file notices what kind of letters a father writes in the other parent's bad month."
+   ],
+   "choices": [
+    {
+     "text": "Write Dana a short, decent letter — support her plan, ask about the children, keep a copy",
+     "next": "letter_children",
+     "cash": -5,
+     "setFlags": [
+      "supportLetter"
+     ],
+     "addHidden": [
+      "Father's letter to Mother — supportive of her plan; no criticism recorded"
+     ],
+     "note": "It costs a stamp. It will be read someday by people deciding what kind of father you are on paper."
+    },
+    {
+     "text": "Stay in your lane — her plan is her problem; yours is paper enough already",
+     "next": "letter_children",
+     "note": "Your lane is real. So is what the file will not contain about this month."
+    }
+   ]
+  },
+  {
+   "id": "letter_children",
+   "kicker": "Month 7 — Monday, May 18, 2026",
+   "dayOffset": 224,
+   "title": "Letters to Eli and June",
+   "body": [
+    "You write Eli about a dog you had at his age and June about the color of the sky where you are — true, small, and sized for them. The caseworker will pass them on the approved route. Whether a letter is read aloud in a foster kitchen is not yours to know. That it was written, sent, and logged is yours.",
+    "A card costs money you count in stamps and copies. Everything in your case costs that currency: proof.",
+    "This month, for the first time, the caseworker's note about you — forwarded by Ms. Hart — uses a new word: 'Father writes regularly.' Regularly is not a legal term. Files run on such words anyway."
+   ],
+   "choices": [
+    {
+     "text": "Start a log — every letter, request, and reply (or no reply), one line each, dated",
+     "next": "copies_system",
+     "note": "The log is boring. Boring, dated, and complete is the most persuasive genre in this system."
+    }
+   ]
+  },
+  {
+   "id": "copies_system",
+   "kicker": "Month 8 — Monday, June 1, 2026",
+   "dayOffset": 238,
+   "title": "Your Copy, Their Copy",
+   "body": [
+    "Copies are a discipline, not a pile. Your system, built at a table over weeks: originals out, copies in the folder, one line in the log per paper — sent, received, answered, not answered. A trusted person outside holds a second set, because property here can be moved, lost, or rained on in ways folders do not survive.",
+    "It costs a little every month, in copies and postage. It is, Ms. Hart writes, 'the cheapest representation you will ever have: your own, of yourself, to the future.'",
+    "The file the court reads is written by the system. The file you keep is written by you. Until now they have not always been describing the same father."
+   ],
+   "choices": [
+    {
+     "text": "Pay for copies and keep the log current, every month, without exception",
+     "next": "second_records",
+     "cash": -15,
+     "setFlags": [
+      "logKept"
+     ],
+     "addHidden": [
+      "Father's dated log — letters, requests, replies, and silences, kept continuously"
+     ],
+     "note": "A log kept in real time is worth ten reconstructions written later from memory."
+    },
+    {
+     "text": "Keep it in your head — you know what you sent; a log is paperwork about paperwork",
+     "next": "second_records",
+     "note": "You do know. Knowing and showing are different countries, and court is held in the second one."
+    }
+   ]
+  },
+  {
+   "id": "second_records",
+   "kicker": "Month 9 — Monday, June 29, 2026",
+   "dayOffset": 266,
+   "title": "Asking Again, on Purpose",
+   "body": [
+    "Cases change while they sit. Reports are written about you in months you hear nothing. Ms. Hart's standing advice applies again: the record request can be made again — the record 'shall be released upon request' (55 Pa. Code § 3130.44(d)) — and a file at this stage holds a year you have not seen.",
+    "What you are really asking for, this time, is specific: every service referral made for you, every response to your letters, and the notes from the review where the judge asked about your services.",
+    "One page. Dated. Copied. The ritual is familiar now, which is what makes it power instead of hope."
+   ],
+   "choices": [
+    {
+     "text": "Send the second records request — referrals, responses, and review notes named in it",
+     "next": "packet_reveal",
+     "cash": -5,
+     "setFlags": [
+      "recordsRequested",
+      "updatedRecord"
+     ],
+     "addHidden": [
+      "Second records request — father's referrals and agency responses specifically named"
+     ],
+     "note": "This request names the gaps. What comes back will either fill them or confirm them, in the agency's own paper."
+    },
+    {
+     "text": "Ms. Hart gets the court reports — that may be enough this time",
+     "next": "thin_reveal",
+     "note": "Reports summarize. Summaries decide what to leave out. You have met what gets left out before."
+    }
+   ]
+  },
+  {
+   "id": "packet_reveal",
+   "kicker": "Month 9 — Monday, July 13, 2026",
+   "dayOffset": 280,
+   "title": "What the Updated File Shows",
+   "body": [
+    "It takes weeks, and then it is all there at once. Your letters: in the file, dated, in order. Your service requests: logged as received. The responses: a referral for the parenting program's waiting list — the list you joined yourself, months earlier — and, beside the evaluations, still no arrangement, no provider, no date.",
+    "And one new line, in a casework note, that Ms. Hart circles twice before forwarding: 'Father has requested services in writing on multiple occasions. Services remain unavailable at his facility. No alternative arrangement made to date.'",
+    "That sentence was written by the system, about the system. It is the most important sentence in your case, and it exists because your letters forced the file to account for itself."
+   ],
+   "choices": [
+    {
+     "text": "Take the circled page to your next legal call with Ms. Hart",
+     "next": "counsel_strategy",
+     "setFlags": [
+      "servicesGapDocumented"
+     ],
+     "addHidden": [
+      "Agency note — father's services 'remain unavailable'; 'no alternative arrangement made to date'"
+     ],
+     "note": "'There it is,' Ms. Hart says. 'In their handwriting. Now we talk about what the law does with a sentence like that.'"
+    }
+   ]
+  },
+  {
+   "id": "thin_reveal",
+   "kicker": "Month 9 — Monday, July 13, 2026",
+   "dayOffset": 280,
+   "title": "The Reports, Summarized",
+   "body": [
+    "The court reports arrive through Ms. Hart: fair, brief, and smooth in the way of summaries. Dana's arc in a paragraph. The children's health in a line. You: 'Father remains incarcerated. Father to complete services.'",
+    "Complete them how, where, and through whose arrangement — the summary does not say, because summaries rarely carry the part of the story that happened in the gaps.",
+    "Ms. Hart is quiet on the call for a moment. 'We may still be able to build it from your letters,' she says. 'It would have been simpler to read it in their notes. Simpler is not nothing, in a timed case.'"
+   ],
+   "choices": [
+    {
+     "text": "Go to the strategy call with what you have",
+     "next": "counsel_strategy",
+     "note": "Your letters exist. What they can carry, without the file's own admissions beside them, is the open question of the next hearing."
+    }
+   ]
+  },
+  {
+   "id": "counsel_strategy",
+   "kicker": "Month 10 — Monday, August 10, 2026",
+   "dayOffset": 308,
+   "title": "Ms. Hart Draws the Clock",
+   "body": [
+    "On the legal call, Ms. Hart draws it in words, slowly, the way she writes. The children have been in care since October 6, 2025. At fifteen of the most recent twenty-two months — January 6, 2027 — the agency's duty about filing a termination petition changes (42 U.S.C. § 675(5)(E)).",
+    "'File — unless an exception is documented,' she says. 'A relative caring for them. A documented compelling reason. Or this one, and listen carefully: the agency has not provided services that the plan identified as necessary for the children to return home safely. As to you, Marcus — as to you, that third door is not a metaphor. It is your file.'",
+    "'A petition is not a termination,' she says. 'Grounds would still have to be proved by clear and convincing evidence, at a hearing, with me beside you. But a petition changes the weather. Our work now is to make the documented exception true before the clock arrives — or to build the best record we can for the release that comes after it.' Your own release is on a separate timeline, past the children's clock, on a schedule no one in this case controls and no letter can move."
+   ],
+   "choices": [
+    {
+     "text": "Ask what each door needs, on paper, before the clock date",
+     "next": "mother_progress",
+     "note": "Three doors. One is Dana's to walk through, one is the file's, and one is yours. You finally know which is which."
+    }
+   ]
+  },
+  {
+   "id": "mother_progress",
+   "kicker": "Month 11 — Monday, September 7, 2026",
+   "dayOffset": 336,
+   "title": "Dana's Track, Again",
+   "body": [
+    "And then the parallel track does what parallel tracks do: it moves. Dana completes a new program, her screens hold, a housing opening with a real address appears on her horizon, and her progress word climbs back past 'moderate.' Her lawyer begins using the word 'trial' — trial visits, trial time at home — in reports Ms. Hart forwards you.",
+    "If the children go home to Dana, your case does not end — it changes shape. Your rights, your contact, and your plan for release would be decided inside a case whose center of gravity has moved to her kitchen table.",
+    "What the court will ask about you, in that hearing, is already written. It is whatever your file says in the month the question is asked."
+   ],
+   "choices": [
+    {
+     "text": "Write the agency: you support the children's return to Dana, and you ask for your contact and release plan in writing",
+     "next": "hearing12",
+     "cash": -5,
+     "setFlags": [
+      "supportReturn"
+     ],
+     "addHidden": [
+      "Father's letter — supports return to Mother; requests contact and post-release plan in writing"
+     ],
+     "note": "A father supporting the other parent's success, on paper, while asking for his own place in the plan. Judges notice. Files keep it."
+    }
+   ]
+  },
+  {
+   "id": "hearing12",
+   "kicker": "Month 12 — Monday, October 5, 2026",
+   "dayOffset": 364,
+   "title": "The Review You Almost Miss",
+   "body": [
+    "The review is scheduled, rescheduled, and then held on a day when your unit's video room is double-booked. You wait in a corridor for an hour that is also, somehow, your whole appearance: Ms. Hart states your position into the record — the dated requests, the documented gap, your support for Dana's progress, your letters to the children — while a screen is found.",
+    "You appear for the last ten minutes. The judge thanks you for your patience, a sentence no one in a courtroom has said to you before, and orders the agency to file a written status report on the father's services — what was requested, what was provided, what was not, and why.",
+    "A written status report. Ordered, dated, and owed. The system has just been asked to write your argument for you. Whether it does depends, in part, on whether there is a paper trail it must answer to."
+   ],
+   "choices": [
+    {
+     "text": "Prepare for the final stretch — with Ms. Hart, choose what to build before the clock date",
+     "next": "build_packet",
+     "note": "One build season left. What gets built in it decides which endings are still in the room."
+    }
+   ]
+  },
+  {
+   "id": "build_packet",
+   "kicker": "Month 13 — Monday, November 2, 2026",
+   "dayOffset": 392,
+   "title": "Choosing What to Build",
+   "body": [
+    "Ms. Hart lays out the last weeks plainly. The clock date is January 6, 2027. Four builds are possible with the time and paper you have — and the file you have actually made decides how strong each one can be.",
+    "'The exception packet leads with their own note about your services. The return packet leads with Dana, and puts your letters and your support beside her progress. The release packet accepts the clock and builds the record your future request will stand on. Or we go in with the file as it sits, and let summaries speak.'",
+    "Choose like a man who has to live inside the outcome — and inside the file, which in your case is the same address for now."
+   ],
+   "choices": [
+    {
+     "text": "Build the services exception packet — your dated requests, the agency's own note, Ms. Hart's letter",
+     "next": "exception_path",
+     "setFlags": [
+      "packetBuilt"
+     ],
+     "note": "Every page dated. Every silence bracketed by the letters around it."
+    },
+    {
+     "text": "Build the return packet — Dana's progress first, your paper relationship preserved inside it",
+     "next": "mother_path",
+     "setFlags": [
+      "returnPacket"
+     ],
+     "note": "Her track, your record, one file: the children home, and a father still in the plan."
+    },
+    {
+     "text": "Build for release — document everything now for the request you will file when you are out",
+     "next": "release_path",
+     "setFlags": [
+      "releasePacket"
+     ],
+     "note": "Not this clock. The next door. Built while the building is still possible."
+    },
+    {
+     "text": "Let the file speak as it sits — you have written enough letters for one case",
+     "next": "thin_path",
+     "note": "The file will speak. The question has always been what it will say."
+    }
+   ]
+  },
+  {
+   "id": "exception_path",
+   "kicker": "Month 13 — Monday, November 16, 2026",
+   "dayOffset": 406,
+   "title": "The Exception Packet",
+   "body": [
+    "It assembles without drama, which is its drama: your first letter, late-notice envelope beside it. The service requests, dated, each with its follow-up. The waiting-list slip. The casework note in the agency's own hand: services remain unavailable; no alternative arrangement made.",
+    "Ms. Hart's cover letter is one page and does not accuse anyone of anything. It lists what the plan identified as necessary for you, what you requested in writing, and what was and was not provided — and it asks that the services exception be documented as to Father before the clock date.",
+    "A packet like this cannot be assembled in the last week from memory. It can only be assembled from a folder. You have a folder."
+   ],
+   "choices": [
+    {
+     "text": "File the packet with the court and the agency, early",
+     "next": "review_exception",
+     "note": "Early, so the final review is a discussion of documents — not the first time anyone has seen them."
+    }
+   ]
+  },
+  {
+   "id": "mother_path",
+   "kicker": "Month 13 — Monday, November 16, 2026",
+   "dayOffset": 406,
+   "title": "The Return Packet",
+   "body": [
+    "Dana's packet is thicker and warmer: certificates, screens, the housing letter, visit reports — and, placed by Ms. Hart near the front, yours. Your letters to the children, logged as regular. Your support letter in Dana's bad month. Your written support for their return, with your own ask stated cleanly: contact maintained, and a services-and-visitation plan for you that begins now on paper and continues on your release.",
+    "It makes an argument no speech could: these children have a mother who did the work and a father who, from where he sits, did the only work available to him — and wrote it down.",
+    "Ms. Hart files it ahead of the review, so Dana's hearing is about a plan, not a surprise."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review supporting the return — and your place in the plan",
+     "next": "review_mother",
+     "note": "By video, in the good shirt you keep for court days. Ten minutes of screen can carry a year of paper."
+    }
+   ]
+  },
+  {
+   "id": "release_path",
+   "kicker": "Month 13 — Monday, November 16, 2026",
+   "dayOffset": 406,
+   "title": "Building for the Next Door",
+   "body": [
+    "This packet is addressed to a hearing that has not been scheduled, in a season when you will walk into the courtroom on your own feet. It contains everything: the late envelope, the requests, the log, the agency's note, Dana's arc, the children's letters — organized, Ms. Hart says, 'so that a judge meeting you for the first time meets the record first.'",
+    "It concedes the present clock honestly. Your release sits past it, on a timeline this case does not control. What the packet claims is narrower and stronger: that when you ask, later, for the case to account for your place in your children's lives, the asking will stand on a record built in real time — not reconstructed in regret.",
+    "Ms. Hart keeps the master copy outside, where folders do not get transferred."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review with the long record, and the long view",
+     "next": "review_release",
+     "note": "Some records are arguments. This one is a foundation. Foundations are argued later, on top."
+    }
+   ]
+  },
+  {
+   "id": "thin_path",
+   "kicker": "Month 13 — Monday, November 16, 2026",
+   "dayOffset": 406,
+   "title": "The File as It Sits",
+   "body": [
+    "The last weeks pass in the ordinary rhythm: mail, meals, a letter to Eli you almost send and then shorten. No packet is filed. Ms. Hart does what counsel can do with a thin file — she argues from your testimony, your memory of dates, and the summaries.",
+    "Your memory is honest. It is also, in the specific way of memories under pressure, missing the two dates the agency's lawyer will ask about first.",
+    "The file that will sit in front of the judge was written by everyone who wrote anything down. In the final month, that was mostly not you."
+   ],
+   "choices": [
+    {
+     "text": "Go to the final review and testify to what you remember",
+     "next": "review_thin",
+     "note": "You will tell the truth. The record will tell its smaller version beside you, and the judge must weigh both."
+    }
+   ]
+  },
+  {
+   "id": "review_exception",
+   "kicker": "Month 15 — Wednesday, December 30, 2026",
+   "dayOffset": 450,
+   "title": "The Final Review — The Packet Read Aloud",
+   "body": [
+    "The review is held days before January 6, 2027. The packet is in the file, and files, at final reviews, get read by their consequences. The agency does not contest the dates. Its own note is in the packet. Its lawyer says, carefully, that services identified for Father were not in fact provided or arranged during his incarceration, and that the agency will document the exception as to Father rather than file as to him at the fifteen-month point.",
+    "As to Dana, the agency's report is the strongest yet: her progress supports continuing the case toward her, with the clock addressed on her track separately. The judge's pen moves across both tracks, in different inks.",
+    "You appear by video for eleven minutes. It is enough. This hearing was never going to be won by the man on the screen. It was won, insofar as it was won, by the folder."
+   ],
+   "choices": [
+    {
+     "text": "Listen to the pen, and to Dana's lawyer asking for a trial schedule",
+     "next": "end_exception",
+     "note": "Two tracks, two outcomes, one courtroom. Yours held — on paper, which is where you live for now."
+    }
+   ]
+  },
+  {
+   "id": "review_mother",
+   "kicker": "Month 15 — Wednesday, December 30, 2026",
+   "dayOffset": 450,
+   "title": "The Final Review — Dana's Hearing, Your Pages",
+   "body": [
+    "The courtroom's center, today, is Dana: her certificates, her housing letter, her visits grown longer and easier in the reports. The judge asks about trial time at home, and the agency, for once, is answering a question about addition instead of removal.",
+    "Then the judge turns to the screen. 'Father's position?' Ms. Hart does not give a speech. She cites pages: the letters, logged. The support, written in the bad month and the good one. The service requests and the documented gap, noted for the father's own track. 'He asks that his contact continue and that his plan be written for his release, Your Honor. The record supports that he has done what was available to him, and documented the rest.'",
+    "The judge nods the nod that, in courtrooms, is a paragraph. 'That will be in the order,' she says."
+   ],
+   "choices": [
+    {
+     "text": "Hear the order — trial return to Dana, your contact and plan written into it",
+     "next": "end_return",
+     "note": "Not your homecoming. Theirs. Yours is scheduled in the only tense your case has left: the future, documented."
+    }
+   ]
+  },
+  {
+   "id": "review_release",
+   "kicker": "Month 15 — Wednesday, December 30, 2026",
+   "dayOffset": 450,
+   "title": "The Final Review — The Long Record",
+   "body": [
+    "The clock date, January 6, 2027, arrives in this room wearing ordinary clothes. As to Dana, her track carries its own argument, and the case continues toward her. As to you, the agency states its position: it will file as to Father at the fifteen-month point, citing the length of your remaining time inside — a timeline no letter could move.",
+    "Ms. Hart does not waste the court's patience pretending otherwise. She does two things instead: she places the full record — requests, log, agency note, letters — into the file in organized form, and she gets the judge to note, on the record, what it contains and that your efforts and the services gap are documented in it. The noting takes four minutes. Four minutes of transcript can hold a surprising amount of future.",
+    "A filing, she reminds you on the call afterward, is not a termination. And a noted record is not a consolation prize. It is the ground the next request stands on."
+   ],
+   "choices": [
+    {
+     "text": "Keep the record, keep writing, and let the release track run",
+     "next": "end_release",
+     "note": "The case changes rooms. Your folder goes with it — that was the whole design."
+    }
+   ]
+  },
+  {
+   "id": "review_thin",
+   "kicker": "Month 15 — Wednesday, December 30, 2026",
+   "dayOffset": 450,
+   "title": "The Final Review — Summaries",
+   "body": [
+    "The review is short, in the way of hearings where the paper is thin. The agency's summary of you fits in one breath: incarcerated throughout, no services completed, contact described as 'limited, by letter.' Your dated requests are mentioned by Ms. Hart from memory and notes; the agency's lawyer asks, reasonably, where they are in the file, and the room has the particular silence of a question without a document behind it.",
+    "Dana's track, thinner without your support on paper, does not carry its hearing either: the agency states it will file as to both parents at the fifteen-month point. Dana looks, once, directly at the camera — at you — with an expression that contains the whole parallel architecture of this case: two tracks, both now running through the same narrow gate.",
+    "Ms. Hart is already writing before the judge finishes. Filing season, she will tell you, has its own record to build. But it is a harder room, and everyone in this one knows why this one went as it did."
+   ],
+   "choices": [
+    {
+     "text": "Look at the folder that could have been, and then at Ms. Hart's pen",
+     "next": "end_filed",
+     "note": "She is writing the next chapter's first page. It will need everything this one taught you, at higher prices."
+    }
+   ]
+  },
+  {
+   "id": "end_exception",
+   "kicker": "Month 15 — Wednesday, January 6, 2027",
+   "dayOffset": 457,
+   "title": "Ending — The Exception, Documented as to Father",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: Three clocks ran at once. The children's clock reached fifteen of the most recent twenty-two months on January 6, 2027 (42 U.S.C. § 675(5)(E)). Dana's clock ran in programs, screens, and a housing list, and at the final review it was still running — the case continues toward her, unfinished. Your clock ran on two tracks of its own: the case's, which you met with paper, and your sentence's, which no one in this case controlled and which extends past the children's clock — a fact stated here plainly because every ending in this scenario is shaped by it.",
+    "WHAT THE RECORD SHOWED: A late envelope with its postmark kept. A dated request for counsel (42 Pa.C.S. § 6337). Two records requests under 55 Pa. Code § 3130.44(d) — 'shall be released upon request' — that let you read what the file said about you. Written, dated service requests; a follow-up that turned silence into a timeline; a log; and the agency's own note that your services 'remain unavailable' with 'no alternative arrangement made.' On that record, the agency documented the services-not-provided exception in § 675(5)(E) as to you: the plan identified services as necessary, and they were not provided. No petition was filed as to Father at the fifteen-month point. That is a documented exception — not a reunification, not a dismissal, and not a promise about any later hearing.",
+    "WHAT WAS NEVER YOURS TO CONTROL: Whether the video connection held. Whether a program seat opened in your unit. Whether Dana's housing arrived in time, whether the judge who read the packet was the judge who would have skimmed it, and the whole of your release timeline. Outcomes in cases like this turn on workers, judges, and luck as well as on anything a parent does. What your choices controlled was narrower and real: when the clock arrived, the file contained a father who had asked, in writing, for everything he was told to do — and a system that had written down, itself, that it did not provide it."
+   ]
+  },
+  {
+   "id": "end_return",
+   "kicker": "Month 15 — Wednesday, January 20, 2027",
+   "dayOffset": 471,
+   "title": "Ending — Home With Mother, Paper Intact",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: The children's clock reached its fifteen-month point on January 6, 2027 (42 U.S.C. § 675(5)(E)). Dana's clock beat it in the only way that matters: her documented progress — programs, screens, housing, visits — supported a trial return, ordered at the final review and begun in the days after. Your sentence clock did not move at all; it still runs past every date in this case, and this ending does not pretend otherwise. The case continues, now centered on Dana's home, with supervision and reviews on her track.",
+    "WHAT THE RECORD SHOWED: Your file was not the thickest in the room — Dana's was, as it should have been. Yours showed the things only you could have put there: the late-notice envelope, the counsel request (42 Pa.C.S. § 6337), records requested and read (55 Pa. Code § 3130.44(d)), letters to the children logged as regular, written service requests with the gap in their provision noted rather than hidden, and — placed where the judge would find it — your written support for the children's return to their mother, in her bad month and her good one. Because that record existed, the return order could also carry you: contact maintained, and a services-and-visitation plan for Father written now, for his release. A return that erases a parent is a different order; this one did not, and the reason is paper.",
+    "WHAT WAS NEVER YOURS TO CONTROL: Dana's recovery, her housing, the agency's staffing, the judge's calendar, the video link, your release date — the largest facts of this ending were other people's work and plain luck, including the luck that Dana's track revived in time. Another father, with your exact folder, whose children's mother had a worse year, reaches a different ending in this same scenario, and the folder would not be the difference. Outcomes turn on workers, judges, and luck. What you built was the part that was yours: a paper relationship with your children that a court could preserve in an order, because it could see it."
+   ]
+  },
+  {
+   "id": "end_release",
+   "kicker": "Month 15 — Wednesday, January 20, 2027",
+   "dayOffset": 471,
+   "title": "Ending — Release Approaches, the Record Ready",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: The children's clock struck fifteen of twenty-two months on January 6, 2027 (42 U.S.C. § 675(5)(E)), and as to you the agency filed as it said it would — a filing driven, in the agency's own statement, by the length of your remaining time inside. Dana's clock kept its own counsel: the case continues toward her on a separate track, and her outcome was not decided by your hearing. Your sentence clock runs on, toward a release that is closer than it was and still not here. No outcome in this ending turns on your worth as a father, and this debrief will not pretend the calendar is a character judgment.",
+    "WHAT THE RECORD SHOWED: Everything you built is in the file, and — the detail this ending turns on — noted on the record at the final review: the dated service requests, the log, the agency's note that services were not provided or arranged, the letters to the children, your support for Dana's track. A petition is a filing, not a termination; grounds would still have to be proved by clear and convincing evidence at a hearing. And beyond this case, the record you built in real time is the foundation a future request stands on when release approaches — a request (kept generic here, as post-case mechanics vary) that asks a court to account for a documented father, not a reconstructed one. Records built late are arguments. Records built on time are foundations.",
+    "WHAT WAS NEVER YOURS TO CONTROL: The filing decision itself, the sentence timeline, transfers, program seats, Dana's year, the judge assigned, and whether 'noted' ever ripens into 'granted' — that will be decided later, by other people, on a record that is at least complete. Fathers identical to you, with thinner folders, face that later room with less. Fathers with your folder and better luck in any of a dozen places never needed it. Outcomes turn on workers, judges, and luck. Your piece — the only piece that was ever fully yours from inside — was the record, and in this ending, at least, the record is ready."
+   ]
+  },
+  {
+   "id": "end_filed",
+   "kicker": "Month 15 — Wednesday, January 6, 2027",
+   "dayOffset": 457,
+   "title": "Ending — Filed as to Both, a Thin File Noted",
+   "body": [],
+   "ending": true,
+   "debrief": [
+    "THE BOARD, WHOLE: The children's clock reached fifteen of the most recent twenty-two months on January 6, 2027, with no exception documented for either parent, and the agency filed as to both (42 U.S.C. § 675(5)(E)). Dana's clock stalled in the same season — her setbacks were hers, but the return packet that might have framed them was never built, and your support for her existed in life, not in the file. Your sentence clock ran untouched throughout: you will likely still be inside when the next hearing is held, appearing the way you have appeared all case, through a screen — if the screen is arranged, which in this ending's thinner record was itself left to chance more than once.",
+    "WHAT THE RECORD SHOWED: Summaries. 'Incarcerated throughout. No services completed. Contact limited.' The requests you remember making were, in the file, mostly unmade — asked aloud, or not followed up, or never copied — and the services gap that defined your plan existed in the world but not in the record, because the records requests that would have surfaced it (55 Pa. Code § 3130.44(d), 'shall be released upon request') and the dated letters that would have documented it were never sent in provable form. The judge at the final review did not decide you were a bad father. She decided on the paper in front of her, which is a different and colder thing, and it is the thing this scenario exists to teach.",
+    "WHAT WAS NEVER YOURS TO CONTROL — AND WHAT COMES NEXT: Mail that took weeks, a facility that never offered your plan's evaluations, Dana's relapse and recovery, judicial assignment, and luck in a dozen places — none of that was yours, and this ending is not a verdict on your worth. Read the filing accurately: a petition is an accusation with a hearing attached, not a termination. Grounds must still be proved by clear and convincing evidence, with your counsel (42 Pa.C.S. § 6337) beside you, and the record — including every letter you write from today — can still be built for that hearing, at harder prices in a harder room. Parents reach this ending through silence that was partly imposed on them; what remains fully theirs is the record from here. It is still being written."
+   ]
+  }
+ ]
+}
